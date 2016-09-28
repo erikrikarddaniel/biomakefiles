@@ -1,0 +1,9 @@
+sessionname biomakefiles
+setenv ROOT $PWD
+chdir lib/make
+screen -t libmake
+chdir $ROOT/doc
+screen -t doc
+chdir $ROOT
+screen -t man
+screen -t root
