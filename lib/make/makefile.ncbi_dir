@@ -1,0 +1,67 @@
+###
+# Library makefile for NCBI data directories.
+#
+# Includes targets to mirror data from NCBI (e.g. genomes, NR and RefSeq
+# databases) and some other practical things.
+#
+# Author: daniel.lundin@lnu.se
+###
+
+# Get listings, i.e. lists of available files
+listings:
+	wget -r -x --no-remove-listing --spider ftp://ftp.ncbi.nih.gov
+
+# Mirror parts of available genome databases in various formats.
+mirror_refseq:
+	wget -O archaea.assembly_summary.txt ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/archaea/assembly_summary.txt
+	wget -O bacteria.assembly_summary.txt ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt
+	wget -O viral.assembly_summary.txt ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/viral/assembly_summary.txt
+	for s in *.assembly_summary.txt; do \
+	  for p in `awk -F "\t" '$$12=="Complete Genome" && $$11=="latest"{print $$20}' $$s`; do \
+	    echo "--> $$p <--"; \
+	    wget -A fna.gz,faa.gz,gbff.gz,gpff.gz --mirror $$p/; \
+	  done; \
+	done
+
+mirror_bacteria_gbk:
+	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genomes/Bacteria/
+
+mirror_bacteria_draft_gbk:
+	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genomes/Bacteria_DRAFT/
+
+mirror_assembly_bacteria_gbk:
+	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genomes/ASSEMBLY_BACTERIA
+
+mirror_genbank_genbank_bacteria_gbk:
+	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genbank/genomes/Bacteria
+
+mirror_genbank_genbank_bacteria_draft_gbk:
+	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genbank/genomes/Bacteria_DRAFT/
+
+mirror_viruses_gbk:
+	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genomes/Viruses/
+
+# The NR (non-redundant) and RefSeq protein databases
+
+# Fetch the NR protein database, and unpack the tar files.
+mirror_nr.blast:
+	wget -A "nr.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
+	( cd ftp.ncbi.nih.gov/blast/db; for f in nr.*.tar.gz; do echo "--> $$f <--"; tar xzf $$f; done )
+
+mirror_nr.faa:
+	wget --mirror ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
+
+# This one only unpacks, what was fetched in mirror_nr.faa. The latter hence
+# has to be run first.
+nr.faa: ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz 
+	gunzip -c $< | awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);}  END {printf("\n");}' | sed '/^>/! { s/-//g }' > $@
+
+# Fetch the RefSeq protein database, and unpack the tar files.
+mirror_refseq_protein.blast:
+	wget -A "refseq_protein.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
+	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_protein.*.tar.gz; do echo "--> $$f <--"; tar xzf $$f; done )
+
+# Extract sequences from the RefSeq protein database fetched by mirror_refseq_protein.blast.
+# As far as I know there's no fasta file for this available at NCBI, like there is for NR.
+refseq_protein.faa:
+	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_protein -entry all -dbtype prot -out $@
