@@ -1,0 +1,16 @@
+all_refseq_rna.maf.gzs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fastq.gz))
+
+all_lasttabs: $(subst .maf.gz,.lasttab.gz,$(wildcard *.maf.gz))
+
+# Use these to set parameters for the lastal run. (-P4 tells it to use 4 cpu
+# threads, -e200 to only keep hits with at least 200 score.)
+#
+# Override in your Makefile by including this *before* you set the parameter,
+# see documentation in doc/makefile.md.
+LAST_OPTS = -P4 -e200
+
+%.refseq_rna.maf.gz: %.fastq.gz
+	gunzip -c RNA_3-0.2_2012-05-16.lane1.r1.fastq.gz | lastal $(LAST_OPTS) -Q1 $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > RNA_3-0.2_2012-05-16.lane1.r1.refseq_rna.maf.gz
+
+%.lasttab.gz: %.maf.gz
+	gunzip -c $< | maf-convert tab | awk '/^[^#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\t" $$8 "\t" $$11 "\t" $$3 "\t" $$6 "\t1e-100\t" $$1 }' | sort -k 1,1 -k 12,12rn | gzip -c > $@
