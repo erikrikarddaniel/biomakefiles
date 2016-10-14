@@ -17,7 +17,9 @@ aligner:
 ```
 include  /usr/local/lib/make/makefile.last
 
-# Override default LAST options to use 8 cpu threads and keep only hits with
-# at least 200 score.
-LAST_OPTS = -P8 -e200
-```
+# Override default LAST options to use 8 cpu threads and keep only hits with at
+# least 200 score.
+#
+# Important: This must come *after* the include, since defaults for options are
+# set in the library makefile. By setting the value here, you *override* that.
+LAST_OPTS = -P8 -e200 ```
