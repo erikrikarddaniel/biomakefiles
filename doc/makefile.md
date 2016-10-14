@@ -8,5 +8,16 @@ respectively. You use such a library makefile by writing a `Makefile` in an
 analysis directory containing an `include` statement which calls in the library
 makefile. In some cases this suffices, but in most cases you will add other
 statements -- macros and targets -- to the `Makefile`. You never need to edit
-the library makefile, unless there's something wrong in it. (If you find a bug,
-file a bug at GitHub: https://github.com/erikrikarddaniel/biomakefiles.)
+the library makefile, unless there's something wrong in it. (If you find a
+mistake, file a bug at GitHub: https://github.com/erikrikarddaniel/biomakefiles.)
+
+An example of a `Makefile` (note capital "M") in a directory you run the LAST
+aligner:
+
+```
+include  /usr/local/lib/make/makefile.last
+
+# Override default LAST options to use 8 cpu threads and keep only hits with
+# at least 200 score.
+LAST_OPTS = -P8 -e200
+```
