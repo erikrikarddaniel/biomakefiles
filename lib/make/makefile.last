@@ -31,6 +31,8 @@ AWK_LASTTAB2MEGANTAB = awk '/^[^#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\t
 # present in the current directory.
 all_refseq_rna.maf.gzs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fastq.gz))
 
+all_refseq_rna.mafs: $(subst .fastq.gz,.refseq_rna.maf,$(wildcard *.fastq.gz))
+
 # Converts all .maf.gz files (output files from lastal) to tables that are
 # sufficiently similar to BLAST's -m 8 tabular format to allow import into
 # MEGAN.
