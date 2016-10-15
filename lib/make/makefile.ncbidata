@@ -7,6 +7,8 @@
 # Author: daniel.lundin@lnu.se
 ###
 
+# *** Targets ***
+
 # Get listings, i.e. lists of available files
 listings:
 	wget -r -x --no-remove-listing --spider ftp://ftp.ncbi.nih.gov
@@ -37,6 +39,9 @@ mirror_genbank_genbank_bacteria_gbk:
 
 mirror_genbank_genbank_bacteria_draft_gbk:
 	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genbank/genomes/Bacteria_DRAFT/
+
+mirror_viruses_faa:
+	wget -A .faa --mirror  ftp://ftp.ncbi.nih.gov/genomes/Viruses/
 
 mirror_viruses_gbk:
 	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genomes/Viruses/

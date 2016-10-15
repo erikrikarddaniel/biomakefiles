@@ -47,3 +47,17 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 
 %.megantab.gz: %.maf.gz
 	gunzip -c $< | maf-convert tab | $(LASTTAB2MEGANTAB) | gzip -c > $@
+
+# Creating the LAST database.
+
+# Protein sequences in a file ending with .faa
+#
+# At least 24 GiB memory for Refseq?
+%.lastdb: %.faa
+	lastdb -p -c $@ $<
+	touch $@
+
+# Nucleotide sequences in a file ending with .fna
+%.lastdb: %.fna
+	lastdb -c $@ $<
+	touch $@

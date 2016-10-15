@@ -1,2 +1,36 @@
-%.daa: %.fastq.gz
+# makefile.diamond
+#
+# Library makefile to make running the LAST aligner simpler.
+#
+# Include the full path of this file in your Makefile and making databases and
+# running the aligner (lastal) can be done via make. See documentation in in
+# the biomakefile Git repository: doc/makefile.md and documentation for
+# individual targets below.
+#
+# Author: daniel.lundin@lnu.se
 
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# DIAMOND_DB_PATH sets the directory where to look for the database files. The
+# default is the current directory.
+DIAMOND_DB_PATH = .
+
+# DIAMOND_ALIGN_OPTS sets non-essential parameters for the lastal run.
+DIAMOND_ALIGN_OPTS = 
+
+# *** Targets ***
+#
+# NOT FINISHED HERE!
+
+# Running the Diamond aligner
+#
+
+# Creating the database
+
+# From protein sequences in a file ending with .faa
+# (Currently, Diamond only works with protein sequence databases.)
+%.dmnd: %.faa
+	diamond makedb --in $< -d $(basename $@)
