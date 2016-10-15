@@ -22,6 +22,9 @@ LAST_DB_PATH = .
 # threads, -e200 to only keep hits with at least 200 score.)
 LASTAL_OPTS = -P4 -e200
 
+# *** Macros ***
+AWK_LASTTAB2MEGANTAB = awk '/^[^#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\t" $$8 "\t" $$11 "\t" $$3 "\t" $$6 "\t1e-100\t" $$1 }' | sort -k 1,1 -k 12,12rn 
+
 # *** Targets ***
 
 # Run lastal against the NCBI RefSeq RNA database for all fastq.gz files
@@ -31,10 +34,16 @@ all_refseq_rna.maf.gzs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fastq.
 # Converts all .maf.gz files (output files from lastal) to tables that are
 # sufficiently similar to BLAST's -m 8 tabular format to allow import into
 # MEGAN.
-all_lasttabs: $(subst .maf.gz,.lasttab.gz,$(wildcard *.maf.gz))
+all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.megantab.gz,$(wildcard *.maf))
+
+%.refseq_rna.maf: %.fastq.gz
+	lastal $(LASTAL_OPTS) -Q1 $(LAST_DB_PATH)/refseq_rna.lastdb $< | gzip -c > $@
 
 %.refseq_rna.maf.gz: %.fastq.gz
-	gunzip -c RNA_3-0.2_2012-05-16.lane1.r1.fastq.gz | lastal $(LASTAL_OPTS) -Q1 $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > RNA_3-0.2_2012-05-16.lane1.r1.refseq_rna.maf.gz
+	gunzip -c $< | lastal $(LASTAL_OPTS) -Q1 $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
 
-%.lasttab.gz: %.maf.gz
-	gunzip -c $< | maf-convert tab | awk '/^[^#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\t" $$8 "\t" $$11 "\t" $$3 "\t" $$6 "\t1e-100\t" $$1 }' | sort -k 1,1 -k 12,12rn | gzip -c > $@
+%.megantab.gz: %.maf
+	maf-convert tab $< | $(LASTTAB2MEGANTAB) | gzip -c > $@
+
+%.megantab.gz: %.maf.gz
+	gunzip -c $< | maf-convert tab | $(LASTTAB2MEGANTAB) | gzip -c > $@
