@@ -23,7 +23,7 @@ LAST_DB_PATH = .
 LASTAL_OPTS = -P4 -e200
 
 # *** Macros ***
-AWK_LASTTAB2MEGANTAB = awk '/^[^#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\t" $$8 "\t" $$11 "\t" $$3 "\t" $$6 "\t1e-100\t" $$1 }' | sort -k 1,1 -k 12,12rn 
+AWK_LASTTAB2MEGANTAB = awk '/^[^\#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\t" $$8 "\t" $$11 "\t" $$3 "\t" $$6 "\t1e-100\t" $$1 }' | sort -k 1,1 -k 12,12rn 
 
 # *** Targets ***
 
@@ -45,10 +45,10 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 	gunzip -c $< | lastal $(LASTAL_OPTS) -Q1 $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
 
 %.megantab.gz: %.maf
-	maf-convert tab $< | $(LASTTAB2MEGANTAB) | gzip -c > $@
+	maf-convert tab $< | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
 
 %.megantab.gz: %.maf.gz
-	gunzip -c $< | maf-convert tab | $(LASTTAB2MEGANTAB) | gzip -c > $@
+	gunzip -c $< | maf-convert tab | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
 
 # Creating the LAST database.
 
