@@ -34,25 +34,17 @@ AWK_LASTTAB2MEGANTAB = awk '/^[^\#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\
 
 # Run lastal against the NCBI RefSeq RNA database for all fastq.gz files
 # present in the current directory.
-all_refseq_rna.fastq2maf.gzs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fastq.gz))
+all_refseq_rna.fastq2mafs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fastq.gz))
 
-all_refseq_rna.fastq2mafs: $(subst .fastq.gz,.refseq_rna.maf,$(wildcard *.fastq.gz))
-
-all_refseq_rna.fna2mafs: $(subst .fna,.refseq_rna.maf,$(wildcard *.fna)) $(subst .fna.gz,.refseq_rna.maf,$(wildcard *.fna.gz))
+all_refseq_rna.fna2mafs: $(subst .fna,.refseq_rna.maf.gz,$(wildcard *.fna)) $(subst .fna.gz,.refseq_rna.maf.gz,$(wildcard *.fna.gz))
 
 # Converts all .maf.gz files (output files from lastal) to tables that are
 # sufficiently similar to BLAST's -m 8 tabular format to allow import into
 # MEGAN.
 all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.megantab.gz,$(wildcard *.maf))
 
-%.refseq_rna.maf: %.fastq.gz
-	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb > $@
-
-%.refseq_rna.maf: %.fna
-	lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb $< > $@
-
-%.refseq_rna.maf: %.fna.gz
-	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb > $@
+%.refseq_rna.maf.gz: %.fna.gz
+	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
 
 %.refseq_rna.maf.gz: %.fastq.gz
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
