@@ -22,6 +22,11 @@ LAST_DB_PATH = .
 # threads, -e200 to only keep hits with at least 200 score.)
 LASTAL_OPTS = -P4 -e200
 
+# If you use something else than the sanger flavour of fastq you should reset
+# this one, see the LAST documentation: http://last.cbrc.jp/. Not needed for 
+# modern, at the time of writing, Illumina data.
+FASTQ_FORMAT = -Q1
+
 # *** Macros ***
 AWK_LASTTAB2MEGANTAB = awk '/^[^\#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\t" $$8 "\t" $$11 "\t" $$3 "\t" $$6 "\t1e-100\t" $$1 }' | sort -k 1,1 -k 12,12rn 
 
@@ -29,9 +34,11 @@ AWK_LASTTAB2MEGANTAB = awk '/^[^\#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\
 
 # Run lastal against the NCBI RefSeq RNA database for all fastq.gz files
 # present in the current directory.
-all_refseq_rna.maf.gzs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fastq.gz))
+all_refseq_rna.fastq2maf.gzs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fastq.gz))
 
-all_refseq_rna.mafs: $(subst .fastq.gz,.refseq_rna.maf,$(wildcard *.fastq.gz))
+all_refseq_rna.fastq2mafs: $(subst .fastq.gz,.refseq_rna.maf,$(wildcard *.fastq.gz))
+
+all_refseq_rna.fna2mafs: $(subst .fna,.refseq_rna.maf,$(wildcard *.fna)) $(subst .fna.gz,.refseq_rna.maf,$(wildcard *.fna.gz))
 
 # Converts all .maf.gz files (output files from lastal) to tables that are
 # sufficiently similar to BLAST's -m 8 tabular format to allow import into
@@ -39,10 +46,16 @@ all_refseq_rna.mafs: $(subst .fastq.gz,.refseq_rna.maf,$(wildcard *.fastq.gz))
 all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.megantab.gz,$(wildcard *.maf))
 
 %.refseq_rna.maf: %.fastq.gz
-	lastal $(LASTAL_OPTS) -Q1 $(LAST_DB_PATH)/refseq_rna.lastdb $< | gzip -c > $@
+	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb > $@
+
+%.refseq_rna.maf: %.fna
+	lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb $< > $@
+
+%.refseq_rna.maf: %.fna.gz
+	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb > $@
 
 %.refseq_rna.maf.gz: %.fastq.gz
-	gunzip -c $< | lastal $(LASTAL_OPTS) -Q1 $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
+	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
 
 %.megantab.gz: %.maf
 	maf-convert tab $< | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
