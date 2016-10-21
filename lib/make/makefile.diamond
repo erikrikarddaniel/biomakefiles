@@ -18,15 +18,26 @@
 # default is the current directory.
 DIAMOND_DB_PATH = .
 
-# DIAMOND_ALIGN_OPTS sets non-essential parameters for the lastal run.
+# DIAMOND_ALIGN_OPTS sets non-essential parameters for diamond alignment
+#
+# See the Diamond documentation available at GitHub:
+# https://github.com/bbuchfink/diamond. 
+#
+# Look particularly at options for sensitivity, scoring and memory and
+# performance.
+#
+# To set options, override this by inserting a row similar to the one below but
+# with whatever options you'd like to add in your Makefile *after* you include
+# this file.
 DIAMOND_ALIGN_OPTS = 
 
 # *** Targets ***
-#
-# NOT FINISHED HERE!
 
 # Running the Diamond aligner
-#
+
+# Nucleotides in fastq.gz file against the NCBI RefSeq protein database
+%.refseq_protein.daa: %.fastq.gz
+	diamond blastx -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $(basename $@) $(DIAMOND_ALIGN_OPTS)
 
 # Creating the database
 
