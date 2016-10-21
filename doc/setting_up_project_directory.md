@@ -197,7 +197,8 @@ There may be a template file in this repo (`lib/gitignores`).
 5) Add the directory with content to Git
 
 To make sure you don't add too big files, do a `git status` first to check what
-git considers files in its domain.
+git considers files in its domain. If very large files are present, add the
+suffixes of them to the `.gitignore` in this directory.
 
 ```
 $ git status	# Check what files git sees
