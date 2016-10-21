@@ -161,7 +161,6 @@ the qc directory, you can:
 $ cd qc
 $ ln -s ../samples/*.fastq.gz .
 ```
-<<<<<<< HEAD
 
 ## Analysis directories
 
@@ -187,7 +186,7 @@ include path/biomakefile/lib/make/makefile.last
 ```
 
 Each library makefile has documentation on each target and possible extra
-options. Also see [makefile.md].
+options. [Also see makefile.md](makefile.md).
 
 3) Create symlinks to whatever files are required
 
