@@ -161,6 +161,7 @@ the qc directory, you can:
 $ cd qc
 $ ln -s ../samples/*.fastq.gz .
 ```
+<<<<<<< HEAD
 
 ## Analysis directories
 
