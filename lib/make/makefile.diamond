@@ -36,8 +36,10 @@ DIAMOND_ALIGN_OPTS =
 # Running the Diamond aligner
 
 # Nucleotides in fastq.gz file against the NCBI RefSeq protein database
+fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *.fastq.gz))
+
 %.refseq_protein.daa: %.fastq.gz
-	diamond blastx -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $(basename $@) $(DIAMOND_ALIGN_OPTS)
+	diamond blastx -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS) 2> $@.err
 
 # Creating the database
 
