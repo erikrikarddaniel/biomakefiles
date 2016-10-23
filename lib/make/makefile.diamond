@@ -42,7 +42,7 @@ DIAMOND_ALIGN_OPTS =
 MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)" >> $@.makecall
 MAKECALL_DB_RFP      = echo "	Database: $(DIAMOND_DB_PATH)/refseq_protein (`ls -l $(DIAMOND_DB_PATH)/refseq_protein.dmnd`)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_DIAMOND_RFP = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_RFP); $(MAKECALL_INFILES)
 MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 
