@@ -27,8 +27,24 @@ LASTAL_OPTS = -P4 -e200
 # modern, at the time of writing, Illumina data.
 FASTQ_FORMAT = -Q1
 
-# *** Macros ***
+# *** Internal ***
+#
+# *Don't redefine!*
+
+# AWK_LASTTAB2MEGANTAB Defines an awk call that reformats LAST's tabular output
+# so that it can be used with MEGAN.
 AWK_LASTTAB2MEGANTAB = awk '/^[^\#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\t" $$8 "\t" $$11 "\t" $$3 "\t" $$6 "\t1e-100\t" $$1 }' | sort -k 1,1 -k 12,12rn 
+
+# MAKECALL_LAST is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+MAKECALL_VERSION      = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `lastal --version`"
+MAKECALL_MT_VERSION   = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with transformation: $(AWK_LASTTAB2MEGANTAB)"
+MAKECALL_PARAMS       = echo "	Called with parameters: $(LASTAL_OPTS)"
+MAKECALL_DB_RFRNA     = echo "	Database: $(DIAMOND_DB_PATH)/refseq_rna (`ls -l $(LAST_DB_PATH)/refseq_rna.lastdb`)"
+MAKECALL_INFILES      = echo "	Input files: $^ (`ls -l $^`)"
+MAKECALL_LASTAL_RFRNA = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_RFRNA); $(MAKECALL_INFILES)
+MAKECALL_MEGANTAB     = $(MAKECALL_MT_VERSION); $(MAKECALL_INFILES)
+MAKECALL_MAKEDB       = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 
 # *** Targets ***
 
@@ -43,28 +59,35 @@ all_refseq_rna.fna2mafs: $(subst .fna,.refseq_rna.maf.gz,$(wildcard *.fna)) $(su
 # MEGAN.
 all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.megantab.gz,$(wildcard *.maf))
 
+# Here comes individual pattern rules. Defines how programs are actually called
 %.refseq_rna.maf.gz: %.fna.gz
+	$(MAKECALL_LASTAL_RFRNA) > $@.makecall
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
 
 %.refseq_rna.maf.gz: %.fastq.gz
+	$(MAKECALL_LASTAL_RFRNA) > $@.makecall
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
 
 %.megantab.gz: %.maf
+	$(MAKECALL_MEGANTAB) > $@.makecall
 	maf-convert tab $< | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
 
 %.megantab.gz: %.maf.gz
+	$(MAKECALL_MEGANTAB) > $@.makecall
 	gunzip -c $< | maf-convert tab | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
 
 # Creating the LAST database.
 
 # Protein sequences in a file ending with .faa
 #
-# At least 24 GiB memory for Refseq?
+# At least 24 GiB memory for RefSeq protein
 %.lastdb: %.faa
+	$(MAKECALL_MAKEDB) > $@.makecall
 	lastdb -p -c $@ $<
 	touch $@
 
 # Nucleotide sequences in a file ending with .fna
 %.lastdb: %.fna
+	$(MAKECALL_MAKEDB) > $@.makecall
 	lastdb -c $@ $<
 	touch $@

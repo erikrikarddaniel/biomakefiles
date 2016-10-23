@@ -7,7 +7,9 @@
 # the biomakefile Git repository: doc/makefile.md and documentation for
 # individual targets below.
 #
-# Author: daniel.lundin@lnu.se
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
 
 # *** Parameters ***
 
@@ -31,6 +33,19 @@ DIAMOND_DB_PATH = .
 # this file.
 DIAMOND_ALIGN_OPTS = 
 
+# *** Internal ***
+
+# MAKECALL_DIAMOND is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `diamond --version`"
+MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)"
+MAKECALL_DB_RFP      = echo "	Database: $(DIAMOND_DB_PATH)/refseq_protein (`ls -l $(DIAMOND_DB_PATH)/refseq_protein.dmnd`)"
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^`)"
+MAKECALL_DIAMOND_RFP = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_RFP); $(MAKECALL_INFILES)
+MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
+
 # *** Targets ***
 
 # Running the Diamond aligner
@@ -39,11 +54,13 @@ DIAMOND_ALIGN_OPTS =
 fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *.fastq.gz))
 
 %.refseq_protein.daa: %.fastq.gz
-	diamond blastx -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS) 2> $@.err
+	$(MAKECALL_DIAMOND) > $@.makecall
+	diamond blastx -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 
 # Creating the database
 
 # From protein sequences in a file ending with .faa
 # (Currently, Diamond only works with protein sequence databases.)
 %.dmnd: %.faa
+	$(MAKECALL_MAKEDB) > $@.makecall
 	diamond makedb --in $< -d $(basename $@)
