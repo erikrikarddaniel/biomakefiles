@@ -63,18 +63,22 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 %.refseq_rna.maf.gz: %.fna.gz
 	$(MAKECALL_LASTAL_RFRNA) > $@.makecall
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_rna.maf.gz: %.fastq.gz
 	$(MAKECALL_LASTAL_RFRNA) > $@.makecall
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf
 	$(MAKECALL_MEGANTAB) > $@.makecall
 	maf-convert tab $< | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf.gz
 	$(MAKECALL_MEGANTAB) > $@.makecall
 	gunzip -c $< | maf-convert tab | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Creating the LAST database.
 
@@ -84,10 +88,12 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 %.lastdb: %.faa
 	$(MAKECALL_MAKEDB) > $@.makecall
 	lastdb -p -c $@ $<
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
 
 # Nucleotide sequences in a file ending with .fna
 %.lastdb: %.fna
 	$(MAKECALL_MAKEDB) > $@.makecall
 	lastdb -c $@ $<
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@

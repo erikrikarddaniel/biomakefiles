@@ -56,6 +56,7 @@ fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *
 %.refseq_protein.daa: %.fastq.gz
 	$(MAKECALL_DIAMOND) > $@.makecall
 	diamond blastx -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Creating the database
 
@@ -64,3 +65,4 @@ fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *
 %.dmnd: %.faa
 	$(MAKECALL_MAKEDB) > $@.makecall
 	diamond makedb --in $< -d $(basename $@)
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
