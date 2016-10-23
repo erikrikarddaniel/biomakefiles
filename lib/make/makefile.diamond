@@ -39,10 +39,10 @@ DIAMOND_ALIGN_OPTS =
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `diamond --version`"
-MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)"
-MAKECALL_DB_RFP      = echo "	Database: $(DIAMOND_DB_PATH)/refseq_protein (`ls -l $(DIAMOND_DB_PATH)/refseq_protein.dmnd`)"
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^`)"
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)" >> $@.makecall
+MAKECALL_DB_RFP      = echo "	Database: $(DIAMOND_DB_PATH)/refseq_protein (`ls -l $(DIAMOND_DB_PATH)/refseq_protein.dmnd`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^`)" >> $@.makecall
 MAKECALL_DIAMOND_RFP = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_RFP); $(MAKECALL_INFILES)
 MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 
@@ -54,7 +54,7 @@ MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *.fastq.gz))
 
 %.refseq_protein.daa: %.fastq.gz
-	$(MAKECALL_DIAMOND) > $@.makecall
+	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
@@ -63,6 +63,6 @@ fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *
 # From protein sequences in a file ending with .faa
 # (Currently, Diamond only works with protein sequence databases.)
 %.dmnd: %.faa
-	$(MAKECALL_MAKEDB) > $@.makecall
+	$(MAKECALL_MAKEDB)
 	diamond makedb --in $< -d $(basename $@)
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

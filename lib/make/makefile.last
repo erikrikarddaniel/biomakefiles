@@ -37,11 +37,11 @@ AWK_LASTTAB2MEGANTAB = awk '/^[^\#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\
 
 # MAKECALL_LAST is a macro that defines what will be output to the .makecall
 # file, the file that records versions, file stamps, parameters etc.
-MAKECALL_VERSION      = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `lastal --version`"
-MAKECALL_MT_VERSION   = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with transformation: $(AWK_LASTTAB2MEGANTAB)"
-MAKECALL_PARAMS       = echo "	Called with parameters: $(LASTAL_OPTS)"
-MAKECALL_DB_RFRNA     = echo "	Database: $(DIAMOND_DB_PATH)/refseq_rna (`ls -l $(LAST_DB_PATH)/refseq_rna.lastdb`)"
-MAKECALL_INFILES      = echo "	Input files: $^ (`ls -l $^`)"
+MAKECALL_VERSION      = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `lastal --version`" > $@.makecall
+MAKECALL_MT_VERSION   = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with transformation: $(AWK_LASTTAB2MEGANTAB)" > $@.makecall
+MAKECALL_PARAMS       = echo "	Called with parameters: $(LASTAL_OPTS)" >> $@.makecall
+MAKECALL_DB_RFRNA     = echo "	Database: $(DIAMOND_DB_PATH)/refseq_rna (`ls -l $(LAST_DB_PATH)/refseq_rna.lastdb`)" >> $@.makecall
+MAKECALL_INFILES      = echo "	Input files: $^ (`ls -l $^`)" >> $@.makecall
 MAKECALL_LASTAL_RFRNA = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_RFRNA); $(MAKECALL_INFILES)
 MAKECALL_MEGANTAB     = $(MAKECALL_MT_VERSION); $(MAKECALL_INFILES)
 MAKECALL_MAKEDB       = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
@@ -61,22 +61,22 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 
 # Here comes individual pattern rules. Defines how programs are actually called
 %.refseq_rna.maf.gz: %.fna.gz
-	$(MAKECALL_LASTAL_RFRNA) > $@.makecall
+	$(MAKECALL_LASTAL_RFRNA)
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_rna.maf.gz: %.fastq.gz
-	$(MAKECALL_LASTAL_RFRNA) > $@.makecall
+	$(MAKECALL_LASTAL_RFRNA)
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf
-	$(MAKECALL_MEGANTAB) > $@.makecall
+	$(MAKECALL_MEGANTAB)
 	maf-convert tab $< | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf.gz
-	$(MAKECALL_MEGANTAB) > $@.makecall
+	$(MAKECALL_MEGANTAB)
 	gunzip -c $< | maf-convert tab | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
@@ -86,14 +86,14 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 #
 # At least 24 GiB memory for RefSeq protein
 %.lastdb: %.faa
-	$(MAKECALL_MAKEDB) > $@.makecall
+	$(MAKECALL_MAKEDB)
 	lastdb -p -c $@ $<
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
 
 # Nucleotide sequences in a file ending with .fna
 %.lastdb: %.fna
-	$(MAKECALL_MAKEDB) > $@.makecall
+	$(MAKECALL_MAKEDB)
 	lastdb -c $@ $<
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
