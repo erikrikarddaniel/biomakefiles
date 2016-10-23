@@ -16,7 +16,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="lab_analogy.svg">
+   sodipodi:docname="lab_analogy.svg"
+   inkscape:export-filename="/home/dl/dev/biomakefiles/doc/lab_analogy.png"
+   inkscape:export-xdpi="48"
+   inkscape:export-ydpi="48">
   <defs
      id="defs4">
     <linearGradient
@@ -287,7 +290,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
-     inkscape:cx="1015.5606"
+     inkscape:cx="942.82965"
      inkscape:cy="755.75743"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
