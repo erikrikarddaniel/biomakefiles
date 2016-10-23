@@ -8,4 +8,4 @@ were run, using which files etc., without commiting to a "pipeline".
 
 The idea behind this is to set up a "lab" for computational analyses:
 
-![Lab analogy](doc/lab_analogy.png)
+![Lab analogy](doc/img/lab_analogy.png)
