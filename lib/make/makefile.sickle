@@ -22,7 +22,7 @@ SICKLE_OPTS = -t sanger
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `sickle --version|grep 'sickle version'`" > $@.makecall
+MAKECALL_VERSION     = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with `sickle --version|grep 'sickle version'`" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(SICKLE_OPTS)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_SICKLE      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
@@ -43,5 +43,5 @@ fastq.gz2pesickle: $(subst .r1.fastq.gz,.pesickle,$(filter-out pesickle,$(wildca
 	  -o $(basename $@).pesickle.r1.fastq.gz \
 	  -p $(basename $@).pesickle.r2.fastq.gz \
 	  -s $(basename $@).pesickle.single.fastq.gz
-	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
