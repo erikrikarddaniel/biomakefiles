@@ -14,6 +14,18 @@ $ mkdir project_root	# Create the directory
 $ cd project_root	# Change to the newly created directory
 ```
 
+## Root directory Makefile
+
+There is a library makefile also for the root directory `lib/make/makefile.rootdir`.
+At the time of writing this is only to produce a statistics file. To use this,
+create a `Makefile` looking like this:
+
+```
+include path/biomakefiles/lib/make/makefile.rootdir
+```
+
+## Using screen
+
 If you want to use `screen` in your project, you can copy a template `.screenrc`
 file from my GitHub hosted `dltemplates` repository
 (https://github.com/erikrikarddaniel/dltemplates).
