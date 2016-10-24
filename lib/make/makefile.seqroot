@@ -1,0 +1,21 @@
+# makefile.seqroot
+#
+# Library makefile for a sequencing project's root directory. Mainly contains
+# targets to output statistics.
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Targets ***
+
+# Creates a file containing statistics on how various steps went, i.e. how many
+# sequences were left after a certain treatment.
+#
+# The target is completely dependent on the presence of files with the same
+# name as this target, i.e. stats.long.tsv, in subdirectories two levels deep
+# from here. Each of these should contain six fields: directory, sample,
+# program, outputtype, filename and count, and be in tab separated format.
+stats.long.tsv: $(wildcard */*.stats.long.tsv) $(wildcard */*/*.stats.long.tsv)
+	echo "directory	sample	program	outputtype	filename	count" > $@
+	grep -hv "^sample\t" $^ >> $@
