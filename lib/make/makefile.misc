@@ -1,0 +1,19 @@
+# makefile.misc
+#
+# Library makefile containing various simple pattern rules which doesn't fit
+# anywhere else.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Targets ***
+
+# Create unzipped versions of all fastq.gz files
+gunzip_all_fastq.gzs: $(subst .fastq.gz,.fastq,$(wildcard *.fastq.gz))
+
+# This is different from normal "gunzip *.gz" in that it creates a *new file*.
+%.fastq: %.fastq.gz
+	gunzip -c $< > $@
