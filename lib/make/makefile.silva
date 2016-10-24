@@ -45,3 +45,9 @@ SILVA_CURRENT_LSUParc_tax_silva.fna.gz:
 SILVA_CURRENT_SSUParc_tax_silva.fna.gz:
 	wget -c https://www.arb-silva.de/fileadmin/silva_databases/release_$(SILVA_RELEASE)/Exports/SILVA_$(SILVA_RELEASE)_SSUParc_tax_silva.fasta.gz 
 	ln -s SILVA_$(SILVA_RELEASE)_SSUParc_tax_silva.fasta.gz $@
+
+# This creates unzipped versions of all SILVA_CURRENT_*fna.gz symlinks
+gunzip_current_fnas: $(subst .fna.gz,.fna,$(wildcard SILVA_CURRENT*.fna.gz))
+
+%.fna: %.fna.gz
+	gunzip -c $< > $@
