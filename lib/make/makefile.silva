@@ -1,0 +1,47 @@
+# makefile.silva
+#
+# Library makefile to make downloading and handling files from the Silva
+# database simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# The current release of Silva, e.g. "128" (without quotation marks).
+SILVA_RELEASE =
+
+# *** Internal ***
+
+# *** Targets ***
+
+# When you rerun any of the targets below, you need to delete the dependencies
+# (just symlinks) first.
+
+# Download the Ref databases, LSU and SSU.
+ref_dbs: SILVA_CURRENT_LSURef_tax_silva.fna.gz SILVA_CURRENT_SSURef_tax_silva.fna.gz
+
+SILVA_CURRENT_LSURef_tax_silva.fna.gz:
+	wget -c https://www.arb-silva.de/fileadmin/silva_databases/release_$(SILVA_RELEASE)/Exports/SILVA_$(SILVA_RELEASE)_LSURef_tax_silva.fasta.gz 
+	ln -s SILVA_$(SILVA_RELEASE)_LSURef_tax_silva.fasta.gz $@
+
+SILVA_CURRENT_SSURef_tax_silva.fna.gz:
+	wget -c https://www.arb-silva.de/fileadmin/silva_databases/release_$(SILVA_RELEASE)/Exports/SILVA_$(SILVA_RELEASE)_SSURef_tax_silva.fasta.gz 
+	ln -s SILVA_$(SILVA_RELEASE)_SSURef_tax_silva.fasta.gz $@
+
+# Download the large Parc databases, LSU and SSU.
+parc_dbs: SILVA_CURRENT_LSUParc_tax_silva.fna.gz SILVA_CURRENT_SSUParc_tax_silva.fna.gz
+
+SILVA_CURRENT_LSUParc_tax_silva.fna.gz:
+	wget -c https://www.arb-silva.de/fileadmin/silva_databases/release_$(SILVA_RELEASE)/Exports/SILVA_$(SILVA_RELEASE)_LSUParc_tax_silva.fasta.gz 
+	ln -s SILVA_$(SILVA_RELEASE)_LSUParc_tax_silva.fasta.gz $@
+
+SILVA_CURRENT_SSUParc_tax_silva.fna.gz:
+	wget -c https://www.arb-silva.de/fileadmin/silva_databases/release_$(SILVA_RELEASE)/Exports/SILVA_$(SILVA_RELEASE)_SSUParc_tax_silva.fasta.gz 
+	ln -s SILVA_$(SILVA_RELEASE)_SSUParc_tax_silva.fasta.gz $@
