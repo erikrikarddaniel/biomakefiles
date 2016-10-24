@@ -24,3 +24,10 @@ Run all pairs:
 ```
 $ make -j 8 fastq.gz2pesickle
 ```
+
+After you have run all files you can run the below command to produce a 
+statistics file:
+
+```
+$ make pesickle.stats.long.tsv
+```
