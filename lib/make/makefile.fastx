@@ -25,19 +25,19 @@ MAKECALL_FASTX      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 
 # Run the fastx_collapser on all fastq.gz files.
 #
-# I want to keep the .r1/2.fastq.gz suffix, so have to make separate targets
-# for the r1 and r2 read files respectively.
-fastq2collapse: $(subst .r1.fastq.gz,.collapse.r1.fastq.gz,$(wildcard *.r1.fastq.gz)) $(subst .r2.fastq.gz,.collapse.r2.fastq.gz,$(wildcard *.r2.fastq.gz))
+# It converts files from fastq to fasta (.fna.gz) and gives them new names.
+# Probably useful before assembly to reduced the amount of data.
+fastq2collapse: $(subst .r1.fastq.gz,.collapse.r1.fna.gz,$(wildcard *.r1.fastq.gz)) $(subst .r2.fastq.gz,.collapse.r2.fna.gz,$(wildcard *.r2.fastq.gz))
 
 # The macro that does the job
-FASTX_COLLAPS = gunzip -c $< | fastx_collapser | gzip -c > $@
+FASTX_COLLAPSE = gunzip -c $< | fastx_collapser | gzip -c > $@
 
-%.collapse.r1.fastq.gz: %.r1.fastq.gz
+%.collapse.r1.fna.gz: %.r1.fastq.gz
 	$(MAKECALL_FASTX)
-	$(FASTX_COLLAPS)
+	$(FASTX_COLLAPSE)
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.collapse.r2.fastq.gz: %.r2.fastq.gz
+%.collapse.r2.fna.gz: %.r2.fastq.gz
 	$(MAKECALL_FASTX)
 	$(FASTX_COLLAPS)
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
