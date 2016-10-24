@@ -1,0 +1,61 @@
+# __TITLE__
+#
+# Library makefile to make running __PROGRAM__ simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# This must be defined and point to a directory with *only* rRNA reference
+# files. All will be used by sortmerna.
+SORTMERNA_DBPATH =
+
+# Any other options not set by default
+SORTMERNA_OPTS = 
+
+# Sets options for the indexdb_rna call (see indexdb_rna -h)
+INDEXDB_RNA_OPTS =
+
+# *** Internal ***
+
+SORTMERNA_DBS = $(wildcard $(SORTMERNA_DBPATH)/*.fna)
+
+# MAKECALL_SORTMERNA is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with `sortmerna --version 2>&1 | grep version`" > $@.makecall
+MAKECALL_DBFILES     = echo "	Database: $(SORTMERNA_DBS)" >> $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(SORTMERNA_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_SORTMERNA   = $(MAKECALL_VERSION); $(MAKECALL_DBFILES); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+# Run sortmerna on all fastq files in the current directory
+fastq2sortmerna: $(subst .fastq,.sortmerna,$(filter-out sortmerna, $(wildcard *.fastq)))
+
+# Run sortmerna against all fna files in $(SORTMERNA_DBPATH). Output both the
+# aligned and the non-aligned (rejected) sequences to fastq files.
+#
+# This target requires unzipped fastq files. In makefile.misc there's a pattern
+# rule to make unzipped copies of fastq files. I suggest you make such a set
+# in the last directory of the qc process in which you ran a program that 
+# handled gzipped files and put symlink to the unzipped files here.
+%.sortmerna: %.fastq
+	$(MAKECALL_SORTMERNA)
+	reffnas=`echo $(SORTMERNA_DBS) | sed 's/\([^ ]\+\)\( *\)/\1,\1\2/g' | sed 's/\([^ ]*\.fna,[^ ]\+\).fna\( *\)/\1.index\2/g' | sed 's/ \+/:/g'`; \
+	sortmerna --ref $$reffnas --reads $< --aligned $@.aligned --other $@.rejected --fastx $(SORTMERNA_OPTS) > $@ 2>&1
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+# This creates index files from a nucleotide fasta file. Takes a little while
+# to run (several hours for Silva SSURef) and uses only one cpu core.
+%.index: %.fna
+	indexdb_rna --ref $<,$@ $(INDEXDB_RNA_OPTS)
