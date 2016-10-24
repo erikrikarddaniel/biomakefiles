@@ -12,6 +12,11 @@ The idea behind this is to set up a "lab" for computational analyses:
 
 ![Lab analogy](doc/img/lab_analogy.png)
 
+What is supplied by this repository is a collection of library makefiles, a book of
+protocols that can be semi-automatically applied after some, typically simple, set up.
+(Picture by myself. The small figures are all from Wikimedia commons, see
+[doc/img/copyrights.txt](doc/img/copyrights.txt) for full copyrights.)
+
 # Implementation
 
 In `lib/make` there is a collection of makefiles that are supposed to be
