@@ -1,0 +1,27 @@
+# makefile.samples
+#
+# Library makefile for a samples directory. It is assumed that this directory
+# contains only symbolic links to the real gzipped sequencing files (or similar
+# for a non-sequencing project).
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel.gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+
+# *** Internal ***
+
+# *** Targets ***
+
+samples.stats.long.tsv: $(wildcard *.r1.fastq.gz)
+	@for sample in $(basename $(basename $(basename $^))); do \
+	  echo "samples	$$sample	-	r1	$$sample.r1.fastq.gz	$$(echo $$(gunzip -c $$sample.r1.fastq.gz | wc -l)/4 | bc)"; \
+	  echo "samples	$$sample	-	r2	$$sample.r2.fastq.gz	$$(echo $$(gunzip -c $$sample.r2.fastq.gz | wc -l)/4 | bc)"; \
+	done | sort | tee $@

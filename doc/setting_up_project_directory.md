@@ -162,8 +162,8 @@ $ ls -l *.fastq.gz	# Shows if files are symlinks or not
 $ git add -f *.fastq.gz	# Only proceed with this step if you're certain
 ```
 
-From now on, whenever you need fastq files in any of your directories, symlink to
-the symlinks in the `samples` directory!
+From now on, whenever you need the *raw, unprocessed* fastq files in any of
+your directories, symlink to the symlinks in the `samples` directory!
 
 Assuming you have transferred your fastq files (in gz format!) to the root
 directory, created symlinks in the `samples` directory and want to the files in
@@ -173,6 +173,16 @@ the qc directory, you can:
 $ cd qc
 $ ln -s ../samples/*.fastq.gz .
 ```
+
+To assemble statistics about the samples, create a `Makefile` that includes the
+`lib/make/makefile.samples` and run this command:
+
+```
+$ make samples.stats.long.tsv
+```
+
+(After that, update the statistics file in the *root directory*: `make
+stats.long.tsv`.)
 
 ## Analysis directories
 
