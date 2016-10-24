@@ -5,3 +5,6 @@
 *.fna
 *.faa
 *.err
+.Rproj.user
+.Rhistory 
+*.pdf

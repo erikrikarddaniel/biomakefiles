@@ -1,0 +1,98 @@
+---
+title: "Barcelona RNAseq pilot project"
+author: "daniel.lundin@lnu.se"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+knit: (function(fname, encoding) { rmarkdown::render(fname, encoding = encoding, output_file = sprintf('%s/%s.%s.pdf', dirname(fname), sub('.rmd', '', basename(fname)), format(Sys.time(), "%Y%m%d"))) })
+output:
+  pdf_document:
+    fig_caption: yes
+    fig_height: 9
+    fig_width: 8
+    number_sections: yes
+    toc: yes
+  html_document:
+    toc: yes
+---
+
+```{r setup, echo=F}
+
+knitr::opts_chunk$set(echo=F, fig.path='figures/')
+
+```
+
+```{r libraries, message=F}
+
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(kfigr))
+suppressPackageStartupMessages(library(knitr))
+
+```
+
+```{r constants}
+
+```
+
+```{r functions}
+
+```
+
+This script requires the presence of a statistics file in the same directory as
+the script. The file can be produced by a target in the `makefile.rootdir`, but
+the actual content is produced by various targets in other library makefiles.
+
+```{r read-data}
+
+# Read the statistics file.
+stats = read_tsv(
+  'stats.long.tsv',
+  col_types = cols(
+    directory = col_character(), sample = col_character(), program = col_character(),
+    outputtype = col_character(), filename = col_character(), count = col_integer()
+  )
+)
+
+```
+
+# Samples
+
+These samples were included in the project (`r figr('samples', T, type='Table')`).
+
+```{r samples}
+
+samples = stats %>% filter(directory == 'samples') %>%
+  select(sample, outputtype, count) %>%
+  spread(outputtype, count) %>%
+  mutate(diff = r1 - r2)
+
+kable(
+  samples,
+  col.names = c('Sample', "5' read", "3' read", 'Difference'),
+  caption = "Samples with counts per read mate. (The 'Difference' column should be all zeroes.)"
+)
+
+```
+
+# Quality control
+
+Write something...
+
+After `sickle`, NN proportions of reads were retained (`figr('sickle', T, type='Table')).
+
+```{r sickle}
+
+sickle = stats %>% filter(directory == 'qc', program == 'pesickle') %>%
+  select(sample, outputtype, count) %>%
+  spread(outputtype, count) %>%
+  inner_join(samples %>% select(sample, s.r1 = r1, s.r2 = r2), by='sample') %>%
+  mutate(
+    frem.r1 = r1 / s.r1,
+    frem.r2 = r2 / s.r2
+  )
+
+kable(
+  sickle %>% select(sample, r1, frem.r1, r2, frem.r2),
+  col.names = c('Sample', "N. 5' reads", "Frac. remaining", "N. 3' reads", "Frac. remaining"),
+  caption = "Samples after sickle in pe mode with default settings"
+)
+
+```
