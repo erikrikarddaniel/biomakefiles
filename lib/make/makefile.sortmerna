@@ -1,10 +1,10 @@
-# __TITLE__
+# makefile.sortmerna
 #
-# Library makefile to make running __PROGRAM__ simpler.
+# Library makefile to make running sortmerna simpler.
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: __AUTHOR_EMAIL__
+# Author: erik.rikard.daniel@gmail.com
 
 SHELL := /bin/bash
 
@@ -40,7 +40,7 @@ MAKECALL_SORTMERNA   = $(MAKECALL_VERSION); $(MAKECALL_DBFILES); $(MAKECALL_PARA
 # *** Targets ***
 
 # Run sortmerna on all fastq files in the current directory
-fastq2sortmerna: $(subst .fastq,.sortmerna,$(filter-out sortmerna, $(wildcard *.fastq)))
+fastq2sortmerna: $(subst .r1.,.sortmerna-al.r1.,$(wildcard *.r1.fastq))) $(subst .r2.,.sortmerna-al.r2.,$(wildcard *.r2.fastq)))
 
 # Run sortmerna against all fna files in $(SORTMERNA_DBPATH). Output both the
 # aligned and the non-aligned (rejected) sequences to fastq files.
@@ -49,13 +49,34 @@ fastq2sortmerna: $(subst .fastq,.sortmerna,$(filter-out sortmerna, $(wildcard *.
 # rule to make unzipped copies of fastq files. I suggest you make such a set
 # in the last directory of the qc process in which you ran a program that 
 # handled gzipped files and put symlink to the unzipped files here.
-%.sortmerna: %.fastq
-	$(MAKECALL_SORTMERNA)
+SORTMERNA = sortmerna --ref $$reffnas --reads $< --aligned $@ --other $(subst -al,-rej,$@) --fastx $(SORTMERNA_OPTS) 
+%.sortmerna-al.r1.fastq: %.r1.fastq
+	@$(MAKECALL_SORTMERNA)
 	reffnas=`echo $(SORTMERNA_DBS) | sed 's/\([^ ]\+\)\( *\)/\1,\1\2/g' | sed 's/\([^ ]*\.fna,[^ ]\+\).fna\( *\)/\1.index\2/g' | sed 's/ \+/:/g'`; \
-	sortmerna --ref $$reffnas --reads $< --aligned $@.aligned --other $@.rejected --fastx $(SORTMERNA_OPTS) > $@ 2>&1
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	$(SORTMERNA)
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.sortmerna-al.r2.fastq: %.r2.fastq
+	@$(MAKECALL_SORTMERNA)
+	reffnas=`echo $(SORTMERNA_DBS) | sed 's/\([^ ]\+\)\( *\)/\1,\1\2/g' | sed 's/\([^ ]*\.fna,[^ ]\+\).fna\( *\)/\1.index\2/g' | sed 's/ \+/:/g'`; \
+	$(SORTMERNA)
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 # This creates index files from a nucleotide fasta file. Takes a little while
 # to run (several hours for Silva SSURef) and uses only one cpu core.
 %.index: %.fna
 	indexdb_rna --ref $<,$@ $(INDEXDB_RNA_OPTS)
+
+# Collect statistics, counts, in a file.
+#
+# Remember to define the SAMPLES macro (variable) somewhere, I suggest in a
+# "makefile.commondefs" in the root directory of the project. Include that in
+# the Makefile in the current directory together with this one.
+sortmerna.stats.long.tsv: $(wildcard *.sortmerna.*.fastq)
+	@for sample in $(SAMPLES); do \
+	  for t in sortmerna-al sortmerna-rej; do \
+	    for r in r1 r2; do \
+	      echo "$$sample, $$t, $$r"; \
+	    done; \
+	  done; \
+	done
