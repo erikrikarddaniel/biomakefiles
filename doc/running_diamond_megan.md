@@ -45,9 +45,22 @@ $ make refseq_protein.dmnd
 
 Targets in `biomakefiles/lib/make/makefile.diamond`
 
-You must define the `DIAMOND_DB_PATH` macro to point to where the Diamond
-formated database is (that's the directory where you ran the above steps). The
-name of the latter *must be* `refseq_protein.dmnd`. 
+There doesn't seem to be a way of producing *one* meganized daa file from *two*
+input daa files. It's therefore preferable to run Diamond on an interleaved
+fastq file (can be gzipped) containing both reads from each pair. To interleave
+sequences, look in the `makefile.misc` file. After you interleaved e.g. sickled
+files, create symlinks in the directory from which you are going to run
+Diamond:
+
+```bash
+$ mkdir read_oriented_analyses/diamond_megan
+$ cd read_oriented_analyses/diamond_megan
+$ ln -s ../../qc/*.pesickle.intlv.fastq.gz .
+```
+
+You *must* define the `DIAMOND_DB_PATH` macro to point to where the *Diamond
+formated database* is (that's the directory where you ran steps 1 and 2). The
+name of the database *must be* `refseq_protein.dmnd`. 
 
 A `Makefile` will look something like this:
 
@@ -61,7 +74,7 @@ To align a single fastq.gz file, `example.r1.fastq.gz`, to the NCBI RefSeq
 protein database:
 
 ```bash
-$ make example.r1.refseq_protein.daa
+$ make example.pesickle.intlv.refseq_protein.daa
 ```
 
 To run alignments of all fastq.gz files in the directory:
