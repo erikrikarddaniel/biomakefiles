@@ -17,3 +17,24 @@ gunzip_all_fastq.gzs: $(subst .fastq.gz,.fastq,$(wildcard *.fastq.gz))
 # This is different from normal "gunzip *.gz" in that it creates a *new file*.
 %.fastq: %.fastq.gz
 	gunzip -c $< > $@
+
+# Interleave two fastq files (named %.r1.fastq and %.r2.fastq respectively).
+#
+# The target uses a python script -- interleave_fastq.py -- cloned from this
+# gist:
+#
+#   https://gist.github.com/rpucheq/cf50eeea794529ca6b0e
+#
+# Dependencies will automatically be unzipped if not present in unzipped format
+# thanks to the pattern above. Unzipped files will be deleted after
+# interleaving.
+interleave_all_fastq.gzs: $(subst .r1.fastq,.intlv.fastq.gz,$(wildcard *.r1.fastq))
+
+%.intlv.fastq.gz: %.r1.fastq %.r2.fastq
+	interleave_fastq.py $^ | gzip -c > $@
+
+# The same, but not zipping
+interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
+
+%.intlv.fastq: %.r1.fastq %.r2.fastq
+	interleave_fastq.py $^ > $@
