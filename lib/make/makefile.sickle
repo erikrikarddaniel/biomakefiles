@@ -5,7 +5,7 @@
 # Include the full path of this file in your Makefile, override parameter
 # macros if needed and you're ready to go.
 #
-# Author: __AUTHOR_EMAIL__
+# Author: erik.rikard.daniel@gmail.com
 
 SHELL := /bin/bash
 
