@@ -76,7 +76,7 @@ kable(
 
 Write something...
 
-After `sickle`, NN proportions of reads were retained (`figr('sickle', T, type='Table')).
+After `sickle`, NN proportions of reads were retained (`r figr('sickle', T, type='Table')`).
 
 ```{r sickle}
 
@@ -94,5 +94,22 @@ kable(
   col.names = c('Sample', "N. 5' reads", "Frac. remaining", "N. 3' reads", "Frac. remaining"),
   caption = "Samples after sickle in pe mode with default settings"
 )
+
+```
+
+A graphical view (`r figr('overall-plot', T, type='Figure')`).
+
+```{r overall-plot, fig.height=4, fig.cap="Sequencing output and left after quality control step(s)."}
+
+d = stats %>% transmute(s = sprintf("%s:%s", sample, program), outputtype, count)
+
+ggplot(d, aes(x = s, y = count, fill = outputtype)) +
+  geom_bar(stat = 'identity') +
+  scale_fill_brewer('Read', palette='Set1') +
+  theme(
+    axis.text.x = element_text(angle=60, hjust=1)
+  ) +
+  xlab('Sample:treatment') +
+  ylab('Count')
 
 ```
