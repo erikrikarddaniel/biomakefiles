@@ -28,7 +28,7 @@ blastx, as well as a blastp, mode though so one can align nucleotide sequences.
 
 Target `mirror_refseq_protein.blast` in `biomakefiles/lib/mak/makefile.ncbidata`
 
-```
+```bash
 $ make mirror_refseq_protein.blast
 ```
 
@@ -37,7 +37,7 @@ $ make mirror_refseq_protein.blast
 Targets in `biomakefiles/lib/mak/makefile.ncbidata` and
 `/home/dl/dev/biomakefiles/lib/make/makefile.diamond`.
 
-```
+```bash
 $ make refseq_protein.dmnd
 ```
 
@@ -51,7 +51,7 @@ name of the latter *must be* `refseq_protein.dmnd`.
 
 A `Makefile` will look something like this:
 
-```
+```make
 include path/biomakefiles/lib/make/makefile.diamond
 
 DIAMOND_DB_PATH = full_path_to_ncbi_data
@@ -60,13 +60,13 @@ DIAMOND_DB_PATH = full_path_to_ncbi_data
 To align a single fastq.gz file, `example.r1.fastq.gz`, to the NCBI RefSeq
 protein database:
 
-```
+```bash
 $ make example.r1.refseq_protein.daa
 ```
 
 To run alignments of all fastq.gz files in the directory:
 
-```
+```bash
 $ make fastq.gz2refseq_protein.daas
 ```
 
@@ -76,7 +76,7 @@ you want to tweak cpu usage, e.g. because you're running other tasks, use the
 `DIAMOND_ALIGN_OPTS` and set the Diamond `--threads=n` option in the `Makefile`
 for that. E.g.:
 
-```
+```make
 include path/biomakefiles/lib/make/makefile.diamond
 
 DIAMOND_DB_PATH = full_path_to_ncbi_data
