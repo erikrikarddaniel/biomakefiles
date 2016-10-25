@@ -26,7 +26,7 @@ directory.
 
 A typical `Makefile` in a user's directory can be as simple as this:
 
-```
+```make
 include path/biomakefiles/lib/make/makefile.sickle
 ```
 
@@ -35,7 +35,7 @@ suffixes `.r1.fastq.gz` and `.r2.fastq.gz` respectively, all pairs can be
 "sickled", i.e. trimmed, with the below command. Moreover, using make's simple
 parallelization, eight pairs are sickled simultaneously.
 
-```
+```bash
 make -j 8 fastq.gz2pesickle
 ```
 

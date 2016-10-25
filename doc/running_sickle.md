@@ -6,7 +6,7 @@ https://github.com/najoshi/sickle
 
 It is available prepackaged from Ubuntu.
 
-```
+```bash
 $ sudo apt-get install sickle
 ```
 
@@ -21,13 +21,13 @@ Pretty standard, write a `Makefile` where you include the
 
 Run all pairs:
 
-```
+```bash
 $ make -j 8 fastq.gz2pesickle
 ```
 
 After you have run all files you can run the below command to produce a 
 statistics file:
 
-```
+```bash
 $ make pesickle.stats.long.tsv
 ```

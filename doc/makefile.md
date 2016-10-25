@@ -1,5 +1,7 @@
 # Introduction: Using Make to automate steps in workflows
 
+NOT FINISHED YET.
+
 # Library makefiles
 
 To automate general tasks I have written a set of library makefiles, typically
@@ -14,7 +16,7 @@ mistake, file a bug at GitHub: https://github.com/erikrikarddaniel/biomakefiles.
 An example of a `Makefile` (note capital "M") in a directory you run the LAST
 aligner:
 
-```
+```make
 include  /usr/local/lib/make/makefile.last
 
 # Override default LAST options to use 8 cpu threads and keep only hits with at
@@ -23,3 +25,4 @@ include  /usr/local/lib/make/makefile.last
 # Important: This must come *after* the include, since defaults for options are
 # set in the library makefile. By setting the value here, you *override* that.
 LAST_OPTS = -P8 -e200 ```
+```

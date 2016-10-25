@@ -9,7 +9,7 @@ directory* for the project. Let's call the directory `project_root`. You create
 that like below, standing somewhere suitable, e.g. `projects` in your home
 directory.
 
-```
+```bash
 $ mkdir project_root	# Create the directory
 $ cd project_root	# Change to the newly created directory
 ```
@@ -20,7 +20,7 @@ There is a library makefile also for the root directory `lib/make/makefile.rootd
 At the time of writing this is only to produce a statistics file. To use this,
 create a `Makefile` looking like this:
 
-```
+```make
 include path/biomakefiles/lib/make/makefile.rootdir
 ```
 
@@ -30,7 +30,7 @@ If you want to use `screen` in your project, you can copy a template `.screenrc`
 file from my GitHub hosted `dltemplates` repository
 (https://github.com/erikrikarddaniel/dltemplates).
 
-```
+```bash
 $ cp path/dltemplates/misc/screenrc .screenrc
 ```
 
@@ -52,7 +52,7 @@ I prefer to keep files organized after the type of analyzis they are used in. In
 most cases this means adding a directory for each new type of analysis run, but
 here's a summary of a few commonly used directories and subdirectories:
 
-```
+```bash
 project_root/
   assembly/
     megahit/
@@ -67,7 +67,7 @@ NOTE: If you're using Git, note that you can't add an empty directory to the
 repo. To come around this, add either a `.gitignore` file (perhaps from this
 repo) or an empty `.gitkeep`. The latter is easilly done like this:
 
-```
+```bash
 $ mkdir qc/
 $ touch qc/.gitkeep
 $ git add qc/.gitkeep
@@ -83,7 +83,7 @@ meaningful name pointing to the original fastq.gz file.
 I also change the way the individuals of the read pairs are designated from a
 `_1` and `_2` respectively to `.r1.` and `.r2.` respectively.
 
-```
+```bash
 $ mkdir samples
 $ cd samples
 $ ln -s ../original_name_tag0_1.fastq.gz sample0.r1.gz
@@ -97,7 +97,7 @@ document which sample pointed to which sequencing file. Since you probably have
 a `.gitignore` that refuses .fastq files, you will have to use the -f flag.
 *Make an extra check* that you actually have symlinks!
 
-```
+```bash
 $ ls -l *.fastq.gz	# Shows if files are symlinks or not
 $ git add -f *.fastq.gz	# Only proceed with this step if you're certain
 ```
@@ -109,7 +109,7 @@ Assuming you have transferred your fastq files (in gz format!) to the root
 directory, created symlinks in the `samples` directory and want to the files in
 the qc directory, you can:
 
-```
+```bash
 $ cd qc
 $ ln -s ../samples/*.fastq.gz .
 ```
@@ -117,7 +117,7 @@ $ ln -s ../samples/*.fastq.gz .
 To assemble statistics about the samples, create a `Makefile` that includes the
 `lib/make/makefile.samples` and run this command:
 
-```
+```bash
 $ make samples.stats.long.tsv
 ```
 
@@ -143,7 +143,7 @@ a `Makefile` in the analysis directory in which you start by calling the library
 makefile. E.g., if you want to include `lib/make/makefile.last` from the
 `path/biomakefile` directory you create a Makefile that contains this row:
 
-```
+```make
 include path/biomakefile/lib/make/makefile.last
 ```
 
@@ -162,7 +162,7 @@ To make sure you don't add too big files, do a `git status` first to check what
 git considers files in its domain. If very large files are present, add the
 suffixes of them to the `.gitignore` in this directory.
 
-```
+```bash
 $ git status	# Check what files git sees
 $ git add .	# MAKE SURE YOU HAVE GITIGNORE BEFORE!!!
 $ git commit

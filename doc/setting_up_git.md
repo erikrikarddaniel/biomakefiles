@@ -23,7 +23,7 @@ be used to start with. For the *root directory* of a project there is:
 the file `project_root.gitignore`. Copy that to the root
 directory of the new project; make sure it's called `.gitignore`.
 
-```
+```bash
 $ cp *path_to_biomakefiles*/lib/gitignores/project_root.gitignore .gitignore
 ```
 
@@ -33,7 +33,7 @@ To initialize the directory structure, you just run the below command standing
 in the project root directory. With this, your project becomes a Git repository,
 or "repo":
 
-```
+```bash
 $ git init .
 ```
 
@@ -53,14 +53,14 @@ access Git repositories from this, you just need ssh access.
 Assuming you have setup a remote repo for your project, you specify the url for
 this like this, again assuming you're standing in the project root directory):
 
-```
+```bash
 $ git remote add origin user@system:project.git
 ```
 
 Now, you're ready to add the single file (the .gitignore), commit and push to
 the remote directory:
 
-```
+```bash
 $ git add .
 $ git commit
 $ git push --set-upstream origin master
