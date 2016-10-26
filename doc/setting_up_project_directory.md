@@ -14,6 +14,24 @@ $ mkdir project_root	# Create the directory
 $ cd project_root	# Change to the newly created directory
 ```
 
+## Placing a symlink to the biomakefiles repository
+
+To make it easier to transfer your data to anothe file system, and allow some
+of the benefits of Git (see below) you should create a symbolic link to a
+"production", i.e. stable, branch of the biomakefiles GitHub repo in the root
+directory of the project. Assuming you have checked out the master branch at
+*path*/biomakefiles, you create that symlink like this:
+
+```
+$ ln -s path/biomakefiles .
+```
+
+If you need to change where you keep the biomakefiles, just change (delete and
+create a new) that symlink.
+
+`include` directives in the `Makefile` of directories should be *relative
+paths* to the above link.
+
 ## Root directory Makefile
 
 There is a library makefile also for the root directory `lib/make/makefile.rootdir`.
@@ -21,7 +39,7 @@ At the time of writing this is only to produce a statistics file. To use this,
 create a `Makefile` looking like this:
 
 ```make
-include path/biomakefiles/lib/make/makefile.rootdir
+include biomakefiles/lib/make/makefile.rootdir
 ```
 
 ## Using screen

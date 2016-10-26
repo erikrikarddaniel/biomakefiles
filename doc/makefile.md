@@ -14,10 +14,12 @@ the library makefile, unless there's something wrong in it. (If you find a
 mistake, file a bug at GitHub: https://github.com/erikrikarddaniel/biomakefiles.)
 
 An example of a `Makefile` (note capital "M") in a directory you run the LAST
-aligner:
+aligner, *assuming* this directory is two levels below the root, where you
+placed a clone of the biomakefiles repo ([see setting up project
+directory](setting_up_project_directory.md)):
 
 ```make
-include  /usr/local/lib/make/makefile.last
+include  ../../biomakefiles/lib/make/makefile.last
 
 # Override default LAST options to use 8 cpu threads and keep only hits with at
 # least 200 score.

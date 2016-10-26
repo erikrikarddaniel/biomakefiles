@@ -62,10 +62,12 @@ You *must* define the `DIAMOND_DB_PATH` macro to point to where the *Diamond
 formated database* is (that's the directory where you ran steps 1 and 2). The
 name of the database *must be* `refseq_protein.dmnd`. 
 
-A `Makefile` will look something like this:
+A `Makefile` will look something like this (assuming this directory is two
+levels below the root, where you placed a symbolic link to the biomakefiles 
+repository ([see setting up project directory](setting_up_project_directory.md)):
 
 ```make
-include path/biomakefiles/lib/make/makefile.diamond
+include ../../biomakefiles/lib/make/makefile.diamond
 
 DIAMOND_DB_PATH = full_path_to_ncbi_data
 ```
@@ -87,10 +89,10 @@ Diamond is a threaded application and will by default use all cpu cores it
 finds. There is thus no need to use make's capabilities to parallelize this. If
 you want to tweak cpu usage, e.g. because you're running other tasks, use the
 `DIAMOND_ALIGN_OPTS` and set the Diamond `--threads=n` option in the `Makefile`
-for that. E.g.:
+for that. E.g. (see assumption about directory structure above):
 
 ```make
-include path/biomakefiles/lib/make/makefile.diamond
+include ../../biomakefiles/lib/make/makefile.diamond
 
 DIAMOND_DB_PATH = full_path_to_ncbi_data
 DIAMOND_ALIGN_OPTS = --threads 8
