@@ -76,7 +76,8 @@ sortmerna.stats.long.tsv: $(wildcard *.sortmerna.*.fastq)
 	@for sample in $(SAMPLES); do \
 	  for t in sortmerna-al sortmerna-rej; do \
 	    for r in r1 r2; do \
-	      echo "$$sample, $$t, $$r"; \
+	      f=$${sample}.*.$${t}.$${r}.fastq; \
+	      echo "rrna-filter	$$sample	sortmerna	$${r}-$${t}	$${f}	$$(echo $$(wc -l $${f})/4 | bc)"; \
 	    done; \
 	  done; \
-	done
+	done > $@
