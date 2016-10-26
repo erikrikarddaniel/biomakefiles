@@ -1,0 +1,41 @@
+# makefile.probcons
+#
+# Library makefile to make running the probcons alignment program simpler.
+#
+# Include this file in your Makefile:
+#
+#   include path/makefile.probcons
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+PROBCONS_OPTS =
+
+# *** Internal ***
+
+# MAKECALL__NNN__ is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `probcons --version 2>&1 |grep PROBCONS`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(PROBCONS_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_PROBCONS    = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+%.pb.alnfaa: %.faa
+	$(MAKECALL_PROBCONS)
+	probcons $< > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.pb.alnfna: %.fna
+	$(MAKECALL_PROBCONS)
+	probcons $< > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
