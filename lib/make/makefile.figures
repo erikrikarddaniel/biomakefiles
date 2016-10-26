@@ -1,0 +1,17 @@
+# makefile.figures
+#
+# Library makefile to automate a few things in figure manipulation, e.g. 
+# conversions.
+#
+# Include the full path of this file in your Makefile.
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Targets ***
+
+svgs2pdfs: $(subst .svg,.pdf,$(wildcard *.svg))
+
+%.pdf: %.svg
+	inkscape $< --export-pdf=$@
