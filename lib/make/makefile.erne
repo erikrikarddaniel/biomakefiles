@@ -41,7 +41,7 @@ MAKECALL_ERNE_FILTER = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFIL
 # The contamination database (.ebh extension) is created by the below target
 # and the path is specified via the ERNE_REFERENCE macro (above; but override
 # in your own Makefile).
-fastq.gzs2erne-filters: $(subst .r1.fastq.gz,.erne-filter,$(wildcard *.r1.fastq.gz))
+fastq.gzs2erne-filters: $(subst .r1.fastq.gz,.erne-filter,$(filter-out $(wildcard *.erne-filter.r1.fastq.gz),$(wildcard *.r1.fastq.gz)))
 
 %.erne-filter: %.r1.fastq.gz %.r2.fastq.gz
 	$(MAKECALL_ERNE_FILTER)
