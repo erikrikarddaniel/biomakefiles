@@ -30,5 +30,5 @@ MAKECALL_MEGAHIT      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFI
 
 %.megahit_out: %.r1.fastq.gz %.r2.fastq.gz
 	$(MAKECALL_MEGAHIT)
-	megahit -1 $< -2 $(word 2,$^) -o $@ | tee $@.out 2>&1
+	megahit -1 $< -2 $(word 2,$^) -o $@ 2>&1 | tee $@.out
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
