@@ -1,0 +1,64 @@
+# makefile.erne
+#
+# Library makefile to make running the ERNE aligner simpler.
+#
+# ERNE is available here:
+#
+#   http://erne.sourceforge.net/index.php
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+ERNE_OPTS =
+
+ERNE_REFERENCE =
+
+# *** Internal ***
+
+# MAKECALL_ERNE_ is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `erne-filter --version`" > $@.makecall
+MAKECALL_REFERENCE   = echo "	Reference database: $(ERNE_REFERENCE: $$(ls -l $(ERNE_REFERENCE)))" >> $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(ERNE_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_ERNE_CREATE = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+MAKECALL_ERNE_FILTER = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+# Trim reads and filter against a reference (contamination) database.
+#
+# The contamination database (.ebh extension) is created by the below target
+# and the path is specified via the ERNE_REFERENCE macro (above; but override
+# in your own Makefile).
+fastq.gzs2erne-filters: $(subst .r1.fastq.gz,.erne-filter,$(filter-out $(wildcard *.erne-filter.$(notdir $(basename $(ERNE_REFERENCE)))r1.fastq.gz),$(wildcard *.r1.fastq.gz)))
+
+# This will run erne-filter against the $(ERNE_REFERENCE) and create output
+# fastq files with the basename of the reference in the name. The log, which is
+# the name of the targ however, will *not* contain the name of the reference.
+# It is thus *not possible* to run erne-filter against different reference
+# databases in the same directory.
+%.erne-filter: %.r1.fastq.gz %.r2.fastq.gz
+	$(MAKECALL_ERNE_FILTER)
+	erne-filter --contamination-reference $(ERNE_REFERENCE) --query1 $(word 1,$^) --query2 $(word 2,$^) --output-prefix $@.$(notdir $(basename $(ERNE_REFERENCE))) --gzip $(ERNE_OPTS) | tee $@ 2>&1
+	for i in 1 2; do mv $@.$(notdir $(basename $(ERNE_REFERENCE)))_$${i}.fastq.gz $@.$(notdir $(basename $(ERNE_REFERENCE))).r$${i}.fastq.gz; done
+	mv $@.$(notdir $(basename $(ERNE_REFERENCE)))_unpaired.fastq.gz $@.unpaired.fastq.gz
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Format the database so that other ERNE tools can use it.
+#
+# Creates an .eht file from a .fna (nucleotide fasta) file.
+%.ebh: %.fna
+	$(MAKECALL_ERNE_CREATE)
+	erne-create --output-prefix $(basename $@) --fasta $<
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

@@ -1,0 +1,37 @@
+# makefile.blast
+#
+# Library makefile to make running NCBI's BLAST+ programs simpler.
+#
+# Include the full path of this file in your Makefile 
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# This needs to point to wherever you store NCBI data for the refseq targets to
+# work. Make sure it's a relative path, probably to a symlink within the local
+# copy of the project. (Don't want to set environment variables.)
+NCBI_BLAST_DB_PATH =
+
+# *** Internal ***
+
+# MAKECALL_BLAST is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `blastp --version|grep 'blastp:'`" > $@.makecall
+MAKECALL_NCBI_DBS    = echo "	Called with path to NCBI dbs: $(NCBI_BLAST_DB_PATH)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_BLAST       = $(MAKECALL_VERSION); $(MAKECALL_NCBI_DBS); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+%.refseq_protein.blasttab.gz: %.fna
+	$(MAKECALL__NNN__)
+	blastx -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

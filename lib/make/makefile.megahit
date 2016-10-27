@@ -1,0 +1,34 @@
+# makefile.megahit
+#
+# Library makefile to make running MEGAHIT simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+MEGAHIT_OPTS = 
+
+# *** Internal ***
+
+# MAKECALLMEGAHIT is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `megahit --version`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(MEGAHIT_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_MEGAHIT      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+%.megahit.d: %.r1.fastq.gz %.r2.fastq.gz
+	$(MAKECALL_MEGAHIT)
+	megahit -1 $< -2 $(word 2,$^) -o $@ 
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

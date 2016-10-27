@@ -10,3 +10,4 @@
 *.pdf
 !*.fastq*.makecall
 biomakefiles
+*.ebh
