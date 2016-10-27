@@ -50,7 +50,7 @@ fastq.gzs2erne-filters: $(subst .r1.fastq.gz,.erne-filter,$(filter-out $(wildcar
 # databases in the same directory.
 %.erne-filter: %.r1.fastq.gz %.r2.fastq.gz
 	$(MAKECALL_ERNE_FILTER)
-	erne-filter --contamination-reference $(ERNE_REFERENCE) --query1 $(word 1,$^) --query2 $(word 2,$^) --output-prefix $@.$(basename $(ERNE_REFERENCE)) --gzip $(ERNE_OPTS) | tee $@ 2>&1
+	erne-filter --contamination-reference $(ERNE_REFERENCE) --query1 $(word 1,$^) --query2 $(word 2,$^) --output-prefix $@.$(notdir $(basename $(ERNE_REFERENCE))) --gzip $(ERNE_OPTS) | tee $@ 2>&1
 	for i in 1 2; do mv $@_$${i}.fastq.gz $@.r$${i}.fastq.gz; done
 	mv $@_unpaired.fastq.gz $@.unpaired.fastq.gz
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
