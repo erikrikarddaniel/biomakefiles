@@ -10,6 +10,11 @@
 
 SHELL := /bin/bash
 
+# This number tries to make sure statistics are output in the order programs
+# were run.  The first directory, which is probably the one including this
+# file, should thus have the lowest order string.
+STAT_ORDER = 00000
+
 # *** Parameters ***
 
 # Override in your Makefile by setting a parameter *after* the row that
@@ -22,6 +27,6 @@ SHELL := /bin/bash
 
 samples.stats.long.tsv: $(wildcard *.r1.fastq.gz)
 	@for sample in $(basename $(basename $(basename $^))); do \
-	  echo "samples	$$sample	-	r1	$$sample.r1.fastq.gz	$$(echo $$(gunzip -c $$sample.r1.fastq.gz | wc -l)/4 | bc)"; \
-	  echo "samples	$$sample	-	r2	$$sample.r2.fastq.gz	$$(echo $$(gunzip -c $$sample.r2.fastq.gz | wc -l)/4 | bc)"; \
+	  echo "$(STAT_ORDER)	samples	$$sample	-	r1	$$sample.r1.fastq.gz	$$(echo $$(gunzip -c $$sample.r1.fastq.gz | wc -l)/4 | bc)"; \
+	  echo "$(STAT_ORDER)	samples	$$sample	-	r2	$$sample.r2.fastq.gz	$$(echo $$(gunzip -c $$sample.r2.fastq.gz | wc -l)/4 | bc)"; \
 	done | sort | tee $@
