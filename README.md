@@ -10,7 +10,7 @@ were run, using which files etc., without commiting to a "pipeline".
 
 The idea behind this is to set up a "lab" for computational analyses:
 
-![Lab analogy](doc/img/lab_analogy.png)
+![Lab analogy](doc/img/lab_analogy.svg)
 
 What is supplied by this repository is a collection of library makefiles, a book of
 protocols that can be semi-automatically applied after some, typically simple, set up.
