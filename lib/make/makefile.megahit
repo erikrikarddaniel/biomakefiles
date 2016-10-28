@@ -26,9 +26,23 @@ MAKECALL_PARAMS      = echo "	Called with parameters: $(MEGAHIT_OPTS)" >> $@.mak
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_MEGAHIT      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+foo:= a b c
+bar:= $(subst $(space),$(comma),$(foo))
+
 # *** Targets ***
 
 %.megahit_out: %.r1.fastq.gz %.r2.fastq.gz
 	$(MAKECALL_MEGAHIT)
 	megahit -1 $< -2 $(word 2,$^) -o $@ 2>&1 | tee $@.out
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+all.megahit_out: $(wildcard *.r?.fastq.gz)
+	$(MAKECALL_MEGAHIT)
+	megahit \
+	  -1 $(subst $(space),$(comma),$(sort $(filter %.r1.fastq.gz,$^))) \
+	  -2 $(subst $(space),$(comma),$(sort $(filter %.r2.fastq.gz,$^))) \
+	  -o $@ 2>&1 | tee $@.out
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
