@@ -603,8 +603,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
-     inkscape:cx="841.98179"
-     inkscape:cy="689.08733"
+     inkscape:cx="771.27111"
+     inkscape:cy="685.04672"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -625,7 +625,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -644,11 +644,11 @@
     <image
        sodipodi:absref="/home/daluab/dev/biomakefiles/doc/img/img/640px-Laboratory_bench.jpg"
        xlink:href="img/640px-Laboratory_bench.jpg"
-       height="198.57143"
-       width="264.7619"
-       id="image4629"
+       x="739.48517"
        y="324.7616"
-       x="739.48517" />
+       id="image4629"
+       width="264.7619"
+       height="198.57143" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -814,11 +814,11 @@
       <image
          sodipodi:absref="/home/daluab/dev/biomakefiles/doc/img/img/340px-Votrex-genie-mixer-laboratory-shaker-front-01.png"
          xlink:href="img/340px-Votrex-genie-mixer-laboratory-shaker-front-01.png"
-         height="198.57143"
-         width="194.97194"
-         id="image4697"
+         x="273.24002"
          y="947.01556"
-         x="273.24002" />
+         id="image4697"
+         width="194.97194"
+         height="198.57143" />
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -843,11 +843,11 @@
       <image
          sodipodi:absref="/home/daluab/dev/biomakefiles/doc/img/img/640px-Dark_bottle_with_ground_glass_plug.png"
          xlink:href="img/640px-Dark_bottle_with_ground_glass_plug.png"
-         id="image4909"
-         x="-217.03453"
-         y="324.7616"
+         height="198.57143"
          width="180.51947"
-         height="198.57143" />
+         y="324.7616"
+         x="-217.03453"
+         id="image4909" />
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -884,7 +884,7 @@
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:80px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
          id="tspan5036">Computer lab</tspan></text>
     <g
-       id="g3493">
+       id="g3361">
       <g
          id="g4504"
          style="opacity:1"
@@ -1068,18 +1068,23 @@
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          x="-441.73322"
-         y="403.4176"
+         y="369.4173"
          id="text3483"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            x="-441.73322"
-           y="403.4176"
+           y="369.4173"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:60px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
            id="tspan3487">Notebook/</tspan><tspan
+           sodipodi:role="line"
+           x="-441.73322"
+           y="444.4173"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:60px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
+           id="tspan3322">biomakefiles</tspan><tspan
            id="tspan3491"
            sodipodi:role="line"
            x="-441.73322"
-           y="478.4176"
+           y="519.4173"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:60px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle">makecall files</tspan></text>
     </g>
   </g>
