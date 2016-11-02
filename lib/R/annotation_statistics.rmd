@@ -46,8 +46,9 @@ the actual content is produced by various targets in other library makefiles.
 stats = read_tsv(
   'stats.long.tsv',
   col_types = cols(
-    directory = col_character(), sample = col_character(), program = col_character(),
-    outputtype = col_character(), filename = col_character(), count = col_integer()
+    sortorder = col_integer(), directory = col_character(), sample = col_character(), 
+    program = col_character(), outputtype = col_character(), filename = col_character(), 
+    count = col_integer()
   )
 )
 
