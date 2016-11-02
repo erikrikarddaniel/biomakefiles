@@ -77,6 +77,34 @@ kable(
 
 Write something...
 
+## ERNE-filter steps
+
+The data was quality-trimmed with ERNE-filter using N different databases:
+
+1. NNN
+
+2. NNN
+
+`figr('erne-plot', T, type='Figure')`.
+
+```{r erne-plot}
+
+erne = stats %>% filter(grepl('^ERNE', program), outputtype != 'good')
+
+erne$program = factor(
+  erne$program,
+  levels = (erne %>% select(program, sortorder) %>% distinct() %>% arrange(sortorder))$program,
+  ordered = T
+)
+
+ggplot(erne, aes(x=sample, y=count, fill=outputtype)) +
+  geom_bar(stat='identity') +
+  facet_wrap(~program)
+
+```
+
+## Sickle
+
 After `sickle`, NN proportions of reads were retained (`r figr('sickle', T, type='Table')`).
 
 ```{r sickle}
