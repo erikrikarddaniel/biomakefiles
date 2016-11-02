@@ -65,10 +65,10 @@ fastq.gzs2erne-filters: $(subst .r1.fastq.gz,.erne-filter,$(filter-out $(wildcar
 
 # Statistics from stdout
 #
-erne-filter.stats.tsv:
+erne-filter.stats.long.tsv:
 	for s in $(SAMPLES); do \
-	  echo "$$(basename $$(pwd))	$$s	ERNE-$(notdir $(basename $(ERNE_REFERENCE)))-filter	input	-	$$(grep '^# reads:' $$s*.erne-filter|grep -o '[0-9]*')"; \
+	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	ERNE-$(notdir $(basename $(ERNE_REFERENCE)))-filter	input	-	$$(grep '^# reads:' $$s*.erne-filter|grep -o '[0-9]*')"; \
 	  for t in  'good' 'discarded' 'contaminated'; do \
-	  echo "$$(basename $$(pwd))	$$s	ERNE-$(notdir $(basename $(ERNE_REFERENCE)))-filter	$$t	-	$$(grep $$t $$s*.erne-filter|grep 'reads:' | grep -o '[0-9]*')"; \
+	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	ERNE-$(notdir $(basename $(ERNE_REFERENCE)))-filter	$$t	-	$$(grep $$t $$s*.erne-filter|grep 'reads:' | grep -o '[0-9]*')"; \
 	  done; \
 	done > $@
