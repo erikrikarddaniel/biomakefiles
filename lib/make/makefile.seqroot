@@ -17,5 +17,5 @@ SHELL := /bin/bash
 # from here. Each of these should contain six fields: directory, sample,
 # program, outputtype, filename and count, and be in tab separated format.
 stats.long.tsv: $(wildcard */*.stats.long.tsv) $(wildcard */*/*.stats.long.tsv) $(wildcard */*/*/*.stats.long.tsv)
-	echo "directory	sample	program	outputtype	filename	count" > $@
+	echo "sortorder	directory	sample	program	outputtype	filename	count" > $@
 	grep -hv "^sample\t" $^ >> $@
