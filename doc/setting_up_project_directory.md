@@ -71,14 +71,18 @@ most cases this means adding a directory for each new type of analysis run, but
 here's a summary of a few commonly used directories and subdirectories:
 
 ```bash
-project_root/
+project_root/			# Raw sequencing files and overall statistics
   assembly/
     megahit/
     ray/
   qc/
+    erne/
+      standard-filter/		# ERNE-filter for added standards
+      rrna-filter/		# ERNE-filter for rRNA
+    sickle/
   read-oriented-analyses/
-    diamond_megan/
-  samples/
+    diamond_megan/		# Diamond .daa files plus meganized versions
+  samples/			# Symlinks to record which sequence files belong to which sample
 ```
 
 NOTE: If you're using Git, note that you can't add an empty directory to the
