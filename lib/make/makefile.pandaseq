@@ -1,0 +1,43 @@
+# makefile.pandaseq
+#
+# Library makefile to make running the pandaseq program simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+PANDASEQ_OPTS =
+
+# *** Internal ***
+
+# MAKECALLPANDASEQ is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `pandaseq -v`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(PANDASEQ_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_PANDASEQ      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+# Make pandaseq fnas for all pairs of fastq.gz files present in the directory
+fastq.gz2pandaseqs: $(subst .r1.fastq.gz,.pandaseq.fna.gz,$(wildcard *.r1.fastq.gz))
+
+# Create a pandaseq pair-assembled fasta file (.fna) from a pair of fastq files
+%.pandaseq.fna.gz: %.r1.fastq.gz %.r2.fastq.gz
+	$(MAKECALL_PANDASEQ)
+	pandaseq -f $< -r $(word 2,$^) $(PANDASEQ_OPTS) 2>$@.err | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+pandaseq.stats.long.tsv: $(wildcard *.pandaseq.fna.gz)
+	for s in $(SAMPLES); do \
+	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pandaseq	merged	$$(ls $$s.*.pandaseq.fna.gz)	$$(gunzip -c $$s.*.pandaseq.fna.gz | grep -c '>')"; \
+	done > $@
