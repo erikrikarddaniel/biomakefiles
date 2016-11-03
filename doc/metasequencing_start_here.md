@@ -129,3 +129,36 @@ As the name indicates the file is in tab separated format and is "long" in the
 project root directory is just a concatenation of similar files from various
 subdirectories. You can start Rstudio from the root directory and open the
 `annotation_statistics.rmd` Rmarkdown file.
+
+## Quality trimming and filtering
+
+The sequences in fastq files contain quality scores, estimates of the
+reliability for each nucleotide, encoded as "phred scores". One typically trims
+sequences before proceeding with annotation and other steps to get rid of poor
+quality nucleotides. 
+
+### FastQC
+
+FastQC is a diagnostics tool that will show you how good your sequences are and
+if they contain problematic sequences such as adapters or duplicates. FastQC can
+be run interactively (a Java GUI (graphical user interface) application) or in
+command line mode. The latter will generate HTML-formated reports that can be
+viewed in a browser, and is what I'll show here.
+
+The sequence of actions is the same as for most tasks here: create a directory,
+symlinks, a Makefile (in this case only a line, so I'll include it below) and
+run `make`.
+
+```bash
+$ mkdir -p qc/fastqc
+$ cd qc/fastqc
+$ ln -s ../../samples/*.fastq.gz .
+$ echo 'include ../../biomakefiles/lib/make/makefile.fastqc' > Makefile
+$ make all_fastqc
+```
+
+When the program is finished you should have one html file and one zip file for
+each sample file. Take your time to look through the html reports, and discuss
+with colleagues and search the net to investigate possible issues.
+
+
