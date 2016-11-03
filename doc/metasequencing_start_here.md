@@ -6,6 +6,16 @@ repository to annotate a metagenomics or metatranscriptomics project.
 Basic UNIX/bash knowledge is required including how to use a text editor (nano,
 vim, emacs, ...).
 
+## Cloning the biomakefiles repository
+
+You need a local copy of all the files contained in this repository. Assuming
+you want to keep them under `dev` in your home directory:
+
+```bash
+$ cd dev
+$ git clone https://github.com/erikrikarddaniel/biomakefiles.git
+```
+
 ## Project root directory
 
 Create a directory which will serve as the root directory for your project.
