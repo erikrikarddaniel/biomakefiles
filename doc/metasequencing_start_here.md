@@ -161,4 +161,72 @@ When the program is finished you should have one html file and one zip file for
 each sample file. Take your time to look through the html reports, and discuss
 with colleagues and search the net to investigate possible issues.
 
+### ERNE for trimming and filtering
 
+ERNE is a mapper that can be used to filter out contamination, but can also trim
+sequences. Read more [here](running_erne.md). Here, I'm going to show you how to
+run ERNE to filter out internal standard sequences and trim reads in one step.
+
+#### Create the standards database
+
+If you added internal standards to your samples you probably already have the
+sequences. Assuming you have them in `path/st_dna.fasta` and `path/st_rna.fasta`
+you can create a single file in the project root directory and add the
+`makefile.erne` to the root `Makefile` like this:
+
+```bash
+$ cat path/st_dna.fasta path/st_rna.fasta > standards.fna
+$ echo 'include ./biomakefiles/lib/make/makefile.erne' >> Makefile
+```
+
+*Important*: Note the double `>` above! If you use only one, you will overwrite
+the content of the `Makefile`, with two you *append*.
+
+Formating the ERNE database takes a little while but is simple:
+
+```bash
+$ make standards.ebh
+```
+
+#### Running ERNE filter
+
+To run ERNE, all you have to do is the usual steps: create directory, symlinks,
+`Makefile` and run `make`.
+
+```bash
+$ mkdir -p qc/erne/standard-filter
+$ cd qc/erne/standard-filter
+```
+
+The `Makefile` should look something like this (exactly like this if you
+followed the above instructions):
+
+```make
+include ../../../makefile.commondefs
+include ../../../biomakefiles/lib/make/makefile.erne
+include ../../../biomakefiles/lib/make/makefile.misc
+
+# Here, you can set any other ERNE options than the path to the contamination
+# database. See ERNE's documentation.
+ERNE_OPTS = --threads 4
+
+ERNE_REFERENCE = ../../../standards.ebh
+
+# Define this number to get statistics output in the order programs were run
+STAT_ORDER = 00100
+```
+
+There are many options for parallelization of ERNE ([see
+running_erne.md](running_erne.md)). To make it simple here, assuming you have 16
+cpu cores at your disposal and with the above `Makefile` (`ERNE_OPTS = --threads
+4` definition) you can run four parallel ERNE processes, each using four cores,
+like this:
+
+
+```bash
+$ make -j 6 fastq.gzs2erne-filters
+$ make erne-filter.stats.long.tsv
+$ ( cd ../../../; make stats.long.tsv )
+```
+
+(The last two lines updates statistics files.)
