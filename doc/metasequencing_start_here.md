@@ -53,7 +53,8 @@ $ ln -s ~/dev/biomakefiles .
 
 You are not going to work in the root directory except to generate summaries of
 annotation, but there are still a few things that will be useful in a `Makefile`
-in this directory. Here's an example:
+in this directory. You should hence create a file called `Makefile` using a text
+editor (gedit, vim, nano, ...). Here's an example:
 
 ```make
 include ./biomakefiles/lib/make/makefile.seqroot
