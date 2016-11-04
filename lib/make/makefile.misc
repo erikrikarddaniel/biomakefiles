@@ -28,7 +28,7 @@ gunzip_all_fastq.gzs: $(subst .fastq.gz,.fastq,$(wildcard *.fastq.gz))
 # Dependencies will automatically be unzipped if not present in unzipped format
 # thanks to the pattern above. Unzipped files will be deleted after
 # interleaving.
-interleave_all_fastq.gzs: $(subst .r1.fastq,.intlv.fastq.gz,$(wildcard *.r1.fastq))
+interleave_all_fastq.gzs: $(subst .r1.fastq.gz,.intlv.fastq.gz,$(wildcard *.r1.fastq.gz))
 
 %.intlv.fastq.gz: %.r1.fastq %.r2.fastq
 	interleave_fastq.py $^ | gzip -c > $@
