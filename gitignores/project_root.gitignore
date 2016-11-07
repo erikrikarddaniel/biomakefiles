@@ -11,4 +11,4 @@
 !*.fastq*.makecall
 biomakefiles
 *.ebh
-*.fna.gz
+*.gz
