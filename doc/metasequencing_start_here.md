@@ -222,7 +222,14 @@ To run ERNE, all you have to do is the usual steps: create directory, symlinks,
 ```bash
 $ mkdir -p qc/erne/standard-filter
 $ cd qc/erne/standard-filter
+$ ln -s ../../../samples/*.fastq.gz
 ```
+
+The last line, creating symlinks should be different if this is a *second*
+filtering run, because then you want to link to the output from the first
+filtering step. An example if this situation is when you have added 
+internal standards to a transcriptome and want to first remove (and quantify)
+the standards and then remove rRNA.
 
 The `Makefile` should look something like this (exactly like this if you
 followed the above instructions):
@@ -256,3 +263,57 @@ $ ( cd ../../../; make stats.long.tsv )
 ```
 
 (The last two lines updates statistics files.)
+
+### QC conclusion
+
+What you have after filtering with ERNE are quality-trimmed reads free from any
+contamination you have thought of. The reads can now be used for further
+processing like assembly or alignment to a database. This document will continue
+with a description of how to merge the forward and reverse reads using PandaSEQ
+and how to annotate the merged reads with Diamond and MEGAN against the NCBI
+RefSeq database.
+
+## Merging pairs with PandaSEQ
+
+If your reads are sufficiently long compared to the length of the fragments that
+were sequenced -- a not uncommon case with RNA -- you can merge the forward and
+reverse reads using e.g. PandaSEQ. To do this with the tools in the
+`biomakefiles` repository you just perform the usual steps: create a directory,
+symlink the output fastq files from the last step of ERNE, create a Makefile and
+run:
+
+```bash
+$ mkdir -p assembly/pandaseq
+$ cd assembly/pandaseq
+$ ln -s ../../erne/standards-filter/*.fastq.gz  # Modify if you ran more than one ERNE filter
+```
+
+The Makefile can look like the following:
+
+```make
+include ../../biomakefiles/lib/make/makefile.pandaseq
+include ../../makefile.commondefs
+
+PANDASEQ_OPTS = -T 2
+STAT_ORDER = 00300
+```
+
+If you have 16 cpu cores available you with the above Makefile run 8 pandaseq
+processes in parallel.
+
+```bash
+$ make -j 8 fastq.gz2pandaseqs
+$ make pandaseq.stats.long.tsv
+```
+
+If you want to proceed with this data or not is largely dependent on how many
+pairs were merged so check the `pandaseq.stats.long.tsv` file and compare the
+numbers with the number of input reads before deciding (both numbers plus the
+number of unmerged are written to the stats file `pandaseq.stats.long.tsv`).
+Note that both merged and unmerged reads are output, but in different files
+ending with `.pandaseq.fna.gz` and `.
+
+## Aligning reads to the NCBI RefSeq database with Diamond
+
+Diamond is a very fast BLAST-like program that aligns nucleotide or protein
+sequences to a *protein* database (i.e. blastx and blastp functionality).
