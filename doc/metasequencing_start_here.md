@@ -168,6 +168,13 @@ $ echo 'include ../../biomakefiles/lib/make/makefile.fastqc' > Makefile
 $ make all_fastqc
 ```
 
+FastQC takes a little while. If you have several cpus or cpu cores you can speed
+it up by running several programs in parallel (assuming you have 24 free cores):
+
+```bash
+$ make -j 24 all_fastqc
+```
+
 When the program is finished you should have one html file and one zip file for
 each sample file. Take your time to look through the html reports, and discuss
 with colleagues and search the net to investigate possible issues.
