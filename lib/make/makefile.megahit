@@ -46,3 +46,16 @@ all.megahit_out: $(wildcard *.r?.fastq.gz)
 	  -2 $(subst $(space),$(comma),$(sort $(filter %.r2.fastq.gz,$^))) \
 	  -o $@ 2>&1 | tee $@.out
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Creates tar balls and gzipped fasta files for all megahit assemblies run in
+# this directory.
+all.megahit_out.tar.gz: $(subst .megahit_out,.megahit_out.tar.gz,$(wildcard *.megahit_out))
+
+# This creates a gzipped tar ball of the content of the %.megahit_out directory
+# that contains all the output from megahit. It also creates a gzipped copy of
+# the final.contigs.fa file that is the most important output from megahit.
+# After you have run this target you can delete the %.megahit_out directory and
+# save a lot of space.
+%.megahit_out.tar.gz: %.megahit_out
+	gzip -c $</final.contigs.fa > $(basename $<).megahit.fna.gz
+	tar cfz $@ $<

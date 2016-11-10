@@ -66,7 +66,8 @@ mirror_refseq_protein.blast:
 	wget -A "refseq_protein.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
 	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_protein.*.tar.gz; do echo "--> gunzipping $$f <--"; tar xzf $$f; done )
 
-# Extract sequences from the RefSeq protein database fetched by mirror_refseq_protein.blast.
-# As far as I know there's no fasta file for this available at NCBI, like there is for NR.
+# Extract sequences from the RefSeq protein database fetched by
+# mirror_refseq_protein.blast.  As far as I know there's no fasta file for this
+# available at NCBI, like there is for NR.
 refseq_protein.faa:
 	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_protein -entry all -dbtype prot -out $@

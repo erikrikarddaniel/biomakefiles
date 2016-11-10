@@ -34,10 +34,13 @@ fastq.gz2pandaseqs: $(subst .r1.fastq.gz,.pandaseq.fna.gz,$(wildcard *.r1.fastq.
 # Create a pandaseq pair-assembled fasta file (.fna) from a pair of fastq files
 %.pandaseq.fna.gz: %.r1.fastq.gz %.r2.fastq.gz
 	$(MAKECALL_PANDASEQ)
-	pandaseq -f $< -r $(word 2,$^) $(PANDASEQ_OPTS) 2>$@.err | gzip -c > $@
+	pandaseq -f $< -r $(word 2,$^) -u $(basename $(basename $(basename $@))).unmerged.fna $(PANDASEQ_OPTS) 2>$@.log | gzip -c > $@
+	gzip $(basename $(basename $(basename $@))).unmerged.fna	# Haven't found a way to gzip the unmerged reads, so let's do that here
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 pandaseq.stats.long.tsv: $(wildcard *.pandaseq.fna.gz)
 	for s in $(SAMPLES); do \
+	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pandaseq	input	$$(ls $$s.*.r1.fastq.gz)	$$(echo $$(gunzip -c $$s.*.r1.fastq.gz | wc -l)/4 | bc)"; \
 	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pandaseq	merged	$$(ls $$s.*.pandaseq.fna.gz)	$$(gunzip -c $$s.*.pandaseq.fna.gz | grep -c '>')"; \
+	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	unmerged	unmerged	$$(ls $$s.*.unmerged.fna.gz)	$$(gunzip -c $$s.*.unmerged.fna.gz | grep -c '>')"; \
 	done > $@

@@ -195,9 +195,9 @@ Suffixes I use:
 
 Export type | suffix
 --- | ---
-readName_to_eggnogName | reads2eggnogs.tsv
-readName_to_interpro2goNames | reads2ips.tsv
-readName_to_taxonId | reads2taxonids.tsv
+readName_to_eggnogName | `.reads2eggnogs.tsv`
+readName_to_interpro2goNames | `.reads2ips.tsv`
+readName_to_taxonId | `.reads2taxonids.tsv`
 
 *Be careful* when you *use Git* so that you don't include very large files in the
 repository. The `gitignores/diamond_megan.gitignore` will make sure you ignore
