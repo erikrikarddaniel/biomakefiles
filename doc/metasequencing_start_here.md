@@ -285,7 +285,7 @@ run:
 ```bash
 $ mkdir -p assembly/pandaseq
 $ cd assembly/pandaseq
-$ ln -s ../../erne/standards-filter/*.fastq.gz  # Modify if you ran more than one ERNE filter
+$ ln -s ../../qc/erne/standards-filter/*.fastq.gz  # Modify if you ran more than one ERNE filter
 ```
 
 The Makefile can look like the following:
@@ -298,8 +298,8 @@ PANDASEQ_OPTS = -T 2
 STAT_ORDER = 00300
 ```
 
-If you have 16 cpu cores available you with the above Makefile run 8 pandaseq
-processes in parallel.
+If you have 16 cpu cores available and with the above Makefile, you can run 8
+pandaseq processes in parallel.
 
 ```bash
 $ make -j 8 fastq.gz2pandaseqs
