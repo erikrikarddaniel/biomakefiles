@@ -41,3 +41,32 @@ make -j 8 fastq.gz2pesickle
 
 As a side effect, how sickle was called -- program version, parameters, input
 files -- is recorded in a file with a `.makecall` suffix.
+
+# Workflow
+
+In many cases, setting up a processing step involves these individual steps:
+
+1. Create a directory for the processing
+
+2. Create a `Makefile` in the new directory. The `Makefile` typically mostly
+   contains an `include` statement that includes one or (sometimes) more library
+   makefiles from this repository. If the program is dependent on an external
+   database, there is a make macro you should define to point to this data, see
+   the library makefile in question. You might also want to add parameters to
+   the program you will be running. Check the library makefile and program
+   documentation.
+
+3. Create symbolic links from files output by the last processing step in the
+   new directory.
+
+4. Find out the name of `all` target, i.e. the target that runs the program in
+   question with all input files available in the directory (the symlinks
+   created in the former step), and run. I recommend starting by running `make
+   -n *target*` to check what *target* would do. After that run just `make` on
+   its own, or parallelize with `make -j *n*`, where *n* is the number of
+   parallel processes.
+
+5. After all input files are processesed, make the statistics file for this
+   directory (find out the name of the target in the library makefile) plus run
+   `$ make stats.long.tsv` in the *root directory*.
+4.
