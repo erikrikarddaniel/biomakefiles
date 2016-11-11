@@ -49,7 +49,7 @@ all.megahit_out: $(wildcard *.r?.fastq.gz)
 
 # Creates tar balls and gzipped fasta files for all megahit assemblies run in
 # this directory.
-all.megahit_out.tar.gz: $(subst .megahit_out,.megahit_out.tar.gz,$(wildcard *.megahit_out))
+all_megahit_out.tar.gz: $(subst .megahit_out,.megahit_out.tar.gz,$(wildcard *.megahit_out))
 
 # This creates a gzipped tar ball of the content of the %.megahit_out directory
 # that contains all the output from megahit. It also creates a gzipped copy of
