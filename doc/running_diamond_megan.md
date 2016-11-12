@@ -208,3 +208,30 @@ directory.
 with defined columns for ranked taxa, look in this repository:
 
 https://github.com/erikrikarddaniel/taxdata2taxflat)
+
+### Using exported data
+
+The exported tab separated files can be used in e.g. R. In particular in
+combination with other datasets, this is very powerful.
+
+![Data model](img/megan_datamodel.png)
+
+The above figure shows how the three types of tab separated files exported from
+MEGAN can be joined together so that you can for instance find out the KEGG or
+BioCyc reaction identifiers for proteins you're interested in.
+
+### Comparing
+
+MEGAN provides several analysis possibilities. If you have several samples that
+you want to create, you will like to create comparison datasets. This is done by
+selecting <File><Compare> and selecting any open MEGAN datasets and adding
+non-open datasets.
+
+The comparison datasets only contain counts for taxa and functional assignments.
+This means the files are *much* smaller than the daa files, but also that you
+can't look into the taxonomic distribution of a functional classification. To
+perform the latter you can go back to the daa file, select whichever nodes
+you're intersted in -- functional or taxonomical -- and select <File><Extract to
+new document>. Documents created this way will be in the MEGAN native format
+having a `.rma6` suffix and will be large. You can use these files to do
+comparisons.
