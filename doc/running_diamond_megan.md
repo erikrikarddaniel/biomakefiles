@@ -220,6 +220,9 @@ The above figure shows how the three types of tab separated files exported from
 MEGAN can be joined together so that you can for instance find out the KEGG or
 BioCyc reaction identifiers for proteins you're interested in.
 
+In `lib/make/makefile.geneontology` there are rules to make tab separated files
+from the files you can download from the geneontology.org site.
+
 ### Comparing
 
 MEGAN provides several analysis possibilities. If you have several samples that
