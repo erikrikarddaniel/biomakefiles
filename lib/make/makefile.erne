@@ -17,7 +17,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-ERNE_OPTS =
+ERNE_OPTS = --threads 4
 
 ERNE_REFERENCE =
 
