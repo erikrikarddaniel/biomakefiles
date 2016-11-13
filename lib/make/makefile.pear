@@ -37,7 +37,7 @@ fastq.gzs2pears: $(subst .r1.fastq.gz,.pear.out,$(wildcard *.r1.fastq.gz))
 
 pear.stats.long.tsv: $(wildcard *.pear.out)
 	for s in $(SAMPLES); do \
-	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pear	input	$$(grep '^Forward reads file' $$s.*.pear.out | sed 's/.*: //')	$$(grep '^Assembled reads \.' $$s.*.pear.out | sed 's:.* / ::' | sed 's: *(.*::')"; \
-	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pear	assembled	$$(grep '^Assembled reads file' $$s.*.pear.out | sed 's/.*: //').gz	$$(grep '^Assembled reads \.' $$s.*.pear.out | sed 's/.*: //' | sed 's: / .*::')"; \
-	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pear	unassembled	$$(grep '^Unassembled forward reads file' $$s.*.pear.out | sed 's/.*: //').gz	$$(grep '^Not assembled reads \.' $$s.*.pear.out | sed 's/.*: //' | sed 's: / .*::')"; \
+	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pear	input	$$(grep '^Forward reads file' $$s.*.pear.out | sed 's/.*: //')	$$(grep '^Assembled reads \.' $$s.*.pear.out | sed 's:.* / ::' | sed 's: *(.*::' | sed 's/,//g')"; \
+	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pear	assembled	$$(grep '^Assembled reads file' $$s.*.pear.out | sed 's/.*: //').gz	$$(grep '^Assembled reads \.' $$s.*.pear.out | sed 's/.*: //' | sed 's: / .*::' | sed 's/,//g')"; \
+	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pear	unassembled	$$(grep '^Unassembled forward reads file' $$s.*.pear.out | sed 's/.*: //').gz	$$(grep '^Not assembled reads \.' $$s.*.pear.out | sed 's/.*: //' | sed 's: / .*::' | sed 's/,//g')"; \
 	done > $@
