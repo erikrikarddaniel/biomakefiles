@@ -45,7 +45,7 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' $< | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' > $@
 
 %.c.fna: %.fna
-       $(CLEAN_FASTA)
+	$(CLEAN_FASTA)
 
 %.c.faa: %.faa
        $(CLEAN_FASTA)
