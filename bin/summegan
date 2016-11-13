@@ -40,8 +40,6 @@ option_list = list(
 parser <- OptionParser(usage = "%prog [options] sample0.nnn.reads2nn.tsv.gz .. samplen.nnn.reads2nn.tsv.gz", option_list=option_list)
 opt = parse_args(parser, positional_arguments = T)
 
-opt
-
 if ( opt$options$version ) {
   write(sprintf("summegan %s", VERSION), stdout())
   quit('no')
