@@ -61,19 +61,19 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 
 # Here comes individual pattern rules. Defines how programs are actually called
 %.refseq_rna.maf.gz: %.fna.gz
-	$(MAKECALL_LASTAL_RFRNA)
+	@$(MAKECALL_LASTAL_RFRNA)
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_rna.maf.gz: %.fastq.gz
-	$(MAKECALL_LASTAL_RFRNA)
+	@$(MAKECALL_LASTAL_RFRNA)
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf
-	$(MAKECALL_MEGANTAB)
+	@$(MAKECALL_MEGANTAB)
 	maf-convert tab $< | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf.gz
 	$(MAKECALL_MEGANTAB)
