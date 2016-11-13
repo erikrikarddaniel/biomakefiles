@@ -34,7 +34,7 @@ SORTMERNA_DBS = $(wildcard $(SORTMERNA_DBPATH)/*.fna)
 MAKECALL_VERSION     = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with `sortmerna --version 2>&1 | grep version`" > $@.makecall
 MAKECALL_DBFILES     = echo "	Database: $(SORTMERNA_DBS)" >> $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(SORTMERNA_OPTS)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_SORTMERNA   = $(MAKECALL_VERSION); $(MAKECALL_DBFILES); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***

@@ -28,9 +28,9 @@ ERNE_REFERENCE =
 #
 # *Don't redefine!*
 MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `erne-filter --version`" > $@.makecall
-MAKECALL_REFERENCE   = echo "	Reference database: $(ERNE_REFERENCE: $$(ls -l $(ERNE_REFERENCE)))" >> $@.makecall
+MAKECALL_REFERENCE   = echo "	Reference database: $(ERNE_REFERENCE: $$(ls -lL $(ERNE_REFERENCE)))" >> $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(ERNE_OPTS)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_ERNE_CREATE = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 MAKECALL_ERNE_FILTER = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 

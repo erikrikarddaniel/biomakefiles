@@ -23,7 +23,7 @@ PEAR_OPTS = -j 6
 # *Don't redefine!*
 MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `pear --version`" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(PEAR_OPTS)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_PEAR      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***
