@@ -1,15 +1,16 @@
 # .gitignore for project root directories. Tries to ignore all files that may contain too much data
 # for a git repository, i.e. raw sequences, fasta files and some other.
-*.fastq*
-*.daa
-*.fna
-*.faa
-*.err
-.Rproj.user
-.Rhistory 
-.RData
-*.pdf
-!*.fastq*.makecall
 biomakefiles
+*.daa
+*.dmnd
 *.ebh
+*.err
+*.faa
+*.fastq*
+!*.fastq*.makecall
+*.fna
 *.gz
+*.pdf
+.RData
+.Rhistory 
+.Rproj.user
