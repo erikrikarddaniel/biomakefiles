@@ -139,6 +139,8 @@ format of `diamond-megan.stats.long.tsv` should be like this:
 00400   diamond-megan   Z904    MEGAN eggnog Z904.erne-filter.standard.pandaseq.refseq_protein.daa   4518337
 ```
 
+(There's a template tsv file in `templates/diamond-megan.stats.long.tsv`.)
+
 *Note* that the above is four lines from the same sample daa file, the first
 representing the number of reads found in the daa file, the following three
 representing the number of reads annotated taxonomically, with GO terms and
