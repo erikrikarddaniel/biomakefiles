@@ -18,7 +18,7 @@ SHELL := /bin/bash
 #
 # *Don't redefine!*
 MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `fastx_collapser -h | grep 'Part of'`" > $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_FASTX      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 
 # *** Targets ***

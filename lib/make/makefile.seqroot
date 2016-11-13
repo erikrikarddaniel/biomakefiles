@@ -16,6 +16,6 @@ SHELL := /bin/bash
 # name as this target, i.e. stats.long.tsv, in subdirectories two levels deep
 # from here. Each of these should contain six fields: directory, sample,
 # program, outputtype, filename and count, and be in tab separated format.
-stats.long.tsv: $(wildcard */*.stats.long.tsv) $(wildcard */*/*.stats.long.tsv) $(wildcard */*/*/*.stats.long.tsv)
+stats.long.tsv: $(filter-out $(wildcard biomakefiles/templates/*),$(wildcard */*.stats.long.tsv) $(wildcard */*/*.stats.long.tsv) $(wildcard */*/*/*.stats.long.tsv))
 	echo "sortorder	directory	sample	program	outputtype	filename	count" > $@
 	grep -hv "^sample\t" $^ >> $@
