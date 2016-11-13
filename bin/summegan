@@ -79,11 +79,11 @@ for ( file in opt$args ) {
         separate(name, c('id'), sep=' ', remove=F, extra='drop')
     )
 }
-logmsg("Done reading")
 
+logmsg("Joining to samples data")
 megandata = megandata %>% left_join(samples %>% select(sample, type), by='sample')
-logmsg("Done joining to samples")
 
+logmsg("Summing over type, sample and id")
 summed = megandata %>% group_by(type, sample, id) %>%
   summarise(count = n()) %>%
   mutate(freq = count/sum(count)) %>%
@@ -93,7 +93,6 @@ summed = megandata %>% group_by(type, sample, id) %>%
     by = 'id'
   ) %>%
   arrange(type, sample, id)
-logmsg("Done summing")
 
 logmsg(sprintf("Writing table to %s", opt$options$output))
 
