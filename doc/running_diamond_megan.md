@@ -116,10 +116,32 @@ write a short description of the sample.
 
 The following three (or four when SEED becomes available) tabs allows you to
 specify "mapping files", files containing information on how to go from an NCBI
-accession number to a taxon identity, a set of GO terms or an EGGNOG id. The
+accession number to a taxon identity, a set of GO terms or an EGGNOG id. The 
 mapping files are available at the same download page as the MEGAN program.
 Choose the accession number-based maps. GI numbers are on the way out, if not
 already absent from databases downloaded from NCBI.
+
+### Running MEGAN so that you can collect statistics
+
+If you run MEGAN with the `--hideMessageWindow` it will not create a log window
+but instead send log messages to STDOUT (i.e. the terminal). This information
+can be collected in a file and used to gather statistics about the annotation.
+My suggestion is to collect the output in a file with the same name as the daa
+file you're meganizing, with an added `.meganize.out` suffix. (Besides
+collecting the output, this file will serve as a reminder of which daa files
+have already been meganized.) As an example, if you're meganizing a file called
+`sample.daa`, you could run the following command:
+
+```bash
+$ MEGAN --hideMessageWindow --verbose | tee sample.daa.meganize.out
+```
+
+(The tee program is nice. It collects STDOUT in the named file *but also* sends
+it to STDOUT so you can follow progress without having to `tail -f` the output
+file. I habitually use `--verbose` options when available...)
+
+The target to actually create the statistics file is not finished. Filed as
+issue #3.
 
 ### Statistics
 
@@ -206,6 +228,9 @@ repository. The `gitignores/diamond_megan.gitignore` will make sure you ignore
 all daa, rma and tsv files, so copy that to `.gitignore` in the `diamond-megan`
 directory.
 
+*Gzip files* after export! In many cases the gzipped output can be used
+directly.
+
 (If you want an NCBI taxon hierarchy that is easier to work with, i.e. a table
 with defined columns for ranked taxa, look in this repository:
 
@@ -224,6 +249,34 @@ BioCyc reaction identifiers for proteins you're interested in.
 
 In `lib/make/makefile.geneontology` there are rules to make tab separated files
 from the files you can download from the geneontology.org site.
+
+### Summarising over assignments
+
+The above describes how to export the most flexible kind of data allowing full
+use of the annotation. For many purposes, however, it's sufficient with
+data summarized over functional or taxonomical names. This can be exported
+directly from MEGAN, but if you prefer the command line, I have written an R
+script (`summegan`) that does this. In addition to the (gzipped) tsv files, you
+need a tab separated file with at least sample and type (DNA, RNA, aDNA etc.).
+This *must* reside in the directory where you run the script and *must* be
+called `metadata.tsv`.
+
+The most practical way of running the program is to create a subdirectory to the
+diamond/megan directory, create links to the tsv files (including the metadata)
+and the R script. Assuming your diamond directory is two levels below the root
+directory (where you have a symlink to a biomakefiles repository), that your
+MEGAN tsv files are in a subdirectory called `megan_out` and your metadata file
+is in `samples/metadata.tsv` under the root directory, you can do:
+
+```bash
+$ mkdir summaries
+$ cd summaries
+$ ln -s ../megan_out/*.tsv.gz .
+$ ln -s ../../../samples/metadata.tsv .
+$ ln -s ../../../biomakefiles/bin/summegan .
+$ echo 'include ../../../biomakefiles/lib/make/makefile.summegan' > Makefile # Or use vim...
+$ make all_sums # Can be parallelized, but doesn't take a lot of time and produced log messages
+```
 
 ### Comparing
 
