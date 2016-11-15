@@ -56,8 +56,9 @@ $ make -n target
 $ make -j n target
 ```
 
-9. When `make` is done, find the target that makes the statistics file and make
-   that.
+9. When `make` is done, in the library makefile (the one you included in the
+   Makefile above, i.e. `lib/make/makefile.program_name`) find the target that
+   makes the statistics file and make that.
 
 ```bash
 $ make program_name.stats.long.tsv
