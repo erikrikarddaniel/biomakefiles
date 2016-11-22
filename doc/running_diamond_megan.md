@@ -124,7 +124,7 @@ already absent from databases downloaded from NCBI.
 ### Running MEGAN so that you can collect statistics
 
 If you run MEGAN with the `--hideMessageWindow` it will not create a log window
-but instead send log messages to STDOUT (i.e. the terminal). This information
+but instead send log messages to STDERR (i.e. the terminal). This information
 can be collected in a file and used to gather statistics about the annotation.
 My suggestion is to collect the output in a file with the same name as the daa
 file you're meganizing, with an added `.meganize.out` suffix. (Besides
@@ -133,12 +133,15 @@ have already been meganized.) As an example, if you're meganizing a file called
 `sample.daa`, you could run the following command:
 
 ```bash
-$ MEGAN --hideMessageWindow --verbose | tee sample.daa.meganize.out
+$ MEGAN --hideMessageWindow --verbose 2>&1 | tee sample.daa.meganize.out
 ```
+
+(The `2>&1` makes sure STDERR is sent to the same place as STDOUT.)
 
 (The tee program is nice. It collects STDOUT in the named file *but also* sends
 it to STDOUT so you can follow progress without having to `tail -f` the output
-file. I habitually use `--verbose` options when available...)
+file.  I habitually use `--verbose` options when available; don't know if it's
+of any use here...)
 
 The target to actually create the statistics file is not finished. Filed as
 issue #3.

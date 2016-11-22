@@ -42,6 +42,27 @@ make -j 8 fastq.gz2pesickle
 As a side effect, how sickle was called -- program version, parameters, input
 files -- is recorded in a file with a `.makecall` suffix.
 
+# A word of caution
+
+In short: Use `make -n` and run programs in dedicated directories.
+
+Make will, in general, not make a file that is already made
+(i.e. present in the file system) and newer than any of it's dependencies. It
+also makes files recursively to make sure dependencies are in place. I
+have, however, noticed that it sometimes gets confused. If you just run make
+without checking, you might therefore start very time and resource consuming
+steps again and *overwrite valuable files*.
+
+To avoid this, make liberal use of make's `-n` flag that will tell you what make
+will actually run if called with a specific target:
+
+```bash
+$ make -n target_name
+```
+
+Secondly, run programs in isolation by creating one directory for each step in
+your process.
+
 # Workflow
 
 In many cases, setting up a processing step involves these individual steps:
@@ -69,4 +90,6 @@ In many cases, setting up a processing step involves these individual steps:
 5. After all input files are processesed, make the statistics file for this
    directory (find out the name of the target in the library makefile) plus run
    `$ make stats.long.tsv` in the *root directory*.
-4.
+
+ A more detailed instruction of this can be found in 
+ [doc/new_process_step_with_screen_and_git.md](doc/new_process_step_with_screen_and_git.md).

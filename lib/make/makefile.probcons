@@ -31,11 +31,11 @@ MAKECALL_PROBCONS    = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFIL
 # *** Targets ***
 
 %.pb.alnfaa: %.faa
-	$(MAKECALL_PROBCONS)
+	@$(MAKECALL_PROBCONS)
 	probcons $< > $@
-	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.pb.alnfna: %.fna
-	$(MAKECALL_PROBCONS)
+	@$(MAKECALL_PROBCONS)
 	probcons $< > $@
-	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

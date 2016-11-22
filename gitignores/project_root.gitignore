@@ -11,6 +11,8 @@ biomakefiles
 *.fna
 *.gz
 *.pdf
+*.maf
+*.maf.gz
 .RData
 .Rhistory 
 .Rproj.user
