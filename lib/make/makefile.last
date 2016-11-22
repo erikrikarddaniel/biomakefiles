@@ -20,7 +20,16 @@ LAST_DB_PATH = .
 
 # LASTAL_OPTS sets parameters for the lastal run. (-P4 tells it to use 4 cpu
 # threads, -e200 to only keep hits with at least 200 score.)
-LASTAL_OPTS = -P4 -e200
+LASTAL_OPTS = -e200
+
+# Set options to GNU parallel (see `man parallel`). -P 0 will run as many jobs
+# as possible in parallel.
+#
+# I'm having trouble saturating cpus with lastal. Can't get each process to use
+# more than a few percent of a core. The problems does not seem to be due to too
+# much IO, since I can start *many* parallel processes without cpu usage per
+# process going down.
+PARALLEL_OPTS = -P 0
 
 # If you use something else than the sanger flavour of fastq you should reset
 # this one, see the LAST documentation: http://last.cbrc.jp/. Not needed for 
@@ -62,12 +71,12 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 # Here comes individual pattern rules. Defines how programs are actually called
 %.refseq_rna.maf.gz: %.fna.gz
 	@$(MAKECALL_LASTAL_RFRNA)
-	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
+	gunzip -c $< | parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_rna.maf.gz: %.fastq.gz
 	@$(MAKECALL_LASTAL_RFRNA)
-	gunzip -c $< | lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb | gzip -c > $@
+	gunzip -c $< | parallel-fastq --keep-order --no-notice $(PARALLEL_OPTS) "lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf
