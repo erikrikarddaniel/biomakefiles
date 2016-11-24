@@ -1,0 +1,101 @@
+#!/usr/bin/env Rscript
+#
+# summegan
+#
+# Reads raw MEGAN exports (one line per read) and outputs a matrix summarized over samples and interpro ids.
+#
+# Run summegan --help to get help.
+#
+# The script requires a couple of R libraries, see below.
+#
+# Author: erik.rikard.daniel@gmail.com
+
+suppressPackageStartupMessages(library(optparse))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(tidyr))
+
+# Constants
+VERSION = '0.1'
+
+# Get arguments
+option_list = list(
+  make_option(
+    c('-o', '--output'), type='character',
+    help='Name of tab separated file output file. Mandatory.'
+  ),
+  make_option(
+    c('-s', '--samples'), type='character',
+    help='Name of tab separated file with sample information. At minimum should contain "type" and "sample" columns. Mandatory.'
+  ),
+  make_option(
+    c("-v", "--verbose"), action="store_true", default=FALSE, 
+    help="Print progress messages"
+  ),
+  make_option(
+    c("-V", "--version"), action="store_true", default=FALSE, 
+    help="Print version"
+  )
+)
+parser <- OptionParser(usage = "%prog [options] sample0.nnn.reads2nn.tsv.gz .. samplen.nnn.reads2nn.tsv.gz", option_list=option_list)
+opt = parse_args(parser, positional_arguments = T)
+
+if ( opt$options$version ) {
+  write(sprintf("summegan %s", VERSION), stdout())
+  quit('no')
+}
+
+logmsg = function(msg, llevel='INFO') {
+  if ( opt$options$verbose ) {
+    write(
+      sprintf("%s: %s: %s", llevel, format(Sys.time(), "%Y-%m-%d %H:%M:%S"), msg),
+      stderr()
+    )
+  }
+}
+
+logmsg(sprintf("Reading sample data from %s", opt$options$samples))
+
+samples = read_tsv(opt$options$samples)
+
+megandata = tibble(
+  sample = character(),  read = character(), 
+  id = character(), name = character()
+)
+
+for ( file in opt$args ) {
+  s = sub('\\..*', '', file)
+  logmsg(sprintf("Reading input for sample %s: %s", s, file))
+  megandata = megandata %>%
+    union(
+      read_tsv(
+        file, col_names = c('read', 'name'), 
+        col_types = cols(read = col_character(), name = col_character())
+      ) %>%
+        mutate(
+          sample = s,
+          name = sub('^"', '', sub('"$', '', name))
+        ) %>%
+        separate(name, c('id'), sep=' ', remove=F, extra='drop')
+    )
+}
+
+logmsg("Joining to samples data")
+megandata = megandata %>% left_join(samples %>% select(sample, type), by='sample')
+
+logmsg("Summing over type, sample and id")
+summed = megandata %>% group_by(type, sample, id) %>%
+  summarise(count = n()) %>%
+  mutate(freq = count/sum(count)) %>%
+  ungroup() %>%
+  inner_join(
+    megandata %>% select(id, name) %>% distinct(),
+    by = 'id'
+  ) %>%
+  arrange(type, sample, id)
+
+logmsg(sprintf("Writing table to %s", opt$options$output))
+
+write_tsv(summed, opt$options$output)
+
+logmsg("Done")

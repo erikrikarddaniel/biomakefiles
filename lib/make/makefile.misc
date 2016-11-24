@@ -28,7 +28,7 @@ gunzip_all_fastq.gzs: $(subst .fastq.gz,.fastq,$(wildcard *.fastq.gz))
 # Dependencies will automatically be unzipped if not present in unzipped format
 # thanks to the pattern above. Unzipped files will be deleted after
 # interleaving.
-interleave_all_fastq.gzs: $(subst .r1.fastq,.intlv.fastq.gz,$(wildcard *.r1.fastq))
+interleave_all_fastq.gzs: $(subst .r1.fastq.gz,.intlv.fastq.gz,$(wildcard *.r1.fastq.gz))
 
 %.intlv.fastq.gz: %.r1.fastq %.r2.fastq
 	interleave_fastq.py $^ | gzip -c > $@
@@ -38,3 +38,27 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 
 %.intlv.fastq: %.r1.fastq %.r2.fastq
 	interleave_fastq.py $^ > $@
+
+# Clean up a fasta file so that names does not contain spaces, dashes and other
+# characters that cause problems in various programs. Also places sequences on
+# one line so that one can more easily select sequences with grep.
+CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' $< | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' > $@
+
+%.c.fna: %.fna
+	$(CLEAN_FASTA)
+
+%.c.faa: %.faa
+	$(CLEAN_FASTA)
+
+# Cluster sequences based on fraction identity. Override the CLUSTER_LEVELS
+# macro if you need other levels than the default specified here.
+CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.70 0.60 0.50
+
+%.uclusters: %.faa
+	for n in $(CLUSTER_LEVELS); do \
+	  d=$(basename $@).uc$$n.clusters.d; \
+	  mkdir $$d; \
+	  rm -f $$d/*.faa; \
+	  usearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
+	done
+	touch $@

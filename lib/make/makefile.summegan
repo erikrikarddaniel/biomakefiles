@@ -1,0 +1,52 @@
+# makefile.megansums
+#
+# Library makefile to make creating summaries of data exported from MEGAN
+# simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# Create symlink here or redefine this (not worth putting in your PATH)
+SUMMEGAN_PATH = ./summegan
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+SUMMEGAN_OPTS = --verbose
+
+SUMMEGAN_COMMAND = $(SUMMEGAN_PATH) $(SUMMEGAN_OPTS) --samples $< --output $@ $(wordlist 2,100,$^)
+
+# *** Internal ***
+
+# MAKECALLSUMMEGAN is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `$(SUMMEGAN_PATH) --version`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(SUMMEGAN_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_SUMMEGAN      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+all_sums: reads2eggnogs.summary.tsv reads2ips.summary.tsv reads2taxonids.summary.tsv
+
+reads2eggnogs.summary.tsv: metadata.tsv $(wildcard *.reads2eggnogs.tsv.gz)
+	@$(MAKECALL_SUMMEGAN)
+	$(SUMMEGAN_COMMAND)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+reads2ips.summary.tsv: metadata.tsv $(wildcard *.reads2ips.tsv.gz)
+	@$(MAKECALL_SUMMEGAN)
+	$(SUMMEGAN_COMMAND)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+reads2taxonids.summary.tsv: metadata.tsv $(wildcard *.reads2taxonids.tsv.gz)
+	@$(MAKECALL_SUMMEGAN)
+	$(SUMMEGAN_COMMAND)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

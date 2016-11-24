@@ -1,0 +1,41 @@
+# makefile.clustalo
+#
+# Library makefile to make running Clustal Omega simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+CLUSTALO_OPTS =
+
+# *** Internal ***
+
+# MAKECALLCLUSTALO is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `clustalo --version`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(CLUSTALO_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_CLUSTALO      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+# Align non-aligned amino acid sequences
+%.co.alnfaa: %.faa
+	@$(MAKECALL_CLUSTALO)
+	clustalo -i $< -o $@ --force $(CLUSTALO_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Align non-aligned nucleotide sequences
+%.co.alnfaa: %.faa
+	@$(MAKECALL_CLUSTALO)
+	clustalo -i $< -o $@ --force $(CLUSTALO_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

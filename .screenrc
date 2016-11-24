@@ -7,7 +7,9 @@ screen -t gitignores
 chdir $ROOT/lib/make
 screen -t libmake
 chdir $ROOT/lib/R
-screen -t R
+screen -t libR
+chdir $ROOT/bin
+screen -t bin
 chdir $ROOT
 screen -t man
 screen -t root

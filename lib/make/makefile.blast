@@ -26,7 +26,7 @@ NCBI_BLAST_DB_PATH =
 # *Don't redefine!*
 MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `blastp --version|grep 'blastp:'`" > $@.makecall
 MAKECALL_NCBI_DBS    = echo "	Called with path to NCBI dbs: $(NCBI_BLAST_DB_PATH)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_BLAST       = $(MAKECALL_VERSION); $(MAKECALL_NCBI_DBS); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***

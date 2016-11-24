@@ -29,7 +29,7 @@ STAT_ORDER = 00100
 # *Don't redefine!*
 MAKECALL_VERSION     = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with `sickle --version|grep 'sickle version'`" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(SICKLE_OPTS)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_SICKLE      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***

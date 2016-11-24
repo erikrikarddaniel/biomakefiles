@@ -1,0 +1,36 @@
+# makefile.geneontology
+#
+# Library makefile to make downloading accession mappings from the
+# geneontology.org site easier.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+HTTP_ROOT = http://geneontology.org/external2go/
+
+# *** Internal ***
+
+# *** Targets ***
+
+# Fetch all. This is a selection of what is available.
+#
+# (cog2go is pretty useless since it's not a mapping at protein level but a
+# mapping from a class of GO terms (e.g. COG:Metabolism to GO:metabolism).
+all: ec2go.go hamap2go.go interpro2go.go kegg2go.go metacyc2go.go pfam2go.go tigrfams2go.go uniprotkb_kw2go.go
+
+all_tsvs: $(subst .go,.go.tsv,$(wildcard *.go))
+
+%.go:
+	rm -f $@; wget -O $@ $(HTTP_ROOT)/$(basename $@)
+
+%.go.tsv: %.go
+	echo "foreign_id	foreign_term	go_term	go_id" > $@
+	grep -hv '^!' $< | sed 's/^\([^ ]\+\) \(.*\)> \(.*\) ; \(GO:.*\)/\1\t\2\t\3\t\4/' >> $@

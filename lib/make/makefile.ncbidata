@@ -66,7 +66,32 @@ mirror_refseq_protein.blast:
 	wget -A "refseq_protein.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
 	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_protein.*.tar.gz; do echo "--> gunzipping $$f <--"; tar xzf $$f; done )
 
-# Extract sequences from the RefSeq protein database fetched by mirror_refseq_protein.blast.
-# As far as I know there's no fasta file for this available at NCBI, like there is for NR.
+# Extract sequences from the RefSeq protein database fetched by
+# mirror_refseq_protein.blast.  As far as I know there's no fasta file for this
+# available at NCBI, like there is for NR.
 refseq_protein.faa:
 	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_protein -entry all -dbtype prot -out $@
+
+mirror_refseq_rna.blast:
+	wget -A "refseq_rna.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
+	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_rna.*.tar.gz; do echo "--> gunzipping $$f <--"; tar xzf $$f; done )
+
+refseq_rna.fna:
+	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_rna -entry all -dbtype nucl -out $@
+
+# The taxonomy database
+taxdump.tar.gz:
+	wget ftp://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz
+
+nodes.dmp: taxdump.tar.gz
+	tar xfz $< $@
+
+names.dmp: taxdump.tar.gz
+	tar xfz $< $@
+
+# The below target requires that the taxdata2taxflat program is installed
+# somewhere in your PATH. It's available from GitHub:
+#
+#   https://github.com/erikrikarddaniel/taxdata2taxflat
+taxflat.tsv: nodes.dmp names.dmp
+	taxdata2taxflat --verbose $^ > $@

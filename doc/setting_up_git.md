@@ -24,7 +24,7 @@ the file `project_root.gitignore`. Copy that to the root
 directory of the new project; make sure it's called `.gitignore`.
 
 ```bash
-$ cp *path_to_biomakefiles*/lib/gitignores/project_root.gitignore .gitignore
+$ cp *path_to_biomakefiles*/gitignores/project_root.gitignore .gitignore
 ```
 
 ## Initialize the directory for Git and add a remote

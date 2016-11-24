@@ -1,0 +1,5 @@
+sessionname __PROJNAME__
+setenv ROOT $PWD
+chdir $ROOT
+screen -t man
+screen -t root
