@@ -9,6 +9,11 @@
 
 SHELL := /bin/bash
 
+# Some general purpose macros
+
+# Concate a number of gzipped files and write to a gzipped file.
+CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
+
 # *** Targets ***
 
 # Create unzipped versions of all fastq.gz files
