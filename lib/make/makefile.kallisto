@@ -1,0 +1,76 @@
+# makefile.kallisto
+#
+# Library makefile to make running kallisto simpler.
+#
+# Include this file in your Makefile through an include statement.
+#
+# How this is set up means you should only run kallisto against one target
+# database per directory.
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+
+# Name of kallisto index. Must be set in your Makefile. Note that there's a 
+# target in this file to *construct* the index. For that, this macro does not
+# need to be set.
+KALLISTO_INDEX =
+
+# Program options for kallisto quant, i.e. the quantification run. See the
+# documentation for kallisto at GitHub: 
+#
+#   http://pachterlab.github.io/kallisto/manual.html
+#
+# The number of threads to use, -t, can be important. At the moment I have not
+# made any tests of what's an optimum, so unless you know better, set to the
+# number of cores you have.
+KALLISTO_QUANT_OPTS =
+
+# Program options for kallisto index, i.e. building the index. Kmer lenght, -k,
+# is probably the most likely to use. -i is set by the target so don't set that
+# in this macro.
+KALLISTO_INDEX_OPTS =
+
+# *** Internal ***
+
+# MAKECALLKALLISTO is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION        = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `kallisto version`" > $@.makecall
+MAKECALL_PARAMS_INDEX   = echo "	Called with parameters: $(KALLISTO_INDEX_OPTS)" >> $@.makecall
+MAKECALL_PARAMS_QUANT   = echo "	Called with parameters: $(KALLISTO_QUANT_OPTS)" >> $@.makecall
+MAKECALL_INFILES        = echo "	Index file: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_INDEX          = echo "	Input files: $^ (`ls -lL $(KALLISTO_INDEX)|tr '\n' ','`)" >> $@.makecall
+MAKECALL_KALLISTO_INDEX = $(MAKECALL_VERSION); $(MAKECALL_PARAMS_INDEX); $(MAKECALL_INFILES)
+MAKECALL_KALLISTO_QUANT = $(MAKECALL_VERSION); $(MAKECALL_PARAMS_QUANT); $(MAKECALL_INFILES); $(MAKECALL_INDEX)
+
+# *** Targets ***
+
+# Run kallisto quant on all pairs of fastq.gz files in the directory and finish by 
+# a tsv file for all samples.
+kallisto.tsv: $(subst .r1.fastq.gz,.kallisto.out,$(wildcard *.r1.fastq.gz))
+	echo "sample	target_id	length	eff_length	est_counts	tpm" > $@
+	for d in *.kallisto.out; do \
+	  grep -v '^target_id' $$d/abundance.tsv | sed "s/^/$$(basename $$d .kallisto.out)\t/"; \
+	done >> $@
+
+# Runs kallisto quantification on a pair of sequence fastq.files. Requires that
+# the KALLISTO_INDEX is set (see above).
+%.kallisto.out: %.r1.fastq.gz %.r2.fastq.gz
+	@$(MAKECALL_KALLISTO_QUANT)
+	if [ ! -e $@ ]; then mkdir $@; fi
+	kallisto quant $(KALLISTO_QUANT_OPTS) -i $(KALLISTO_INDEX) -o $@ $^
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Creates a kallisto index file from a nucleotide fasta file.
+%.kalindex: %.fna
+	@$(MAKECALL_KALLISTO_INDEX)
+	kallisto index $(KALLISTO_INDEX_OPTS) -i $@ $^
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
