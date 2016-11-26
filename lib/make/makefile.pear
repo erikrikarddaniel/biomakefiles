@@ -33,6 +33,9 @@ fastq.gzs2pears: $(subst .r1.fastq.gz,.pear.out,$(wildcard *.r1.fastq.gz))
 %.pear.out: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_PEAR)
 	pear -f $< -r $(word 2,$^) -o $@ $(basename $(PEAR_OPTS)) | tee $@
+	mv $@.unassembled.forward.fastq $@.unassembled.r1.fastq
+	mv $@.unassembled.reverse.fastq $@.unassembled.r2.fastq
+	gzip $@.*.fastq
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 pear.stats.long.tsv: $(wildcard *.pear.out)
