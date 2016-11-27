@@ -64,8 +64,8 @@ $ make -j n target
 $ make program_name.stats.long.tsv
 ```
 
-10. Change to the root window (assuming you're running screen; otherwise cd) and
-    update global stats file.
+10. Change to the root window/project root directory (assuming you're running
+    screen; otherwise cd to the project root) and update global stats file.
 
 ```bash
 $ make stats.long.tsv

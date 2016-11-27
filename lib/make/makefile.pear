@@ -33,6 +33,10 @@ fastq.gzs2pears: $(subst .r1.fastq.gz,.pear.out,$(wildcard *.r1.fastq.gz))
 %.pear.out: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_PEAR)
 	pear -f $< -r $(word 2,$^) -o $@ $(basename $(PEAR_OPTS)) | tee $@
+	mv $@.unassembled.forward.fastq $@.unassembled.r1.fastq
+	mv $@.unassembled.reverse.fastq $@.unassembled.r2.fastq
+	cat $@.unassembled.r?.fastq > $@.unassembled.concat.fastq
+	parallel gzip ::: $@.*.fastq
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 pear.stats.long.tsv: $(wildcard *.pear.out)
@@ -41,3 +45,10 @@ pear.stats.long.tsv: $(wildcard *.pear.out)
 	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pear	assembled	$$(grep '^Assembled reads file' $$s.*.pear.out | sed 's/.*: //').gz	$$(grep '^Assembled reads \.' $$s.*.pear.out | sed 's/.*: //' | sed 's: / .*::' | sed 's/,//g')"; \
 	  echo "$(STAT_ORDER)	$$(basename $$(pwd))	$$s	pear	unassembled	$$(grep '^Unassembled forward reads file' $$s.*.pear.out | sed 's/.*: //').gz	$$(grep '^Not assembled reads \.' $$s.*.pear.out | sed 's/.*: //' | sed 's: / .*::' | sed 's/,//g')"; \
 	done > $@
+
+# Concatenate unassembled reads to allow Diamond to run on one file and hence
+# create only one MEGAN file.
+concat_unassembled: $(subst .unassembled.forward.fastq.gz,.unassembled.fastq.gz,$(wildcard *.pear.out.unassembled.forward.fastq.gz))
+
+%.unassembled.fastq.gz: %.unassembled.forward.fastq.gz %.unassembled.reverse.fastq.gz
+	gunzip -c $^ | gzip -c > $@
