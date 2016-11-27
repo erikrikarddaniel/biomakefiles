@@ -35,6 +35,7 @@ fastq.gzs2pears: $(subst .r1.fastq.gz,.pear.out,$(wildcard *.r1.fastq.gz))
 	pear -f $< -r $(word 2,$^) -o $@ $(basename $(PEAR_OPTS)) | tee $@
 	mv $@.unassembled.forward.fastq $@.unassembled.r1.fastq
 	mv $@.unassembled.reverse.fastq $@.unassembled.r2.fastq
+	cat $@.unassembled.r?.fastq > $@.unassembled.concat.fastq
 	parallel gzip ::: $@.*.fastq
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
