@@ -41,9 +41,6 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 %.concat.fastq.gz: %.r1.fastq.gz %.r2.fastq.gz
 	$(CONCAT_GZIPPED)
 
-%.concat.fastq.gz: %.r1.fastq.gz %.r2.fastq.gz
-	$(CONCAT_GZIPPED)
-
 # Clean up a fasta file so that names does not contain spaces, dashes and other
 # characters that cause problems in various programs. Also places sequences on
 # one line so that one can more easily select sequences with grep.
