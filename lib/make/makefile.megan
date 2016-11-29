@@ -36,7 +36,7 @@ MEGANIZE_OPTS = --weightedLCA --verbose
 MAKECALL_MGNZR_VERS  = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with daa-meganizer $$($(MEGAN_INSTALL_DIR)/tools/daa-meganizer -h 2>&1 |grep -o 'version [0-9.]*')" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(MEGAN_OPTS)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MEGANIZE_MAPS        = echo "	MEGAN maps: ls -lL $(MEGAN_MAPS_DIR)/*.abin" >> $@.makecall
+MEGANIZE_MAPS        = echo "	MEGAN maps: `ls -lL $(MEGAN_MAPS_DIR)/*.abin`" >> $@.makecall
 MAKECALL_MEGANIZE    = $(MAKECALL_MGNZR_VERS); $(MAKECALL_PARAMS); $(MAKECALL_INFILES); $(MEGANIZE_MAPS)
 
 # *** Targets ***
