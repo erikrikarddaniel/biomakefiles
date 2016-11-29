@@ -36,7 +36,7 @@ MEGANIZE_OPTS = --weightedLCA --verbose
 MAKECALL_MGNZR_VERS  = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with daa-meganizer $$($(MEGAN_INSTALL_DIR)/tools/daa-meganizer -h 2>&1 |grep -o 'version [0-9.]*')" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(MEGAN_OPTS)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MEGANIZE_MAPS        = echo "	MEGAN maps: ls -lL $(MEGAN_MAPS_DIR)/*.abin" >> $@.makecall
+MEGANIZE_MAPS        = echo "	MEGAN maps: `ls -lL $(MEGAN_MAPS_DIR)/*.abin`" >> $@.makecall
 MAKECALL_MEGANIZE    = $(MAKECALL_MGNZR_VERS); $(MAKECALL_PARAMS); $(MAKECALL_INFILES); $(MEGANIZE_MAPS)
 
 # *** Targets ***
@@ -52,8 +52,7 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 	  --acc2eggnog $(MEGAN_MAPS_DIR)/acc2eggnog.abin \
 	  --acc2interpro2go $(MEGAN_MAPS_DIR)/acc2interpro.abin \
 	  --acc2seed $(MEGAN_MAPS_DIR)/acc2seed.abin \
-	  $(MEGANIZE_OPTS) \
-	  | tee $@ 2>&1
+	  $(MEGANIZE_OPTS) > $@ 2>&1
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 diamond-megan.stats.long.tsv: $(wildcard *.meganize.out)
