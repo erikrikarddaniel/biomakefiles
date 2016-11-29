@@ -101,79 +101,63 @@ DIAMOND_ALIGN_OPTS = --threads 8
 ## Meganizing
 
 After Diamond finishes, the .daa files produced can be "meganized", i.e.
-analyzed by Megan to assign taxonomy, GO terms and COGs/EGGNOGs to reads. (At the
-time of writing neither SEED nor KEGG is available; the former should be
-according to the Huson et al. 2016 PLOS Comp Biol paper, the latter should be
-included in the commercial version of the program.)
+analyzed by Megan to assign taxonomy, GO terms/InterPro ids, SEED subsystems
+and COGs/EGGNOGs to reads. 
 
-There is a command line tool for meganizing, but I haven't gotten it to work.
-(I've emailed the author about this, but gotten no reply.) The meganizing can,
-however, also be performed from the graphical user interface of Megan. Start
-`MEGAN`, assuming you have installed it, and select `<File><Meganized DAA file>`
-from the menu. There are a couple of tabs with information to provide and
-parameters to set. In the first tab you can select the daa file to meganized and
-write a short description of the sample. 
+In `lib/make/makefile.megan` there are targets to run the meganizing process
+from the command line. Since the name of meganized daa files remain the same,
+the target for making each one has to depend on another suffix, in this case
+`.meganize.out`. This file will contain quite a lot of progress output including
+the statistics necessary for the summary statistics common to all steps.
 
-The following three (or four when SEED becomes available) tabs allows you to
-specify "mapping files", files containing information on how to go from an NCBI
-accession number to a taxon identity, a set of GO terms or an EGGNOG id. The 
-mapping files are available at the same download page as the MEGAN program.
-Choose the accession number-based maps. GI numbers are on the way out, if not
-already absent from databases downloaded from NCBI.
+To run `daa-meganizer`, as the meganizing program is called, add the below line
+to your Makefile:
 
-### Running MEGAN so that you can collect statistics
+```make
+include ../../biomakefiles/lib/make/makefile.megan
+```
 
-If you run MEGAN with the `--hideMessageWindow` it will not create a log window
-but instead send log messages to STDERR (i.e. the terminal). This information
-can be collected in a file and used to gather statistics about the annotation.
-My suggestion is to collect the output in a file with the same name as the daa
-file you're meganizing, with an added `.meganize.out` suffix. (Besides
-collecting the output, this file will serve as a reminder of which daa files
-have already been meganized.) As an example, if you're meganizing a file called
-`sample.daa`, you could run the following command:
+You will have to override the `MEGAN_INSTALL_DIR` macro if MEGAN is not
+installed under `/usr/local/megan`. To find out if `daa-meganizer` is in its
+expected place:
 
 ```bash
-$ MEGAN --hideMessageWindow --verbose 2>&1 | tee sample.daa.meganize.out
+$ ls -l /usr/local/megan/tools/daa-meganizer
 ```
 
-(The `2>&1` makes sure STDERR is sent to the same place as STDOUT.)
+The above should not give a "File not found" error but show you an executable
+file. If it didn't, MEGAN is installed somewhere else, perhaps in your home
+directory or in `/opt/megan` and you need to set the `MEGAN_INSTALL_DIR`
+accordingly.
 
-(The tee program is nice. It collects STDOUT in the named file *but also* sends
-it to STDOUT so you can follow progress without having to `tail -f` the output
-file.  I habitually use `--verbose` options when available; don't know if it's
-of any use here...)
+You also need to point out where MEGAN's mapping files are. The default is a
+directory called megan under the current directory. The simplest way of doing
+that is to create a symlink to where you have stored the files. If you prefer
+not to, you can override the `MEGAN_MAPS_DIR` macro.
 
-The target to actually create the statistics file is not finished. Filed as
-issue #3.
+Furthermore, four mapping files are expected: `prot_acc2tax.abin`,
+`acc2eggnog.abin`, `acc2interpro.abin` and `acc2seed.abin`. Since MEGAN's
+mapping files contain dates as a versioning system, you need to rename or,
+preferrably, symlinks with the non-versioned names.
 
-### Statistics
+After you have specified everything, just run:
 
-For the semi-automatic collection of statistics to work, you must enter
-annotation statistics manually from meganized daa files. Information is
-available in the field at the bottom of the Megan interface, for each of the
-different annotation types. For instance, in the taxonomy interface the number
-of input reads and the number of assigned reads is reported. If you enter this
-information in a file called `diamond-megan.stats.long.tsv` it will be collected
-into the `stats.long.tsv` in the root directory after you "make" the latter. The
-format of `diamond-megan.stats.long.tsv` should be like this:
-
-```
-00400   diamond-megan   Z904    MEGAN reads Z904.erne-filter.standard.pandaseq.refseq_protein.daa   8212184
-00400   diamond-megan   Z904    MEGAN taxonomy Z904.erne-filter.standard.pandaseq.refseq_protein.daa   7947460
-00400   diamond-megan   Z904    MEGAN ip2go Z904.erne-filter.standard.pandaseq.refseq_protein.daa   4284556
-00400   diamond-megan   Z904    MEGAN eggnog Z904.erne-filter.standard.pandaseq.refseq_protein.daa   4518337
+```bash
+$ make -j N meganize_all
 ```
 
-(There's a template tsv file in `templates/diamond-megan.stats.long.tsv`.)
+Where N is the number of processes. Meganizing requires quite a lot of memory,
+so you can probably not run one process per cpu core. Depending on setup aim for
+between a sixth and a quarter of the number of cpu cores.
 
-*Note* that the above is four lines from the same sample daa file, the first
-representing the number of reads found in the daa file, the following three
-representing the number of reads annotated taxonomically, with GO terms and
-EGGNOGS respectively.
+After the meganizing is done, you can gather statistics the usual way:
 
-The fields are, in order: sort order, directory name (i.e. name of analysis),
-sample name, program, type of information, file name and counts. The sort order
-field 
+```bash
+$ make diamond-megan.stats.long.tsv
+```
+
+Remember to update the overall file in the root directory too
+(`stats.long.tsv`).
 
 ### Data export
 
