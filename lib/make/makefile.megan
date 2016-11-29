@@ -1,0 +1,57 @@
+# makefile.megan
+#
+# Library makefile to make running command line MEGAN simpler.
+#
+# Include the full path of this file in your Makefile.
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Important to override if you don't have your megan files in a subdirectory of
+# the current directory called megan (or a symlink).
+MEGAN_MAPS_DIR = megan
+
+# Needs to be overridden if you have MEGAN installed in e.g. /opt/megan.
+#
+# Unfortunately, one can't just create a symlink in /usr/local/bin for
+# daa-meganizer because the script is not written for that. I chose to define
+# this variable instead of advising people to have the tools directory in their
+# paths.
+MEGAN_INSTALL_DIR = /usr/local/megan
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+MEGANIZE_OPTS = --weightedLCA --verbose
+
+# *** Internal ***
+
+# MAKECALL_MEGAN is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_MGNZR_VERS  = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with daa-meganizer $$($(MEGAN_INSTALL_DIR)/tools/daa-meganizer -h 2>&1 |grep -o 'version [0-9.]*')" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(MEGAN_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MEGANIZE_MAPS        = echo "	MEGAN maps: ls -lL $(MEGAN_MAPS_DIR)/*.abin" >> $@.makecall
+MAKECALL_MEGANIZE    = $(MAKECALL_MGNZR_VERS); $(MAKECALL_PARAMS); $(MAKECALL_INFILES); $(MEGANIZE_MAPS)
+
+# *** Targets ***
+
+meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
+
+%.daa.meganize.out: %.daa
+	$(MAKECALL_MEGANIZE)
+	xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/daa-meganizer --in $< \
+	  --function EGGNOG INTERPRO2GO SEED \
+	  --acc2taxa $(MEGAN_MAPS_DIR)/prot_acc2tax.abin \
+	  --acc2eggnog $(MEGAN_MAPS_DIR)/acc2eggnog.abin \
+	  --acc2interpro2go $(MEGAN_MAPS_DIR)/acc2interpro.abin \
+	  --acc2seed $(MEGAN_MAPS_DIR)/acc2seed.abin \
+	  $(MEGANIZE_OPTS) \
+	  | tee $@ 2>&1
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
