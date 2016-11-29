@@ -55,3 +55,13 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 	  $(MEGANIZE_OPTS) \
 	  | tee $@ 2>&1
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+diamond-megan.stats.long.tsv: $(wildcard *.meganize.out)
+	for f in $^; do \
+	  s=$$(echo $$f|sed 's/\..*//'); \
+	  echo "$(STAT_ORDER)   diamond-megan   $$s    MEGAN reads $$(basename $$f '.meganize.out')   $$(grep 'Total reads:' $$f|sed 's/,//g'|sed 's/[^0-9]*//g')"; \
+	  echo "$(STAT_ORDER)   diamond-megan   $$s    MEGAN taxonomy $$(basename $$f '.meganize.out')   $$(grep 'Assig. Taxonomy:' $$f|sed 's/,//g'|sed 's/[^0-9]*//g')"; \
+	  echo "$(STAT_ORDER)   diamond-megan   $$s    MEGAN ip2go $$(basename $$f '.meganize.out')   $$(grep 'Assig. INTERPRO2GO:' $$f|sed 's/,//g'|sed 's/[^0-9]*//g')"; \
+	  echo "$(STAT_ORDER)   diamond-megan   $$s    MEGAN eggnog $$(basename $$f '.meganize.out')   $$(grep 'Assig. EGGNOG:' $$f|sed 's/,//g'|sed 's/[^0-9]*//g')"; \
+	  echo "$(STAT_ORDER)   diamond-megan   $$s    MEGAN seed $$(basename $$f '.meganize.out')   $$(grep 'Assig. SEED:' $$f|sed 's/,//g'|sed 's/[^0-9]*//g')"; \
+	done > $@
