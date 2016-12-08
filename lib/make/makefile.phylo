@@ -1,0 +1,36 @@
+# makefile.phylo
+#
+# Library makefile to make running various smaller/simpler phylogenetics
+# programs simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md. More importantly,
+# see what options fasttree provides by calling it with the -h flag.
+#
+FT_OPTS =
+
+# *** Internal ***
+
+# FT_MAKECALL is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+FT_MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with an unknown version of fasttree" > $@.makecall
+FT_MAKECALL_PARAMS      = echo "	Called with parameters: $(FT_OPTS)" >> $@.makecall
+FT_MAKECALL_INFILES     = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+FT_MAKECALL         	= $(FT_MAKECALL_VERSION); $(FT_MAKECALL_PARAMS); $(FT_MAKECALL_INFILES)
+
+# *** Targets ***
+
+%.ft.newick: %.alnfaa
+	@$(FT_MAKECALL)
+	fasttree $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
