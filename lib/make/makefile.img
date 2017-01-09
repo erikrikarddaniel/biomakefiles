@@ -21,4 +21,4 @@ PNG_RESOLUTION = 600
 all_pngs: $(subst .pdf,.png,$(wildcard *.pdf))
 
 %.png: %.pdf
-        convert -density $(PNG_RESOLUTION) -quality 100 $< $@
+	convert -density $(PNG_RESOLUTION) -quality 100 $< $@
