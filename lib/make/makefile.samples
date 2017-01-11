@@ -26,7 +26,7 @@ STAT_ORDER = 00000
 # *** Targets ***
 
 samples.stats.long.tsv: $(wildcard *.r1.fastq.gz)
-	@for sample in $(basename $(basename $(basename $^))); do \
+	@for sample in $(SAMPLES); do \
 	  echo "$(STAT_ORDER)	samples	$$sample	-	r1	$$sample.r1.fastq.gz	$$(echo $$(gunzip -c $$sample.r1.fastq.gz | wc -l)/4 | bc)"; \
 	  echo "$(STAT_ORDER)	samples	$$sample	-	r2	$$sample.r2.fastq.gz	$$(echo $$(gunzip -c $$sample.r2.fastq.gz | wc -l)/4 | bc)"; \
 	done | sort | tee $@
