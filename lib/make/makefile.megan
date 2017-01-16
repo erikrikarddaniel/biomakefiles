@@ -10,8 +10,10 @@ SHELL := /bin/bash
 
 # *** Parameters ***
 
-# Important to override if you don't have your megan files in a subdirectory of
-# the current directory called megan (or a symlink).
+# Important to override if you don't have your megan mapping files in a subdirectory of
+# the current directory called megan (or a symlink). Also note that mapping files should
+# be named (directly or via symlinks): prot_acc2tax.abin, acc2eggnog.abin, acc2interpro.abin
+# and acc2seed.abin respectively for the different databases.
 MEGAN_MAPS_DIR = megan
 
 # Needs to be overridden if you have MEGAN installed in e.g. /opt/megan.
