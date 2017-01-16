@@ -10,7 +10,7 @@ SHELL := /bin/bash
 
 # *** Parameters ***
 
-# Important to override if you don't have your megan files in a subdirectory of
+# Important to override if you don't have your megan mapping files in a subdirectory of
 # the current directory called megan (or a symlink).
 MEGAN_MAPS_DIR = megan
 
