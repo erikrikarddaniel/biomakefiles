@@ -2,6 +2,8 @@ sessionname biomakefiles
 setenv ROOT $PWD
 chdir $ROOT/doc
 screen -t doc
+chdir presentations
+screen -t presentations
 chdir $ROOT/gitignores
 screen -t gitignores
 chdir $ROOT/lib/make
