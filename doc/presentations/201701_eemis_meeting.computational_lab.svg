@@ -16,7 +16,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="201701_eemis_meeting.rna_as_detector.pipeline.svg">
+   sodipodi:docname="201701_eemis_meeting.computational_lab.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -567,7 +567,7 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#G2"
-       id="linearGradient4860"
+       id="linearGradient5828"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.9585,0,0,0.51059,0,280)"
        x1="121.74"
@@ -577,12 +577,52 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#G2"
-       id="linearGradient4862"
+       id="linearGradient5830"
        gradientTransform="matrix(1.5147,0,0,0.66019,0,280)"
        x1="131.92"
        y1="1448.5"
        x2="189.14"
        y2="1448.5" />
+    <linearGradient
+       gradientTransform="scale(1.2219423,0.81836924)"
+       id="gradientFill-1"
+       x1="0.74144253"
+       x2="590.86259"
+       y1="3.6658269"
+       y2="593.78698"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad">
+      <stop
+         offset="0"
+         stop-color="rgb(203,206,208)"
+         stop-opacity="1"
+         id="stop7" />
+      <stop
+         offset="1"
+         stop-color="rgb(132,131,139)"
+         stop-opacity="1"
+         id="stop9-1" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="scale(0.9899476,1.0101545)"
+       id="gradientFill-2"
+       x1="301.02603"
+       x2="703.06751"
+       y1="151.40061"
+       y2="553.44209"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad">
+      <stop
+         offset="0"
+         stop-color="rgb(39,109,195)"
+         stop-opacity="1"
+         id="stop12" />
+      <stop
+         offset="1"
+         stop-color="rgb(22,92,170)"
+         stop-opacity="1"
+         id="stop14-5" />
+    </linearGradient>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -591,9 +631,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.24748737"
-     inkscape:cx="1599.9153"
-     inkscape:cy="1780.3917"
+     inkscape:zoom="0.32474923"
+     inkscape:cx="1281.6138"
+     inkscape:cy="1508.611"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -626,13 +666,13 @@
     <rect
        style="opacity:1;fill:#fff500;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect4136"
-       width="2104.7244"
-       height="274.76147"
-       x="0"
-       y="780.50342" />
+       width="2106.2639"
+       height="160.82741"
+       x="-1.5396495"
+       y="894.4375" />
     <g
        id="g12"
-       transform="matrix(0.125,0,0,-0.125,41.658946,1014.3429)">
+       transform="matrix(0.09375,0,0,-0.09375,23.103659,1050.2282)">
       <path
          d="m 8919.87,670.773 c 0,52.801 -42.79,95.594 -95.58,95.594 -52.78,0 -95.58,-42.793 -95.58,-95.594 0,-52.785 42.8,-95.578 95.58,-95.578 52.79,0 95.58,42.793 95.58,95.578 z m -268.97,266.93 c -52.78,0 -95.57,-42.793 -95.57,-95.574 0,-52.793 42.79,-95.586 95.57,-95.586 52.79,0 95.58,42.793 95.58,95.586 0,52.781 -42.79,95.574 -95.58,95.574 z m 118.3,-44.129 c 0,-52.793 42.8,-95.586 95.6,-95.586 52.8,0 95.58,42.793 95.58,95.586 0,52.793 -42.78,95.598 -95.58,95.598 -52.8,0 -95.6,-42.805 -95.6,-95.598 z m 28.08,314.876 c -52.78,0 -95.59,-42.79 -95.59,-95.6 0,-52.78 42.81,-95.56 95.59,-95.56 52.78,0 95.59,42.78 95.59,95.56 0,52.81 -42.81,95.6 -95.59,95.6 z m 204.8,-8.98 c 52.8,0 95.59,42.82 95.59,95.59 0,52.77 -42.79,95.58 -95.59,95.58 -52.79,0 -95.57,-42.81 -95.57,-95.58 0,-52.77 42.78,-95.59 95.57,-95.59 z m 179.88,122.01 c 52.79,0 95.57,42.8 95.57,95.59 0,52.79 -42.78,95.57 -95.57,95.57 -52.79,0 -95.58,-42.78 -95.58,-95.57 0,-52.79 42.79,-95.59 95.58,-95.59 z m -483.51,-301.34 c 0,30.9 -25.04,55.95 -55.94,55.95 -30.89,0 -55.94,-25.05 -55.94,-55.95 0,-30.902 25.05,-55.96 55.94,-55.96 30.9,0 55.94,25.058 55.94,55.96 z m 112.27,309.88 c 30.89,0 55.96,25.04 55.96,55.96 0,30.91 -25.07,55.95 -55.96,55.95 -30.9,0 -55.95,-25.04 -55.95,-55.95 0,-30.92 25.05,-55.96 55.95,-55.96 z m 194.14,101.43 c 30.89,0 55.96,25.03 55.96,55.93 0,30.92 -25.07,55.96 -55.96,55.96 -30.9,0 -55.94,-25.04 -55.94,-55.96 0,-30.9 25.04,-55.93 55.94,-55.93 z m 487.3,-463.794 c -30.9,0 -55.93,-25.058 -55.93,-55.945 0,-30.91 25.03,-55.969 55.93,-55.969 30.89,0 55.96,25.059 55.96,55.969 0,30.887 -25.07,55.945 -55.96,55.945 z M 9230.9,1262.09 c 0,-52.78 42.79,-95.57 95.6,-95.57 52.78,0 95.58,42.79 95.58,95.57 0,52.79 -42.8,95.59 -95.58,95.59 -52.81,0 -95.6,-42.8 -95.6,-95.59 z m 6.47,-137.83 c 0,52.79 -42.79,95.58 -95.57,95.58 -52.79,0 -95.59,-42.79 -95.59,-95.58 0,-52.8 42.8,-95.59 95.59,-95.59 52.78,0 95.57,42.79 95.57,95.59 z m 117.1,-190.119 c 52.77,0 95.57,42.793 95.57,95.589 0,52.79 -42.8,95.55 -95.57,95.55 -52.79,0 -95.58,-42.76 -95.58,-95.55 0,-52.796 42.79,-95.589 95.58,-95.589 z M 9177.23,754.512 c -52.8,0 -95.57,-42.774 -95.57,-95.567 0,-52.793 42.77,-95.605 95.57,-95.605 52.78,0 95.59,42.812 95.59,95.605 0,52.793 -42.81,95.567 -95.59,95.567 z m -6.98,42.832 c 52.8,0 95.58,42.812 95.58,95.605 0,52.785 -42.78,95.559 -95.58,95.559 -52.78,0 -95.57,-42.774 -95.57,-95.559 0,-52.793 42.79,-95.605 95.57,-95.605 z m 200.6,71.457 c -52.77,0 -95.54,-42.793 -95.54,-95.567 0,-52.785 42.77,-95.578 95.54,-95.578 52.81,0 95.59,42.793 95.59,95.578 0,52.774 -42.78,95.567 -95.59,95.567 z m -643.24,428.589 c -2.44,50.62 -44.23,90.91 -95.46,90.91 -52.79,0 -95.59,-42.79 -95.59,-95.57 0,-52.79 42.8,-95.59 95.59,-95.59 47.79,0 87.37,35.07 94.46,80.85 24.87,-2.95 61.93,-11.17 98.58,-33.79 62.04,-38.27 234,-151.1 119.17,-670.059 -68.29,-308.641 -86.51,-369.84 -86.51,-369.84 l 233.76,0 c 0,0 -38.05,185.64 -41.93,472.047 14.6,518.202 -146.03,596.972 -322.07,621.042"
          style="fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -748,7 +788,7 @@
        style="opacity:1;fill:#fff500;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:120px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-stretch:normal;font-variant:normal;"
+       style="font-style:normal;font-weight:normal;font-size:120px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-stretch:normal;font-variant:normal;"
        x="88.893425"
        y="-2252.8569"
        id="text4237"
@@ -759,36 +799,38 @@
          y="-2252.8569" /></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:bold;font-size:120px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="36.502697"
+       style="font-style:normal;font-weight:bold;font-size:120px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="32.218262"
        y="-1781.7806"
        id="text4241"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="36.502697"
+         x="32.218262"
          y="-1781.7806"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Sans;-inkscape-font-specification:'Sans Bold'"
-         id="tspan4255">The computational lab – RNA</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:100px;font-family:FreeSans;-inkscape-font-specification:'FreeSans Semi-Bold'"
+         id="tspan4253">The computational lab – RNA annotation </tspan><tspan
          sodipodi:role="line"
-         x="36.502697"
-         y="-1631.7806"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Sans;-inkscape-font-specification:'Sans Bold'"
-         id="tspan4253">annotation</tspan></text>
+         x="32.218262"
+         y="-1656.7806"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:100px;font-family:FreeSans;-inkscape-font-specification:'FreeSans Semi-Bold'"
+         id="tspan5718">with <tspan
+   style="font-style:italic"
+   id="tspan4665">Make</tspan> and &quot;biomakefiles&quot;</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:bold;font-size:120px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="32.825939"
+       style="font-style:normal;font-weight:bold;font-size:120px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="28.018261"
        y="-1523.4659"
        id="text4247"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4249"
-         x="32.825939"
+         x="28.018261"
          y="-1523.4659"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:90px;font-family:Sans;-inkscape-font-specification:Sans">Daniel Lundin</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:90px;font-family:FreeSans;-inkscape-font-specification:FreeSans">Daniel Lundin</tspan></text>
     <g
        id="g4738"
-       transform="matrix(0.66246996,0,0,0.66246996,373.79234,-487.19932)">
+       transform="matrix(0.72871696,0,0,0.72871696,825.33538,-282.30953)">
       <ellipse
          ry="287.15192"
          rx="306.33664"
@@ -808,7 +850,7 @@
          id="text4988"
          y="-1092.3566"
          x="1549.2456"
-         style="font-style:normal;font-weight:normal;font-size:13.78444576px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;font-size:13.78444576px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:36.75852203px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
            id="tspan4992"
@@ -846,7 +888,7 @@
                  d="m 207.06,1162.3 c 1.91,2 5.06,3.8 9.45,3.9 l 42.77,-11.7 -9.22,-2.2 -43,10 z"
                  id="p2"
                  inkscape:connector-curvature="0"
-                 style="fill:url(#linearGradient4860);stroke:#000000;stroke-opacity:0.2" />
+                 style="fill:url(#linearGradient5828);stroke:#000000;stroke-opacity:0.2" />
               <path
                  d="m 218.75,1168.2 41.25,-11.4 -0.75,24.4 c -1.42,26.9 -31.08,-18.8 -40.5,16.3 l 0,-29.3 z"
                  id="path60"
@@ -893,7 +935,7 @@
                  d="m 287.32,1219.6 -52.5,26.8 -34.64,-25.5 -0.36,8.9 35.18,28.1 52,-27.5 0.32,-10.8 z"
                  id="p10"
                  inkscape:connector-curvature="0"
-                 style="fill:url(#linearGradient4862);stroke:#000000;stroke-width:2;stroke-opacity:0.19607999" />
+                 style="fill:url(#linearGradient5830);stroke:#000000;stroke-width:2;stroke-opacity:0.19607999" />
               <path
                  d="m 203.65,1218.8 48.79,-20.1 32.17,19.8 c -6.25,3.2 -15.54,7.6 -21.21,8.5 -25.44,3.8 -17.33,-13.1 -59.75,-8.2 z"
                  id="path75"
@@ -950,7 +992,7 @@
            id="text4998"
            y="-127.92262"
            x="373.93457"
-           style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:Sans;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            xml:space="preserve"><tspan
              id="tspan5002"
              style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:60px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
@@ -978,7 +1020,7 @@
            id="text5008"
            y="1193.3569"
            x="372.81427"
-           style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            xml:space="preserve"><tspan
              id="tspan5012"
              style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:60px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
@@ -1006,7 +1048,7 @@
            id="text5018"
            y="406.9173"
            x="-471.77869"
-           style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            xml:space="preserve"><tspan
              id="tspan5022"
              style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:60px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
@@ -1024,7 +1066,7 @@
          id="text5028"
          y="-1012.8168"
          x="1029.8988"
-         style="font-style:normal;font-weight:normal;font-size:13.78444576px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;font-size:13.78444576px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:Sans;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:49.01136017px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
            y="-1012.8168"
@@ -1225,7 +1267,7 @@
            id="text3483"
            y="369.4173"
            x="-441.73322"
-           style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            xml:space="preserve"><tspan
              id="tspan3487"
              style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:60px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';text-align:center;text-anchor:middle"
@@ -1244,5 +1286,2584 @@
              id="tspan3491">makecall files</tspan></text>
       </g>
     </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.24366"
+       y="-1376.0446"
+       id="text4383"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4385"
+         x="24.24366"
+         y="-1376.0446"
+         style="font-size:60px">Using <tspan
+   style="font-style:italic"
+   id="tspan4601">Make</tspan> for automation</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="537.40118"
+       y="-753.79053"
+       id="text4501"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4503"
+         x="537.40118"
+         y="-753.79053" /></text>
+    <g
+       transform="matrix(1.7755893,0,0,1.418042,-336.67823,-1633.2201)"
+       id="g5618">
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:#ffffff"
+         d="m 200,360 580,0 0,154.286 c -116,-25.715 -174,-25.715 -290,0 C 374,540 316,540 200,514.286 L 200,360 Z"
+         id="path5620" />
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+         d="m 200,360 580,0 0,154.286 c -116,-25.715 -174,-25.715 -290,0 C 374,540 316,540 200,514.286 L 200,360"
+         id="path5622" />
+      <text
+         font-size="12.7998"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:FreeSans;text-anchor:middle;fill:#000000"
+         x="490"
+         y="428.28601"
+         id="text5624">
+        <tspan
+           x="490"
+           y="428.28601"
+           id="tspan5626" />
+      </text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="32.649765"
+       y="-1098.542"
+       id="text4495"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4497"
+         x="32.649765"
+         y="-1098.542"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono">my_assembly.megahit_out: forward_reads.fastq.gz reverse_reads.fastq.gz</tspan><tspan
+         sodipodi:role="line"
+         x="32.649765"
+         y="-1070.417"
+         id="tspan4499"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono">        megahit -1 $&lt; -2 $(word 2,$^) -o $@</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4529"
+       y="-1150.0446"
+       x="24.24366"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-1150.0446"
+         x="24.24366"
+         id="tspan4531"
+         sodipodi:role="line">1. Simplest case: <tspan
+   id="tspan4599"
+   style="font-style:italic">Hardcoded</tspan> rule</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.24366"
+       y="-1316.0446"
+       id="text4533"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="-1316.0446"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan4537">Make is a programming tool that's also useful for automation of  computational </tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="-1278.5446"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5229">workflows in biology.</tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="-1241.0446"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5240">Make calls other programs, documenting how they were called. It needs </tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="-1203.5446"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5257">instructions in the form of <tspan
+   style="font-style:italic"
+   id="tspan4543">rules</tspan> in a Makefile.</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4560"
+       y="-840.04462"
+       x="24.24366"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-840.04462"
+         x="24.24366"
+         sodipodi:role="line"
+         id="tspan4589">With a file called Makefile in the same directory as the pair of fastq files, you can </tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-802.54462"
+         x="24.24366"
+         sodipodi:role="line"
+         id="tspan5245">run the assembly with this command:</tspan></text>
+    <g
+       id="g5264"
+       transform="translate(0,-60)">
+      <rect
+         y="-727.63782"
+         x="20"
+         height="39.999977"
+         width="1030"
+         id="rect5262"
+         style="opacity:1;fill:#000080;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4591"
+         y="-700.04462"
+         x="24.24366"
+         style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeMono;-inkscape-font-specification:FreeMono;fill:#ffff00"
+           y="-700.04462"
+           x="24.24366"
+           sodipodi:role="line"
+           id="tspan4595">$ make my_assembly.megahit_out</tspan></text>
+    </g>
+    <g
+       id="g4607"
+       transform="matrix(1.7755893,0,0,1.418042,-336.67823,-1183.2201)">
+      <path
+         id="path4609"
+         d="m 200,360 580,0 0,154.286 c -116,-25.715 -174,-25.715 -290,0 C 374,540 316,540 200,514.286 L 200,360 Z"
+         style="fill:#ffffff"
+         inkscape:connector-curvature="0" />
+      <path
+         id="path4611"
+         d="m 200,360 580,0 0,154.286 c -116,-25.715 -174,-25.715 -290,0 C 374,540 316,540 200,514.286 L 200,360"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0" />
+      <text
+         id="text4613"
+         y="428.28601"
+         x="490"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:FreeSans;text-anchor:middle;fill:#000000"
+         font-size="12.7998">
+        <tspan
+           id="tspan4615"
+           y="428.28601"
+           x="490" />
+      </text>
+    </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4617"
+       y="-648.54199"
+       x="32.649765"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+         id="tspan4621"
+         y="-648.54199"
+         x="32.649765"
+         sodipodi:role="line"># Pattern rule for assemblies</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+         y="-620.41699"
+         x="32.649765"
+         sodipodi:role="line"
+         id="tspan4643">%.megahit_out: %.r1.fastq.gz %.r2.fastq.gz</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+         y="-592.29199"
+         x="32.649765"
+         sodipodi:role="line"
+         id="tspan4645">        megahit -1 $&lt; -2 $(word 2,$^) -o $@</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+         y="-564.16699"
+         x="32.649765"
+         sodipodi:role="line"
+         id="tspan4647" /><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+         y="-536.04199"
+         x="32.649765"
+         sodipodi:role="line"
+         id="tspan4649"># Rule that calculates all possible assemblies that can be run</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+         y="-507.91699"
+         x="32.649765"
+         sodipodi:role="line"
+         id="tspan4651">all_assemblies: $(subst .r1.fastq.gz,.megahit_out,$(wildcard *.r1.fastq.gz))</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.24366"
+       y="-700.04456"
+       id="text4623"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4625"
+         x="24.24366"
+         y="-700.04456"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:FreeSans;-inkscape-font-specification:Sans">2. Reusable <tspan
+   id="tspan4639"
+   style="font-style:italic">pattern</tspan> rules</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.24366"
+       y="-394.04462"
+       id="text4629"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="-394.04462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan4655">The above Makefile specifies one pattern rule for the actual assembly and </tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="-356.54462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan4657">another rule that calculates all possible assemblies and makes it possible to run</tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="-319.04462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5255">all, one after another. You run all assemblies like this:</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4659"
+       y="-1523.4659"
+       x="583.82471"
+       style="font-style:normal;font-weight:bold;font-size:120px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:90px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+         y="-1523.4659"
+         x="583.82471"
+         id="tspan4661"
+         sodipodi:role="line">daniel.lundin@lnu.se</tspan></text>
+    <g
+       id="g5269"
+       transform="translate(0,440)">
+      <rect
+         style="opacity:1;fill:#000080;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect5271"
+         width="1030"
+         height="39.999977"
+         x="20"
+         y="-727.63782" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="24.24366"
+         y="-700.04462"
+         id="text5273"
+         sodipodi:linespacing="125%"><tspan
+           id="tspan5275"
+           sodipodi:role="line"
+           x="24.24366"
+           y="-700.04462"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeMono;-inkscape-font-specification:FreeMono;fill:#ffff00">$ make all_assemblies</tspan></text>
+    </g>
+    <g
+       transform="matrix(1.7755893,0,0,1.418042,-336.67823,-565.22006)"
+       id="g5281">
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:#ffffff"
+         d="m 200,360 580,0 0,154.286 c -116,-25.715 -174,-25.715 -290,0 C 374,540 316,540 200,514.286 L 200,360 Z"
+         id="path5283" />
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
+         d="m 200,360 580,0 0,154.286 c -116,-25.715 -174,-25.715 -290,0 C 374,540 316,540 200,514.286 L 200,360"
+         id="path5285" />
+      <text
+         font-size="12.7998"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:FreeSans;text-anchor:middle;fill:#000000"
+         x="490"
+         y="428.28601"
+         id="text5287">
+        <tspan
+           x="490"
+           y="428.28601"
+           id="tspan5289" />
+      </text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="32.649765"
+       y="-28.541992"
+       id="text5291"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan5303"
+         sodipodi:role="line"
+         x="32.649765"
+         y="-28.541992"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:FreeMono;-inkscape-font-specification:FreeMono">include /my_directory/makefile.megahit</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5305"
+       y="-200.04456"
+       x="24.24366"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-200.04456"
+         x="24.24366"
+         id="tspan5307"
+         sodipodi:role="line">3. Reusable rules in <tspan
+   id="tspan5327"
+   style="font-style:italic">library</tspan> makefiles</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5361"
+       y="-154.04462"
+       x="24.24366"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         id="tspan5367"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-154.04462"
+         x="24.24366"
+         sodipodi:role="line">If you place the content of the above Makefile in a file called for instance</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-116.54462"
+         x="24.24366"
+         sodipodi:role="line"
+         id="tspan5374">makefile.megahit in a directory called my_directory, you can reuse the rules in</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-79.044617"
+         x="24.24366"
+         sodipodi:role="line"
+         id="tspan5376">other projects:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.24366"
+       y="239.95544"
+       id="text5416"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5418"
+         x="24.24366"
+         y="239.95544"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:FreeSans;-inkscape-font-specification:Sans">4. Reusable rules in &quot;<tspan
+   style="font-style:italic"
+   id="tspan5492">biomakefiles</tspan>&quot;</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.24366"
+       y="285.95538"
+       id="text5422"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan5428"
+         sodipodi:role="line"
+         x="24.24366"
+         y="285.95538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans">I have written a number of library makefiles for popular programs that you can</tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="323.45538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5499">use in your projects. There are currently 26 files, covering e.g. quality control of</tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="360.95538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5501">sequences, assembly, annotation, alignment and phylogenetics. If there's </tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="398.45538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5503">something missing, contact me.</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5513"
+       y="-1376.0446"
+       x="1097.8629"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:60px"
+         y="-1376.0446"
+         x="1097.8629"
+         id="tspan5515"
+         sodipodi:role="line">Setting up a computer lab</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1099.9629"
+       y="-656.04462"
+       id="text5560"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan5570"
+         sodipodi:role="line"
+         x="1099.9629"
+         y="-656.04462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans">Conceptually, a &quot;lab&quot; for computational analyses is similar to a wetlab. </tspan><tspan
+         sodipodi:role="line"
+         x="1099.9629"
+         y="-618.54462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5586">You need a place to work and store data (a <tspan
+   style="font-style:italic"
+   id="tspan5588">file system</tspan>), <tspan
+   style="font-style:italic"
+   id="tspan5594">programs</tspan> to </tspan><tspan
+         sodipodi:role="line"
+         x="1099.9629"
+         y="-581.04462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5590">perform various steps in analyses and <tspan
+   style="font-style:italic"
+   id="tspan5592">external data</tspan>, e.g. downloadable </tspan><tspan
+         sodipodi:role="line"
+         x="1099.9629"
+         y="-543.54462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5596">sequence databases to use in annotation of your sequences. Like in the </tspan><tspan
+         sodipodi:role="line"
+         x="1099.9629"
+         y="-506.04462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5598">wet lab you need protocols, instructions for how to chain program calls </tspan><tspan
+         sodipodi:role="line"
+         x="1099.9629"
+         y="-468.54462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5741">into a workflow and you need to record what you did in a &quot;lab book&quot;.</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5606"
+       y="-416.04462"
+       x="1099.3629"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         id="tspan5624"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-416.04462"
+         x="1099.3629"
+         sodipodi:role="line">Besides its usefullness in helping you to automate tasks, the biomakefiles</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-378.54462"
+         x="1099.3629"
+         sodipodi:role="line"
+         id="tspan5658">repository provides some help in setting up the lab. At its heart, the</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-341.04462"
+         x="1099.3629"
+         sodipodi:role="line"
+         id="tspan5660">repository is a collection of protocols of relatively low granularity (i.e. </tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-303.54462"
+         x="1099.3629"
+         sodipodi:role="line"
+         id="tspan5662">describing relatively small parts of full workflow). Together with </tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-266.04462"
+         x="1099.3629"
+         sodipodi:role="line"
+         id="tspan5664">documentation on best practices for various types of analyses (mostly</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="-228.54462"
+         x="1099.3629"
+         sodipodi:role="line"
+         id="tspan5666">annotation of sequences), you're helped with collecting protocols.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1099.6628"
+       y="-176.04462"
+       id="text5668"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan5680"
+         sodipodi:role="line"
+         x="1099.6628"
+         y="-176.04462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans">Moreover, each time you call a program through Make and a biomakefile,</tspan><tspan
+         sodipodi:role="line"
+         x="1099.6628"
+         y="-138.54462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5702">the version of the progam called is recorded together with how you set</tspan><tspan
+         sodipodi:role="line"
+         x="1099.6628"
+         y="-101.04462"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5704">parameters and the versions/timestamps for input files. Development of a</tspan><tspan
+         sodipodi:role="line"
+         x="1099.6628"
+         y="-63.544617"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5706">skeleton electronic lab book from this is ongoing.</tspan></text>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000080;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect5708"
+       width="1006.4725"
+       height="423.6763"
+       x="1077.6829"
+       y="-37.637947" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1095.4629"
+       y="23.955383"
+       id="text5710"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5712"
+         x="1095.4629"
+         y="23.955383"
+         style="font-size:60px">Installing <tspan
+   style="font-style:italic"
+   id="tspan5714">biomakefiles</tspan></tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5747"
+       y="63.955383"
+       x="1099.6628"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         id="tspan5755"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="63.955383"
+         x="1099.6628"
+         sodipodi:role="line">biomakefiles is just a collection of files and is availble from GitHub:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1099.6628"
+       y="101.95538"
+       id="text5766"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="1099.6628"
+         y="101.95538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans;fill:#0000ff"
+         id="tspan5768">https://github.com/erikrikarddaniel/biomakefiles</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1099.6628"
+       y="171.95538"
+       id="text5770"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="1099.6628"
+         y="171.95538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5774">If you're using a Mac or Linux computer, open a command window, cd into</tspan><tspan
+         sodipodi:role="line"
+         x="1099.6628"
+         y="209.45538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5792">the directory where you want the files and:</tspan><tspan
+         sodipodi:role="line"
+         x="1099.6628"
+         y="246.95538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5776" /></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5778"
+       y="365.95538"
+       x="1099.6628"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         id="tspan5780"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans;fill:#0000ff"
+         y="365.95538"
+         x="1099.6628"
+         sodipodi:role="line">/proj/b2011210/nobackup/dldev/biomakefiles</tspan></text>
+    <g
+       transform="translate(1081.4628,952)"
+       id="g5784">
+      <rect
+         y="-727.63782"
+         x="20"
+         height="39.999977"
+         width="968.53717"
+         id="rect5786"
+         style="opacity:1;fill:#000080;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text5788"
+         y="-700.04462"
+         x="24.24366"
+         style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono;fill:#ffff00"
+           y="-700.04462"
+           x="24.24366"
+           sodipodi:role="line"
+           id="tspan5790">$ git clone https://github.com/erikrikarddaniel/biomakefiles.git</tspan></text>
+    </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5794"
+       y="291.95538"
+       x="1099.6628"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         id="tspan5798"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="291.95538"
+         x="1099.6628"
+         sodipodi:role="line">Run &quot;git pull&quot; regularly from the biomakefiles directory to keep it up to date.</tspan><tspan
+         id="tspan5800"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="329.45538"
+         x="1099.6628"
+         sodipodi:role="line" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1099.6628"
+       y="331.95538"
+       id="text5804"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="1099.6628"
+         y="331.95538"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan5808">The repository is installed at UPPMAX:</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text6308"
+       y="469.95538"
+       x="20.703659"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:60px"
+         y="469.95538"
+         x="20.703659"
+         id="tspan6310"
+         sodipodi:role="line">Suggested workflow for metatranscriptomes</tspan></text>
+    <g
+       transform="matrix(0.71284016,0,0,0.71284012,410.80606,548.48742)"
+       id="g7077">
+      <g
+         id="g5893">
+        <line
+           id="line5895"
+           y2="124.649"
+           x2="69.721001"
+           y1="115.58"
+           x1="41.0028"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon5897"
+           points="68.8427,119.128 76.8729,126.907 65.8314,128.664 69.721,124.649 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon5899"
+           points="68.8427,119.128 76.8729,126.907 65.8314,128.664 69.721,124.649 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g5901">
+        <rect
+           id="rect5903"
+           height="100"
+           width="140"
+           y="100"
+           x="80"
+           style="fill:#ffffff" />
+        <rect
+           id="rect5905"
+           height="100"
+           width="140"
+           y="100"
+           x="80"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text5907"
+           y="145.66701"
+           x="150"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan5909"
+             y="145.66701"
+             x="150">ERNE-filter</tspan>
+          <tspan
+             id="tspan5911"
+             y="162.60001"
+             x="150">incl. trimming</tspan>
+        </text>
+      </g>
+      <g
+         id="g5913">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5915"
+           d="m 480,-60 120,0 0,85.7143 c -24,-14.2857 -36,-14.2857 -60,0 C 516,40 504,40 480,25.7143 L 480,-60 Z"
+           style="fill:#ffffff" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path5917"
+           d="m 480,-60 120,0 0,85.7143 c -24,-14.2857 -36,-14.2857 -60,0 C 516,40 504,40 480,25.7143 L 480,-60"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text5919"
+           y="-36.985699"
+           x="540"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan5921"
+             y="-36.985699"
+             x="540">internal</tspan>
+          <tspan
+             id="tspan5923"
+             y="-20.052401"
+             x="540">standards</tspan>
+          <tspan
+             id="tspan5925"
+             y="-3.11905"
+             x="540">.fna</tspan>
+        </text>
+      </g>
+      <g
+         id="g5927">
+        <line
+           id="line5929"
+           y2="89.287399"
+           x2="540"
+           y1="26.5625"
+           x1="540"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon5931"
+           points="545,86.7874 540,96.7874 535,86.7874 540,89.2874 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon5933"
+           points="545,86.7874 540,96.7874 535,86.7874 540,89.2874 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g5935">
+        <rect
+           id="rect5937"
+           height="100"
+           width="160"
+           y="100"
+           x="460"
+           style="fill:#ffffff" />
+        <rect
+           id="rect5939"
+           height="100"
+           width="160"
+           y="100"
+           x="460"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text5941"
+           y="154.133"
+           x="540"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan5943"
+             y="154.133"
+             x="540">ERNE-filter</tspan>
+        </text>
+      </g>
+      <g
+         id="g5945">
+        <line
+           id="line5947"
+           y2="89.276398"
+           x2="150"
+           y1="39.973099"
+           x1="150"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon5949"
+           points="155,86.7764 150,96.7764 145,86.7764 150,89.2764 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon5951"
+           points="155,86.7764 150,96.7764 145,86.7764 150,89.2764 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g5953">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5955"
+           d="m 100,-60 c 20,-15 30,-20 50,-20 20,0 30,5 50,20 l 0,80 c -20,15 -30,20 -50,20 -20,0 -30,-5 -50,-20 l 0,-80 z"
+           style="fill:#ffffff" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path5957"
+           d="m 100,-60 c 20,-15 30,-20 50,-20 20,0 30,5 50,20 l 0,80 c -20,15 -30,20 -50,20 -20,0 -30,-5 -50,-20 l 0,-80"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path5959"
+           d="m 100,-60 c 20,15 30,20 50,20 20,0 30,-5 50,-20"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text5961"
+           y="-22.700001"
+           x="150"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan5963"
+             y="-22.700001"
+             x="150">SILVA</tspan>
+          <tspan
+             id="tspan5965"
+             y="-5.7666702"
+             x="150">SSU &amp; LSU</tspan>
+          <tspan
+             id="tspan5967"
+             y="11.1667"
+             x="150">Ref</tspan>
+        </text>
+      </g>
+      <g
+         id="g5969">
+        <rect
+           id="rect5971"
+           height="100"
+           width="140"
+           y="100"
+           x="1260"
+           style="fill:#ffffff" />
+        <rect
+           id="rect5973"
+           height="100"
+           width="140"
+           y="100"
+           x="1260"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text5975"
+           y="154.133"
+           x="1330"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan5977"
+             y="154.133"
+             x="1330">Diamond</tspan>
+        </text>
+      </g>
+      <g
+         id="g5979">
+        <rect
+           id="rect5981"
+           height="100"
+           width="140"
+           y="100"
+           x="1640"
+           style="fill:#ffffff" />
+        <rect
+           id="rect5983"
+           height="100"
+           width="140"
+           y="100"
+           x="1640"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text5985"
+           y="154.133"
+           x="1710"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan5987"
+             y="154.133"
+             x="1710">meganize</tspan>
+        </text>
+      </g>
+      <g
+         id="g5989">
+        <line
+           id="line5991"
+           y2="89.276398"
+           x2="1330"
+           y1="39.973099"
+           x1="1330"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon5993"
+           points="1335,86.7764 1330,96.7764 1325,86.7764 1330,89.2764 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon5995"
+           points="1335,86.7764 1330,96.7764 1325,86.7764 1330,89.2764 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g5997">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5999"
+           d="m 1280,-60 c 20,-15 30,-20 50,-20 20,0 30,5 50,20 l 0,80 c -20,15 -30,20 -50,20 -20,0 -30,-5 -50,-20 l 0,-80 z"
+           style="fill:#ffffff" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6001"
+           d="m 1280,-60 c 20,-15 30,-20 50,-20 20,0 30,5 50,20 l 0,80 c -20,15 -30,20 -50,20 -20,0 -30,-5 -50,-20 l 0,-80"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6003"
+           d="m 1280,-60 c 20,15 30,20 50,20 20,0 30,-5 50,-20"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6005"
+           y="-22.700001"
+           x="1330"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6007"
+             y="-22.700001"
+             x="1330">NCBI</tspan>
+          <tspan
+             id="tspan6009"
+             y="-5.7666702"
+             x="1330">RefSeq</tspan>
+          <tspan
+             id="tspan6011"
+             y="11.1667"
+             x="1330">database</tspan>
+        </text>
+      </g>
+      <g
+         id="g6013">
+        <rect
+           id="rect6015"
+           height="80"
+           width="140"
+           y="280"
+           x="1640"
+           style="fill:#00bb00" />
+        <rect
+           id="rect6017"
+           height="80"
+           width="140"
+           y="280"
+           x="1640"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6019"
+           y="315.66699"
+           x="1710"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6021"
+             y="315.66699"
+             x="1710">MEGAN</tspan>
+          <tspan
+             id="tspan6023"
+             y="332.60001"
+             x="1710">(GUI)</tspan>
+        </text>
+      </g>
+      <g
+         id="g6025">
+        <line
+           id="line6027"
+           y2="269.341"
+           x2="1710"
+           y1="200.98801"
+           x1="1710"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6029"
+           points="1715,266.841 1710,276.841 1705,266.841 1710,269.341 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6031"
+           points="1715,266.841 1710,276.841 1705,266.841 1710,269.341 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6033">
+        <g
+           id="g6035">
+          <path
+             inkscape:connector-curvature="0"
+             id="path6037"
+             d="m 1609.52,-160 139.8,0 0,60 c -27.96,-10 -41.94,-10 -69.9,0 -27.96,10 -41.94,10 -69.9,0 l 0,-60 z"
+             style="fill:#ffffff" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path6039"
+             d="m 1609.52,-160 139.8,0 0,60 c -27.96,-10 -41.94,-10 -69.9,0 -27.96,10 -41.94,10 -69.9,0 l 0,-60"
+             style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+          <text
+             id="text6041"
+             y="-130.767"
+             x="1679.42"
+             style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+             font-size="13.5467">
+            <tspan
+               id="tspan6043"
+               y="-130.767"
+               x="1679.42">refseq2taxonomy</tspan>
+          </text>
+        </g>
+        <g
+           id="g6045">
+          <path
+             inkscape:connector-curvature="0"
+             id="path6047"
+             d="m 1636.82,-116.8 118.1,0 0,60 c -23.62,-10 -35.43,-10 -59.05,0 -23.62,10 -35.43,10 -59.05,0 l 0,-60 z"
+             style="fill:#ffffff" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path6049"
+             d="m 1636.82,-116.8 118.1,0 0,60 c -23.62,-10 -35.43,-10 -59.05,0 -23.62,10 -35.43,10 -59.05,0 l 0,-60"
+             style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+          <text
+             id="text6051"
+             y="-87.566704"
+             x="1695.87"
+             style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+             font-size="13.5467">
+            <tspan
+               id="tspan6053"
+               y="-87.566704"
+               x="1695.87">refseq2go</tspan>
+          </text>
+        </g>
+        <g
+           id="g6055">
+          <path
+             inkscape:connector-curvature="0"
+             id="path6057"
+             d="m 1655.02,-73.6 126.6,0 0,60 c -25.32,-10 -37.98,-10 -63.3,0 -25.32,10 -37.98,10 -63.3,0 l 0,-60 z"
+             style="fill:#ffffff" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path6059"
+             d="m 1655.02,-73.6 126.6,0 0,60 c -25.32,-10 -37.98,-10 -63.3,0 -25.32,10 -37.98,10 -63.3,0 l 0,-60"
+             style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+          <text
+             id="text6061"
+             y="-44.366699"
+             x="1718.3199"
+             style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+             font-size="13.5467">
+            <tspan
+               id="tspan6063"
+               y="-44.366699"
+               x="1718.3199">refseq2interpro</tspan>
+          </text>
+        </g>
+        <g
+           id="g6065">
+          <path
+             inkscape:connector-curvature="0"
+             id="path6067"
+             d="m 1679.72,-30.4 118.1,0 0,60 c -23.62,-10 -35.43,-10 -59.05,0 -23.62,10 -35.43,10 -59.05,0 l 0,-60 z"
+             style="fill:#ffffff" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path6069"
+             d="m 1679.72,-30.4 118.1,0 0,60 c -23.62,-10 -35.43,-10 -59.05,0 -23.62,10 -35.43,10 -59.05,0 l 0,-60"
+             style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+          <text
+             id="text6071"
+             y="-1.16667"
+             x="1738.77"
+             style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+             font-size="13.5467">
+            <tspan
+               id="tspan6073"
+               y="-1.16667"
+               x="1738.77">refseq2seed</tspan>
+          </text>
+        </g>
+      </g>
+      <g
+         id="g6075">
+        <line
+           id="line6077"
+           y2="89.257896"
+           x2="1709.59"
+           y1="37.099998"
+           x1="1709.24"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6079"
+           points="1714.58,86.7244 1709.64,96.7578 1704.58,86.7916 1709.59,89.2579 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6081"
+           points="1714.58,86.7244 1709.64,96.7578 1704.58,86.7916 1709.59,89.2579 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6083">
+        <rect
+           id="rect6085"
+           height="100"
+           width="140"
+           y="100"
+           x="2020"
+           style="fill:#ffffff" />
+        <rect
+           id="rect6087"
+           height="100"
+           width="140"
+           y="100"
+           x="2020"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6089"
+           y="154.133"
+           x="2090"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6091"
+             y="154.133"
+             x="2090">daa2info</tspan>
+        </text>
+      </g>
+      <g
+         id="g6093">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6095"
+           d="m 2200,-40 140,0 0,68.5714 c -28,-11.4285 -42,-11.4285 -70,0 -28,11.4286 -42,11.4286 -70,0 L 2200,-40 Z"
+           style="fill:#00bb00" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6097"
+           d="m 2200,-40 140,0 0,68.5714 c -28,-11.4285 -42,-11.4285 -70,0 -28,11.4286 -42,11.4286 -70,0 L 2200,-40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6099"
+           y="-7.19524"
+           x="2270"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6101"
+             y="-7.19524"
+             x="2270">taxonomy.tsv.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6103">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6105"
+           d="m 2200,60 140,0 0,68.571 c -28,-11.428 -42,-11.428 -70,0 -28,11.429 -42,11.429 -70,0 L 2200,60 Z"
+           style="fill:#00bb00" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6107"
+           d="m 2200,60 140,0 0,68.571 c -28,-11.428 -42,-11.428 -70,0 -28,11.429 -42,11.429 -70,0 L 2200,60"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6109"
+           y="92.804802"
+           x="2270"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6111"
+             y="92.804802"
+             x="2270">eggnog.tsv.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6113">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6115"
+           d="m 2200,160 140,0 0,68.571 c -28,-11.428 -42,-11.428 -70,0 -28,11.429 -42,11.429 -70,0 L 2200,160 Z"
+           style="fill:#00bb00" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6117"
+           d="m 2200,160 140,0 0,68.571 c -28,-11.428 -42,-11.428 -70,0 -28,11.429 -42,11.429 -70,0 L 2200,160"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6119"
+           y="192.80499"
+           x="2270"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6121"
+             y="192.80499"
+             x="2270">interpro.tsv.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6123">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6125"
+           d="m 2200,260 140,0 0,68.571 c -28,-11.428 -42,-11.428 -70,0 -28,11.429 -42,11.429 -70,0 L 2200,260 Z"
+           style="fill:#00bb00" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6127"
+           d="m 2200,260 140,0 0,68.571 c -28,-11.428 -42,-11.428 -70,0 -28,11.429 -42,11.429 -70,0 L 2200,260"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6129"
+           y="292.80499"
+           x="2270"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6131"
+             y="292.80499"
+             x="2270">seed.tsv.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6133">
+        <line
+           id="line6135"
+           y2="122.235"
+           x2="2189.96"
+           y1="130.371"
+           x1="2160.6599"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6137"
+           points="2186.21,118.086 2197.18,120.227 2188.88,127.721 2189.96,122.235 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6139"
+           points="2186.21,118.086 2197.18,120.227 2188.88,127.721 2189.96,122.235 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <text
+         id="text6141"
+         y="280"
+         x="160"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6143"
+           y="280"
+           x="160">1. Filter out stable</tspan>
+        <tspan
+           id="tspan6145"
+           y="305.39999"
+           x="160">RNA, i.e. rRNA</tspan>
+      </text>
+      <text
+         id="text6147"
+         y="280"
+         x="520"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6149"
+           y="280"
+           x="520">2. Optional: Filter</tspan>
+        <tspan
+           id="tspan6151"
+           y="305.39999"
+           x="520">out added</tspan>
+        <tspan
+           id="tspan6153"
+           y="330.79999"
+           x="520">internal standard</tspan>
+        <tspan
+           id="tspan6155"
+           y="356.20001"
+           x="520">sequences</tspan>
+      </text>
+      <g
+         id="g6157">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6159"
+           d="m -540,40 200,0 0,85.714 c -40,-14.285 -60,-14.285 -100,0 -40,14.286 -60,14.286 -100,0 L -540,40 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6161"
+           d="m -540,40 200,0 0,85.714 c -40,-14.285 -60,-14.285 -100,0 -40,14.286 -60,14.286 -100,0 L -540,40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6163"
+           y="79.947601"
+           x="-440"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6165"
+             y="79.947601"
+             x="-440">machinename_1.fastq.gz</tspan>
+        </text>
+      </g>
+      <text
+         id="text6167"
+         y="280"
+         x="1320"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6169"
+           y="280"
+           x="1320">4. Align all reads</tspan>
+        <tspan
+           id="tspan6171"
+           y="305.39999"
+           x="1320">to the RefSeq</tspan>
+        <tspan
+           id="tspan6173"
+           y="330.79999"
+           x="1320">database</tspan>
+      </text>
+      <g
+         id="g6175">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6177"
+           d="m -540,160 200,0 0,85.714 c -40,-14.285 -60,-14.285 -100,0 -40,14.286 -60,14.286 -100,0 L -540,160 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6179"
+           d="m -540,160 200,0 0,85.714 c -40,-14.285 -60,-14.285 -100,0 -40,14.286 -60,14.286 -100,0 L -540,160"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6181"
+           y="199.948"
+           x="-440"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6183"
+             y="199.948"
+             x="-440">machinename_2.fastq.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6185">
+        <rect
+           id="rect6187"
+           height="100"
+           width="140"
+           y="100"
+           x="-300"
+           style="fill:#ffffff" />
+        <rect
+           id="rect6189"
+           height="100"
+           width="140"
+           y="100"
+           x="-300"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6191"
+           y="145.66701"
+           x="-230"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6193"
+             y="145.66701"
+             x="-230">Create</tspan>
+          <tspan
+             id="tspan6195"
+             y="162.60001"
+             x="-230">symlinks</tspan>
+        </text>
+      </g>
+      <g
+         id="g6197">
+        <line
+           id="line6199"
+           y2="127.045"
+           x2="-310.34399"
+           y1="118.843"
+           x1="-339.04999"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6201"
+           points="-311.374,121.55 -303.133,129.105 -314.122,131.165 -310.344,127.045 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6203"
+           points="-311.374,121.55 -303.133,129.105 -314.122,131.165 -310.344,127.045 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6205">
+        <line
+           id="line6207"
+           y2="172.955"
+           x2="-310.34399"
+           y1="181.157"
+           x1="-339.04999"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6209"
+           points="-314.122,168.835 -303.133,170.895 -311.374,178.45 -310.344,172.955 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6211"
+           points="-314.122,168.835 -303.133,170.895 -311.374,178.45 -310.344,172.955 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <text
+         id="text6213"
+         y="280"
+         x="-240"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6215"
+           y="280"
+           x="-240">0. Translate names</tspan>
+        <tspan
+           id="tspan6217"
+           y="305.39999"
+           x="-240">of files from</tspan>
+        <tspan
+           id="tspan6219"
+           y="330.79999"
+           x="-240">sequencing to</tspan>
+        <tspan
+           id="tspan6221"
+           y="356.20001"
+           x="-240">sample names</tspan>
+      </text>
+      <g
+         id="g6223">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6225"
+           d="m -120,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L -120,40 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6227"
+           d="m -120,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L -120,40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6229"
+           y="79.947601"
+           x="-40"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6231"
+             y="79.947601"
+             x="-40">sample.r1.fastq.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6233">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6235"
+           d="m -120,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L -120,160 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6237"
+           d="m -120,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L -120,160"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6239"
+           y="199.948"
+           x="-40"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6241"
+             y="199.948"
+             x="-40">sample.r2.fastq.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6243">
+        <line
+           id="line6245"
+           y2="118.512"
+           x2="-130.287"
+           y1="127.581"
+           x1="-159.005"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6247"
+           points="-134.177,114.497 -123.135,116.253 -131.165,124.032 -130.287,118.512 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6249"
+           points="-134.177,114.497 -123.135,116.253 -131.165,124.032 -130.287,118.512 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6251">
+        <line
+           id="line6253"
+           y2="181.48801"
+           x2="-130.287"
+           y1="172.41901"
+           x1="-159.005"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6255"
+           points="-131.165,175.968 -123.135,183.747 -134.177,185.503 -130.287,181.488 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6257"
+           points="-131.165,175.968 -123.135,183.747 -134.177,185.503 -130.287,181.488 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <text
+         id="text6259"
+         y="300"
+         x="-440"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6261"
+           y="300"
+           x="-440">project root</tspan>
+        <tspan
+           id="tspan6263"
+           y="325.39999"
+           x="-440">directory</tspan>
+      </text>
+      <text
+         id="text6265"
+         y="300"
+         x="-40"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6267"
+           y="300"
+           x="-40">&quot;samples&quot;</tspan>
+        <tspan
+           id="tspan6269"
+           y="325.39999"
+           x="-40">directory</tspan>
+      </text>
+      <g
+         id="g6271">
+        <line
+           id="line6273"
+           y2="188.311"
+           x2="70.272301"
+           y1="202.85699"
+           x1="40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6275"
+           points="65.8534,184.887 77.0324,185.062 70.1845,193.9 70.2723,188.311 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6277"
+           points="65.8534,184.887 77.0324,185.062 70.1845,193.9 70.2723,188.311 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6279">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6281"
+           d="m 260,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 260,40 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6283"
+           d="m 260,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 260,40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6285"
+           y="71.481003"
+           x="340"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6287"
+             y="71.481003"
+             x="340">sample.rna-filtered.</tspan>
+          <tspan
+             id="tspan6289"
+             y="88.414299"
+             x="340">r1.fastq.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6291">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6293"
+           d="m 260,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 260,160 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6295"
+           d="m 260,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 260,160"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6297"
+           y="191.481"
+           x="340"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6299"
+             y="191.481"
+             x="340">sample.rna-filtered.</tspan>
+          <tspan
+             id="tspan6301"
+             y="208.414"
+             x="340">r2.fastq.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6303">
+        <line
+           id="line6305"
+           y2="118.512"
+           x2="249.713"
+           y1="127.581"
+           x1="220.995"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6307"
+           points="245.823,114.497 256.865,116.253 248.835,124.032 249.713,118.512 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6309"
+           points="245.823,114.497 256.865,116.253 248.835,124.032 249.713,118.512 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6311">
+        <line
+           id="line6313"
+           y2="181.48801"
+           x2="249.713"
+           y1="172.41901"
+           x1="220.995"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6315"
+           points="248.835,175.968 256.865,183.747 245.823,185.503 249.713,181.488 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6317"
+           points="248.835,175.968 256.865,183.747 245.823,185.503 249.713,181.488 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <text
+         id="text6319"
+         y="300"
+         x="340"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6321"
+           y="300"
+           x="340">&quot;erne-rrna&quot;</tspan>
+        <tspan
+           id="tspan6323"
+           y="325.39999"
+           x="340">directory</tspan>
+      </text>
+      <g
+         id="g6325">
+        <line
+           id="line6327"
+           y2="122.908"
+           x2="449.69299"
+           y1="114.294"
+           x1="420.98099"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6329"
+           points="448.735,117.4 456.877,125.063 445.862,126.979 449.693,122.908 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6331"
+           points="448.735,117.4 456.877,125.063 445.862,126.979 449.693,122.908 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6333">
+        <line
+           id="line6335"
+           y2="177.092"
+           x2="449.69299"
+           y1="185.70599"
+           x1="420.98099"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6337"
+           points="445.862,173.021 456.877,174.937 448.735,182.6 449.693,177.092 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6339"
+           points="445.862,173.021 456.877,174.937 448.735,182.6 449.693,177.092 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6341">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6343"
+           d="m 660,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 660,40 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6345"
+           d="m 660,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 660,40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6347"
+           y="63.014301"
+           x="740"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6349"
+             y="63.014301"
+             x="740">sample.rna-filtered.</tspan>
+          <tspan
+             id="tspan6351"
+             y="79.947601"
+             x="740">stfiltered.</tspan>
+          <tspan
+             id="tspan6353"
+             y="96.880997"
+             x="740">r1.fastq.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6355">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6357"
+           d="m 660,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 660,160 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6359"
+           d="m 660,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 660,160"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6361"
+           y="183.01401"
+           x="740"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6363"
+             y="183.01401"
+             x="740">sample.rna-filtered.</tspan>
+          <tspan
+             id="tspan6365"
+             y="199.948"
+             x="740">stfiltered.</tspan>
+          <tspan
+             id="tspan6367"
+             y="216.881"
+             x="740">r2.fastq.gz</tspan>
+        </text>
+      </g>
+      <text
+         id="text6369"
+         y="300"
+         x="740"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6371"
+           y="300"
+           x="740">&quot;erne-standards&quot;</tspan>
+        <tspan
+           id="tspan6373"
+           y="325.39999"
+           x="740">directory</tspan>
+      </text>
+      <g
+         id="g6375">
+        <line
+           id="line6377"
+           y2="117.092"
+           x2="649.69299"
+           y1="125.706"
+           x1="620.98102"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6379"
+           points="645.862,113.021 656.877,114.937 648.735,122.6 649.693,117.092 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6381"
+           points="645.862,113.021 656.877,114.937 648.735,122.6 649.693,117.092 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6383">
+        <line
+           id="line6385"
+           y2="182.908"
+           x2="649.69299"
+           y1="174.29401"
+           x1="620.98102"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6387"
+           points="648.735,177.4 656.877,185.063 645.862,186.979 649.693,182.908 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6389"
+           points="648.735,177.4 656.877,185.063 645.862,186.979 649.693,182.908 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6391">
+        <line
+           id="line6393"
+           y2="122.908"
+           x2="849.69299"
+           y1="114.294"
+           x1="820.98102"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6395"
+           points="848.735,117.4 856.877,125.063 845.862,126.979 849.693,122.908 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6397"
+           points="848.735,117.4 856.877,125.063 845.862,126.979 849.693,122.908 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6399">
+        <rect
+           id="rect6401"
+           height="100"
+           width="160"
+           y="100"
+           x="860"
+           style="fill:#ffffff" />
+        <rect
+           id="rect6403"
+           height="100"
+           width="160"
+           y="100"
+           x="860"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6405"
+           y="154.133"
+           x="940"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6407"
+             y="154.133"
+             x="940">PEAR</tspan>
+        </text>
+      </g>
+      <text
+         id="text6409"
+         y="280"
+         x="940"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6411"
+           y="280"
+           x="940">3. &quot;Assemble&quot;</tspan>
+        <tspan
+           id="tspan6413"
+           y="305.39999"
+           x="940">pairs into one</tspan>
+        <tspan
+           id="tspan6415"
+           y="330.79999"
+           x="940">sequence</tspan>
+      </text>
+      <g
+         id="g6417">
+        <line
+           id="line6419"
+           y2="177.092"
+           x2="849.69299"
+           y1="185.70599"
+           x1="820.98102"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6421"
+           points="845.862,173.021 856.877,174.937 848.735,182.6 849.693,177.092 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6423"
+           points="845.862,173.021 856.877,174.937 848.735,182.6 849.693,177.092 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6425">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6427"
+           d="m 1060,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1060,40 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6429"
+           d="m 1060,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1060,40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6431"
+           y="63.014301"
+           x="1140"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6433"
+             y="63.014301"
+             x="1140">sample.</tspan>
+          <tspan
+             id="tspan6435"
+             y="79.947601"
+             x="1140">assembled.</tspan>
+          <tspan
+             id="tspan6437"
+             y="96.880997"
+             x="1140">fastq.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6439">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6441"
+           d="m 1060,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1060,160 Z"
+           style="fill:#add8e6" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6443"
+           d="m 1060,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1060,160"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6445"
+           y="183.01401"
+           x="1140"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6447"
+             y="183.01401"
+             x="1140">sample.</tspan>
+          <tspan
+             id="tspan6449"
+             y="199.948"
+             x="1140">unassembled.</tspan>
+          <tspan
+             id="tspan6451"
+             y="216.881"
+             x="1140">fastq.gz</tspan>
+        </text>
+      </g>
+      <g
+         id="g6453">
+        <line
+           id="line6455"
+           y2="117.092"
+           x2="1049.6899"
+           y1="125.706"
+           x1="1020.98"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6457"
+           points="1045.86,113.021 1056.88,114.937 1048.74,122.6 1049.69,117.092 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6459"
+           points="1045.86,113.021 1056.88,114.937 1048.74,122.6 1049.69,117.092 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6461">
+        <line
+           id="line6463"
+           y2="182.908"
+           x2="1049.6899"
+           y1="174.29401"
+           x1="1020.98"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6465"
+           points="1048.74,177.4 1056.88,185.063 1045.86,186.979 1049.69,182.908 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6467"
+           points="1048.74,177.4 1056.88,185.063 1045.86,186.979 1049.69,182.908 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6469">
+        <line
+           id="line6471"
+           y2="124.649"
+           x2="1249.72"
+           y1="115.58"
+           x1="1221"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6473"
+           points="1248.84,119.128 1256.87,126.907 1245.83,128.664 1249.72,124.649 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6475"
+           points="1248.84,119.128 1256.87,126.907 1245.83,128.664 1249.72,124.649 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6477">
+        <line
+           id="line6479"
+           y2="175.351"
+           x2="1249.72"
+           y1="184.42"
+           x1="1221"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6481"
+           points="1245.83,171.336 1256.87,173.093 1248.84,180.872 1249.72,175.351 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6483"
+           points="1245.83,171.336 1256.87,173.093 1248.84,180.872 1249.72,175.351 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <text
+         id="text6485"
+         y="300"
+         x="1140"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6487"
+           y="300"
+           x="1140">&quot;pear&quot;</tspan>
+        <tspan
+           id="tspan6489"
+           y="325.39999"
+           x="1140">directory</tspan>
+      </text>
+      <g
+         id="g6491">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6493"
+           d="m 1440,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1440,40 Z"
+           style="fill:#ffff00" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6495"
+           d="m 1440,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1440,40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6497"
+           y="63.014301"
+           x="1520"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6499"
+             y="63.014301"
+             x="1520">sample.</tspan>
+          <tspan
+             id="tspan6501"
+             y="79.947601"
+             x="1520">assembled.</tspan>
+          <tspan
+             id="tspan6503"
+             y="96.880997"
+             x="1520">daa</tspan>
+        </text>
+      </g>
+      <g
+         id="g6505">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6507"
+           d="m 1440,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1440,160 Z"
+           style="fill:#ffff00" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6509"
+           d="m 1440,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1440,160"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6511"
+           y="183.01401"
+           x="1520"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6513"
+             y="183.01401"
+             x="1520">sample.</tspan>
+          <tspan
+             id="tspan6515"
+             y="199.948"
+             x="1520">unassembled.</tspan>
+          <tspan
+             id="tspan6517"
+             y="216.881"
+             x="1520">daa</tspan>
+        </text>
+      </g>
+      <text
+         id="text6519"
+         y="300"
+         x="1520"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6521"
+           y="300"
+           x="1520">&quot;diamond&quot;</tspan>
+        <tspan
+           id="tspan6523"
+           y="325.39999"
+           x="1520">directory</tspan>
+      </text>
+      <g
+         id="g6525">
+        <line
+           id="line6527"
+           y2="118.512"
+           x2="1429.71"
+           y1="127.581"
+           x1="1400.99"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6529"
+           points="1425.82,114.497 1436.86,116.253 1428.83,124.032 1429.71,118.512 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6531"
+           points="1425.82,114.497 1436.86,116.253 1428.83,124.032 1429.71,118.512 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6533">
+        <line
+           id="line6535"
+           y2="181.48801"
+           x2="1429.71"
+           y1="172.41901"
+           x1="1400.99"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6537"
+           points="1428.83,175.968 1436.86,183.747 1425.82,185.503 1429.71,181.488 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6539"
+           points="1428.83,175.968 1436.86,183.747 1425.82,185.503 1429.71,181.488 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6541">
+        <line
+           id="line6543"
+           y2="124.649"
+           x2="1629.72"
+           y1="115.58"
+           x1="1601"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6545"
+           points="1628.84,119.128 1636.87,126.907 1625.83,128.664 1629.72,124.649 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6547"
+           points="1628.84,119.128 1636.87,126.907 1625.83,128.664 1629.72,124.649 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6549">
+        <line
+           id="line6551"
+           y2="175.351"
+           x2="1629.72"
+           y1="184.42"
+           x1="1601"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6553"
+           points="1625.83,171.336 1636.87,173.093 1628.84,180.872 1629.72,175.351 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6555"
+           points="1625.83,171.336 1636.87,173.093 1628.84,180.872 1629.72,175.351 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6557">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6559"
+           d="m 1820,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1820,40 Z"
+           style="fill:#ffff00" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6561"
+           d="m 1820,40 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1820,40"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6563"
+           y="63.014301"
+           x="1900"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6565"
+             y="63.014301"
+             x="1900">sample.</tspan>
+          <tspan
+             id="tspan6567"
+             y="79.947601"
+             x="1900">assembled.</tspan>
+          <tspan
+             id="tspan6569"
+             y="96.880997"
+             x="1900">daa</tspan>
+        </text>
+      </g>
+      <g
+         id="g6571">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6573"
+           d="m 1820,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1820,160 Z"
+           style="fill:#ffff00" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6575"
+           d="m 1820,160 160,0 0,85.714 c -32,-14.285 -48,-14.285 -80,0 -32,14.286 -48,14.286 -80,0 L 1820,160"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <text
+           id="text6577"
+           y="183.01401"
+           x="1900"
+           style="font-style:normal;font-weight:700;font-size:13.54669952px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+           font-size="13.5467">
+          <tspan
+             id="tspan6579"
+             y="183.01401"
+             x="1900">sample.</tspan>
+          <tspan
+             id="tspan6581"
+             y="199.948"
+             x="1900">unassembled.</tspan>
+          <tspan
+             id="tspan6583"
+             y="216.881"
+             x="1900">daa</tspan>
+        </text>
+      </g>
+      <g
+         id="g6585">
+        <line
+           id="line6587"
+           y2="118.512"
+           x2="1809.71"
+           y1="127.581"
+           x1="1780.99"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6589"
+           points="1805.82,114.497 1816.86,116.253 1808.83,124.032 1809.71,118.512 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6591"
+           points="1805.82,114.497 1816.86,116.253 1808.83,124.032 1809.71,118.512 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6593">
+        <line
+           id="line6595"
+           y2="181.48801"
+           x2="1809.71"
+           y1="172.41901"
+           x1="1780.99"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6597"
+           points="1808.83,175.968 1816.86,183.747 1805.82,185.503 1809.71,181.488 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6599"
+           points="1808.83,175.968 1816.86,183.747 1805.82,185.503 1809.71,181.488 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6601">
+        <line
+           id="line6603"
+           y2="124.649"
+           x2="2009.72"
+           y1="115.58"
+           x1="1981"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6605"
+           points="2008.84,119.128 2016.87,126.907 2005.83,128.664 2009.72,124.649 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6607"
+           points="2008.84,119.128 2016.87,126.907 2005.83,128.664 2009.72,124.649 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6609">
+        <line
+           id="line6611"
+           y2="175.351"
+           x2="2009.72"
+           y1="184.42"
+           x1="1981"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6613"
+           points="2005.83,171.336 2016.87,173.093 2008.84,180.872 2009.72,175.351 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6615"
+           points="2005.83,171.336 2016.87,173.093 2008.84,180.872 2009.72,175.351 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <text
+         id="text6617"
+         y="300"
+         x="1900"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6619"
+           y="300"
+           x="1900">&quot;diamond&quot;</tspan>
+        <tspan
+           id="tspan6621"
+           y="325.39999"
+           x="1900">directory</tspan>
+      </text>
+      <g
+         id="g6623">
+        <line
+           id="line6625"
+           y2="43.476501"
+           x2="2217.8301"
+           y1="99.005096"
+           x1="2151.1899"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6627"
+           points="2212.71,41.2359 2223.59,38.6751 2219.11,48.9181 2217.83,43.4765 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6629"
+           points="2212.71,41.2359 2223.59,38.6751 2219.11,48.9181 2217.83,43.4765 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6631">
+        <line
+           id="line6633"
+           y2="177.765"
+           x2="2189.96"
+           y1="169.629"
+           x1="2160.6599"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6635"
+           points="2188.88,172.279 2197.18,179.773 2186.21,181.914 2189.96,177.765 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6637"
+           points="2188.88,172.279 2197.18,179.773 2186.21,181.914 2189.96,177.765 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <g
+         id="g6639">
+        <line
+           id="line6641"
+           y2="253.33701"
+           x2="2214"
+           y1="200.995"
+           x1="2151.1899"
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+        <polygon
+           id="polygon6643"
+           points="2215.29,247.896 2219.77,258.139 2208.88,255.578 2214,253.337 "
+           style="fill:#000000" />
+        <polygon
+           id="polygon6645"
+           points="2215.29,247.896 2219.77,258.139 2208.88,255.578 2214,253.337 "
+           style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      </g>
+      <text
+         id="text6647"
+         y="400"
+         x="1720"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6649"
+           y="400"
+           x="1720">5. Transform</tspan>
+        <tspan
+           id="tspan6651"
+           y="425.39999"
+           x="1720">output from</tspan>
+        <tspan
+           id="tspan6653"
+           y="450.79999"
+           x="1720">diamond into</tspan>
+        <tspan
+           id="tspan6655"
+           y="476.20001"
+           x="1720">MEGAN files</tspan>
+      </text>
+      <text
+         id="text6657"
+         y="280"
+         x="2080"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6659"
+           y="280"
+           x="2080">6. Export tab</tspan>
+        <tspan
+           id="tspan6661"
+           y="305.39999"
+           x="2080">separated</tspan>
+        <tspan
+           id="tspan6663"
+           y="330.79999"
+           x="2080">files for use in</tspan>
+        <tspan
+           id="tspan6665"
+           y="356.20001"
+           x="2080">e.g. R</tspan>
+      </text>
+      <text
+         id="text6667"
+         y="380"
+         x="2280"
+         style="font-style:normal;font-weight:normal;font-size:20.31999969px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="20.32">
+        <tspan
+           id="tspan6669"
+           y="380"
+           x="2280">&quot;diamond&quot;</tspan>
+        <tspan
+           id="tspan6671"
+           y="405.39999"
+           x="2280">directory</tspan>
+      </text>
+    </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text7100"
+       y="137.95538"
+       x="1099.6628"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         id="tspan7104"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="137.95538"
+         x="1099.6628"
+         sodipodi:role="line">Look for documentation in the &quot;doc&quot; directory of the repository!</tspan><tspan
+         id="tspan7106"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="175.45538"
+         x="1099.6628"
+         sodipodi:role="line" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.24366"
+       y="844.10699"
+       id="text7110"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan7116"
+         sodipodi:role="line"
+         x="24.24366"
+         y="844.10699"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans">All the steps are supported by makefiles in biomakefiles. Usually the file you need is called makefile.<tspan
+   style="font-style:italic"
+   id="tspan7125">pgmname</tspan>, where</tspan><tspan
+         sodipodi:role="line"
+         x="24.24366"
+         y="881.60699"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         id="tspan7123">pgmname is &quot;erne&quot;, &quot;pear&quot;, &quot;diamond&quot;, &quot;megan&quot; etc.</tspan></text>
+    <image
+       width="36"
+       height="36"
+       preserveAspectRatio="none"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAMAAAAOusbgAAAABGdBTUEAALGPC/xhBQAAAAFzUkdC AK7OHOkAAAAJcEhZcwAALiMAAC4jAXilP3YAAADGUExURfSXGfucGI89CIw4A/ydGfmbGIo2Av// /+Dg4PaYGJFDEpdJFZNBCZdGDsFrFeiMF6tYEp5NEdN7FrNgFLpmFptPHJ5UItmBGKVTEoo+FOGG F+6RF8hxFaxvQv+eF/v39LB1TdS0nuHLuv37+vKUGPTq5KVgM+raz+7h2dzEs72KZ852FbmEYPfw 7KFbLKhmO8ecgOfTxsGVd7V9V9q9qcmkiuLs8MCPbs6pkNjW0WlrQ0hfTSRbaTZ1kqO8xsu4qGmT pObf2S+sGBgAAAjOSURBVGje7ZvZdqpKEIahG9pANyKjOICAivOs0ey9z/D+T3UKEUU00WBWcnHs iwzq4qO7pr+KhHv5ocWVfmg9wU/wE/wEP8FP8P8U3F33vxvc68ZfV0QZ978VHGC6AuIOK4gOvhM8 wAzRoFQaI8qUxXce9RxRBa1L7YhNmfutzuUjW7FbpQWbRmjxneCuZUV4XSq5zEfjbw2nJfbZKnaz lU0n3wleoMi2JqUuc30cfhW41e0tFr3+pL3/rd1uX/lM27ZdDKE0tbdk8yXg7sa1ZIQxkqkdDed+ ZNv21J/3LtyLLvESvrE5Wn0FeE4J0iqGaRoVR2GIIEXRNAURNm6df3CLl8qsVBriDY2+ADwkSrnO 8QIsT6WyM6o3OI5r1JsamU3OsxcZTsGt4KBtu/0weE4cVRAlLl5Sp1KW4Jd4iULDIP7ZR0M8XoGR l2QTKZNHwX1FUQUuXRJ3uIV4iWIFn6XlPloFZAngwEX9R8FzUj5xY/Ie6Xkez3FCFdmu685gua7v j30WDfGwBLv28eJR8AypIpdbovrr96+qx0mSIyOWLIQQeL0Mjj+j1ssj4FY/DObbsVzJHO5heb/+ +vvfPy6QG6qqNuIF3+v1elVvmhUFjV9d1CsC7oabVWTJmBDYRDNz0nuvArD75++Xv3558IKYeNre 22DxgtegyuB1ysLPgifr7YxigplWMct63ZCr6UlLAs/B1sDMkuf+/vO7yqd3I+5jTRB4+IE38PB1 oDC7+xlwOxxTQphjNKsNTowDtyKrh5MWGyNDo3KtDjcieZ7k8YfbkVQ44XiNdL1aN/H07dVHDjjZ 3eB2EGGimboKSDE+Utgc1VJHVrWaTJ1K5XAj6e10mk6cTWOj7BcC7hI5DY127wUHU4wqVU7gpaM3 SQ3wreRH3qiZaie26Zl/NxxZtsebYB3sIGspjLlvrxsm655J1veBQxcjoy7y59et14yDb4mO3BCk nINLXAXCSYuiWWRThpjlB6+vS8Zkw9PJ8B5wd4UAy/O5C/PVWpo+xJO1M++bKPJdqMLUnrrj+T9v r6+DGbHWU0VSWXQHeGARTb/AQmrSa2k0CcberXKJRLaB9fLy9vby8hqvcMzIrFdykcopxzrBfSAQ UZkTLrBAa9ZGKbhc0/nLDS9f3pLx3dvb2z/LGSN0F8t6XBe12+AtVqrXsGc0YVTLppLE9SijlIIo mE5tS2Hg2tNN0k8gVboN3mKtfp0bg9M0weu1cg4sjFDkRlPbtjTNio28WSSslq10VDS7YeM50VSB 426BvYsdS+Bv/b0Aa7VaZyJsSAyvTOYfgwOkqDx3E8xDwOacS8xs6kxsukTjVOVGAunJcvW9/Z5s LAmqUzNzZUpoQtG/DMwxw5VORyO7j1PmDDff58ZercPbIl+lNSOfPUB/hPlSGg4p0Uaeqp3Sx3Vw QK6U20y8gEd5IK5MWS7nPyc14k4pS12PLQzCUPJ0hYw/Vpktm13qi7OUKVc69TKtaZfxxuv4rENa 2AQrhi55VQfLuxu9U0DMDw46zsVODSohbXb4K/YnQfZaLjbrkifqDsJ+71ab6uM6/xEYPNfQKs3G 1axmoN75tUadqqkQ5A5ujiJaVlpt3yfzkshf/YxYOQXMPj6g3yDEGi7uGL70UEXkbq137gwUpnXe wfRW7njdumvcNLhh4g/vR9KsVtE5V0CaPwPekFFxsOgUBy+JzhcFgxaiPwaeFAXvHjjqi3D6DDjE xb2aE5JqXAjclx1JKgrmHwAPEVXFwuBcyvwEeMEUubiRBRMtCoKX2JfNB8AXOuBesI9CkINSYTAZ FARPldaSlIWzmne/s0E9XhcDtyyrNLFQWc9sWup0xGt5+To4KAaeMND6oSLLGc/mm7QqXhZG9Yow A/CuGLjrxpopYFm9zFeOrdlJAPC6XL4CHp1NSj/9+KfH5Cp/OmmqiYcuWGqWExtAx1DTxUxZSrbP 69dk9f3gkGXmOmJVBqGoSvEwRdToAazKjigcl1g1GtK+dybbR8ABkk/NmNCUbRQPX8pNXU/HH3DS imOY8WxFH5VNR066C7Gama8UAG+QbPAnE6MwHE4pqDaC0kTOG7K9f2W/MLUS24j1c139WfASUSf1 Wamj7WtsdzEINuPD3EXiNKs76YXBbj6f74JwMsejBHw2Df80GArFUeNmBxelBUrmLtAUuteUGrzu PwJeQVPfSIdW2U2sD2PbC+8NE20qNdjsEbDPtGMGAUcdZhr2/YlepkY4in3r2lHs9gPgmXIaV4pZ 8BgnqSTfqoB82Bsf9O2dousquD3VmscBy9mOZyyxAGir8+tPqLZ3dwiBXnFwy3ZOs6xsaEJflUTT hYxt28reG+8uT1fBXVqpn6Z3dbw6HeghvC/18+EswOu2xcHgKWrNPIJPkZM69RX9vEqeFkDwzYqD QeF25HRQChESnZz6YHlQkzn9PEzcDpoY1i8MHpCyRNNmNY6Q9FhXB6e+oibnJKlnQvO+wvgeWDim Luh5j91BdHDqK6IuODQgosqm7eI2roARU/EDu1vkhwWwr5zECY/mzz3w+lQCibBDj7IeIiQstTNZ InHe+cUggU8HP35hcN+ninyalOLl3NpkSsQ+neXKX5pB4sJ1j6h/b3rbCvDRrVVZRii+2ODYz12p QpGS2n+EppPCYLAnq3tJTRbL1BzFwXwM49jV8y60wofsLokGibqFwfGfq4zURFZ5guc5ELgZsHSR QXanNzkD2/3CYNA/sdAyzTIs02AQU5mBEHRnbpCrT1qq8SWxTMbFwaXFNqIIJ6JKtgHTZ0dBJNYp zs1ZfNz0AB0/UfR0/Ag49tVeOFivB4NFv5U8vtW9wwNLgQMNeL5lisodEQR2pzFSbjaNn3uMGzJm 1huA7TRU1cgXwAElilNxNIURtit9KTh+FoUUTdMUBWGs5B2ov51SmVqRu+2Vvhhcmuz8qWVZduSP t9fSRLffvW/QVeBR/f75SunR9fwrxSf4CX6Cn+An+Al+gv9P4J/698H/AMo7zbFqpzGnAAAAAElF TkSuQmCC "
+       id="image10"
+       x="1658.6783"
+       y="781.85962"
+       style="stroke:#000000" />
+    <g
+       transform="matrix(0.07624753,0,0,0.07624753,1946.7627,628.7961)"
+       id="g4150">
+      <path
+         style="fill:url(#gradientFill-1);fill-rule:evenodd"
+         inkscape:connector-curvature="0"
+         id="path16-0"
+         d="M 361.453,485.937 C 162.329,485.937 0.906,377.828 0.906,244.469 0.906,111.109 162.329,3 361.453,3 560.578,3 722,111.109 722,244.469 722,377.828 560.578,485.937 361.453,485.937 Z M 416.641,97.406 c -151.352,0 -274.047,73.908 -274.047,165.078 0,91.17 122.695,165.078 274.047,165.078 151.351,0 263.046,-50.529 263.046,-165.078 0,-114.513 -111.695,-165.078 -263.046,-165.078 z" />
+      <path
+         style="fill:url(#gradientFill-2);fill-rule:evenodd"
+         inkscape:connector-curvature="0"
+         id="path18-4"
+         d="m 550,377 c 0,0 21.822,6.585 34.5,13 4.399,2.226 12.01,6.668 17.5,12.5 5.378,5.712 8,11.5 8,11.5 L 696,559 557,559.062 492,437 c 0,0 -13.31,-22.869 -21.5,-29.5 -6.832,-5.531 -9.745,-7.5 -16.5,-7.5 -4.702,0 -33.026,0 -33.026,0 l 0.026,158.974 -123,0.052 0,-406.088 247,0 c 0,0 112.5,2.029 112.5,109.062 0,107.033 -107.5,115 -107.5,115 z m -53.5,-135.976 -74.463,-0.048 -0.037,69.05 74.5,-0.024 c 0,0 34.5,-0.107 34.5,-35.125 0,-35.722 -34.5,-33.853 -34.5,-33.853 z" />
+    </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text7155"
+       y="844.10699"
+       x="1704.2437"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         id="tspan7161"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="844.10699"
+         x="1704.2437"
+         sodipodi:role="line">MEGAN and R are </tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
+         y="881.60699"
+         x="1704.2437"
+         sodipodi:role="line"
+         id="tspan7166">your main analysis options.</tspan></text>
   </g>
 </svg>
