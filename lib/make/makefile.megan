@@ -47,7 +47,7 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 
 %.daa.meganize.out: %.daa
 	$(MAKECALL_MEGANIZE)
-	xvfb-run --auto-servernum --server-num=1 \
+	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa-meganizer --in $< \
 	  --function EGGNOG INTERPRO2GO SEED \
 	  --acc2taxa $(MEGAN_MAPS_DIR)/prot_acc2tax.abin \
@@ -66,28 +66,28 @@ all_exports: all_reads2eggnogs all_reads2ips all_reads2seeds all_reads2taxonids
 all_reads2eggnogs: $(subst .daa,.reads2eggnogs.tsv.gz,$(wildcard *.daa))
 
 %.reads2eggnogs.tsv.gz: %.daa
-	xvfb-run --auto-servernum --server-num=1 \
+	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c EGGNOG --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2ips: $(subst .daa,.reads2ips.tsv.gz,$(wildcard *.daa))
 
 %.reads2ips.tsv.gz: %.daa
-	xvfb-run --auto-servernum --server-num=1 \
+	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c INTERPRO2GO --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2seeds: $(subst .daa,.reads2seeds.tsv.gz,$(wildcard *.daa))
 
 %.reads2seeds.tsv.gz: %.daa
-	xvfb-run --auto-servernum --server-num=1 \
+	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c SEED --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2taxonids: $(subst .daa,.reads2taxonids.tsv.gz,$(wildcard *.daa))
 
 %.reads2taxonids.tsv.gz: %.daa
-	xvfb-run --auto-servernum --server-num=1 \
+	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c Taxonomy | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
