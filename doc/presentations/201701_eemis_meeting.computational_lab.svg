@@ -607,7 +607,7 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#G2"
-       id="linearGradient5678"
+       id="linearGradient7366"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.9585,0,0,0.51059,0,280)"
        x1="121.74"
@@ -617,7 +617,7 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#G2"
-       id="linearGradient5680"
+       id="linearGradient7368"
        gradientTransform="matrix(1.5147,0,0,0.66019,0,280)"
        x1="131.92"
        y1="1448.5"
@@ -633,7 +633,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.5"
      inkscape:cx="1214.1598"
-     inkscape:cy="1493.6716"
+     inkscape:cy="1208.4739"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -702,7 +702,7 @@
    id="tspan4665">Make</tspan> and &quot;biomakefiles&quot;</tspan></text>
     <g
        id="g4738"
-       transform="matrix(0.72871696,0,0,0.72871696,825.33538,-322.30953)">
+       transform="matrix(0.72871696,0,0,0.72871696,825.33538,-82.30953)">
       <ellipse
          ry="287.15192"
          rx="306.33664"
@@ -760,7 +760,7 @@
                  d="m 207.06,1162.3 c 1.91,2 5.06,3.8 9.45,3.9 l 42.77,-11.7 -9.22,-2.2 -43,10 z"
                  id="p2"
                  inkscape:connector-curvature="0"
-                 style="fill:url(#linearGradient5678);stroke:#000000;stroke-opacity:0.2" />
+                 style="fill:url(#linearGradient7366);stroke:#000000;stroke-opacity:0.2" />
               <path
                  d="m 218.75,1168.2 41.25,-11.4 -0.75,24.4 c -1.42,26.9 -31.08,-18.8 -40.5,16.3 l 0,-29.3 z"
                  id="path60"
@@ -807,7 +807,7 @@
                  d="m 287.32,1219.6 -52.5,26.8 -34.64,-25.5 -0.36,8.9 35.18,28.1 52,-27.5 0.32,-10.8 z"
                  id="p10"
                  inkscape:connector-curvature="0"
-                 style="fill:url(#linearGradient5680);stroke:#000000;stroke-width:2;stroke-opacity:0.19607999" />
+                 style="fill:url(#linearGradient7368);stroke:#000000;stroke-width:2;stroke-opacity:0.19607999" />
               <path
                  d="m 203.65,1218.8 48.79,-20.1 32.17,19.8 c -6.25,3.2 -15.54,7.6 -21.21,8.5 -25.44,3.8 -17.33,-13.1 -59.75,-8.2 z"
                  id="path75"
@@ -1637,7 +1637,7 @@
          x="24.24366"
          y="199.95544"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:FreeSans;-inkscape-font-specification:Sans">4. Reusable rules in &quot;<tspan
-   style="font-style:italic"
+   style="font-style:normal;font-weight:bold"
    id="tspan5492">biomakefiles</tspan>&quot;</tspan></text>
     <text
        xml:space="preserve"
@@ -1660,7 +1660,9 @@
          x="24.24366"
          y="320.95538"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         id="tspan6089">biomakefiles. There are currently 26 files, covering e.g. quality control of</tspan><tspan
+         id="tspan6089"><tspan
+   style="font-weight:bold"
+   id="tspan7404">biomakefiles</tspan>. There are currently 26 files, covering e.g. quality control of</tspan><tspan
          sodipodi:role="line"
          x="24.24366"
          y="358.45538"
@@ -1687,17 +1689,17 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="1099.9629"
-       y="-696.04468"
+       y="-1355.7745"
        id="text5560"
        sodipodi:linespacing="125%"><tspan
          id="tspan5570"
          sodipodi:role="line"
          x="1099.9629"
-         y="-696.04468"
+         y="-1355.7745"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans">Conceptually, a &quot;lab&quot; for computational analyses is similar to a wetlab. </tspan><tspan
          sodipodi:role="line"
          x="1099.9629"
-         y="-658.54468"
+         y="-1318.2745"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5586">You need a place to work and store data (a <tspan
    style="font-style:italic"
@@ -1706,24 +1708,24 @@
    id="tspan5594">programs</tspan> to </tspan><tspan
          sodipodi:role="line"
          x="1099.9629"
-         y="-621.04468"
+         y="-1280.7745"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5590">perform various steps in analyses and <tspan
    style="font-style:italic"
    id="tspan5592">external data</tspan>, e.g. downloadable </tspan><tspan
          sodipodi:role="line"
          x="1099.9629"
-         y="-583.54468"
+         y="-1243.2745"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5596">sequence databases to use in annotation of your sequences. Like in a </tspan><tspan
          sodipodi:role="line"
          x="1099.9629"
-         y="-546.04468"
+         y="-1205.7745"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5598">wet lab you need protocols, instructions for how to chain program calls </tspan><tspan
          sodipodi:role="line"
          x="1099.9629"
-         y="-508.54465"
+         y="-1168.2745"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5741">into a workflow, and you need to record what you did in a &quot;lab book&quot;.</tspan></text>
     <text
@@ -1733,149 +1735,154 @@
        x="1099.3629"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         id="tspan5624"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          y="-462.79465"
          x="1099.3629"
-         sodipodi:role="line">Besides its usefulness in helping you to automate tasks, the biomakefiles</tspan><tspan
+         sodipodi:role="line"
+         id="tspan5658">The <tspan
+   style="font-weight:bold"
+   id="tspan7398">biomakefiles</tspan> repository provides some help in setting up the lab. At its </tspan><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          y="-425.29465"
          x="1099.3629"
          sodipodi:role="line"
-         id="tspan5658">repository provides some help in setting up the lab. At its heart, the</tspan><tspan
+         id="tspan5662">heart, the repository is a <tspan
+   style="font-style:italic"
+   id="tspan7396">collection of protocols</tspan> of relatively low granularity. </tspan><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          y="-387.79465"
          x="1099.3629"
          sodipodi:role="line"
-         id="tspan5660">repository is a collection of protocols of relatively low granularity (i.e. </tspan><tspan
+         id="tspan5664">Together with <tspan
+   style="font-style:italic"
+   id="tspan7410">documentation on best practices</tspan> for various types of analyses </tspan><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          y="-350.29465"
          x="1099.3629"
          sodipodi:role="line"
-         id="tspan5662">describing relatively small parts of full workflow). Together with </tspan><tspan
+         id="tspan5666">(mostly annotation of sequences), you're helped with collecting full protocols/</tspan><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          y="-312.79465"
          x="1099.3629"
          sodipodi:role="line"
-         id="tspan5664">documentation on best practices for various types of analyses (mostly</tspan><tspan
+         id="tspan5690">workflows. For an example, see &quot;Suggested workflow for annotation of </tspan><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          y="-275.29465"
          x="1099.3629"
          sodipodi:role="line"
-         id="tspan5666">annotation of sequences), you're helped with collecting protocols. For an</tspan><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         y="-237.79466"
-         x="1099.3629"
-         sodipodi:role="line"
-         id="tspan5690">example, see &quot;Suggested workflow for metatranscriptomics&quot; below.</tspan></text>
+         id="tspan7394">metatranscriptomes&quot; below.</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="1099.6628"
-       y="-192.04466"
+       y="-232.04466"
        id="text5668"
        sodipodi:linespacing="125%"><tspan
          id="tspan5680"
          sodipodi:role="line"
          x="1099.6628"
-         y="-192.04466"
+         y="-232.04466"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans">Moreover, each time you call a program through Make and a biomakefile,</tspan><tspan
          sodipodi:role="line"
          x="1099.6628"
-         y="-154.54466"
+         y="-194.54466"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         id="tspan5702">the version of the progam called is recorded together with how you set</tspan><tspan
+         id="tspan5702">the version of the program called is recorded together with how you set</tspan><tspan
          sodipodi:role="line"
          x="1099.6628"
-         y="-117.04466"
+         y="-157.04466"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5704">parameters and the versions/timestamps for input files. Development of a</tspan><tspan
          sodipodi:role="line"
          x="1099.6628"
-         y="-79.544662"
+         y="-119.54466"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         id="tspan5706">skeleton electronic lab book from this is ongoing.</tspan></text>
+         id="tspan5706">skeleton <tspan
+   style="font-style:italic"
+   id="tspan7406">electronic lab book</tspan> from this is ongoing.</tspan></text>
     <rect
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000080;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#800000;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect5708"
-       width="1012.4724"
-       height="465.6763"
+       width="1002.3171"
+       height="503.50516"
        x="1077.6829"
-       y="-53.637947" />
+       y="-91.142982" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="1095.4629"
-       y="7.9553833"
+       y="-29.549652"
        id="text5710"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5712"
          x="1095.4629"
-         y="7.9553833"
+         y="-29.549652"
          style="font-size:60px">Installing <tspan
    style="font-style:italic"
    id="tspan5714">biomakefiles</tspan></tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text5747"
-       y="47.95546"
+       y="14.450456"
        x="1099.6628"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          id="tspan5755"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         y="47.95546"
+         y="14.450456"
          x="1099.6628"
-         sodipodi:role="line">biomakefiles is just a collection of files and is availble from GitHub:</tspan></text>
+         sodipodi:role="line"><tspan
+   style="font-weight:bold"
+   id="tspan7478">biomakefiles</tspan> is just a collection of files and is availble from GitHub:</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="1099.6628"
-       y="88.976883"
+       y="53.156754"
        id="text5766"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          x="1099.6628"
-         y="88.976883"
+         y="53.156754"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans;fill:#0000ff"
          id="tspan5768">https://github.com/erikrikarddaniel/biomakefiles</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="1099.6628"
-       y="170.95973"
+       y="130.50923"
        id="text5770"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          x="1099.6628"
-         y="170.95973"
+         y="130.50923"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5774">If you're using a Mac or Linux computer, open a command window, cd into</tspan><tspan
          sodipodi:role="line"
          x="1099.6628"
-         y="208.45973"
+         y="168.00923"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5792">the directory where you want the files and:</tspan><tspan
          sodipodi:role="line"
          x="1099.6628"
-         y="245.95973"
+         y="205.50923"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5776" /></text>
     <text
        sodipodi:linespacing="125%"
        id="text5778"
-       y="383.95541"
+       y="384.45041"
        x="1099.6628"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          id="tspan5780"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans;fill:#0000ff"
-         y="383.95541"
+         y="384.45041"
          x="1099.6628"
          sodipodi:role="line">/proj/b2011210/nobackup/dldev/biomakefiles</tspan></text>
     <g
-       transform="translate(1081.4628,955.15899)"
+       transform="translate(1081.4628,912.39331)"
        id="g5784">
       <rect
          y="-727.63782"
@@ -1900,59 +1907,47 @@
     <text
        sodipodi:linespacing="125%"
        id="text5794"
-       y="302.00259"
+       y="256.92172"
        x="1099.6628"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          id="tspan5798"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         y="302.00259"
+         y="256.92172"
          x="1099.6628"
          sodipodi:role="line">Run &quot;git pull&quot; regularly from the biomakefiles directory to keep it up to date.</tspan><tspan
          id="tspan5800"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         y="339.50259"
+         y="294.42172"
          x="1099.6628"
          sodipodi:role="line" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="1099.6628"
-       y="342.93399"
+       y="345.74417"
        id="text5804"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          x="1099.6628"
-         y="342.93399"
+         y="345.74417"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
          id="tspan5808">The repository is installed at UPPMAX:</tspan></text>
     <text
        sodipodi:linespacing="125%"
-       id="text6308"
-       y="489.95538"
-       x="20.703659"
-       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       xml:space="preserve"><tspan
-         style="font-size:60px"
-         y="489.95538"
-         x="20.703659"
-         id="tspan6310"
-         sodipodi:role="line">Suggested workflow for metatranscriptomes</tspan></text>
-    <text
-       sodipodi:linespacing="125%"
        id="text7100"
-       y="129.90831"
+       y="91.772995"
        x="1099.6628"
        style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          id="tspan7104"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         y="129.90831"
+         y="91.772995"
          x="1099.6628"
          sodipodi:role="line">Look for documentation in the &quot;doc&quot; directory of the repository!</tspan><tspan
          id="tspan7106"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans"
-         y="167.40831"
+         y="129.27299"
          x="1099.6628"
          sodipodi:role="line" /></text>
     <text
@@ -1966,7 +1961,9 @@
          sodipodi:role="line"
          x="24.24366"
          y="974.83698"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans">All the steps are supported by makefiles in biomakefiles. Usually the file you need is called makefile.<tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:FreeSans;-inkscape-font-specification:Sans">All the steps are supported by makefiles in <tspan
+   style="font-weight:bold"
+   id="tspan7408">biomakefiles</tspan>. Usually the file you need is called makefile.<tspan
    style="font-style:italic"
    id="tspan7125">pgmname</tspan>, where</tspan><tspan
          sodipodi:role="line"
@@ -1996,7 +1993,8 @@
          sodipodi:role="line"
          id="tspan5684">main analysis options.</tspan></text>
     <g
-       id="g6898">
+       id="g6898"
+       transform="translate(0,26)">
       <g
          transform="matrix(0.78276458,0,0,0.78276462,281.33909,601.09018)"
          id="g4">
@@ -2009,11 +2007,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon8"
-           points="225.827,121.703 225.133,116.156 232.899,124.2 221.805,125.586 "
+           points="232.899,124.2 221.805,125.586 225.827,121.703 225.133,116.156 "
            style="fill:#000000" />
         <polygon
            id="polygon10"
-           points="225.827,121.703 225.133,116.156 232.899,124.2 221.805,125.586 "
+           points="232.899,124.2 221.805,125.586 225.827,121.703 225.133,116.156 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2079,11 +2077,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon42"
-           points="660,89.2874 665,86.7874 660,96.7874 655,86.7874 "
+           points="660,96.7874 655,86.7874 660,89.2874 665,86.7874 "
            style="fill:#000000" />
         <polygon
            id="polygon44"
-           points="660,89.2874 665,86.7874 660,96.7874 655,86.7874 "
+           points="660,96.7874 655,86.7874 660,89.2874 665,86.7874 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2116,11 +2114,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon60"
-           points="306,89.2764 311,86.7764 306,96.7764 301,86.7764 "
+           points="306,96.7764 301,86.7764 306,89.2764 311,86.7764 "
            style="fill:#000000" />
         <polygon
            id="polygon62"
-           points="306,89.2764 311,86.7764 306,96.7764 301,86.7764 "
+           points="306,96.7764 301,86.7764 306,89.2764 311,86.7764 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2209,11 +2207,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon104"
-           points="1374,89.2764 1379,86.7764 1374,96.7764 1369,86.7764 "
+           points="1374,96.7764 1369,86.7764 1374,89.2764 1379,86.7764 "
            style="fill:#000000" />
         <polygon
            id="polygon106"
-           points="1374,89.2764 1379,86.7764 1374,96.7764 1369,86.7764 "
+           points="1374,96.7764 1369,86.7764 1374,89.2764 1379,86.7764 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2284,11 +2282,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon140"
-           points="1722,269.341 1727,266.841 1722,276.841 1717,266.841 "
+           points="1722,276.841 1717,266.841 1722,269.341 1727,266.841 "
            style="fill:#000000" />
         <polygon
            id="polygon142"
-           points="1722,269.341 1727,266.841 1722,276.841 1717,266.841 "
+           points="1722,276.841 1717,266.841 1722,269.341 1727,266.841 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2403,11 +2401,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon190"
-           points="1721.59,89.2579 1726.57,86.7244 1721.64,96.7578 1716.57,86.7916 "
+           points="1721.64,96.7578 1716.57,86.7916 1721.59,89.2579 1726.57,86.7244 "
            style="fill:#000000" />
         <polygon
            id="polygon192"
-           points="1721.59,89.2579 1726.57,86.7244 1721.64,96.7578 1716.57,86.7916 "
+           points="1721.64,96.7578 1716.57,86.7916 1721.59,89.2579 1726.57,86.7244 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2496,11 +2494,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon248"
-           points="2157.66,123.911 2153.84,119.832 2164.85,121.771 2156.69,129.416 "
+           points="2164.85,121.771 2156.69,129.416 2157.66,123.911 2153.84,119.832 "
            style="fill:#000000" />
         <polygon
            id="polygon250"
-           points="2157.66,123.911 2153.84,119.832 2164.85,121.771 2156.69,129.416 "
+           points="2164.85,121.771 2156.69,129.416 2157.66,123.911 2153.84,119.832 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <text
@@ -2640,11 +2638,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon312"
-           points="-118.328,125.902 -119.285,120.394 -111.144,128.057 -122.159,129.972 "
+           points="-111.144,128.057 -122.159,129.972 -118.328,125.902 -119.285,120.394 "
            style="fill:#000000" />
         <polygon
            id="polygon314"
-           points="-118.328,125.902 -119.285,120.394 -111.144,128.057 -122.159,129.972 "
+           points="-111.144,128.057 -122.159,129.972 -118.328,125.902 -119.285,120.394 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2659,11 +2657,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon320"
-           points="-118.328,174.098 -122.159,170.028 -111.144,171.943 -119.285,179.606 "
+           points="-111.144,171.943 -119.285,179.606 -118.328,174.098 -122.159,170.028 "
            style="fill:#000000" />
         <polygon
            id="polygon322"
-           points="-118.328,174.098 -122.159,170.028 -111.144,171.943 -119.285,179.606 "
+           points="-111.144,171.943 -119.285,179.606 -118.328,174.098 -122.159,170.028 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <text
@@ -2751,11 +2749,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon358"
-           points="45.8068,121.101 41.8134,117.189 52.8971,118.656 45.0733,126.643 "
+           points="52.8971,118.656 45.0733,126.643 45.8068,121.101 41.8134,117.189 "
            style="fill:#000000" />
         <polygon
            id="polygon360"
-           points="45.8068,121.101 41.8134,117.189 52.8971,118.656 45.0733,126.643 "
+           points="52.8971,118.656 45.0733,126.643 45.8068,121.101 41.8134,117.189 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2770,11 +2768,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon366"
-           points="45.8068,178.899 45.0733,173.357 52.8971,181.344 41.8134,182.811 "
+           points="52.8971,181.344 41.8134,182.811 45.8068,178.899 45.0733,173.357 "
            style="fill:#000000" />
         <polygon
            id="polygon368"
-           points="45.8068,178.899 45.0733,173.357 52.8971,181.344 41.8134,182.811 "
+           points="52.8971,181.344 41.8134,182.811 45.8068,178.899 45.0733,173.357 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <text
@@ -2819,11 +2817,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon386"
-           points="226.941,196.432 222.253,193.386 233.408,192.634 227.317,202.009 "
+           points="233.408,192.634 227.317,202.009 226.941,196.432 222.253,193.386 "
            style="fill:#000000" />
         <polygon
            id="polygon388"
-           points="226.941,196.432 222.253,193.386 233.408,192.634 227.317,202.009 "
+           points="233.408,192.634 227.317,202.009 226.941,196.432 222.253,193.386 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2896,11 +2894,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon418"
-           points="387.825,121.456 383.818,117.559 394.907,118.986 387.112,127.001 "
+           points="394.907,118.986 387.112,127.001 387.825,121.456 383.818,117.559 "
            style="fill:#000000" />
         <polygon
            id="polygon420"
-           points="387.825,121.456 383.818,117.559 394.907,118.986 387.112,127.001 "
+           points="394.907,118.986 387.112,127.001 387.825,121.456 383.818,117.559 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2915,11 +2913,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon426"
-           points="387.825,178.544 387.112,172.999 394.907,181.014 383.818,182.441 "
+           points="394.907,181.014 383.818,182.441 387.825,178.544 387.112,172.999 "
            style="fill:#000000" />
         <polygon
            id="polygon428"
-           points="387.825,178.544 387.112,172.999 394.907,181.014 383.818,182.441 "
+           points="394.907,181.014 383.818,182.441 387.825,178.544 387.112,172.999 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <text
@@ -2949,11 +2947,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon440"
-           points="569.773,120.255 568.964,114.724 576.896,122.603 565.833,124.221 "
+           points="576.896,122.603 565.833,124.221 569.773,120.255 568.964,114.724 "
            style="fill:#000000" />
         <polygon
            id="polygon442"
-           points="569.773,120.255 568.964,114.724 576.896,122.603 565.833,124.221 "
+           points="576.896,122.603 565.833,124.221 569.773,120.255 568.964,114.724 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -2968,11 +2966,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon448"
-           points="569.773,179.745 565.833,175.779 576.896,177.397 568.964,185.276 "
+           points="576.896,177.397 568.964,185.276 569.773,179.745 565.833,175.779 "
            style="fill:#000000" />
         <polygon
            id="polygon450"
-           points="569.773,179.745 565.833,175.779 576.896,177.397 568.964,185.276 "
+           points="576.896,177.397 568.964,185.276 569.773,179.745 565.833,175.779 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3068,11 +3066,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon490"
-           points="751.773,119.745 747.833,115.779 758.896,117.397 750.964,125.276 "
+           points="758.896,117.397 750.964,125.276 751.773,119.745 747.833,115.779 "
            style="fill:#000000" />
         <polygon
            id="polygon492"
-           points="751.773,119.745 747.833,115.779 758.896,117.397 750.964,125.276 "
+           points="758.896,117.397 750.964,125.276 751.773,119.745 747.833,115.779 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3087,11 +3085,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon498"
-           points="751.773,180.255 750.964,174.724 758.896,182.603 747.833,184.221 "
+           points="758.896,182.603 747.833,184.221 751.773,180.255 750.964,174.724 "
            style="fill:#000000" />
         <polygon
            id="polygon500"
-           points="751.773,180.255 750.964,174.724 758.896,182.603 747.833,184.221 "
+           points="758.896,182.603 747.833,184.221 751.773,180.255 750.964,174.724 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3106,11 +3104,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon506"
-           points="931.761,119.92 930.971,114.386 938.876,122.292 927.809,123.873 "
+           points="938.876,122.292 927.809,123.873 931.761,119.92 930.971,114.386 "
            style="fill:#000000" />
         <polygon
            id="polygon508"
-           points="931.761,119.92 930.971,114.386 938.876,122.292 927.809,123.873 "
+           points="938.876,122.292 927.809,123.873 931.761,119.92 930.971,114.386 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3162,11 +3160,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon532"
-           points="931.761,180.08 927.809,176.127 938.876,177.708 930.971,185.614 "
+           points="938.876,177.708 930.971,185.614 931.761,180.08 927.809,176.127 "
            style="fill:#000000" />
         <polygon
            id="polygon534"
-           points="931.761,180.08 927.809,176.127 938.876,177.708 930.971,185.614 "
+           points="938.876,177.708 930.971,185.614 931.761,180.08 927.809,176.127 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3247,11 +3245,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon568"
-           points="1111.76,120.08 1107.81,116.127 1118.88,117.708 1110.97,125.614 "
+           points="1118.88,117.708 1110.97,125.614 1111.76,120.08 1107.81,116.127 "
            style="fill:#000000" />
         <polygon
            id="polygon570"
-           points="1111.76,120.08 1107.81,116.127 1118.88,117.708 1110.97,125.614 "
+           points="1118.88,117.708 1110.97,125.614 1111.76,120.08 1107.81,116.127 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3266,11 +3264,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon576"
-           points="1111.76,179.92 1110.97,174.386 1118.88,182.292 1107.81,183.873 "
+           points="1118.88,182.292 1107.81,183.873 1111.76,179.92 1110.97,174.386 "
            style="fill:#000000" />
         <polygon
            id="polygon578"
-           points="1111.76,179.92 1110.97,174.386 1118.88,182.292 1107.81,183.873 "
+           points="1118.88,182.292 1107.81,183.873 1111.76,179.92 1110.97,174.386 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3285,11 +3283,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon584"
-           points="1293.82,122.03 1293.11,116.486 1300.9,124.5 1289.81,125.928 "
+           points="1300.9,124.5 1289.81,125.928 1293.82,122.03 1293.11,116.486 "
            style="fill:#000000" />
         <polygon
            id="polygon586"
-           points="1293.82,122.03 1293.11,116.486 1300.9,124.5 1289.81,125.928 "
+           points="1300.9,124.5 1289.81,125.928 1293.82,122.03 1293.11,116.486 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3304,11 +3302,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon592"
-           points="1293.82,177.97 1289.81,174.072 1300.9,175.5 1293.11,183.514 "
+           points="1300.9,175.5 1293.11,183.514 1293.82,177.97 1289.81,174.072 "
            style="fill:#000000" />
         <polygon
            id="polygon594"
-           points="1293.82,177.97 1289.81,174.072 1300.9,175.5 1293.11,183.514 "
+           points="1300.9,175.5 1293.11,183.514 1293.82,177.97 1289.81,174.072 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <text
@@ -3419,11 +3417,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon640"
-           points="1455.83,121.456 1451.82,117.559 1462.91,118.986 1455.11,127.001 "
+           points="1462.91,118.986 1455.11,127.001 1455.83,121.456 1451.82,117.559 "
            style="fill:#000000" />
         <polygon
            id="polygon642"
-           points="1455.83,121.456 1451.82,117.559 1462.91,118.986 1455.11,127.001 "
+           points="1462.91,118.986 1455.11,127.001 1455.83,121.456 1451.82,117.559 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3438,11 +3436,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon648"
-           points="1455.83,178.544 1455.11,172.999 1462.91,181.014 1451.82,182.441 "
+           points="1462.91,181.014 1451.82,182.441 1455.83,178.544 1455.11,172.999 "
            style="fill:#000000" />
         <polygon
            id="polygon650"
-           points="1455.83,178.544 1455.11,172.999 1462.91,181.014 1451.82,182.441 "
+           points="1462.91,181.014 1451.82,182.441 1455.83,178.544 1455.11,172.999 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3457,11 +3455,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon656"
-           points="1641.79,122.656 1641.04,117.116 1648.89,125.076 1637.81,126.581 "
+           points="1648.89,125.076 1637.81,126.581 1641.79,122.656 1641.04,117.116 "
            style="fill:#000000" />
         <polygon
            id="polygon658"
-           points="1641.79,122.656 1641.04,117.116 1648.89,125.076 1637.81,126.581 "
+           points="1648.89,125.076 1637.81,126.581 1641.79,122.656 1641.04,117.116 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3476,11 +3474,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon664"
-           points="1641.79,177.344 1637.81,173.419 1648.89,174.924 1641.04,182.884 "
+           points="1648.89,174.924 1641.04,182.884 1641.79,177.344 1637.81,173.419 "
            style="fill:#000000" />
         <polygon
            id="polygon666"
-           points="1641.79,177.344 1637.81,173.419 1648.89,174.924 1641.04,182.884 "
+           points="1648.89,174.924 1641.04,182.884 1641.79,177.344 1637.81,173.419 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3561,11 +3559,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon700"
-           points="1809.94,120.356 1805.98,116.416 1817.05,117.96 1809.17,125.893 "
+           points="1817.05,117.96 1809.17,125.893 1809.94,120.356 1805.98,116.416 "
            style="fill:#000000" />
         <polygon
            id="polygon702"
-           points="1809.94,120.356 1805.98,116.416 1817.05,117.96 1809.17,125.893 "
+           points="1817.05,117.96 1809.17,125.893 1809.94,120.356 1805.98,116.416 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3580,11 +3578,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon708"
-           points="1809.94,179.644 1809.17,174.107 1817.05,182.04 1805.98,183.584 "
+           points="1817.05,182.04 1805.98,183.584 1809.94,179.644 1809.17,174.107 "
            style="fill:#000000" />
         <polygon
            id="polygon710"
-           points="1809.94,179.644 1809.17,174.107 1817.05,182.04 1805.98,183.584 "
+           points="1817.05,182.04 1805.98,183.584 1809.94,179.644 1809.17,174.107 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3599,11 +3597,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon716"
-           points="1989.83,121.703 1989.13,116.156 1996.9,124.2 1985.8,125.586 "
+           points="1996.9,124.2 1985.8,125.586 1989.83,121.703 1989.13,116.156 "
            style="fill:#000000" />
         <polygon
            id="polygon718"
-           points="1989.83,121.703 1989.13,116.156 1996.9,124.2 1985.8,125.586 "
+           points="1996.9,124.2 1985.8,125.586 1989.83,121.703 1989.13,116.156 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3618,11 +3616,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon724"
-           points="1989.83,178.297 1985.8,174.414 1996.9,175.8 1989.13,183.844 "
+           points="1996.9,175.8 1989.13,183.844 1989.83,178.297 1985.8,174.414 "
            style="fill:#000000" />
         <polygon
            id="polygon726"
-           points="1989.83,178.297 1985.8,174.414 1996.9,175.8 1989.13,183.844 "
+           points="1996.9,175.8 1989.13,183.844 1989.83,178.297 1985.8,174.414 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <text
@@ -3652,11 +3650,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon738"
-           points="2188.55,44.1492 2183.36,42.0845 2194.15,39.1541 2190.02,49.5439 "
+           points="2194.15,39.1541 2190.02,49.5439 2188.55,44.1492 2183.36,42.0845 "
            style="fill:#000000" />
         <polygon
            id="polygon740"
-           points="2188.55,44.1492 2183.36,42.0845 2194.15,39.1541 2190.02,49.5439 "
+           points="2194.15,39.1541 2190.02,49.5439 2188.55,44.1492 2183.36,42.0845 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3671,11 +3669,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon746"
-           points="2157.66,176.089 2156.69,170.584 2164.85,178.229 2153.84,180.168 "
+           points="2164.85,178.229 2153.84,180.168 2157.66,176.089 2156.69,170.584 "
            style="fill:#000000" />
         <polygon
            id="polygon748"
-           points="2157.66,176.089 2156.69,170.584 2164.85,178.229 2153.84,180.168 "
+           points="2164.85,178.229 2153.84,180.168 2157.66,176.089 2156.69,170.584 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <g
@@ -3690,11 +3688,11 @@
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
         <polygon
            id="polygon754"
-           points="2185.46,253.086 2186.92,247.691 2191.05,258.081 2180.26,255.151 "
+           points="2191.05,258.081 2180.26,255.151 2185.46,253.086 2186.92,247.691 "
            style="fill:#000000" />
         <polygon
            id="polygon756"
-           points="2185.46,253.086 2186.92,247.691 2191.05,258.081 2180.26,255.151 "
+           points="2191.05,258.081 2180.26,255.151 2185.46,253.086 2186.92,247.691 "
            style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
       </g>
       <text
@@ -3945,6 +3943,41 @@
            y="832.48767"
            x="2033.5337"
            sodipodi:role="line">SEED</tspan></text>
+    </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text6308"
+       y="489.95538"
+       x="20.703659"
+       style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:60px"
+         y="489.95538"
+         x="20.703659"
+         id="tspan6310"
+         sodipodi:role="line">Suggested workflow for annotation of metatranscriptomes</tspan></text>
+    <g
+       id="g7470"
+       transform="translate(1081.4628,1001.3058)">
+      <rect
+         style="opacity:1;fill:#000080;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect7472"
+         width="968.53717"
+         height="39.999977"
+         x="20"
+         y="-727.63782" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:30px;line-height:125%;font-family:FreeSans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="24.24366"
+         y="-700.04462"
+         id="text7474"
+         sodipodi:linespacing="125%"><tspan
+           id="tspan7476"
+           sodipodi:role="line"
+           x="24.24366"
+           y="-700.04462"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono;fill:#ffff00">$ cd path/biomakefiles; git pull</tspan></text>
     </g>
   </g>
 </svg>
