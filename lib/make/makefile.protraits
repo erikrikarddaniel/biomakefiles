@@ -1,0 +1,11 @@
+# http://protraits.irb.hr/data.html
+
+all: ProTraits_binaryIntegratedPr0.90.tsv ProTraits_precisionScores.scsv
+
+# Tab separated wide file in binary format of traits > 95% confidence
+ProTraits_binaryIntegratedPr0.90.tsv:
+	wget -O $@ -c http://protraits.irb.hr/data/ProTraits_binaryIntegratedPr0.90.txt
+
+# Semicolon separated file of everything (long format)
+ProTraits_precisionScores.scsv:
+	wget -O $@ -c http://protraits.irb.hr/data/ProTraits_precisionScores.txt
