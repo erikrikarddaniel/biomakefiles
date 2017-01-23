@@ -1,9 +1,9 @@
 # makefile.diamond
 #
-# Library makefile to make running the LAST aligner simpler.
+# Library makefile to make running the Diamond aligner simpler.
 #
 # Include the full path of this file in your Makefile and making databases and
-# running the aligner (lastal) can be done via make. See documentation in in
+# running the aligner can be done via make. See documentation in in
 # the biomakefile Git repository: doc/makefile.md and documentation for
 # individual targets below.
 #
