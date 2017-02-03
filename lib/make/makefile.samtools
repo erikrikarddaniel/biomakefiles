@@ -1,0 +1,62 @@
+# makefile.samtools
+#
+# Library makefile to make running the programs in the samtools suite simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@scilifelab.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+SAMTOOLS_OPTS =
+
+# *** Internal ***
+
+# MAKECALLsamtools is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `samtools --version|grep samtools`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(samtools_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_SAMTOOLS      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+all_sam2idxstats: $(subst .sam,.idxstats,$(wildcard *.sam))
+
+all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam))
+
+.SECONDARY:
+
+%.flagstat: %.bam
+	@$(MAKECALL_SAMTOOLS)
+	samtools flagstat $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.idxstats: %.bam.bai
+	@$(MAKECALL_SAMTOOLS)
+	samtools idxstats $(basename $<) | grep -Pv "\t0\t0$$" > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.bam.bai: %.bam.sorted
+	@$(MAKECALL_SAMTOOLS)
+	samtools index $(basename $<)
+	touch $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+		        
+%.bam.sorted: %.bam
+	@$(MAKECALL_SAMTOOLS)
+	samtools sort $< $(basename $<)
+	touch $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.bam: %.sam
+	@$(MAKECALL_SAMTOOLS)
+	samtools view -Sb $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
