@@ -64,3 +64,9 @@ CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.70 0.60 0.50
 	  usearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
 	done
 	touch $@
+
+fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
+
+%.seqlens.tsv: %.fastq.gz
+	echo "seqlen	n" > $@
+	gunzip -c $< | awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
