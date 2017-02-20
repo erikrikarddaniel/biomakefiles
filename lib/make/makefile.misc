@@ -70,3 +70,6 @@ fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
 %.seqlens.tsv: %.fastq.gz
 	echo "seqlen	n" > $@
 	gunzip -c $< | awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
+
+%.fna: %.fastq.gz
+	gunzip -c $< | fastq_to_fasta > $@
