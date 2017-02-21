@@ -74,3 +74,26 @@ And you're ready to run:
 $ make -n fastq.gzs2pears
 $ make fastq.gzs2pears
 ```
+
+## OTU clustering with VSEARCH
+
+The OTU clustering consists of a couple of steps: dereplication, i.e. collecting all
+identical sequences in one fasta entry (with a count), chimera removal, OTU clustering
+and quantification, i.e. mapping back reads to clusters. All of the steps are performed
+in the same directory with a single Makefile.
+
+Create a directory, e.g. `otu_clustering`, and create symlinks to the `*.assembled.fastq.gz`
+from PEAR above. Write a Makefile that looks like this:
+
+```make
+include ../makefile.commondefs
+include ../biomakefiles/lib/make/makefile.vsearchotus
+include ../biomakefiles/lib/make/makefile.misc
+```
+
+### Create a fasta file with all sequences and dereplicate
+
+```make
+$ make -n samples.derep.fna  # Just to check
+$ make samples.derep.fna
+```
