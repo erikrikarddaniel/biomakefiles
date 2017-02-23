@@ -93,7 +93,40 @@ include ../biomakefiles/lib/make/makefile.misc
 
 ### Create a fasta file with all sequences and dereplicate
 
+Dereplication will identify all identical sequences and replace them with a single one,
+although with a count in the header. Moreover it will sort sequence in descending order
+of abundance to make sure that the must abundant sequences end up as seed sequences in
+clusters.
+
+In this step, we also get rid of very rare sequences (by default singletons, i.e. sequences
+only observed once over all samples) and sequences that are likely too short. This is the
+(current) default for options as defined in the makefile:
+
+VSEARCH_DEREP_OPTS = --minuniquesize 1 --minseqlength 300
+
+It will filter out singletons and sequences that are shorter than 300 nucleotides, which I
+think is fine if you already merged pairs. Override this macro in your own <code>Makefile</code>
+if needed (remember to put the new definition ''after'' the line where you include the librar
+makefile).
+
+Now you can run the dereplication:
+
 ```make
 $ make -n samples.derep.fna  # Just to check
 $ make samples.derep.fna
 ```
+
+### Get rid of chimeras
+
+After dereplication you're ready to remove chimeras.
+
+  $ make samples.derep.nochim.fna
+  
+### OTU clustering
+
+Now your data is ready for OTU clustering. This will be performed at a number of identity
+levels; look in the library makefile for what the <code>DEREP_CLUSTER_LEVELS</code> macro
+is set to. You can of course define your own levels by overriding that macro. Otherwise,
+there are no options to set.
+
+  $ make samples.derep.nochim.clusters
