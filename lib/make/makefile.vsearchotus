@@ -1,0 +1,81 @@
+# makefile.vsearch
+#
+# Library makefile to make running vsearch simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+VSEARCH_OPTS = --log $@.log
+VSEARCH_DEREP_OPTS = --minuniquesize 1 --minseqlength 300
+VSEARCH_CHIMERAS_OPTS = 
+DEREP_CLUSTER_LEVELS = 1.00 0.99 0.99 0.985 0.98 0.97 0.95 0.93 0.90
+
+# *** Internal ***
+
+# MAKECALLVSEARCH is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `vsearch --version|grep vsearch`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(VSEARCH_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_VSEARCH     = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+# This target creates a fasta file containing all sequences from all samples.
+# It assumes there are *no other* files ending with .fastq.gz in the directory
+# than quality checked pair-merged files one for each sample.
+samples.fna: $(subst .fastq.gz,.fna,$(wildcard *.fastq.gz))
+	cat $^ > $@
+
+%.derep.fna: %.fna
+	@$(MAKECALL_VSEARCH)
+	vsearch --derep_fulllength $< $(VSEARCH_DEREP_OPTS) --sizeout --output $@ --log $@.log
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.nochim.fna: %.fna
+	@$(MAKECALL_VSEARCH)
+	vsearch --uchime_denovo $< --nonchimeras $@ $(VSEARCH_CHIMERAS_OPTS) --log $@.log
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.otus.fna: %.fna
+	awk '/^>/ { n = n + 1; print sprintf(">OTU_%06d", n); }; !/^>/ { print }' $< > $@
+
+# This one assumes sequences are ordered in abundance order, as they become
+# after dereplication (%.derep.fna target).
+%.clusters: %.fna
+	@$(MAKECALL_VSEARCH)
+	for id in $(DEREP_CLUSTER_LEVELS); do \
+	  echo "--> Clustering at id: $$id <--"; \
+	  vsearch --cluster_smallmem $< --id $$id --usersort --consout $@.id$${id}.fna --log $@.id$${id}.log; \
+	done
+	touch $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.derep.nochim.counts: %.derep.nochim.clusters $(filter-out $(wildcard samples*fna),$(wildcard *.fna))
+	@$(MAKECALL_VSEARCH)
+	@for id in $(DEREP_CLUSTER_LEVELS); do \
+	  echo "--> Quantifying id: $$id <--"; \
+	  od=$@.id$$id.d; if [ ! -e $$od ]; then mkdir $$od; fi; rm -f $$od/*; \
+	  otutable=$$od/$<.id$${id}.otus.tsv; \
+	  echo "sample	otu	count" > $$otutable; \
+	  for f in $(wordlist 2,1000,$^); do \
+	    echo "	* $$f *"; \
+	    make $<.id$${id}.otus.fna; \
+	    uc=$$od/$@.id$${id}.$$(basename $$f); \
+	    vsearch  --usearch_global $$f --db $<.id$${id}.otus.fna --id $${id} --uc $$uc.uc --log $$uc.log; \
+	    cut -f 10 $$uc.uc | sort | uniq -c | sed "s/^ *\([0-9]\+\) \+\(.*\)/$$(basename $$f .fna)\t\2\t\1/" >> $$otutable; \
+	  done; \
+	  mv $$otutable .; \
+	done
+	@touch $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
