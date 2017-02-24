@@ -14,7 +14,10 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-SICKLE_OPTS = -t sanger
+SICKLE_OPTS = 
+
+# This one is required; "sanger" is the value for modern Illumina, see documentation
+QUALITY_SCORES = -t sanger
 
 # This number tries to make sure statistics are output in the order programs
 # were run.  The first directory, which is probably the one including this
@@ -41,18 +44,16 @@ fastq.gz2pesickle: $(subst .r1.fastq.gz,.pesickle,$(filter-out $(wildcard *sickl
 # file with .pesickle suffix is created.
 %.pesickle: %.r1.fastq.gz %.r2.fastq.gz
 	$(MAKECALL_SICKLE)
-	sickle pe -f $(word 1,$^) -r $(word 2,$^) -g $(SICKLE_OPTS) \
+	sickle pe -f $(word 1,$^) -r $(word 2,$^) -g $(SICKLE_OPTS) $(QUALITY_SCORES) \
 	  -o $(basename $@).pesickle.r1.fastq.gz \
 	  -p $(basename $@).pesickle.r2.fastq.gz \
-	  -s $(basename $@).pesickle.single.fastq.gz
+	  -s $(basename $@).pesickle.single.fastq.gz > $@
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
-	touch $@
 
 %.sesickle: %.fastq.gz
 	$(MAKECALL_SICKLE)
-	sickle se -f $(word 1,$^) -g $(SICKLE_OPTS) -o $(basename $@).sesickle.r1.fastq.gz 
+	sickle se -f $(word 1,$^) -g $(SICKLE_OPTS) $(QUALITY_SCORES) -o $(basename $@).sesickle.r1.fastq.gz  > $@
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
-	touch $@
 
 # Produce a file with some statistics, just read numbers after processing.
 pesickle.stats.long.tsv: $(wildcard *.pesickle.*.fastq.gz)

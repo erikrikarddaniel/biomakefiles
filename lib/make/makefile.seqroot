@@ -9,6 +9,42 @@ SHELL := /bin/bash
 
 # *** Targets ***
 
+# Creates a makefile.commondefs with a single line, a definition of the SAMPLES
+# macro created from the content of the samples.tsv file.
+#
+# Must only be run *once* since it will overwrite the content of the file. The
+# recipe therefore tries to stop you. If you really want to rerun this, delete
+# makefile.commondefs first and rerun.
+makefile.commondefs: samples.tsv
+	@if [ ! -e $@ ]; then \
+	  tail -n +2 $< | cut -f 1 | tr '\n' ' ' | sed 's/^.*/SAMPLES = &\n/' > $@; \
+	else \
+	  echo "$@ already exists, won't overwrite since it may contain manual edits. Delete and rerun if you know what you're doing."; \
+	fi
+
+# Creates a makefile snippet with instructions for concatenation of individual
+# sequence files based on information in samples.tsv and seqfilenames.tsv. The
+# latter is assumed to be a tab separated UNIX file containining three fields:
+# sample, readorient and seqfile. The sample column should contain the same
+# names as the samples.tsv and the readorient field must only contain 'r1' or
+# 'r2' for forward and reverse reads respectively.
+makefile.concatenate: samples.tsv seqfilenames.tsv
+	@echo "concat_all: concat_r1 concat_r2" > $@
+	@echo >> $@
+	@for r in r1 r2; do \
+	  tail -n +2 $< | cut -f 1 | sed "s/$$/.$${r}.fastq.gz/" | tr '\n' ' ' | sed "s/^.*/concat_$${r}: &\n/"; \
+	  echo; \
+	done >> $@
+	@for s in $$(tail -n +2 $< | cut -f 1); do \
+	  for r in r1 r2; do \
+	    echo -n "$${s}.$${r}.fastq.gz: "; \
+	    grep "$${s}.$${r}" $(word 2,$^) | cut -f 3 | tr '\n' ' '; \
+	    echo; \
+	    echo '	$$(CONCAT_GZIPPED)'; \
+	    echo; \
+	  done; \
+	done >> $@
+
 # Creates a file containing statistics on how various steps went, i.e. how many
 # sequences were left after a certain treatment.
 #

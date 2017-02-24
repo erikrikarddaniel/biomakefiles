@@ -4,6 +4,8 @@ chdir $ROOT/doc
 screen -t doc
 chdir presentations
 screen -t presentations
+chdir ../img
+screen -t img
 chdir $ROOT/gitignores
 screen -t gitignores
 chdir $ROOT/lib/make
