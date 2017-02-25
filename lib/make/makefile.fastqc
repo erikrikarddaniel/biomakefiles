@@ -5,6 +5,7 @@
 
 # Make fastqc html reports for all .r[12].fastq.gz files
 all_fastqc: $(subst .r1.fastq.gz,.r1_fastqc.html,$(wildcard *.r1.fastq.gz)) $(subst .r2.fastq.gz,.r2_fastqc.html,$(wildcard *.r2.fastq.gz))
+	if [ `which multiqc 2>/dev/null` ]; then multiqc .; fi
 
 %.r1_fastqc.html: %.r1.fastq.gz
 	fastqc $<
