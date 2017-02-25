@@ -13,7 +13,10 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-CUTADAPT_OPTS = -a GATCGGAAGAGCACACGTCTGAACTCCAGTCAC -a ACACTCTTTCCCTACACGACGCTCTTCCGATCT -a CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -a ACACTCTTTCCCTACACGACGCTCTTCCGATCT
+ADAPTERS = -a GATCGGAAGAGCACACGTCTGAACTCCAGTCAC -a ACACTCTTTCCCTACACGACGCTCTTCCGATCT -a CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -a ACACTCTTTCCCTACACGACGCTCTTCCGATCT -a AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -a CTGTCTCTTATACACATCTGACGCTGCCGACGA
+CUTADAPT_OPTS =
+CUTADAPT_FWD_OPTS = -e 0.1 $(CUTADAPT_OPTS) $(ADAPTERS)
+CUTADAPT_REV_OPTS = -e 0.2 $(CUTADAPT_OPTS) $(ADAPTERS)
 
 # *** Internal ***
 
@@ -22,9 +25,9 @@ CUTADAPT_OPTS = -a GATCGGAAGAGCACACGTCTGAACTCCAGTCAC -a ACACTCTTTCCCTACACGACGCTC
 #
 # *Don't redefine!*
 MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `cutadapt --version`" > $@.makecall
-MAKECALL_PARAMS      = echo "	Called with parameters: $(CUTADAPT_OPTS)" >> $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: fwd: $(CUTADAPT_FWD_OPTS), rev: $(CUTADAPT_REV_OPTS)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_CUTADAPT      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+MAKECALL_CUTADAPT    = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***
 
@@ -32,10 +35,10 @@ cutall: $(subst .r1.fastq.gz,.ca.r1.fastq.gz,$(filter-out $(wildcard *.ca.r1.fas
 
 %.ca.r1.fastq.gz: %.r1.fastq.gz
 	@$(MAKECALL_CUTADAPT)
-	gunzip -c $< | cutadapt $(CUTADAPT_OPTS) - | gzip -c > $@ 2> $@.report
+	gunzip -c $< | cutadapt $(CUTADAPT_FWD_OPTS) - | gzip -c > $@ 2> $@.report
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.ca.r2.fastq.gz: %.r2.fastq.gz
 	@$(MAKECALL_CUTADAPT)
-	gunzip -c $< | cutadapt $(CUTADAPT_OPTS) - | gzip -c > $@ 2> $@.report
+	gunzip -c $< | cutadapt $(CUTADAPT_REV_OPTS) - | gzip -c > $@ 2> $@.report
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
