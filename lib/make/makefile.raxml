@@ -1,0 +1,41 @@
+# makefile.raxml
+#
+# Library makefile to make running RAxML simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+RAXML_BINARY = raxmlHPC-PTHREADS-SSE3 
+NUM_CPUS = 4
+RANDOM_PARSIMONY = 12345
+RANDOM_RAPIDBS   = 12345
+RAXML_OPTS = -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) -T $(NUM_CPUS) -N autoMRE 
+
+# *** Internal ***
+
+# MAKECALLRAXML is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(RAXML_BINARY) `$(RAXML_BINARY) -v|grep -o 'RAxML version [0-9.]*'`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(RAXML_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+%.PROTGAMMAAUTO.raxml: %.alnfaa
+	@$(MAKECALL_RAXML)
+	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
+	ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick
+	ln -s RAxML_bipartitions.$(basename $@) $@.bipartitions.newick
+	ln -s RAxML_bipartitionsBranchLabels.$(basename $@) $@.bipartitionsBranchLabels.newick
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
