@@ -111,7 +111,7 @@ makefile).
 
 Now you can run the dereplication:
 
-```make
+```bash
 $ make -n samples.derep.fna  # Just to check
 $ make samples.derep.fna
 ```
@@ -120,8 +120,10 @@ $ make samples.derep.fna
 
 After dereplication you're ready to remove chimeras.
 
-  $ make samples.derep.nochim.fna
-  
+```bash
+$ make samples.derep.nochim.fna
+```
+
 ### OTU clustering
 
 Now your data is ready for OTU clustering. This will be performed at a number of identity
@@ -129,4 +131,6 @@ levels; look in the library makefile for what the <code>DEREP_CLUSTER_LEVELS</co
 is set to. You can of course define your own levels by overriding that macro. Otherwise,
 there are no options to set.
 
-  $ make samples.derep.nochim.clusters
+```bash
+$ make samples.derep.nochim.clusters
+```
