@@ -41,18 +41,36 @@ MAKECALL_ERNE_FILTER = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFIL
 # The contamination database (.ebh extension) is created by the below target
 # and the path is specified via the ERNE_REFERENCE macro (above; but override
 # in your own Makefile).
-fastq.gzs2erne-filters: $(subst .r1.fastq.gz,.erne-filter,$(filter-out $(wildcard *.erne-filter.$(notdir $(basename $(ERNE_REFERENCE))).r1.fastq.gz),$(wildcard *.r1.fastq.gz)))
+#
+# Paired end
+pe-erne-filters: $(subst .r1.fastq.gz,.pe-erne-filter,$(filter-out $(wildcard *.pe-erne-filter.$(notdir $(basename $(ERNE_REFERENCE))).r1.fastq.gz),$(wildcard *.r1.fastq.gz)))
+
+# Single reads
+se-erne-filters: $(subst .r1.fastq.gz,.se-erne-filter,$(filter-out $(wildcard *.se-erne-filter.$(notdir $(basename $(ERNE_REFERENCE))).r1.fastq.gz),$(wildcard *.r1.fastq.gz)))
+
+# Legacy target
+fastq.gzs2erne-filters: pe-erne-filters
 
 # This will run erne-filter against the $(ERNE_REFERENCE) and create output
 # fastq files with the basename of the reference in the name. The log, which is
 # the name of the targ however, will *not* contain the name of the reference.
 # It is thus *not possible* to run erne-filter against different reference
 # databases in the same directory.
-%.erne-filter: %.r1.fastq.gz %.r2.fastq.gz
+#
+# Paired end data
+%.pe-erne-filter: %.r1.fastq.gz %.r2.fastq.gz
 	$(MAKECALL_ERNE_FILTER)
 	erne-filter --contamination-reference $(ERNE_REFERENCE) --query1 $(word 1,$^) --query2 $(word 2,$^) --output-prefix $@.$(notdir $(basename $(ERNE_REFERENCE))) --gzip $(ERNE_OPTS) | tee $@ 2>&1
 	for i in 1 2; do mv $@.$(notdir $(basename $(ERNE_REFERENCE)))_$${i}.fastq.gz $@.$(notdir $(basename $(ERNE_REFERENCE))).r$${i}.fastq.gz; done
 	mv $@.$(notdir $(basename $(ERNE_REFERENCE)))_unpaired.fastq.gz $@.unpaired.fastq.gz
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Single reads
+%.se-erne-filter: %.r1.fastq.gz
+	$(MAKECALL_ERNE_FILTER)
+	erne-filter --contamination-reference $(ERNE_REFERENCE) --query1 $(word 1,$^) --output-prefix $@.$(notdir $(basename $(ERNE_REFERENCE))) --gzip $(ERNE_OPTS) | tee $@ 2>&1
+	#for i in 1 ; do mv $@.$(notdir $(basename $(ERNE_REFERENCE)))_$${i}.fastq.gz $@.$(notdir $(basename $(ERNE_REFERENCE))).r$${i}.fastq.gz; done
+	#mv $@.$(notdir $(basename $(ERNE_REFERENCE)))_unpaired.fastq.gz $@.unpaired.fastq.gz
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Format a database so that ERNE can use it.
