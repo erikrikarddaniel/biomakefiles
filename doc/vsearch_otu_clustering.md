@@ -53,8 +53,8 @@ the `r1` and `r2` fastq files from Sickle, i.e. dismissing the unpaired reads in
 the `single` files. The Makefile should look like this:
 
 ```make
-include ../../../makefile.commondefs
-include ../../../biomakefiles/lib/make/makefile.pear
+include ../../makefile.commondefs
+include ../../biomakefiles/lib/make/makefile.pear
 
 # This controls the number of threads uses. Don't set higher than the number of
 # computing cores you have.
@@ -86,7 +86,7 @@ Create a directory, e.g. `otu_clustering`, and create symlinks to the `*.assembl
 from PEAR above. Write a Makefile that looks like this:
 
 ```make
-include ../makefile.commondefs
+include ../../makefile.commondefs
 include ../biomakefiles/lib/make/makefile.vsearchotus
 include ../biomakefiles/lib/make/makefile.misc
 ```
@@ -102,7 +102,9 @@ In this step, we also get rid of very rare sequences (by default singletons, i.e
 only observed once over all samples) and sequences that are likely too short. This is the
 (current) default for options as defined in the makefile:
 
+```make
 VSEARCH_DEREP_OPTS = --minuniquesize 1 --minseqlength 300
+```
 
 It will filter out singletons and sequences that are shorter than 300 nucleotides, which I
 think is fine if you already merged pairs. Override this macro in your own <code>Makefile</code>
