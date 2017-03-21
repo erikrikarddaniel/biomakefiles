@@ -27,7 +27,7 @@ MEGAN_INSTALL_DIR = /usr/local/megan
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-MEGANIZE_OPTS = --weightedLCA --verbose
+MEGANIZE_OPTS = --lcaAlgorithm Weighted
 
 # *** Internal ***
 
