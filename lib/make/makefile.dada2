@@ -1,0 +1,39 @@
+# makefile.dada2
+#
+# Library makefile to make running DADA2 simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+DADA2FILTER_OPTS = --verbose 
+DADA2FILTER_TRIMLEFT = 8,8 
+DADA2FILTER_TRUNCLEN = 
+
+# *** Internal ***
+
+# MAKECALLDADA2FILTER is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_FILTER_VERSION = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2filter --version`" > $@.makecall
+MAKECALL_PARAMS         = echo "	Called with parameters: $(DADA2FILTER_OPTS)" >> $@.makecall
+MAKECALL_INFILES        = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_DADA2FILTER    = $(MAKECALL_FILTER_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+%.suffix0: %.suffix1 %.suffix1 %.suffixn
+	__PGM_CALL__
+
+dada2filter.out: $(wildcard *.fastq.gz)
+	@$(MAKECALL_DADA2FILTER)
+	./dada2filter $(DADA2FILTER_OPTS) --trimleft=$(DADA2FILTER_TRIMLEFT) --trunclen=$(DADA2FILTER_TRUNCLEN) >$@ 2>&1
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
