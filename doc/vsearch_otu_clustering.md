@@ -136,3 +136,14 @@ there are no options to set.
 ```bash
 $ make samples.derep.nochim.clusters
 ```
+
+### Quantification
+
+After clustering you will want to calculate counts for OTUs:
+
+```bash
+$ make samples.derep.nochim.counts
+```
+
+This will produce a set of long files, one for each clustering levels, with a `.tsv` suffix 
+their names.
