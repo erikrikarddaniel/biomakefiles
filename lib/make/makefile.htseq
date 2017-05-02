@@ -14,6 +14,7 @@ SHELL := /bin/bash
 # includes this file, see documentation in doc/makefile.md.
 #
 HTSEQ_OPTS =
+HTSEQ_IDATTR = locus_tag
 
 FEATURE_GFF = YOU NEED TO SET THIS TO POINT TO AN EXISTING GFF FILE
 
@@ -23,16 +24,16 @@ FEATURE_GFF = YOU NEED TO SET THIS TO POINT TO AN EXISTING GFF FILE
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `htseq-count --help|grep 'Part of the .HTSeq. framework"|grep -o "version .*'`" > $@.makecall
-MAKECALL_PARAMS      = echo "	Called with parameters: $(HTSEQ_OPTS)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^ $(FEATURE_GFF)|tr '\n' ','`)" >> $@.makecall
-MAKECALL_HTSEQ      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+MAKECALL_HTSEQ_VERSION = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `htseq-count --help|grep 'Part of the .HTSeq. framework"|grep -o "version .*'`" > $@.makecall
+MAKECALL_HTSEQ_PARAMS  = echo "	Called with parameters: $(HTSEQ_OPTS)" >> $@.makecall
+MAKECALL_HTSEQ_INFILES = echo "	Input files: $^ (`ls -lL $^ $(FEATURE_GFF)|tr '\n' ','`)" >> $@.makecall
+MAKECALL_HTSEQ         = $(MAKECALL_HTSEQ_VERSION); $(MAKECALL_HTSEQ_PARAMS); $(MAKECALL_HTSEQ_INFILES)
 
 # *** Targets ***
 
-all_htseqs: $(subst .sam,.htseq,$(filter-out $(wildcard *.htseq.sam),$(wildcard *.sam)))
+all_CDS_htseqs: $(subst .sam,.CDS.htseq,$(filter-out $(wildcard *.htseq.sam),$(wildcard *.sam)))
 
-%.htseq: %.sam 
+%.CDS.htseq: %.sam 
 	@$(MAKECALL_HTSEQ)
-	htseq-count $(HTSEQ_OPTS) --samout=$@.sam $^ $(FEATURE_GFF) >$@ 2>$@.err
+	htseq-count $(HTSEQ_OPTS) --type=CDS --idattr=$(HTSEQ_IDATTR) --samout=$@.sam $^ $(FEATURE_GFF) >$@ 2>$@.err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
