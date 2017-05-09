@@ -75,5 +75,12 @@ fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
 	echo "seqlen	n" > $@
 	gunzip -c $< | awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
 
+r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
+	for f in $^; do \
+	  echo "$$(basename $$f .r1.seqcount)	$$(cat $$f)"; \
+	done > $@
+%.seqcount: %.fastq.gz
+	echo $$(expr $$(gunzip -c $< | wc -l) / 4) > $@
+
 %.fna: %.fastq.gz
 	gunzip -c $< | fastq_to_fasta > $@
