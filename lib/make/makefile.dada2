@@ -15,7 +15,7 @@ SHELL := /bin/bash
 #
 DADA2_FILTER_OPTS    = --verbose --trimleft=8,8 --trunclen=280,200
 DADA2_ERRMODELS_OPTS = --verbose --nsamples=24 --maxconsist=30 
-DADA2_CLEAN_OPTS     = --verbose
+DADA2_CLEAN_OPTS     = --verbose --minoverlap=10 --maxmismatch=0
 DADA2_BIMERAS_OPTS   = --verbose --minab=8 --overab=4 --oneoff 
 
 # *** Internal ***
