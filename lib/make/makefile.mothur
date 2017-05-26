@@ -40,9 +40,10 @@ MAKECALL_MOTHUR      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFIL
 
 # *** Targets ***
 
-all.nr.wang.taxonomies: $(subst .fna,.nr.wang.taxonomy,$(wildcard *.fna))
+all.nr.wang.taxonomies: $(subst .fna,.nr.wang.taxonomy.tsv.gz,$(wildcard *.fna))
 
-%.nr.wang.taxonomy: %.fna $(SILVA_TEMPLATE_FILE) $(SILVA_TAXONOMY_FILE)
+%.nr.wang.taxonomy.tsv.gz: %.fna $(SILVA_TEMPLATE_FILE) $(SILVA_TAXONOMY_FILE)
 	@$(MAKECALL_MOTHUR)
 	mothur "#classify.seqs(fasta=$<, template=$(word 2,$^), taxonomy=$(word 3,$^), processors=$(NUM_PROCESSORS), method=wang$(MOTHUR_OPTS))" | tee $@.out 2>&1
+	mv $(basename $(basename $@)) $(basename $@); gzip $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

@@ -13,7 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-DADA2_FILTER_OPTS    = --verbose --trimleft=8,8 --trunclen=280,200
+DADA2_FILTER_OPTS    = --verbose --trimleft=8,8 --trunclen=290,210
 DADA2_ERRMODELS_OPTS = --verbose --nsamples=24 --maxconsist=30 
 DADA2_CLEAN_OPTS     = --verbose --minoverlap=10 --maxmismatch=0
 DADA2_BIMERAS_OPTS   = --verbose --minab=8 --overab=4 --oneoff 
@@ -66,8 +66,18 @@ dada2.cleaned.merged.bimeras.rds: dada2.cleaned.merged.rds
 	dada2bimeras --verbose --seqtabfile=$< --prefix=$(basename $@) $(DADA2_BIMERAS_OPTS) >$(basename $@).out 2>&1
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-
 # The following two are for technical reasons
 seq.dada2errmodels.fwd.errorates.rds: dada2errmodels.out
 
 seq.dada2errmodels.rev.errorates.rds: dada2errmodels.out
+
+TSVGZ2FNA = gunzip -c $< | cut -f 1 | grep -v '^seq' | sort -u | awk '{ print ">seq" sprintf("%08d", NR) "\n" $$1 }' > $@
+
+dada2.cleaned.merged.fna: dada2.cleaned.merged.tsv.gz
+	$(TSVGZ2FNA)
+
+dada2.cleaned.merged.bimeras.fna: dada2.cleaned.merged.bimeras.tsv.gz
+	$(TSVGZ2FNA)
+
+%.name2seq.tsv.gz: %.fna
+	paste - - < $< | sed 's/>//' | gzip -c > $@

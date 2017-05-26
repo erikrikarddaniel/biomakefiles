@@ -4,7 +4,9 @@
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: __AUTHOR_EMAIL__
+# It is dependent on the makefile.misc so you have to include that too.
+#
+# Author: daniel.lundin@lnu.se
 
 SHELL := /bin/bash
 
@@ -13,10 +15,10 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-VSEARCH_OPTS = --log $@.log
+VSEARCH_OPTS = --threads=0
 VSEARCH_DEREP_OPTS = --minuniquesize 1 --minseqlength 300
 VSEARCH_CHIMERAS_OPTS = 
-DEREP_CLUSTER_LEVELS = 1.00 0.99 0.99 0.985 0.98 0.97 0.95 0.93 0.90
+DEREP_CLUSTER_LEVELS = 1.00 0.995 0.99 0.985 0.98 0.97 0.95 0.93 0.90
 
 # *** Internal ***
 
@@ -24,12 +26,20 @@ DEREP_CLUSTER_LEVELS = 1.00 0.99 0.99 0.985 0.98 0.97 0.95 0.93 0.90
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `vsearch --version|grep vsearch`" > $@.makecall
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `vsearch --version 2>&1|grep vsearch`" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(VSEARCH_OPTS)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_VSEARCH     = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***
+#
+# These are the two targets that need to be made, in order:
+#
+# 1. samples.fna
+# 2. samples.derep.fna (dereplicates)
+# 3. samples.derep.clusters (clusters, creates clusterings for many levels)
+# 4. (chimaeras)
+# Work in progress...
 
 # This target creates a fasta file containing all sequences from all samples.
 # It assumes there are *no other* files ending with .fastq.gz in the directory
@@ -37,14 +47,17 @@ MAKECALL_VSEARCH     = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFIL
 samples.fna: $(subst .fastq.gz,.fna,$(wildcard *.fastq.gz))
 	cat $^ > $@
 
+samples.derep.nochim.fna: $(subst .fastq.gz,.derep.nochim.fna,$(wildcard *.fastq.gz))
+	cat $^ > $@
+
 %.derep.fna: %.fna
 	@$(MAKECALL_VSEARCH)
-	vsearch --derep_fulllength $< $(VSEARCH_DEREP_OPTS) --sizeout --output $@ --log $@.log
+	vsearch --derep_fulllength $< $(VSEARCH_DEREP_OPTS) --sizeout --output $@ $(VSEARCH_OPTS) --log $@.log
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.nochim.fna: %.fna
 	@$(MAKECALL_VSEARCH)
-	vsearch --uchime_denovo $< --nonchimeras $@ $(VSEARCH_CHIMERAS_OPTS) --log $@.log
+	vsearch --uchime_denovo $< --nonchimeras $@ $(VSEARCH_CHIMERAS_OPTS) $(VSEARCH_OPTS) --log $@.log
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.otus.fna: %.fna
@@ -56,7 +69,7 @@ samples.fna: $(subst .fastq.gz,.fna,$(wildcard *.fastq.gz))
 	@$(MAKECALL_VSEARCH)
 	for id in $(DEREP_CLUSTER_LEVELS); do \
 	  echo "--> Clustering at id: $$id <--"; \
-	  vsearch --cluster_smallmem $< --id $$id --usersort --consout $@.id$${id}.fna --log $@.id$${id}.log; \
+	  vsearch --cluster_smallmem $< --id $$id --usersort --consout $@.id$${id}.fna $(VSEARCH_OPTS) --log $@.id$${id}.log; \
 	done
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
@@ -72,7 +85,7 @@ samples.fna: $(subst .fastq.gz,.fna,$(wildcard *.fastq.gz))
 	    echo "	* $$f *"; \
 	    make $<.id$${id}.otus.fna; \
 	    uc=$$od/$@.id$${id}.$$(basename $$f); \
-	    vsearch  --usearch_global $$f --db $<.id$${id}.otus.fna --id $${id} --uc $$uc.uc --log $$uc.log; \
+	    vsearch  --usearch_global $$f --db $<.id$${id}.otus.fna --id $${id} --uc $$uc.uc $(VSEARCH_OPTS) --log $$uc.log; \
 	    cut -f 10 $$uc.uc | sort | uniq -c | sed "s/^ *\([0-9]\+\) \+\(.*\)/$$(basename $$f .fna)\t\2\t\1/" >> $$otutable; \
 	  done; \
 	  mv $$otutable .; \
