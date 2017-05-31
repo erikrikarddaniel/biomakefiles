@@ -14,7 +14,7 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="megan_datamodel.svg"
-   inkscape:export-filename="/home/daluab/dev/biomakefiles/doc/img/megan_datamodel.png"
+   inkscape:export-filename="megan_datamodel.png"
    inkscape:export-xdpi="92.006104"
    inkscape:export-ydpi="92.006104">
   <metadata
@@ -25,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,12 +41,12 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1031"
+     inkscape:window-height="1151"
      id="namedview352"
      showgrid="false"
-     inkscape:zoom="0.39040741"
-     inkscape:cx="1658.2562"
-     inkscape:cy="189.96991"
+     inkscape:zoom="0.55211945"
+     inkscape:cx="1216.4101"
+     inkscape:cy="474.63942"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
@@ -54,266 +54,18 @@
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4947" />
+  </sodipodi:namedview>
   <rect
      style="fill:#ff8080;stroke:none;stroke-width:1.69333351;stroke-miterlimit:4;stroke-dasharray:none"
      id="rect3488"
-     width="480.49185"
-     height="346.56757"
-     x="246.51878"
-     y="272.98257" />
-  <g
-     id="g4"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="482"
-       y="241"
-       width="187.10001"
-       height="28"
-       id="rect6" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="482"
-       y="241"
-       width="187.10001"
-       height="28"
-       id="rect8" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="575.54999"
-       y="260"
-       id="text10">reads2taxonids</text>
-    <rect
-       style="fill:#ffffff"
-       x="482"
-       y="269"
-       width="187.10001"
-       height="36"
-       id="rect12" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="482"
-       y="269"
-       width="187.10001"
-       height="36"
-       id="rect14" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="485"
-       y="283"
-       id="text16">+readname: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="485"
-       y="299"
-       id="text18">+ncbi_taxon_id: integer</text>
-    <rect
-       style="fill:#ffffff"
-       x="482"
-       y="305"
-       width="187.10001"
-       height="8"
-       id="rect20" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="482"
-       y="305"
-       width="187.10001"
-       height="8"
-       id="rect22" />
-  </g>
-  <g
-     id="g24"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="501"
-       y="412"
-       width="148.75"
-       height="28"
-       id="rect26" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="501"
-       y="412"
-       width="148.75"
-       height="28"
-       id="rect28" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="575.375"
-       y="431"
-       id="text30">reads2eggnogs</text>
-    <rect
-       style="fill:#ffffff"
-       x="501"
-       y="440"
-       width="148.75"
-       height="36"
-       id="rect32" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="501"
-       y="440"
-       width="148.75"
-       height="36"
-       id="rect34" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="504"
-       y="454"
-       id="text36">+readname: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="504"
-       y="470"
-       id="text38">+eggnog: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="501"
-       y="476"
-       width="148.75"
-       height="8"
-       id="rect40" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="501"
-       y="476"
-       width="148.75"
-       height="8"
-       id="rect42" />
-  </g>
-  <g
-     id="g44"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="243"
-       y="241"
-       width="140.89999"
-       height="28"
-       id="rect46" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="243"
-       y="241"
-       width="140.89999"
-       height="28"
-       id="rect48" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="313.45001"
-       y="260"
-       id="text50">reads2ips</text>
-    <rect
-       style="fill:#ffffff"
-       x="243"
-       y="269"
-       width="140.89999"
-       height="36"
-       id="rect52" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="243"
-       y="269"
-       width="140.89999"
-       height="36"
-       id="rect54" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="246"
-       y="283"
-       id="text56">+readname: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="246"
-       y="299"
-       id="text58">+interpro: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="243"
-       y="305"
-       width="140.89999"
-       height="8"
-       id="rect60" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="243"
-       y="305"
-       width="140.89999"
-       height="8"
-       id="rect62" />
-  </g>
-  <g
-     id="g64"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="480.994,277 448.451,277 448.451,277 384.774,277 "
-       id="polyline66" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
-       x="476.99399"
-       y="265"
-       id="text68">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="388.77399"
-       y="265"
-       id="text70">0..1</text>
-  </g>
-  <g
-     id="g72"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="575.55,314.009 575.55,362.5 575.375,362.5 575.375,410.991 "
-       id="polyline74" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="579.54999"
-       y="326.009"
-       id="text76">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="579.375"
-       y="406.991"
-       id="text78">0..1</text>
-  </g>
-  <g
-     id="g80"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="313.45,313 320,313 320,450 501,450 "
-       id="polyline82" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="317.45001"
-       y="301"
-       id="text84">0..1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
-       x="497"
-       y="438"
-       id="text86">0..1</text>
-  </g>
+     width="477.43286"
+     height="548.26062"
+     x="249.57774"
+     y="71.289574" />
   <rect
      style="fill:#c6afe9;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
      id="rect3502"
@@ -321,144 +73,6 @@
      height="344.86621"
      x="734.81842"
      y="273.23816" />
-  <g
-     id="g88"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="730"
-       y="239"
-       width="187.10001"
-       height="28"
-       id="rect90" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="730"
-       y="239"
-       width="187.10001"
-       height="28"
-       id="rect92" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="823.54999"
-       y="258"
-       id="text94">taxflat</text>
-    <rect
-       style="fill:#ffffff"
-       x="730"
-       y="267"
-       width="187.10001"
-       height="180"
-       id="rect96" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="730"
-       y="267"
-       width="187.10001"
-       height="180"
-       id="rect98" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="281"
-       id="text100">+ncbi_taxon_id: integer</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="297"
-       id="text102">+domain: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="313"
-       id="text104">+kingdom: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="329"
-       id="text106">+phylum: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="345"
-       id="text108">+class: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="361"
-       id="text110">+order: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="377"
-       id="text112">+family: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="393"
-       id="text114">+genus: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="409"
-       id="text116">+species: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="425"
-       id="text118">+taxon: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="733"
-       y="441"
-       id="text120">+rank: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="730"
-       y="447"
-       width="187.10001"
-       height="8"
-       id="rect122" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="730"
-       y="447"
-       width="187.10001"
-       height="8"
-       id="rect124" />
-  </g>
-  <g
-     id="g126"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="670.106,277 671.106,277 729,277 730,277 "
-       id="polyline128" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="674.10602"
-       y="265"
-       id="text130">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
-       x="726"
-       y="265"
-       id="text132">1</text>
-  </g>
   <rect
      style="fill:#ffeeaa;stroke:none;stroke-width:1.69333351;stroke-miterlimit:4;stroke-dasharray:none"
      id="rect3494"
@@ -466,671 +80,17 @@
      height="681.88959"
      x="-281"
      y="-1.0000172" />
-  <g
-     id="g134"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="-20"
-       y="239"
-       width="179.39999"
-       height="28"
-       id="rect136" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-20"
-       y="239"
-       width="179.39999"
-       height="28"
-       id="rect138" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="69.699997"
-       y="258"
-       id="text140">interpro2go</text>
-    <rect
-       style="fill:#ffffff"
-       x="-20"
-       y="267"
-       width="179.39999"
-       height="68"
-       id="rect142" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-20"
-       y="267"
-       width="179.39999"
-       height="68"
-       id="rect144" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-17"
-       y="281"
-       id="text146">+interpro_id: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-17"
-       y="297"
-       id="text148">+interpro_name: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-17"
-       y="313"
-       id="text150">+go_term: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-17"
-       y="329"
-       id="text152">+go_id: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="-20"
-       y="335"
-       width="179.39999"
-       height="8"
-       id="rect154" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-20"
-       y="335"
-       width="179.39999"
-       height="8"
-       id="rect156" />
-  </g>
-  <g
-     id="g158"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="241.993,277 187.196,277 187.196,277 159.4,277 "
-       id="polyline160" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
-       x="237.993"
-       y="265"
-       id="text162">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="163.39999"
-       y="265"
-       id="text164">0..1?</text>
-  </g>
-  <g
-     id="g166"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="-5"
-       y="14"
-       width="148.60001"
-       height="28"
-       id="rect168" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-5"
-       y="14"
-       width="148.60001"
-       height="28"
-       id="rect170" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="69.300003"
-       y="33"
-       id="text172">ec2go</text>
-    <rect
-       style="fill:#ffffff"
-       x="-5"
-       y="42"
-       width="148.60001"
-       height="52"
-       id="rect174" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-5"
-       y="42"
-       width="148.60001"
-       height="52"
-       id="rect176" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-2"
-       y="56"
-       id="text178">+ec_number: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-2"
-       y="72"
-       id="text180">+go_term: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-2"
-       y="88"
-       id="text182">+go_id: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="-5"
-       y="94"
-       width="148.60001"
-       height="8"
-       id="rect184" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-5"
-       y="94"
-       width="148.60001"
-       height="8"
-       id="rect186" />
-  </g>
-  <g
-     id="g188"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="69.7,238.002 69.7,213.5 69.3,213.5 69.3,102.997 "
-       id="polyline190" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="73.699997"
-       y="234.002"
-       id="text192">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="73.300003"
-       y="114.997"
-       id="text194">0..1</text>
-  </g>
-  <g
-     id="g196"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="3"
-       y="470"
-       width="133.2"
-       height="28"
-       id="rect198" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="3"
-       y="470"
-       width="133.2"
-       height="28"
-       id="rect200" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="69.599998"
-       y="489"
-       id="text202">kegg2go</text>
-    <rect
-       style="fill:#ffffff"
-       x="3"
-       y="498"
-       width="133.2"
-       height="52"
-       id="rect204" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="3"
-       y="498"
-       width="133.2"
-       height="52"
-       id="rect206" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="6"
-       y="512"
-       id="text208">+kr_id: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="6"
-       y="528"
-       id="text210">+go_term: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="6"
-       y="544"
-       id="text212">+go_id: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="3"
-       y="550"
-       width="133.2"
-       height="8"
-       id="rect214" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="3"
-       y="550"
-       width="133.2"
-       height="8"
-       id="rect216" />
-  </g>
-  <g
-     id="g218"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="69.7,343.998 69.7,368.5 69.6,368.5 69.6,469.011 "
-       id="polyline220" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="73.699997"
-       y="355.99799"
-       id="text222">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="73.599998"
-       y="465.01099"
-       id="text224">0..1</text>
-  </g>
-  <g
-     id="g226"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="-231"
-       y="469"
-       width="133.2"
-       height="28"
-       id="rect228" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-231"
-       y="469"
-       width="133.2"
-       height="28"
-       id="rect230" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="-164.39999"
-       y="488"
-       id="text232">metacyc2go</text>
-    <rect
-       style="fill:#ffffff"
-       x="-231"
-       y="497"
-       width="133.2"
-       height="52"
-       id="rect234" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-231"
-       y="497"
-       width="133.2"
-       height="52"
-       id="rect236" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-228"
-       y="511"
-       id="text238">+rxn_id: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-228"
-       y="527"
-       id="text240">+go_term: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-228"
-       y="543"
-       id="text242">+go_id: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="-231"
-       y="549"
-       width="133.2"
-       height="8"
-       id="rect244" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-231"
-       y="549"
-       width="133.2"
-       height="8"
-       id="rect246" />
-  </g>
-  <g
-     id="g248"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="69.7,343 69.7,420 -164.4,420 -164.4,468.021 "
-       id="polyline250" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="73.699997"
-       y="355"
-       id="text252">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-160.39999"
-       y="464.021"
-       id="text254">0..1</text>
-  </g>
-  <g
-     id="g256"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="-271"
-       y="301"
-       width="148.60001"
-       height="28"
-       id="rect258" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-271"
-       y="301"
-       width="148.60001"
-       height="28"
-       id="rect260" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="-196.7"
-       y="320"
-       id="text262">pfam2go</text>
-    <rect
-       style="fill:#ffffff"
-       x="-271"
-       y="329"
-       width="148.60001"
-       height="68"
-       id="rect264" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-271"
-       y="329"
-       width="148.60001"
-       height="68"
-       id="rect266" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-268"
-       y="343"
-       id="text268">+pfam_id: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-268"
-       y="359"
-       id="text270">+pfam_name: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-268"
-       y="375"
-       id="text272">+go_term: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-268"
-       y="391"
-       id="text274">+go_id: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="-271"
-       y="397"
-       width="148.60001"
-       height="8"
-       id="rect276" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-271"
-       y="397"
-       width="148.60001"
-       height="8"
-       id="rect278" />
-  </g>
-  <g
-     id="g280"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="-20.9752,291 -80,291 -80,353 -121.412,353 "
-       id="polyline282" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
-       x="-24.975201"
-       y="288"
-       id="text284">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-117.412"
-       y="350"
-       id="text286">0..1</text>
-  </g>
-  <g
-     id="g288"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="-280"
-       y="160"
-       width="171.7"
-       height="28"
-       id="rect290" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-280"
-       y="160"
-       width="171.7"
-       height="28"
-       id="rect292" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="-194.14999"
-       y="179"
-       id="text294">tigrfam2go</text>
-    <rect
-       style="fill:#ffffff"
-       x="-280"
-       y="188"
-       width="171.7"
-       height="68"
-       id="rect296" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-280"
-       y="188"
-       width="171.7"
-       height="68"
-       id="rect298" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-277"
-       y="202"
-       id="text300">+tigrfam_id: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-277"
-       y="218"
-       id="text302">+tigrfam_name: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-277"
-       y="234"
-       id="text304">+go_term: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-277"
-       y="250"
-       id="text306">+go_id: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="-280"
-       y="256"
-       width="171.7"
-       height="8"
-       id="rect308" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-280"
-       y="256"
-       width="171.7"
-       height="8"
-       id="rect310" />
-  </g>
-  <g
-     id="g312"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="-20,253 -80,253 -80,212 -107.297,212 "
-       id="polyline314" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
-       x="-24"
-       y="250"
-       id="text316">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-103.297"
-       y="209"
-       id="text318">0..1</text>
-  </g>
-  <g
-     id="g320"
-     transform="translate(23.513458,100.42071)">
-    <rect
-       style="fill:#ffffff"
-       x="-220"
-       y="0"
-       width="171.7"
-       height="28"
-       id="rect322" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-220"
-       y="0"
-       width="171.7"
-       height="28"
-       id="rect324" />
-    <text
-       font-size="16"
-       style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
-       x="-134.14999"
-       y="19"
-       id="text326">uniprotkb_kw2go</text>
-    <rect
-       style="fill:#ffffff"
-       x="-220"
-       y="28"
-       width="171.7"
-       height="68"
-       id="rect328" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-220"
-       y="28"
-       width="171.7"
-       height="68"
-       id="rect330" />
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-217"
-       y="42"
-       id="text332">+uniprot_id: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-217"
-       y="58"
-       id="text334">+uniprot_name: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-217"
-       y="74"
-       id="text336">+go_term: string</text>
-    <text
-       font-size="12.8"
-       style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-217"
-       y="90"
-       id="text338">+go_id: string</text>
-    <rect
-       style="fill:#ffffff"
-       x="-220"
-       y="96"
-       width="171.7"
-       height="8"
-       id="rect340" />
-    <rect
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       x="-220"
-       y="96"
-       width="171.7"
-       height="8"
-       id="rect342" />
-  </g>
-  <g
-     id="g344"
-     transform="translate(23.513458,100.42071)">
-    <polyline
-       style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2"
-       points="69.7,239 69.7,140 -134.15,140 -134.15,104.991 "
-       id="polyline346" />
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="73.699997"
-       y="235"
-       id="text348">1</text>
-    <text
-       font-size="12.7998"
-       style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
-       x="-130.14999"
-       y="116.991"
-       id="text350">0..1</text>
-  </g>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:33.8666687px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="297.22382"
-     y="316.94247"
+     y="119.38691"
      id="text3490"
      sodipodi:linespacing="125%"><tspan
        sodipodi:role="line"
        id="tspan3492"
        x="297.22382"
-       y="316.94247">Exported from MEGAN</tspan></text>
+       y="119.38691">Exported from MEGAN</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:33.8666687px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1163,4 +123,1260 @@
        y="333.21072"
        style="font-size:25.40000153px;text-align:center;text-anchor:middle"
        id="tspan3512">taxdata2taxflat</tspan></text>
+  <g
+     id="g4737"
+     transform="translate(307.05781,-530.57783)">
+    <g
+       id="g4"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect6"
+         height="28"
+         width="187.10001"
+         y="241"
+         x="482"
+         style="fill:#ffffff" />
+      <rect
+         id="rect8"
+         height="28"
+         width="187.10001"
+         y="241"
+         x="482"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text10"
+         y="260"
+         x="575.54999"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">reads2taxonids</text>
+      <rect
+         id="rect12"
+         height="36"
+         width="187.10001"
+         y="269"
+         x="482"
+         style="fill:#ffffff" />
+      <rect
+         id="rect14"
+         height="36"
+         width="187.10001"
+         y="269"
+         x="482"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text16"
+         y="283"
+         x="485"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+readname: string</text>
+      <text
+         id="text18"
+         y="299"
+         x="485"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+ncbi_taxon_id: integer</text>
+      <rect
+         id="rect20"
+         height="8"
+         width="187.10001"
+         y="305"
+         x="482"
+         style="fill:#ffffff" />
+      <rect
+         id="rect22"
+         height="8"
+         width="187.10001"
+         y="305"
+         x="482"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g24"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect26"
+         height="28"
+         width="148.75"
+         y="412"
+         x="501"
+         style="fill:#ffffff" />
+      <rect
+         id="rect28"
+         height="28"
+         width="148.75"
+         y="412"
+         x="501"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text30"
+         y="431"
+         x="575.375"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">reads2eggnogs</text>
+      <rect
+         id="rect32"
+         height="36"
+         width="148.75"
+         y="440"
+         x="501"
+         style="fill:#ffffff" />
+      <rect
+         id="rect34"
+         height="36"
+         width="148.75"
+         y="440"
+         x="501"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text36"
+         y="454"
+         x="504"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+readname: string</text>
+      <text
+         id="text38"
+         y="470"
+         x="504"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+eggnog: string</text>
+      <rect
+         id="rect40"
+         height="8"
+         width="148.75"
+         y="476"
+         x="501"
+         style="fill:#ffffff" />
+      <rect
+         id="rect42"
+         height="8"
+         width="148.75"
+         y="476"
+         x="501"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g44"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect46"
+         height="28"
+         width="140.89999"
+         y="241"
+         x="243"
+         style="fill:#ffffff" />
+      <rect
+         id="rect48"
+         height="28"
+         width="140.89999"
+         y="241"
+         x="243"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text50"
+         y="260"
+         x="313.45001"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">reads2ips</text>
+      <rect
+         id="rect52"
+         height="36"
+         width="140.89999"
+         y="269"
+         x="243"
+         style="fill:#ffffff" />
+      <rect
+         id="rect54"
+         height="36"
+         width="140.89999"
+         y="269"
+         x="243"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text56"
+         y="283"
+         x="246"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+readname: string</text>
+      <text
+         id="text58"
+         y="299"
+         x="246"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+interpro: string</text>
+      <rect
+         id="rect60"
+         height="8"
+         width="140.89999"
+         y="305"
+         x="243"
+         style="fill:#ffffff" />
+      <rect
+         id="rect62"
+         height="8"
+         width="140.89999"
+         y="305"
+         x="243"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g64"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline66"
+         points="480.994,277 448.452,277 448.452,277 384.774,277 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text68"
+         y="274"
+         x="448.452"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:middle;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text70"
+         y="274"
+         x="476.99399"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text72"
+         y="290"
+         x="476.99399"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text74"
+         y="274"
+         x="388.77399"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+      <text
+         id="text76"
+         y="290"
+         x="388.77399"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+    </g>
+    <g
+       id="g78"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline80"
+         points="575.55,314.009 575.55,362.5 575.375,362.5 575.375,410.991 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text82"
+         y="359.5"
+         x="575.46198"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:middle;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text84"
+         y="326.009"
+         x="579.54999"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text86"
+         y="342.009"
+         x="579.54999"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text88"
+         y="390.991"
+         x="579.375"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+      <text
+         id="text90"
+         y="406.991"
+         x="579.375"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+    </g>
+    <g
+       id="g92"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect94"
+         height="28"
+         width="187.10001"
+         y="239"
+         x="730"
+         style="fill:#ffffff" />
+      <rect
+         id="rect96"
+         height="28"
+         width="187.10001"
+         y="239"
+         x="730"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text98"
+         y="258"
+         x="823.54999"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">taxflat</text>
+      <rect
+         id="rect100"
+         height="180"
+         width="187.10001"
+         y="267"
+         x="730"
+         style="fill:#ffffff" />
+      <rect
+         id="rect102"
+         height="180"
+         width="187.10001"
+         y="267"
+         x="730"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text104"
+         y="281"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+ncbi_taxon_id: integer</text>
+      <text
+         id="text106"
+         y="297"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+domain: string</text>
+      <text
+         id="text108"
+         y="313"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+kingdom: string</text>
+      <text
+         id="text110"
+         y="329"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+phylum: string</text>
+      <text
+         id="text112"
+         y="345"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+class: string</text>
+      <text
+         id="text114"
+         y="361"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+order: string</text>
+      <text
+         id="text116"
+         y="377"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+family: string</text>
+      <text
+         id="text118"
+         y="393"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+genus: string</text>
+      <text
+         id="text120"
+         y="409"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+species: string</text>
+      <text
+         id="text122"
+         y="425"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+taxon: string</text>
+      <text
+         id="text124"
+         y="441"
+         x="733"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+rank: string</text>
+      <rect
+         id="rect126"
+         height="8"
+         width="187.10001"
+         y="447"
+         x="730"
+         style="fill:#ffffff" />
+      <rect
+         id="rect128"
+         height="8"
+         width="187.10001"
+         y="447"
+         x="730"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g130"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline132"
+         points="670.106,277 671.106,277 729,277 730,277 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text134"
+         y="274"
+         x="700.05298"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:middle;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text136"
+         y="274"
+         x="674.10602"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text138"
+         y="290"
+         x="674.10602"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text140"
+         y="274"
+         x="726"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text142"
+         y="290"
+         x="726"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
+         font-size="12.7998" />
+    </g>
+    <g
+       id="g144"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect146"
+         height="28"
+         width="179.39999"
+         y="239"
+         x="-20"
+         style="fill:#ffffff" />
+      <rect
+         id="rect148"
+         height="28"
+         width="179.39999"
+         y="239"
+         x="-20"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text150"
+         y="258"
+         x="69.699997"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">interpro2go</text>
+      <rect
+         id="rect152"
+         height="68"
+         width="179.39999"
+         y="267"
+         x="-20"
+         style="fill:#ffffff" />
+      <rect
+         id="rect154"
+         height="68"
+         width="179.39999"
+         y="267"
+         x="-20"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text156"
+         y="281"
+         x="-17"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+interpro_id: string</text>
+      <text
+         id="text158"
+         y="297"
+         x="-17"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+interpro_name: string</text>
+      <text
+         id="text160"
+         y="313"
+         x="-17"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_term: string</text>
+      <text
+         id="text162"
+         y="329"
+         x="-17"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_id: string</text>
+      <rect
+         id="rect164"
+         height="8"
+         width="179.39999"
+         y="335"
+         x="-20"
+         style="fill:#ffffff" />
+      <rect
+         id="rect166"
+         height="8"
+         width="179.39999"
+         y="335"
+         x="-20"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g168"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline170"
+         points="241.993,277 187.196,277 187.196,277 159.4,277 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text172"
+         y="274"
+         x="187.196"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:middle;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text174"
+         y="274"
+         x="237.993"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text176"
+         y="290"
+         x="237.993"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text178"
+         y="274"
+         x="163.39999"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1?</text>
+      <text
+         id="text180"
+         y="290"
+         x="163.39999"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+    </g>
+    <g
+       id="g182"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect184"
+         height="28"
+         width="148.60001"
+         y="14"
+         x="-5"
+         style="fill:#ffffff" />
+      <rect
+         id="rect186"
+         height="28"
+         width="148.60001"
+         y="14"
+         x="-5"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text188"
+         y="33"
+         x="69.300003"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">ec2go</text>
+      <rect
+         id="rect190"
+         height="52"
+         width="148.60001"
+         y="42"
+         x="-5"
+         style="fill:#ffffff" />
+      <rect
+         id="rect192"
+         height="52"
+         width="148.60001"
+         y="42"
+         x="-5"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text194"
+         y="56"
+         x="-2"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+ec_number: string</text>
+      <text
+         id="text196"
+         y="72"
+         x="-2"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_term: string</text>
+      <text
+         id="text198"
+         y="88"
+         x="-2"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_id: string</text>
+      <rect
+         id="rect200"
+         height="8"
+         width="148.60001"
+         y="94"
+         x="-5"
+         style="fill:#ffffff" />
+      <rect
+         id="rect202"
+         height="8"
+         width="148.60001"
+         y="94"
+         x="-5"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g204"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline206"
+         points="69.7,238.003 69.7,213.5 69.3,213.5 69.3,102.997 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text208"
+         y="210.5"
+         x="69.5"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:middle;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text210"
+         y="218.00301"
+         x="73.699997"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text212"
+         y="234.00301"
+         x="73.699997"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text214"
+         y="114.997"
+         x="73.300003"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+      <text
+         id="text216"
+         y="130.99699"
+         x="73.300003"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+    </g>
+    <g
+       id="g218"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect220"
+         height="28"
+         width="133.2"
+         y="470"
+         x="3"
+         style="fill:#ffffff" />
+      <rect
+         id="rect222"
+         height="28"
+         width="133.2"
+         y="470"
+         x="3"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text224"
+         y="489"
+         x="69.599998"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">kegg2go</text>
+      <rect
+         id="rect226"
+         height="52"
+         width="133.2"
+         y="498"
+         x="3"
+         style="fill:#ffffff" />
+      <rect
+         id="rect228"
+         height="52"
+         width="133.2"
+         y="498"
+         x="3"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text230"
+         y="512"
+         x="6"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+kr_id: string</text>
+      <text
+         id="text232"
+         y="528"
+         x="6"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_term: string</text>
+      <text
+         id="text234"
+         y="544"
+         x="6"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_id: string</text>
+      <rect
+         id="rect236"
+         height="8"
+         width="133.2"
+         y="550"
+         x="3"
+         style="fill:#ffffff" />
+      <rect
+         id="rect238"
+         height="8"
+         width="133.2"
+         y="550"
+         x="3"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g240"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline242"
+         points="69.7,343.997 69.7,368.5 69.6,368.5 69.6,469.011 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text244"
+         y="365.5"
+         x="69.650002"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:middle;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text246"
+         y="355.99701"
+         x="73.699997"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text248"
+         y="371.99701"
+         x="73.699997"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text250"
+         y="449.01099"
+         x="73.599998"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+      <text
+         id="text252"
+         y="465.01099"
+         x="73.599998"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+    </g>
+    <g
+       id="g254"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect256"
+         height="28"
+         width="133.2"
+         y="469"
+         x="-231"
+         style="fill:#ffffff" />
+      <rect
+         id="rect258"
+         height="28"
+         width="133.2"
+         y="469"
+         x="-231"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text260"
+         y="488"
+         x="-164.39999"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">metacyc2go</text>
+      <rect
+         id="rect262"
+         height="52"
+         width="133.2"
+         y="497"
+         x="-231"
+         style="fill:#ffffff" />
+      <rect
+         id="rect264"
+         height="52"
+         width="133.2"
+         y="497"
+         x="-231"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text266"
+         y="511"
+         x="-228"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+rxn_id: string</text>
+      <text
+         id="text268"
+         y="527"
+         x="-228"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_term: string</text>
+      <text
+         id="text270"
+         y="543"
+         x="-228"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_id: string</text>
+      <rect
+         id="rect272"
+         height="8"
+         width="133.2"
+         y="549"
+         x="-231"
+         style="fill:#ffffff" />
+      <rect
+         id="rect274"
+         height="8"
+         width="133.2"
+         y="549"
+         x="-231"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g276"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline278"
+         points="69.7,343 69.7,420 -164.4,420 -164.4,468.021 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text280"
+         y="417"
+         x="-47.349998"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:middle;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text282"
+         y="355"
+         x="73.699997"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text284"
+         y="464.021"
+         x="-160.39999"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+    </g>
+    <g
+       id="g286"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect288"
+         height="28"
+         width="148.60001"
+         y="301"
+         x="-271"
+         style="fill:#ffffff" />
+      <rect
+         id="rect290"
+         height="28"
+         width="148.60001"
+         y="301"
+         x="-271"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text292"
+         y="320"
+         x="-196.7"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">pfam2go</text>
+      <rect
+         id="rect294"
+         height="68"
+         width="148.60001"
+         y="329"
+         x="-271"
+         style="fill:#ffffff" />
+      <rect
+         id="rect296"
+         height="68"
+         width="148.60001"
+         y="329"
+         x="-271"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text298"
+         y="343"
+         x="-268"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+pfam_id: string</text>
+      <text
+         id="text300"
+         y="359"
+         x="-268"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+pfam_name: string</text>
+      <text
+         id="text302"
+         y="375"
+         x="-268"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_term: string</text>
+      <text
+         id="text304"
+         y="391"
+         x="-268"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_id: string</text>
+      <rect
+         id="rect306"
+         height="8"
+         width="148.60001"
+         y="397"
+         x="-271"
+         style="fill:#ffffff" />
+      <rect
+         id="rect308"
+         height="8"
+         width="148.60001"
+         y="397"
+         x="-271"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g310"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline312"
+         points="-20.9752,291 -80,291 -80,353 -121.412,353 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text314"
+         y="319"
+         x="-78"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text316"
+         y="288"
+         x="-24.975201"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text318"
+         y="350"
+         x="-117.412"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+    </g>
+    <g
+       id="g320"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect322"
+         height="28"
+         width="171.7"
+         y="160"
+         x="-280"
+         style="fill:#ffffff" />
+      <rect
+         id="rect324"
+         height="28"
+         width="171.7"
+         y="160"
+         x="-280"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text326"
+         y="179"
+         x="-194.14999"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">tigrfam2go</text>
+      <rect
+         id="rect328"
+         height="68"
+         width="171.7"
+         y="188"
+         x="-280"
+         style="fill:#ffffff" />
+      <rect
+         id="rect330"
+         height="68"
+         width="171.7"
+         y="188"
+         x="-280"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text332"
+         y="202"
+         x="-277"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+tigrfam_id: string</text>
+      <text
+         id="text334"
+         y="218"
+         x="-277"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+tigrfam_name: string</text>
+      <text
+         id="text336"
+         y="234"
+         x="-277"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_term: string</text>
+      <text
+         id="text338"
+         y="250"
+         x="-277"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_id: string</text>
+      <rect
+         id="rect340"
+         height="8"
+         width="171.7"
+         y="256"
+         x="-280"
+         style="fill:#ffffff" />
+      <rect
+         id="rect342"
+         height="8"
+         width="171.7"
+         y="256"
+         x="-280"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g344"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline346"
+         points="-20,253 -80,253 -80,212 -107.297,212 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text348"
+         y="229.5"
+         x="-78"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text350"
+         y="250"
+         x="-24"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:end;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text352"
+         y="209"
+         x="-103.297"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+    </g>
+    <g
+       id="g354"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect356"
+         height="28"
+         width="171.7"
+         y="0"
+         x="-220"
+         style="fill:#ffffff" />
+      <rect
+         id="rect358"
+         height="28"
+         width="171.7"
+         y="0"
+         x="-220"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text360"
+         y="19"
+         x="-134.14999"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">uniprotkb_kw2go</text>
+      <rect
+         id="rect362"
+         height="68"
+         width="171.7"
+         y="28"
+         x="-220"
+         style="fill:#ffffff" />
+      <rect
+         id="rect364"
+         height="68"
+         width="171.7"
+         y="28"
+         x="-220"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text366"
+         y="42"
+         x="-217"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+uniprot_id: string</text>
+      <text
+         id="text368"
+         y="58"
+         x="-217"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+uniprot_name: string</text>
+      <text
+         id="text370"
+         y="74"
+         x="-217"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_term: string</text>
+      <text
+         id="text372"
+         y="90"
+         x="-217"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+go_id: string</text>
+      <rect
+         id="rect374"
+         height="8"
+         width="171.7"
+         y="96"
+         x="-220"
+         style="fill:#ffffff" />
+      <rect
+         id="rect376"
+         height="8"
+         width="171.7"
+         y="96"
+         x="-220"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g378"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline380"
+         points="69.7,239 69.7,140 -134.15,140 -134.15,104.991 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text382"
+         y="137"
+         x="-32.224998"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:middle;fill:#000000"
+         font-size="12.7998" />
+      <text
+         id="text384"
+         y="235"
+         x="73.699997"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text386"
+         y="116.991"
+         x="-130.14999"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+    </g>
+    <g
+       id="g388"
+       transform="translate(-282.92354,638.99807)">
+      <rect
+         id="rect390"
+         height="28"
+         width="140.89999"
+         y="37.049999"
+         x="505.103"
+         style="fill:#ffffff" />
+      <rect
+         id="rect392"
+         height="28"
+         width="140.89999"
+         y="37.049999"
+         x="505.103"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text394"
+         y="56.049999"
+         x="575.55298"
+         style="font-style:normal;font-weight:700;font-size:16px;font-family:sans-serif;text-anchor:middle;fill:#000000"
+         font-size="16">reads2seed</text>
+      <rect
+         id="rect396"
+         height="68"
+         width="140.89999"
+         y="65.050003"
+         x="505.103"
+         style="fill:#ffffff" />
+      <rect
+         id="rect398"
+         height="68"
+         width="140.89999"
+         y="65.050003"
+         x="505.103"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text400"
+         y="79.050003"
+         x="508.103"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+readname: string</text>
+      <text
+         id="text402"
+         y="95.050003"
+         x="508.103"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+seed1: string</text>
+      <text
+         id="text404"
+         y="111.05"
+         x="508.103"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+seed2: string</text>
+      <text
+         id="text406"
+         y="127.05"
+         x="508.103"
+         style="font-style:normal;font-weight:normal;font-size:12.80000019px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.8">+seed3: string</text>
+      <rect
+         id="rect408"
+         height="8"
+         width="140.89999"
+         y="133.05"
+         x="505.103"
+         style="fill:#ffffff" />
+      <rect
+         id="rect410"
+         height="8"
+         width="140.89999"
+         y="133.05"
+         x="505.103"
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+    </g>
+    <g
+       id="g412"
+       transform="translate(-282.92354,638.99807)">
+      <polyline
+         id="polyline414"
+         points="575.55,239.991 575.55,191.024 575.553,191.024 575.553,142.056 "
+         style="fill:none;fill-opacity:0;stroke:#000000;stroke-width:2" />
+      <text
+         id="text416"
+         y="235.991"
+         x="579.54999"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">1</text>
+      <text
+         id="text418"
+         y="154.056"
+         x="579.55298"
+         style="font-style:normal;font-weight:normal;font-size:12.79979992px;font-family:monospace;text-anchor:start;fill:#000000"
+         font-size="12.7998">0..1</text>
+    </g>
+  </g>
 </svg>
