@@ -84,6 +84,13 @@ all_reads2seeds: $(subst .daa,.reads2seeds.tsv.gz,$(wildcard *.daa))
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c SEED --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
+all_reads2seedhiers: $(subst .daa,.reads2seedhiers.tsv.gz,$(wildcard *.daa))
+
+%.reads2seedhiers.tsv.gz: %.daa
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
+	  -r2c SEED --names | $(DAA2INFO_HEADER_FILTER) -p | gzip -c > $@
+
 all_reads2taxonids: $(subst .daa,.reads2taxonids.tsv.gz,$(wildcard *.daa))
 
 %.reads2taxonids.tsv.gz: %.daa
