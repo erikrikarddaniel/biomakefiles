@@ -56,8 +56,13 @@ logmsg = function(msg, llevel='INFO') {
   }
 }
 
-seqidtable = read_tsv(opt$inseqidfile, col_types = cols(.default = col_character()))
-logmsg(sprintf("Read old sequence id table %s, %d sequences", opt$inseqidfile, length(seqidtable$seq)))
+if ( file.exists(opt$inseqidfile) ) {
+  seqidtable = read_tsv(opt$inseqidfile, col_types = cols(.default = col_character()))
+  logmsg(sprintf("Read old sequence id table %s, %d sequences", opt$inseqidfile, length(seqidtable$seq)))
+} else {
+  seqidtable = tibble(seqid=character(), seq=character())
+  logmsg(sprintf("%s not found, created new seqid table", opt$inseqidfile))
+}
 
 # Get the last number in the series
 if ( length(seqidtable$seqid) > 0 ) {
