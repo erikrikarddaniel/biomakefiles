@@ -1,0 +1,4 @@
+*.out*
+test.tsv
+*.new.tsv
+addseqs.??.tsv
