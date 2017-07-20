@@ -37,7 +37,7 @@ all_pe_sams: $(subst .r1.fastq.gz,.pe.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
 all_se_sams: $(subst .r1.fastq.gz,.se.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
-%.pe.bowtie2.sam: %.r1.fastq.gz %.r2.fastq.gz $(BOWTIE_INDEX).bowtie2index
+%.pe.bowtie2.sam: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) > $@ 2> $@.err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
