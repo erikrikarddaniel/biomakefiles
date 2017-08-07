@@ -75,7 +75,7 @@ all_reads2eggnoghiers: $(subst .daa,.reads2eggnoghiers.tsv.gz,$(wildcard *.daa))
 %.reads2eggnoghiers.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c EGGNOG --names | $(DAA2INFO_HEADER_FILTER) -p | gzip -c > $@
+	  -r2c EGGNOG --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2ips: $(subst .daa,.reads2ips.tsv.gz,$(wildcard *.daa))
 
@@ -89,7 +89,7 @@ all_reads2iphiers: $(subst .daa,.reads2iphiers.tsv.gz,$(wildcard *.daa))
 %.reads2iphiers.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c INTERPRO2GO --names | $(DAA2INFO_HEADER_FILTER) -p | gzip -c > $@
+	  -r2c INTERPRO2GO --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2seeds: $(subst .daa,.reads2seeds.tsv.gz,$(wildcard *.daa))
 
@@ -103,7 +103,7 @@ all_reads2seedhiers: $(subst .daa,.reads2seedhiers.tsv.gz,$(wildcard *.daa))
 %.reads2seedhiers.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c SEED --names | $(DAA2INFO_HEADER_FILTER) -p | gzip -c > $@
+	  -r2c SEED --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2taxonids: $(subst .daa,.reads2taxonids.tsv.gz,$(wildcard *.daa))
 
