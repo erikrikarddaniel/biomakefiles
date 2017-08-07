@@ -58,7 +58,7 @@ CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {
 
 # Cluster sequences based on fraction identity. Override the CLUSTER_LEVELS
 # macro if you need other levels than the default specified here.
-CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.70 0.60 0.50
+CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.75 0.70 0.60 0.50
 
 %.uclusters: %.faa
 	for n in $(CLUSTER_LEVELS); do \
