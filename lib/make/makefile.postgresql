@@ -1,0 +1,12 @@
+# makefile.postgresql
+#
+# Library makefile to make running certain PostgreSQL queries simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Macros ***
+POSTGRESQL_SELECT_TO_TSV = sed 's/ *| /\t/g' | sed 's/^ *//'
