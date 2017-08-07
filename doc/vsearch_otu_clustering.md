@@ -53,8 +53,8 @@ the `r1` and `r2` fastq files from Sickle, i.e. dismissing the unpaired reads in
 the `single` files. The Makefile should look like this:
 
 ```make
-include ../../../makefile.commondefs
-include ../../../biomakefiles/lib/make/makefile.pear
+include ../../makefile.commondefs
+include ../../biomakefiles/lib/make/makefile.pear
 
 # This controls the number of threads uses. Don't set higher than the number of
 # computing cores you have.
@@ -86,7 +86,7 @@ Create a directory, e.g. `otu_clustering`, and create symlinks to the `*.assembl
 from PEAR above. Write a Makefile that looks like this:
 
 ```make
-include ../makefile.commondefs
+include ../../makefile.commondefs
 include ../biomakefiles/lib/make/makefile.vsearchotus
 include ../biomakefiles/lib/make/makefile.misc
 ```
@@ -102,7 +102,9 @@ In this step, we also get rid of very rare sequences (by default singletons, i.e
 only observed once over all samples) and sequences that are likely too short. This is the
 (current) default for options as defined in the makefile:
 
+```make
 VSEARCH_DEREP_OPTS = --minuniquesize 1 --minseqlength 300
+```
 
 It will filter out singletons and sequences that are shorter than 300 nucleotides, which I
 think is fine if you already merged pairs. Override this macro in your own <code>Makefile</code>
@@ -111,7 +113,7 @@ makefile).
 
 Now you can run the dereplication:
 
-```make
+```bash
 $ make -n samples.derep.fna  # Just to check
 $ make samples.derep.fna
 ```
@@ -120,8 +122,10 @@ $ make samples.derep.fna
 
 After dereplication you're ready to remove chimeras.
 
-  $ make samples.derep.nochim.fna
-  
+```bash
+$ make samples.derep.nochim.fna
+```
+
 ### OTU clustering
 
 Now your data is ready for OTU clustering. This will be performed at a number of identity
@@ -129,4 +133,17 @@ levels; look in the library makefile for what the <code>DEREP_CLUSTER_LEVELS</co
 is set to. You can of course define your own levels by overriding that macro. Otherwise,
 there are no options to set.
 
-  $ make samples.derep.nochim.clusters
+```bash
+$ make samples.derep.nochim.clusters
+```
+
+### Quantification
+
+After clustering you will want to calculate counts for OTUs:
+
+```bash
+$ make samples.derep.nochim.counts
+```
+
+This will produce a set of long files, one for each clustering levels, with a `.tsv` suffix 
+their names.

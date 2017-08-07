@@ -14,6 +14,12 @@ chdir $ROOT/lib/R
 screen -t libR
 chdir $ROOT/bin
 screen -t bin
+chdir $ROOT/src
+screen -t src
+chdir R
+screen -t R-src
+chdir ../R-test
+screen -t R-test
 chdir $ROOT
 screen -t man
 screen -t root
