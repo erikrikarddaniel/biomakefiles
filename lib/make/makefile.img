@@ -7,18 +7,4 @@
 #
 # Author: erik.rikard.daniel@gmail.com
 
-SHELL := /bin/bash
-
-# *** Parameters ***
-
-# Override in your Makefile by setting a parameter *after* the row that
-# includes this file, see documentation in doc/makefile.md.
-#
-PNG_RESOLUTION = 600
-
-# *** Targets ***
-
-all_pngs: $(subst .pdf,.png,$(wildcard *.pdf))
-
-%.png: %.pdf
-	convert -density $(PNG_RESOLUTION) -quality 100 $< $@
+THIS IS REPLACED WITH makefile.figures
