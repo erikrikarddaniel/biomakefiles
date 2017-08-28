@@ -71,7 +71,12 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 # Here comes individual pattern rules. Defines how programs are actually called
 %.refseq_rna.maf.gz: %.fna.gz
 	@$(MAKECALL_LASTAL_RFRNA)
-	gunzip -c $< | parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
+	gunzip -c $< | parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.refseq_rna.maf.gz: %.fna
+	@$(MAKECALL_LASTAL_RFRNA)
+	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb" < $< | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_rna.maf.gz: %.fastq.gz
@@ -100,9 +105,9 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
 
-# Nucleotide sequences in a file ending with .fna
-%.lastdb: %.fna
+# Nucleotide sequences in a gzipped file ending with .fna.gz
+%.lastdb: %.fna.gz
 	$(MAKECALL_MAKEDB)
-	lastdb -c $@ $<
+	gunzip -c $< | lastdb -c $@
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
