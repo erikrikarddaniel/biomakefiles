@@ -4,7 +4,7 @@
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: __AUTHOR_EMAIL__
+# Author: daniel.lundin@dbb.su.se
 
 SHELL := /bin/bash
 
@@ -13,7 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-VSEARCH_OPTS =
+VSEARCH_OPTS = --fasta_width 0
 
 # *** Targets ***
 

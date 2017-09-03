@@ -84,6 +84,17 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(LAST_DB).lastdb" < $< | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
+# All against all alignments
+%.xwise.maf.gz: %.faa %.lastdb
+	@$(MAKECALL_LASTAL)
+	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(word 2, $^)" < $< | gzip -c > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.xwise.maf.gz: %.faa %.lastdb
+	@$(MAKECALL_LASTAL)
+	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(word 2, $^)" < $< | gzip -c > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
 %.refseq_rna.maf.gz: %.fna.gz
 	@$(MAKECALL_LASTAL_RFRNA)
 	gunzip -c $< | parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
