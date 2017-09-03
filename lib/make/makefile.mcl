@@ -28,8 +28,7 @@ MAKECALL_MCL      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***
 
-# abc.tsv files can be made with blast2matrix!
-%.suffix0: %.suffix1 %.suffix1 %.suffixn
-	@$(MAKECALL_MCL)
-	__PGM_CALL__
-	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+# abc.tsv files can (perhaps) be made with blast2matrix!
+# (Note, work in progress: This is similarity, not distance!)
+%.bitscore.abc.tsv: %.megantab.tsv.gz
+	gunzip -c $< | cut -f 1,2,12 > $@
