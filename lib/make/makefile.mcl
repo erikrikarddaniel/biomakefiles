@@ -21,10 +21,10 @@ MCL_OPTS =
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `MCL --version`" > $@.makecall
-MAKECALL_PARAMS      = echo "	Called with parameters: $(MCL_OPTS)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_MCL      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+MAKECALL_MCL_VERSION = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `MCL --version`" > $@.makecall
+MAKECALL_MCL_PARAMS  = echo "	Called with parameters: $(MCL_OPTS)" >> $@.makecall
+MAKECALL_MCL_INFILES = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECALL_MCL_INFILES)
 
 # *** Targets ***
 
