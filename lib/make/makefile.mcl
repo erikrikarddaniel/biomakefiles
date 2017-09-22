@@ -30,5 +30,8 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 
 # abc.tsv files can (perhaps) be made with blast2matrix!
 # (Note, work in progress: This is similarity, not distance!)
-%.bitscore.abc.tsv: %.megantab.tsv.gz
+%.bitscore.abc.tsv: %.megantab.gz
 	gunzip -c $< | cut -f 1,2,12 > $@
+
+%.bitscore.abc.tsv.gz: %.megantab.gz
+	gunzip -c $< | cut -f 1,2,12 | gzip -c > $@
