@@ -1,0 +1,37 @@
+# makefile.mcl
+#
+# Library makefile to make running MCL simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+MCL_OPTS =
+
+# *** Internal ***
+
+# MAKECALLMCL is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_MCL_VERSION = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `MCL --version`" > $@.makecall
+MAKECALL_MCL_PARAMS  = echo "	Called with parameters: $(MCL_OPTS)" >> $@.makecall
+MAKECALL_MCL_INFILES = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECALL_MCL_INFILES)
+
+# *** Targets ***
+
+# abc.tsv files can (perhaps) be made with blast2matrix!
+# (Note, work in progress: This is similarity, not distance!)
+%.bitscore.abc.tsv: %.megantab.gz
+	gunzip -c $< | cut -f 1,2,12 > $@
+
+%.bitscore.abc.tsv.gz: %.megantab.gz
+	gunzip -c $< | cut -f 1,2,12 | gzip -c > $@
