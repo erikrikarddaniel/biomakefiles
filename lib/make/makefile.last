@@ -14,9 +14,12 @@
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-# LAST_DB_PATH sets the directory where to look for the database files. The default
+# NN_LAST_DB_PATH sets the directories where to look for the database files. The default
 # is the current directory.
-LAST_DB_PATH = .
+NCBI_LAST_DB_PATH = .
+SILVA_LAST_DB_PATH = .
+
+SILVA_SSU_DB = SILVA_CURRENT_SSURef_tax_silva.lastdb
 
 # LASTAL_OPTS sets parameters for the lastal run. (-P4 tells it to use 4 cpu
 # threads, -e200 to only keep hits with at least 200 score.)
@@ -49,7 +52,7 @@ AWK_LASTTAB2MEGANTAB = awk '/^[^\#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\
 MAKECALL_VERSION      = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with `lastal --version`" > $@.makecall
 MAKECALL_MT_VERSION   = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with transformation: $(AWK_LASTTAB2MEGANTAB)" > $@.makecall
 MAKECALL_PARAMS       = echo "	Called with parameters: $(LASTAL_OPTS)" >> $@.makecall
-MAKECALL_DB_RFRNA     = echo "	Database: $(DIAMOND_DB_PATH)/refseq_rna (`ls -lL $(LAST_DB_PATH)/refseq_rna.lastdb`)" >> $@.makecall
+MAKECALL_DB_RFRNA     = echo "	Database: $(DIAMOND_DB_PATH)/refseq_rna (`ls -lL $(NCBI_LAST_DB_PATH)/refseq_rna.lastdb`)" >> $@.makecall
 MAKECALL_INFILES      = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_LASTAL_RFRNA = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_RFRNA); $(MAKECALL_INFILES)
 MAKECALL_MEGANTAB     = $(MAKECALL_MT_VERSION); $(MAKECALL_INFILES)
@@ -71,17 +74,27 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 # Here comes individual pattern rules. Defines how programs are actually called
 %.refseq_rna.maf.gz: %.fna.gz
 	@$(MAKECALL_LASTAL_RFRNA)
-	gunzip -c $< | parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
+	gunzip -c $< | parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(NCBI_LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_rna.maf.gz: %.fna
 	@$(MAKECALL_LASTAL_RFRNA)
-	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/refseq_rna.lastdb" < $< | gzip -c > $@
+	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(NCBI_LAST_DB_PATH)/refseq_rna.lastdb" < $< | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_rna.maf.gz: %.fastq.gz
 	@$(MAKECALL_LASTAL_RFRNA)
-	gunzip -c $< | parallel-fastq --keep-order --no-notice $(PARALLEL_OPTS) "lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
+	gunzip -c $< | parallel-fastq --keep-order --no-notice $(PARALLEL_OPTS) "lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(NCBI_LAST_DB_PATH)/refseq_rna.lastdb" | gzip -c > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.silva_ssu.maf.gz: %.fna
+	@$(MAKECALL_LASTAL_RFRNA)
+	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(SILVA_LAST_DB_PATH)/$(SILVA_SSU_DB)" < $< | gzip -c > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.silva_ssu.maf.gz: %.fastq.gz
+	@$(MAKECALL_LASTAL_RFRNA)
+	gunzip -c $< | parallel-fastq --keep-order --no-notice $(PARALLEL_OPTS) "lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(SILVA_LAST_DB_PATH)/$(SILVA_SSU_DB)" | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf
