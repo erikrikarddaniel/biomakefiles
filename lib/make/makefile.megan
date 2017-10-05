@@ -27,7 +27,9 @@ MEGAN_INSTALL_DIR = /usr/local/megan
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-MEGANIZE_OPTS = --lcaAlgorithm Weighted
+MEGANIZE_OPTS = --lcaAlgorithm weighted
+
+BLAST2RMA_MAF_OPTS = --lcaAlgorithm naive --acc2taxa $(MEGAN_MAPS_DIR)/nucl_acc2tax.abin
 
 # *** Internal ***
 
@@ -57,6 +59,8 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 	  $(MEGANIZE_OPTS) > $@ 2>&1
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# ** Exports **
+
 # Macro for temporary (MEGAN 6.6.3) filtering of header lines. Will be replaced
 # by -n option in next release (won't do any harm after that).
 DAA2INFO_HEADER_FILTER = grep -v "^Version"|grep -v "^Author"|grep -v "^Copyright"|grep -v "^Loading"|grep -v "^\#"
@@ -68,42 +72,42 @@ all_reads2eggnogs: $(subst .daa,.reads2eggnogs.tsv.gz,$(wildcard *.daa)) all_rea
 %.reads2eggnogs.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c EGGNOG --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	  -r2c EGGNOG --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2eggnoghiers: $(subst .daa,.reads2eggnoghiers.tsv.gz,$(wildcard *.daa))
 
 %.reads2eggnoghiers.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c EGGNOG --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	  -r2c EGGNOG --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2ips: $(subst .daa,.reads2ips.tsv.gz,$(wildcard *.daa))
 
 %.reads2ips.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c INTERPRO2GO --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	  -r2c INTERPRO2GO --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2iphiers: $(subst .daa,.reads2iphiers.tsv.gz,$(wildcard *.daa))
 
 %.reads2iphiers.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c INTERPRO2GO --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	  -r2c INTERPRO2GO --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2seeds: $(subst .daa,.reads2seeds.tsv.gz,$(wildcard *.daa))
 
 %.reads2seeds.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c SEED --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	  -r2c SEED --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2seedhiers: $(subst .daa,.reads2seedhiers.tsv.gz,$(wildcard *.daa))
 
 %.reads2seedhiers.tsv.gz: %.daa
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
-	  -r2c SEED --names | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	  -r2c SEED --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
 all_reads2taxonids: $(subst .daa,.reads2taxonids.tsv.gz,$(wildcard *.daa))
 
@@ -111,6 +115,73 @@ all_reads2taxonids: $(subst .daa,.reads2taxonids.tsv.gz,$(wildcard *.daa))
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c Taxonomy | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+
+all_rma_exports: all_rma_reads2eggnogs all_rma_reads2ips all_rma_reads2seeds all_rma_reads2taxonids
+
+all_rma_reads2eggnogs: $(subst .rma6,.reads2eggnogs.tsv.gz,$(wildcard *.rma6)) all_rma_reads2eggnoghiers all_rma_reads2iphiers all_rma_reads2seedhiers
+
+%.reads2eggnogs.tsv.gz: %.rma6
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
+	  -r2c EGGNOG --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+
+all_rma_reads2eggnoghiers: $(subst .rma6,.reads2eggnoghiers.tsv.gz,$(wildcard *.rma6))
+
+%.reads2eggnoghiers.tsv.gz: %.rma6
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
+	  -r2c EGGNOG --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+
+all_rma_reads2ips: $(subst .rma6,.reads2ips.tsv.gz,$(wildcard *.rma6))
+
+%.reads2ips.tsv.gz: %.rma6
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
+	  -r2c INTERPRO2GO --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+
+all_rma_reads2iphiers: $(subst .rma6,.reads2iphiers.tsv.gz,$(wildcard *.rma6))
+
+%.reads2iphiers.tsv.gz: %.rma6
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
+	  -r2c INTERPRO2GO --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+
+all_rma_reads2seeds: $(subst .rma6,.reads2seeds.tsv.gz,$(wildcard *.rma6))
+
+%.reads2seeds.tsv.gz: %.rma6
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
+	  -r2c SEED --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+
+all_rma_reads2seedhiers: $(subst .rma6,.reads2seedhiers.tsv.gz,$(wildcard *.rma6))
+
+%.reads2seedhiers.tsv.gz: %.rma6
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
+	  -r2c SEED --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+
+all_rma_reads2taxonids: $(subst .rma6,.reads2taxonids.tsv.gz,$(wildcard *.rma6))
+
+%.reads2taxonids.tsv.gz: %.rma6
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
+	  -r2c Taxonomy | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+
+###%.rma6: %.maf.gz
+###	-xvfb-run --auto-servernum --server-num=1 \
+###	  $(MEGAN_INSTALL_DIR)/tools/blast2rma --in $< \
+###	  --out $@ \
+###	  --format LastMAF \
+###	  --blastMode BlastN \
+###	  $(BLAST2RMA_MAF_OPTS)
+
+%.rma6: %.megantab.gz
+	-xvfb-run --auto-servernum --server-num=1 \
+	  $(MEGAN_INSTALL_DIR)/tools/blast2rma --in $< \
+	  --out $@ \
+	  --format BlastTab \
+	  --blastMode BlastN \
+	  $(BLAST2RMA_MAF_OPTS)
 
 diamond-megan.stats.long.tsv: $(wildcard *.meganize.out)
 	for f in $^; do \
