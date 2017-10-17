@@ -66,6 +66,12 @@ fna.gz2refseq_protein.daas: $(subst .fna.gz,.refseq_protein.daa,$(wildcard *.fna
 	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
+# Protein sequences in faa.gz file against the NCBI RefSeq protein database
+%.refseq_protein.daa: %.faa.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastp -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
 # Creating the database
 
 # From protein sequences in a file ending with .faa
