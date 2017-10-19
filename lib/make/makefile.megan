@@ -63,7 +63,7 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 
 # Macro for temporary (MEGAN 6.6.3) filtering of header lines. Will be replaced
 # by -n option in next release (won't do any harm after that).
-DAA2INFO_HEADER_FILTER = grep -v "^Version"|grep -v "^Author"|grep -v "^Copyright"|grep -v "^Loading"|grep -v "^\#"
+DAA2INFO_HEADER_FILTER = grep -v "^Version"|grep -v "^Author"|grep -v "^Copyright"|grep -v "^Loading"|grep -v "^\#" | grep -v 'Total time' | grep -v 'Peak memory'
 
 all_exports: all_reads2eggnogs all_reads2ips all_reads2seeds all_reads2taxonids
 
