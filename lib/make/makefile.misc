@@ -52,12 +52,30 @@ CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {
 %.c.faa: %.faa
 	$(CLEAN_FASTA)
 
+ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
+
+%.only_accno.faa: %.faa
+	$(ONLY_ACCNO)
+
+%.only_accno.faa: %.faa
+	$(ONLY_ACCNO)
+
 %.phylip: %.alnfaa
 	echo "$$(grep -c '>' $<) $$(grep -v '>' $< | head -n 1 | awk '{ print length($$1); }')" > $@
 	awk '/^>(.*)/ { printf("%s ", substr($$1, 2)); next; } !/^>/ { print $$0; }' $< >> $@
 
+# Cluster sequences based on fraction identity. Override the CLUSTER_LEVELS
+# macro if you need other levels than the default specified here.
+CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.75 0.70 0.60 0.50
+
 %.uclusters: %.faa
-	echo "MOVED TO makefile.vsearch, suffix changed to *v*clusters"
+	for n in $(CLUSTER_LEVELS); do \
+	  d=$(basename $@).uc$$n.clusters.d; \
+	  mkdir $$d; \
+	  rm -f $$d/*.faa; \
+	  usearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
+	done
+	touch $@
 
 fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
 
