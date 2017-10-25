@@ -28,7 +28,44 @@ MAKECALL_MCL      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***
 
+# File conversions
+
 # abc.tsv files can (perhaps) be made with blast2matrix!
-# (Note, work in progress: This is similarity, not distance!)
-%.bitscore.abc.tsv: %.megantab.tsv.gz
+
+%.bitscore.abc.tsv: %.megantab.gz
 	gunzip -c $< | cut -f 1,2,12 > $@
+
+# MCL clustering
+%.mci: %.abc.tsv
+	mcxload -abc $< --stream-mirror -write-tab $(basename $@).mcldata -o $@
+
+.SECONDARY:
+
+%.mcls: %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl4.mclout %.mcl6.mclout
+
+%.mcl1_2.mclout: %.mci
+	mcl $< -I 1.4 -o $@
+
+%.mcl1_4.mclout: %.mci
+	mcl $< -I 1.4 -o $@
+
+%.mcl2.mclout: %.mci
+	mcl $< -I 2 -o $@
+
+%.mcl4.mclout: %.mci
+	mcl $< -I 4 -o $@
+
+%.mcl6.mclout: %.mci
+	mcl $< -I 6 -o $@
+
+%.mcxdump.tsv: %.mclout
+	mcxdump -icl $< -tabr $(basename $(basename $<)).mcldata -o $@
+
+%.R.tsv: %.mcxdump.tsv
+	sed 's/\t/:::/g' $< > $@.tmp
+	i=0; for l in `cat $@.tmp`; do printf "Cluster%04d\t%s\n" $$i `echo $$l | sed 's/\t/:::/g'`; i=`expr $$i + 1`; done > $@
+	while [ `grep -c ':::' $@` -gt 0 ]; do \
+	  sed -i 's/\(.*\)\t\(.*\):::\(.*\)/\1\t\2\n\1\t\3/' $@; \
+	done
+	sed -i '/^$$/d' $@
+	rm $@.tmp
