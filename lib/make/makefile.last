@@ -22,6 +22,7 @@ SILVA_LAST_DB_PATH = .
 SILVA_SSU_DB = SILVA_CURRENT_SSURef_tax_silva.lastdb
 
 # File name, excluding .lastdb, of last database to use for general target (file_to_align.maf.gz)
+LAST_DB_PATH = .
 LAST_DB = YOU NEED TO SPECIFY THE DATABASE
 
 # LASTAL_OPTS sets parameters for the lastal run. (-P4 tells it to use 4 cpu

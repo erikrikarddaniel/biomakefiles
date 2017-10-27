@@ -52,6 +52,14 @@ CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {
 %.c.faa: %.faa
 	$(CLEAN_FASTA)
 
+ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
+
+%.only_accno.faa: %.faa
+	$(ONLY_ACCNO)
+
+%.only_accno.faa: %.faa
+	$(ONLY_ACCNO)
+
 %.phylip: %.alnfaa
 	echo "$$(grep -c '>' $<) $$(grep -v '>' $< | head -n 1 | awk '{ print length($$1); }')" > $@
 	awk '/^>(.*)/ { printf("%s ", substr($$1, 2)); next; } !/^>/ { print $$0; }' $< >> $@
