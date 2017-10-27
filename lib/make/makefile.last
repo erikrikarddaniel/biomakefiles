@@ -61,8 +61,8 @@ MAKECALL_LASTAL_DB_RFRNA = echo "	Database: $(DIAMOND_DB_PATH)/refseq_rna (`ls -
 MAKECALL_LASTAL_INFILES  = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_LASTAL          = $(MAKECALL_LASTAL_VERSION); $(MAKECALL_LASTAL_PARAMS); $(MAKECALL_LASTAL_DB); $(MAKECALL_LASTAL_INFILES)
 MAKECALL_LASTAL_RFRNA    = $(MAKECALL_LASTAL_VERSION); $(MAKECALL_LASTAL_PARAMS); $(MAKECALL_LASTAL_DB_RFRNA); $(MAKECALL_LASTAL_INFILES)
-MAKECALL_MEGANTAB        = $(MAKECALL_MT_VERSION); $(MAKECALL_LASTAL_INFILES)
-MAKECALL_LASTAL_MAKEDB          = $(MAKECALL_LASTAL_VERSION); $(MAKECALL_LASTAL_INFILES)
+MAKECALL_CONVERT         = $(MAKECALL_MT_VERSION); $(MAKECALL_LASTAL_INFILES)
+MAKECALL_LASTAL_MAKEDB   = $(MAKECALL_LASTAL_VERSION); $(MAKECALL_LASTAL_INFILES)
 
 # *** Targets ***
 
@@ -125,13 +125,23 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf
-	@$(MAKECALL_MEGANTAB)
+	@$(MAKECALL_CONVERT)
 	maf-convert tab $< | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.megantab.gz: %.maf.gz
-	$(MAKECALL_MEGANTAB)
+	$(MAKECALL_CONVERT)
 	gunzip -c $< | maf-convert tab | $(AWK_LASTTAB2MEGANTAB) | gzip -c > $@
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.tab.gz: %.maf.gz
+	$(MAKECALL_CONVERT)
+	gunzip -c $< | maf-convert tab | gzip -c > $@
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.blasttab.gz: %.maf.gz
+	$(MAKECALL_CONVERT)
+	gunzip -c $< | maf-convert blasttab | gzip -c > $@
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 # Creating the LAST database.
