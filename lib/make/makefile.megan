@@ -4,7 +4,7 @@
 #
 # Include the full path of this file in your Makefile.
 #
-# Author: erik.rikard.daniel@gmail.com
+# Author: daniel.lundin@lnu.se
 
 SHELL := /bin/bash
 
@@ -66,6 +66,8 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 DAA2INFO_HEADER_FILTER = grep -v "^Version"|grep -v "^Author"|grep -v "^Copyright"|grep -v "^Loading"|grep -v "^\#"
 
 all_exports: all_reads2eggnogs all_reads2ips all_reads2seeds all_reads2taxonids
+
+mostly_hiearchy_exports: all_reads2taxonids all_reads2eggnoghiers all_reads2iphiers all_reads2seedhiers
 
 all_reads2eggnogs: $(subst .daa,.reads2eggnogs.tsv.gz,$(wildcard *.daa)) all_reads2eggnoghiers all_reads2iphiers all_reads2seedhiers
 
