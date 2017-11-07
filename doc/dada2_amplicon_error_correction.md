@@ -6,13 +6,14 @@ This document describes how to correct errors in Illumina amplicon reads with th
 the library makefile `makefile.dada2` which assumes that the three scripts in the
 eemisdada2 repository are installed and available in your PATH variable.
 
-To check that you have installed everything correctly, run the three scripts with 
-the --help flag:
+To check that you have installed everything correctly, run the four scripts with 
+the `--version` flag:
 
 ```bash
-$ dada2filter --help
-$ dada2errmodels --help
-$ dada2correction --help
+$ dada2filter --version
+$ dada2errmodels --version
+$ dada2cleanNmerge --version
+$ dada2bimeras --version
 ```
 
 ## Workflow
