@@ -34,8 +34,18 @@ MAKECALL_CLUSTALO      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INF
 	clustalo -i $< -o $@ --force $(CLUSTALO_OPTS)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.co.alnfaa: %.faa.gz
+	@$(MAKECALL_CLUSTALO)
+	gunzip -c $<  | clustalo -i - -o $@ --force $(CLUSTALO_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 # Align non-aligned nucleotide sequences
-%.co.alnfaa: %.faa
+%.co.alnfna: %.fna
 	@$(MAKECALL_CLUSTALO)
 	clustalo -i $< -o $@ --force $(CLUSTALO_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.co.alnfna: %.fna.gz
+	@$(MAKECALL_CLUSTALO)
+	gunzip -c $<  | clustalo -i - -o $@ --force $(CLUSTALO_OPTS)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
