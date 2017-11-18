@@ -81,7 +81,7 @@ $ make dada2.cleaned.merged.rds
 $ make dada2.cleaned.merged.bimeras.rds
 ```
 
-### After DADA2
+## After DADA2
 
 When DADA2 is done, you should have a file called `dada2.cleaned.merged.bimeras.tsv.gz`.
 This is a tab separated file with three columns: sequence, sample and count,
@@ -96,7 +96,7 @@ $ make dada2.cleaned.merged.bimeras.name2seq.tsv.gz
 ```
 
 This creates a file with seqid and sequence that can be used, together with the
-original table, to create a file with seqid, sample and count (using R for
+original table, to create a file with seqid, sample and count (use R/tidyverse for
 instance). Moreover, a fasta file, `dada2.cleaned.merged.bimeras.fna`, using
 the same seqids as sequence names.  The latter is suitable to use for running a
 program that determines the taxonomy of sequences.
