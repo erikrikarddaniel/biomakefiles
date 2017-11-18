@@ -105,6 +105,5 @@ program that determines the taxonomy of sequences.
 
 There are many ways to determine the taxonomy of your sequences. One relatively
 fast program is the Wang algorithm as implemented in
-[Mothur](https://www.mothur.org/). (See
-taxonomy.mothur.md)[taxonomy.mothur.md]) for a description on how to run that
-with `biomakefiles`.
+[Mothur](https://www.mothur.org/). [See taxonomy.mothur.md](taxonomy.mothur.md) 
+for a description on how to run that with `biomakefiles`.
