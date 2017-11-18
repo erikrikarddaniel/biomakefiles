@@ -80,3 +80,31 @@ $ make dada2errmodels.out
 $ make dada2.cleaned.merged.rds
 $ make dada2.cleaned.merged.bimeras.rds
 ```
+
+### After DADA2
+
+When DADA2 is done, you should have a file called `dada2.cleaned.merged.bimeras.tsv.gz`.
+This is a tab separated file with three columns: sequence, sample and count,
+i.e. "long" format. (There is also a similar file containing the sequences before
+the bimera check step: `dada2.cleaned.merged.tsv.gz`.)
+
+In most cases, it's quite cumbersome to have the fullength sequence as index to
+sequences. To get a file with names for sequences instead, you can run:
+
+```bash
+$ make dada2.cleaned.merged.bimeras.name2seq.tsv.gz
+```
+
+This creates a file with seqid and sequence that can be used, together with the
+original table, to create a file with seqid, sample and count (using R for
+instance). Moreover, a fasta file, `dada2.cleaned.merged.bimeras.fna`, using
+the same seqids as sequence names.  The latter is suitable to use for running a
+program that determines the taxonomy of sequences.
+
+### Taxonomy
+
+There are many ways to determine the taxonomy of your sequences. One relatively
+fast program is the Wang algorithm as implemented in
+[Mothur](https://www.mothur.org/). (See
+taxonomy.mothur.md)[taxonomy.mothur.md]) for a description on how to run that
+with `biomakefiles`.
