@@ -64,7 +64,7 @@ name of the database *must be* `refseq_protein.dmnd`.
 
 A `Makefile` will look something like this (assuming this directory is two
 levels below the root, where you placed a symbolic link to the biomakefiles 
-repository ([see setting up project directory](setting_up_project_directory.md)):
+repository ([see setting up project directory](project_directory.md)):
 
 ```make
 include ../../biomakefiles/lib/make/makefile.diamond
