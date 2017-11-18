@@ -101,7 +101,7 @@ mistake, file a bug at GitHub: https://github.com/erikrikarddaniel/biomakefiles.
 An example of a `Makefile` (note capital "M") in a directory you run the LAST
 aligner, *assuming* this directory is two levels below the root, where you
 placed a clone of the biomakefiles repo ([see setting up project
-directory](setting_up_project_directory.md)):
+directory](project_directory.md)):
 
 ```make
 include  ../../biomakefiles/lib/make/makefile.last
