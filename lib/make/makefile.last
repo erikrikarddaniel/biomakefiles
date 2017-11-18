@@ -16,7 +16,7 @@
 #
 # NN_LAST_DB_PATH sets the directories where to look for the database files. The default
 # is the current directory.
-NCBI_LAST_DB_PATH = .
+NCBI_LAST_DB_PATH = ncbi
 SILVA_LAST_DB_PATH = .
 
 SILVA_SSU_DB = SILVA_CURRENT_SSURef_tax_silva.lastdb
