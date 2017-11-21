@@ -58,7 +58,7 @@ If your database files are called something else, e.g. the default names of the
 include *path_to_biomakefiles*/lib/make/makefile.mothur
 
 SILVA_TEMPLATE_FILE = silva.nr_v128.align
-SILVA_TAXONOMY_FILE = silva.mothur.nr.taxonomy
+SILVA_TAXONOMY_FILE = silva.nr_v128.tax
 ```
 
 *Note* that the macro definitions *must* come after the `include` row.
