@@ -1,0 +1,36 @@
+# makefile.prodigal
+#
+# Library makefile to make running prodigal simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+PRODIGAL_OPTS =
+
+# *** Internal ***
+
+# MAKECALLPRODIGAL is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_PRODIGAL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `prodigal -v`" > $@.makecall
+MAKECALL_PRODIGAL_PARAMS      = echo "	Called with parameters: $(PRODIGAL_OPTS)" >> $@.makecall
+MAKECALL_PRODIGAL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_PRODIGAL             = $(MAKECALL_PRODIGAL_VERSION); $(MAKECALL_PRODIGAL_PARAMS); $(MAKECALL_PRODIGAL_INFILES)
+
+# *** Targets ***
+
+all_prodigal_gbks: $(subst .fna,.prodigal.gbk,$(filter-out $(wildcard *.prodigal.fna),$(wildcard *.fna)))
+
+%.prodigal.gbk: %.fna
+	@$(MAKECALL_PRODIGAL)
+	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna $(PRODIGAL_OPTS) | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
