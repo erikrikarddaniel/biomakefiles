@@ -13,6 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+# NOT USED! Options are taken care of by different suffixes to the target.
 PRODIGAL_OPTS =
 
 # *** Internal ***
@@ -28,9 +29,17 @@ MAKECALL_PRODIGAL             = $(MAKECALL_PRODIGAL_VERSION); $(MAKECALL_PRODIGA
 
 # *** Targets ***
 
-all_prodigal_gbks: $(subst .fna,.prodigal.gbk,$(filter-out $(wildcard *.prodigal.fna),$(wildcard *.fna)))
+all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna)))
 
-%.prodigal.gbk: %.fna
+%.single_prodigal.gbk: %.fna
 	@$(MAKECALL_PRODIGAL)
-	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna $(PRODIGAL_OPTS) | tee $@.out
+	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Anonymous mode: Use for non-binned metagenomes!
+all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna)))
+
+%.meta_prodigal.gbk: %.fna
+	@$(MAKECALL_PRODIGAL)
+	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
