@@ -1,0 +1,45 @@
+# makefile.hmmer
+#
+# Library makefile to make running hmmer simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# This one *must* be set to point to a fasta file with amino acid sequences.
+HMMER_DB_FAA = NEEDS TO BE SET TO A FASTA FILE WITH AMINO ACIDS!
+
+HMMER_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_HMMER is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_HMMER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(hmmsearch -h|grep HMMER)" > $@.makecall
+MAKECALL_HMMER_PARAMS      = echo "	Called with parameters: $(HMMER_OPTS)" >> $@.makecall
+MAKECALL_HMMER_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_HMMER             = $(MAKECALL_HMMER_VERSION); $(MAKECALL_HMMER_PARAMS); $(MAKECALL_HMMER_INFILES)
+
+# *** Targets ***
+
+all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
+
+%.hmmout: %.hmm
+	@$(MAKECALL_HMMER)
+	hmmsearch \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  --pfamtblout=$(basename $@).pfamtblout \
+	  $< $(HMMER_DB_FAA) \
+	  $(HMMER_OPTS) \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

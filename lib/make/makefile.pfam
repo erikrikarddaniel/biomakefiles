@@ -1,0 +1,14 @@
+# makefile.pfam
+#
+# Library makefile to make it easier to fetch hmm files from the Pfam site.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Targets ***
+
+%.hmm: 
+	wget -O $@ -c "http://pfam.xfam.org/family/$(basename $@)/hmm"
