@@ -38,8 +38,39 @@ all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 	hmmsearch \
 	  --tblout=$(basename $@).tblout \
 	  --domtblout=$(basename $@).domtblout \
-	  --pfamtblout=$(basename $@).pfamtblout \
 	  $< $(HMMER_DB_FAA) \
 	  $(HMMER_OPTS) \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Runs hmmsearch for all combinations of .fna and .hmm files in the directory
+hmmsearch_loop:
+	for faa in *.faa; do \
+	  bsfaa=$$(basename $$faa .faa); \
+	  for hmm in *.hmm; do \
+	    bshmm=$$(basename $$hmm .hmm); \
+	    bs="$$bsfaa.$$bshmm"; \
+	    hmmsearch \
+	      -o $$bs.hmmout \
+	      --tblout=$$bs.tblout \
+	      --domtblout=$$bs.domtblout \
+	      $$hmm $$faa \
+	      $(HMMER_OPTS); \
+	  done; \
+	done
+	touch $@
+
+# Count hits per hmm, report only > 0
+all.counts.tsv: $(subst .hmm,.counts.tsv,$(wildcard *.hmm))
+	for f in $^; do \
+	  echo "--> $$f <--"; \
+	  sort -nr -k 2 $$f; \
+	done > $@
+
+%.counts.tsv: %.hmm
+	for f in *.$(basename $<).tblout; do \
+	  n=$$(grep -v '^#' $$f|wc -l); \
+	  if [ $$n -gt 0 ]; then \
+	    echo "$$f	$$n"; \
+	  fi; \
+	done > $@
