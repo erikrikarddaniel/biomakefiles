@@ -1,0 +1,41 @@
+# makefile.prokka
+#
+# Library makefile to make running prokka simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+PROKKA_PREFIX = 
+PROKKA_OPTS = --cpus=0
+
+# *** Internal ***
+
+# MAKECALL_PROKKA is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_PROKKA_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `prokka --version`" > $@.makecall
+MAKECALL_PROKKA_PARAMS      = echo "	Called with parameters: $(PROKKA_OPTS)" >> $@.makecall
+MAKECALL_PROKKA_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_PROKKA             = $(MAKECALL_PROKKA_VERSION); $(MAKECALL_PROKKA_PARAMS); $(MAKECALL_PROKKA_INFILES)
+
+# *** Targets ***
+
+all_prokkas: $(subst .fna,.prokka.out,$(wildcard *.fna))
+
+%.prokka.out: %.fna
+	@$(MAKECALL_PROKKA)
+	prokka \
+	  --outdir=$(basename $@).d \
+	  --prefix=$(PROKKA_PREFIX)$(basename $(basename $@)) \
+	  $(PROKKA_OPTS) \
+	  $< 2>&1 | tee $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
