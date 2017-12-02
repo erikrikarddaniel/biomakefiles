@@ -1,0 +1,51 @@
+# makefile.checkm
+#
+# Library makefile to make running CheckM simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+CHECKM_LINEAGE_WF_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_CHECKM is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_CHECKM_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(checkm|grep -o 'CheckM v[0-9].\+')" > $@.makecall
+MAKECALL_CHECKM_PARAMS      = echo "	Called with parameters: $(CHECKM_LINEAGE_WF_OPTS)" >> $@.makecall
+MAKECALL_CHECKM_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_CHECKM             = $(MAKECALL_CHECKM_VERSION); $(MAKECALL_CHECKM_PARAMS); $(MAKECALL_CHECKM_INFILES)
+
+# *** Targets ***
+
+# This runs checkm lineage_wf on all bins in .fna files in
+# the current directory; includes gene calling.
+checkm.lineage_wf.fna.out: $(wildcard *.fna)
+	@$(MAKECALL_CHECKM)
+	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) . checkm/ 2>&1 | tee $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# This runs checkm lineage_wf on all bins in .faa files in
+# the current directory; includes gene calling.
+checkm.lineage_wf.faa.out: $(wildcard *.faa)
+	@$(MAKECALL_CHECKM)
+	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) -x faa --genes --file $@ . checkm/ 2>&1 | tee $(basename $@).err
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+checkm.tree_qa.out: $(wildcard checkm.lineage_wf*out)
+	@$(MAKECALL_CHECKM)
+	checkm tree_qa --file $@ checkm/ 2>&1 | tee $(basename $@).err
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+checkm.bin_qa_plot.faa.pdf: checkm.lineage_wf.faa.out
+	checkm bin_qa_plot --image_type pdf -x faa . checkm/ checkm/plots
