@@ -43,7 +43,7 @@ all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-# Runs hmmsearch for all combinations of .fna and .hmm files in the directory
+# Runs hmmsearch for all combinations of .faa and .hmm files in the directory
 hmmsearch_loop:
 	for faa in *.faa; do \
 	  bsfaa=$$(basename $$faa .faa); \
