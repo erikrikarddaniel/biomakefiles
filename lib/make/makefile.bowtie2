@@ -20,35 +20,44 @@ BOWTIE_INDEX = NEED TO BE SET TO THE NAME OF YOUR INDEX
 
 # *** Internal ***
 
-# MAKECALL__PGM__ is a macro that defines what will be output to the .makecall
+# MAKECALL_BOWTIE2_BOWTIE2 is a macro that defines what will be output to the .makecall
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION      = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(bowtie2 --version|grep 'bowtie2.*version'|sed 's/.*version //')" > $@.makecall
-MAKECALL_ALIGN_PARAMS = echo "	Called with parameters: $(BOWTIE_ALIGN_OPTS)" >> $@.makecall
-MAKECALL_BUILD_PARAMS = echo "	Called with parameters: $(BOWTIE_BUILD_OPTS)" >> $@.makecall
-MAKECALL_INFILES      = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_ALIGN        = $(MAKECALL_VERSION); $(MAKECALL_ALIGN_PARAMS); $(MAKECALL_INFILES)
-MAKECALL_BUILD        = $(MAKECALL_VERSION); $(MAKECALL_BUILD_PARAMS); $(MAKECALL_INFILES)
+MAKECALL_BOWTIE2_VERSION      = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(bowtie2 --version|grep 'bowtie2.*version'|sed 's/.*version //')" > $@.makecall
+MAKECALL_BOWTIE2_ALIGN_PARAMS = echo "	Called with parameters: $(BOWTIE_ALIGN_OPTS)" >> $@.makecall
+MAKECALL_BOWTIE2_BUILD_PARAMS = echo "	Called with parameters: $(BOWTIE_BUILD_OPTS)" >> $@.makecall
+MAKECALL_BOWTIE2_INFILES      = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_BOWTIE2_ALIGN        = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_ALIGN_PARAMS); $(MAKECALL_BOWTIE2_INFILES)
+MAKECALL_BOWTIE2_BUILD        = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_BUILD_PARAMS); $(MAKECALL_BOWTIE2_INFILES)
 
 # *** Targets ***
 
 all_pe_sams: $(subst .r1.fastq.gz,.pe.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
+all_pe_sams.gz: $(subst .r1.fastq.gz,.pe.bowtie2.sam.gz,$(wildcard *.r1.fastq.gz))
+
 all_se_sams: $(subst .r1.fastq.gz,.se.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
 %.pe.bowtie2.sam: %.r1.fastq.gz %.r2.fastq.gz
-	@$(MAKECALL_ALIGN)
+	@$(MAKECALL_BOWTIE2_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) > $@ 2> $@.err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.pe.bowtie2.sam.gz: %.r1.fastq.gz %.r2.fastq.gz
+	@$(MAKECALL_BOWTIE2_ALIGN)
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) 2> $(basename $@).err | gzip -c > $@ 
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.se.bowtie2.sam: %.r1.fastq.gz
-	@$(MAKECALL_ALIGN)
+	@$(MAKECALL_BOWTIE2_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< > $@ 2> $@.err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+all_bowtie2indeces: $(subst .fna,.bowtie2index,$(wildcard *.fna))
+
 %.bowtie2index: %.fna
-	@$(MAKECALL_BUILD)
-	bowtie2-build $(BOWTIE_INDEX_OPTS) -f $< $(basename $@)
+	@$(MAKECALL_BOWTIE2_BUILD)
+	bowtie2-build $(BOWTIE_INDEX_OPTS) -f $< $(basename $@) > $@.err 2>&1
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
