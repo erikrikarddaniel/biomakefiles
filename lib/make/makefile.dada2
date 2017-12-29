@@ -81,3 +81,6 @@ dada2.cleaned.merged.bimeras.fna: dada2.cleaned.merged.bimeras.tsv.gz
 
 %.name2seq.tsv.gz: %.fna
 	paste - - < $< | sed 's/>//' | gzip -c > $@
+
+%.name2seq.tsv.gz: %.fna.gz
+	gunzip -c $< | paste - - | sed 's/>//' | gzip -c > $@

@@ -1,0 +1,39 @@
+# makefile.emboss
+#
+# Library makefile to make running emboss programs simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+EMBOSS_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_EMBOSS is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_EMBOSS_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `transeq --version`" > $@.makecall
+MAKECALL_EMBOSS_PARAMS      = echo "	Called with parameters: $(EMBOSS_OPTS)" >> $@.makecall
+MAKECALL_EMBOSS_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_EMBOSS             = $(MAKECALL_EMBOSS_VERSION); $(MAKECALL_EMBOSS_PARAMS); $(MAKECALL_EMBOSS_INFILES)
+
+# *** Targets ***
+
+%.f1.faa: %.fna
+	@$(MAKECALL_EMBOSS)
+	transeq $< $@ -frame=1
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.f1.faa: %.fna.gz
+	@$(MAKECALL_EMBOSS)
+	transeq <( gunzip -c $< ) $@ -frame=1
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

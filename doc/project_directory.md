@@ -16,7 +16,7 @@ $ cd project_root	# Change to the newly created directory
 
 ## Placing a symlink to the biomakefiles repository
 
-To make it easier to transfer your data to anothe file system, and allow some
+To make it easier to transfer your data to another file system, and allow some
 of the benefits of Git (see below) you should create a symbolic link to a
 "production", i.e. stable, branch of the biomakefiles GitHub repo in the root
 directory of the project. Assuming you have checked out the master branch at
@@ -83,6 +83,8 @@ project_root/			# Raw sequencing files and overall statistics
   read-oriented-analyses/
     diamond_megan/		# Diamond .daa files plus meganized versions
   samples/			# Symlinks to record which sequence files belong to which sample
+  dada2/                        # If this is a 16S project you aim to run DADA2 on
+    mothur/                     # Taxonomy with mothur for the DADA2 sequences
 ```
 
 NOTE: If you're using Git, note that you can't add an empty directory to the

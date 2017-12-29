@@ -21,10 +21,10 @@ MEGAHIT_OPTS =
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `megahit --version`" > $@.makecall
-MAKECALL_PARAMS      = echo "	Called with parameters: $(MEGAHIT_OPTS)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_MEGAHIT      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+MAKECALL_MEGAHIT_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `megahit --version`" > $@.makecall
+MAKECALL_MEGAHIT_PARAMS      = echo "	Called with parameters: $(MEGAHIT_OPTS)" >> $@.makecall
+MAKECALL_MEGAHIT_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_MEGAHIT_MEGAHIT     = $(MAKECALL_MEGAHIT_VERSION); $(MAKECALL_MEGAHIT_PARAMS); $(MAKECALL_MEGAHIT_INFILES)
 
 comma:= ,
 empty:=
@@ -35,12 +35,12 @@ bar:= $(subst $(space),$(comma),$(foo))
 # *** Targets ***
 
 %.megahit_out: %.r1.fastq.gz %.r2.fastq.gz
-	$(MAKECALL_MEGAHIT)
+	$(MAKECALL_MEGAHIT_MEGAHIT)
 	megahit -1 $< -2 $(word 2,$^) -o $@ 2>&1 | tee $@.out
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all.megahit_out: $(wildcard *.r?.fastq.gz)
-	$(MAKECALL_MEGAHIT)
+	$(MAKECALL_MEGAHIT_MEGAHIT)
 	megahit \
 	  -1 $(subst $(space),$(comma),$(sort $(filter %.r1.fastq.gz,$^))) \
 	  -2 $(subst $(space),$(comma),$(sort $(filter %.r2.fastq.gz,$^))) \

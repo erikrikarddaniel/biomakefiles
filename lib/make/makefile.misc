@@ -92,3 +92,10 @@ r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 
 %.fna: %.fastq.gz
 	gunzip -c $< | fastq_to_fasta > $@
+
+# Count the total number of nucleotides in a set of .fna files
+numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))
+	cat $^ > $@
+
+%.numnucl.tsv: %.fna
+	echo "$<	$$(grep -v '>' $< | tr -d '\n' | awk '{ print length; }')" > $@

@@ -1,0 +1,50 @@
+# makefile.prodigal
+#
+# Library makefile to make running prodigal simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# NOT USED! Options are taken care of by different suffixes to the target.
+PRODIGAL_OPTS =
+
+# *** Internal ***
+
+# MAKECALLPRODIGAL is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_PRODIGAL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `prodigal -v`" > $@.makecall
+MAKECALL_PRODIGAL_PARAMS      = echo "	Called with parameters: $(PRODIGAL_OPTS)" >> $@.makecall
+MAKECALL_PRODIGAL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_PRODIGAL             = $(MAKECALL_PRODIGAL_VERSION); $(MAKECALL_PRODIGAL_PARAMS); $(MAKECALL_PRODIGAL_INFILES)
+
+# *** Targets ***
+
+all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna)))
+
+%.single_prodigal.gbk: %.fna
+	@$(MAKECALL_PRODIGAL)
+	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Anonymous mode: Use for non-binned metagenomes!
+all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fa,.meta_prodigal.gbk,$(wildcard *.fa))
+
+%.meta_prodigal.gbk: %.fna
+	@$(MAKECALL_PRODIGAL)
+	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.meta_prodigal.gbk: %.fa
+	@$(MAKECALL_PRODIGAL)
+	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

@@ -1,0 +1,28 @@
+# makefile.ptools
+#
+# Library makefile to make running pathway-tools simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+
+# *** Internal ***
+
+# *** Targets ***
+
+all_genetic_elements_dat: $(subst .gbk,.genetic-element.dat,$(wildcard *.gbk))
+
+%.genetic-elements.dat: %.gbk
+	echo "ID	$(basename $<).chromosome" > $@
+	echo "TYPE	:CHRSM" >> $@
+	echo "CIRCULAR?	N" >> $@
+	echo "ANNOT-FILE	$<" >> $@
+	echo "//" >> $@

@@ -1,0 +1,13 @@
+# makefile.eggnogs
+#
+# Library makefile to facilitate file fetches from the EggNOG database.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+%.hmm:
+	wget -O $@.gz -c http://eggnogapi.embl.de/nog_data/file/hmm/$(basename $@)
+	gunzip $@.gz
