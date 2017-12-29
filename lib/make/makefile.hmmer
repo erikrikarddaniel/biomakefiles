@@ -1,0 +1,36 @@
+# makefile.hmmer
+#
+# Library makefile to make running hmmer simpler.
+#
+# QUITTING this, the database issue and file naming is complicated...
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: erik.rikard.daniel@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+HMMSEARCH_OPTS =
+
+# *** Internal ***
+
+# MAKECALLHMMSEARCH is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION       = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `hmmsearch -h|grep -o 'HMMER [0-9][^ ]*'`" > $@.makecall
+MAKECALL_SEARCH_PARAMS = echo "	Called with parameters: $(HMMSEARCH_OPTS)" >> $@.makecall
+MAKECALL_INFILES       = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_HMMSEARCH     = $(MAKECALL_VERSION); $(MAKECALL_SEARCH_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+%.hmmalign: %.faa 
+	@$(MAKECALL_HMMSEARCH)
+	__PGM_CALL__
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
