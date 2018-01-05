@@ -15,9 +15,9 @@ SHELL := /bin/bash
 #
 RAXML_BINARY = raxmlHPC-PTHREADS-SSE3 
 NUM_CPUS = 4
-RANDOM_PARSIMONY = 12345
-RANDOM_RAPIDBS   = 12345
-RAXML_OPTS = -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) -T $(NUM_CPUS) -N autoMRE 
+RANDOM_PARSIMONY = SET_RANDOM_PARSIMONY_TO_A_NUMBER
+RANDOM_RAPIDBS   = SET_RANDOM_PARSIMONY_TO_A_NUMBER
+RAXML_OPTS = -T $(NUM_CPUS)
 
 # *** Internal ***
 
@@ -32,10 +32,22 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 
 # *** Targets ***
 
+# Perform a rapid bootstrap analysis and tree search using the PROTGAMMAAUTO model
 %.PROTGAMMAAUTO.raxml: %.alnfaa
 	@$(MAKECALL_RAXML)
-	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
+	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
 	ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick
 	ln -s RAxML_bipartitions.$(basename $@) $@.bipartitions.newick
 	ln -s RAxML_bipartitionsBranchLabels.$(basename $@) $@.bipartitionsBranchLabels.newick
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Calculate ancestral states
+%.PROTGAMMAAUTO.ancstates.raxml: %.alnfaa %.newick
+	@$(MAKECALL_RAXML)
+	$(RAXML_BINARY) -f A -s $< -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
+	ln -s RAxML_nodeLabelledRootedTree.$@ $@.nodelabelled.newick 
+	ln -s RAxML_marginalAncestralStates.$@ $@.seqs
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.faa: %.seqs
+	sed 's/^/>/' $< | sed 's/ /\n/' | sed 's/?//g' > $@
