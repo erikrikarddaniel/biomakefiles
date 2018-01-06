@@ -33,6 +33,11 @@ MAKECALL_HMMER             = $(MAKECALL_HMMER_VERSION); $(MAKECALL_HMMER_PARAMS)
 
 all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
+# This target requires that "hmmrank", a symlink to "hmmrank.r" from 
+# https://github.com/erikrikarddaniel/hmmrank is in your PATH.
+all.ranked.tsv: all_hmmout
+	hmmrank --verbose --outfile=$@ *.tblout
+
 %.hmmout: %.hmm
 	@$(MAKECALL_HMMER)
 	hmmsearch \
@@ -61,7 +66,7 @@ hmmsearch_loop:
 	touch $@
 
 # Count hits per hmm, report only > 0
-all.counts.tsv: $(subst .hmm,.counts.tsv,$(wildcard *.hmm))
+hmmer.counts.tsv: $(subst .hmm,.counts.tsv,$(wildcard *.hmm))
 	for f in $^; do \
 	  echo "--> $$f <--"; \
 	  sort -nr -k 2 $$f; \
