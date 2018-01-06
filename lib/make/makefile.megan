@@ -29,7 +29,7 @@ MEGAN_INSTALL_DIR = /usr/local/megan
 #
 MEGANIZE_OPTS = --lcaAlgorithm weighted
 
-BLAST2RMA_MAF_OPTS = --lcaAlgorithm naive --acc2taxa $(MEGAN_MAPS_DIR)/nucl_acc2tax.abin
+BLAST2RMA_MAF_OPTS = --lcaAlgorithm weighted --acc2taxa $(MEGAN_MAPS_DIR)/nucl_acc2tax.abin
 
 # *** Internal ***
 
@@ -169,21 +169,33 @@ all_rma_reads2taxonids: $(subst .rma6,.reads2taxonids.tsv.gz,$(wildcard *.rma6))
 	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
 	  -r2c Taxonomy | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 
-###%.rma6: %.maf.gz
-###	-xvfb-run --auto-servernum --server-num=1 \
-###	  $(MEGAN_INSTALL_DIR)/tools/blast2rma --in $< \
-###	  --out $@ \
-###	  --format LastMAF \
-###	  --blastMode BlastN \
-###	  $(BLAST2RMA_MAF_OPTS)
+%.refseq_rna.sorted.maf.gz: %.refseq_rna.maf.gz %.fna.gz
+	$(MEGAN_INSTALL_DIR)/tools/sort-last-maf \
+	  --input $< --readsFile $(word 2,$^) --output $@
 
-%.rma6: %.megantab.gz
+%.rma6: %.sorted.maf.gz
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/blast2rma --in $< \
 	  --out $@ \
-	  --format BlastTab \
+	  --format LastMAF \
 	  --blastMode BlastN \
 	  $(BLAST2RMA_MAF_OPTS)
+
+### # Doesn't work with nucleotide data yet
+### %.refseq_rna.daa: %.refseq_rna.sorted.maf.gz %.fna.gz
+### 	-xvfb-run --auto-servernum --server-num=1 \
+### 	  $(MEGAN_INSTALL_DIR)/tools/maf2daa --in $< \
+### 	  --out $@ \
+### 	  --reads $(word 2, $^) \
+### 	  $(MAF2DAA_MAF_OPTS)
+
+###%.rma6: %.megantab.gz
+###	-xvfb-run --auto-servernum --server-num=1 \
+###	  $(MEGAN_INSTALL_DIR)/tools/blast2rma --in $< \
+###	  --out $@ \
+###	  --format BlastTab \
+###	  --blastMode BlastN \
+###	  $(BLAST2RMA_MAF_OPTS)
 
 diamond-megan.stats.long.tsv: $(wildcard *.meganize.out)
 	for f in $^; do \
