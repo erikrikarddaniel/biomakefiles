@@ -13,6 +13,19 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+HMMSEARCH_OPTS =
+
+# *** Internal ***
+
+# MAKECALLHMMSEARCH is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION       = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `hmmsearch -h|grep -o 'HMMER [0-9][^ ]*'`" > $@.makecall
+MAKECALL_SEARCH_PARAMS = echo "	Called with parameters: $(HMMSEARCH_OPTS)" >> $@.makecall
+MAKECALL_INFILES       = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_HMMSEARCH     = $(MAKECALL_VERSION); $(MAKECALL_SEARCH_PARAMS); $(MAKECALL_INFILES)
+
 # This one *must* be set to point to a fasta file with amino acid sequences.
 HMMER_DB_FAA = NEEDS TO BE SET TO A FASTA FILE WITH AMINO ACIDS!
 
@@ -30,6 +43,11 @@ MAKECALL_HMMER_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >
 MAKECALL_HMMER             = $(MAKECALL_HMMER_VERSION); $(MAKECALL_HMMER_PARAMS); $(MAKECALL_HMMER_INFILES)
 
 # *** Targets ***
+
+%.hmmalign: %.faa 
+	@$(MAKECALL_HMMSEARCH)
+	__PGM_CALL__
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
