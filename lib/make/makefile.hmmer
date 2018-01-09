@@ -53,8 +53,8 @@ all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
 # This target requires that "hmmrank", a symlink to "hmmrank.r" from 
 # https://github.com/erikrikarddaniel/hmmrank is in your PATH.
-all.ranked.tsv: all_hmmout
-	hmmrank --verbose --outfile=$@ *.tblout
+all.ranked.tsv: $(wildcard *.tblout)
+	hmmrank --verbose --outfile=$@ $^
 
 %.hmmout: %.hmm
 	@$(MAKECALL_HMMER)
