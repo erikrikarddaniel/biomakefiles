@@ -9,4 +9,4 @@
 SHELL := /bin/bash
 
 # *** Macros ***
-POSTGRESQL_SELECT_TO_TSV = sed 's/ *| /\t/g' | sed 's/^ *//' | grep -v '^-[-+]*$$' | grep -v 'rows)'
+POSTGRESQL_SELECT_TO_TSV = tail -n +2 | sed 's/ *| /\t/g' | sed 's/^ *//' | grep -v '^-[-+]*$$' | grep -v 'rows)'
