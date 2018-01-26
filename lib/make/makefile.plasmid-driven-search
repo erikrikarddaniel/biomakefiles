@@ -1,0 +1,77 @@
+# makefile.plasmid-driven-search
+#
+# This makefile is meant to simplify the process of blasting one or more faa
+# files to a set of proteomes. I developed it to use with plasmid proteins,
+# but any set of proteins will work. However, names of files and directories
+# reflect this history.
+#
+# The faa files with query sequences are expected to be in a directory called 
+# "plasmids" and the other sequences in "proteomes". At the moment, files in
+# the plasmids directory are expected to be unzipped, whereas the ones in the
+# "proteomes" directory are expected to be gzipped.
+#
+# Include the full path of this file in your Makefile and run "make all".
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+
+
+# *** Targets ***
+
+all: makefile.run proteome_sizes.tsv
+	$(MAKE) -f $< all
+
+# This is the main logic of this makefile; it constructs a makefile.run which
+# contains all dynamic targets needed.
+makefile.run: $(wildcard plasmids/*.faa) $(wildcard proteomes/*.faa.gz)
+	@echo '# This was automatically generated, do not edit' > $@
+	@echo '' >> $@
+	@echo 'all: proteome_dbs all_blasts plasmid_annotations' >> $@
+	@echo '' >> $@
+	@echo '# This was automatically generated, do not edit' > proteomes/Makefile
+	@echo '' >> proteomes/Makefile
+	@echo 'all_blastdbs: $$(subst .faa.gz,.blastdb,$$(wildcard *.faa.gz))' >> proteomes/Makefile
+	@echo '' >> proteomes/Makefile
+	@echo '%.blastdb: %.faa.gz' >> proteomes/Makefile
+	@echo '	gunzip -c $$< | makeblastdb -out $$(basename $$(basename $$@)) -title $$(basename $$(basename $$@)) -dbtype prot' >> proteomes/Makefile
+	@echo '	touch $$@' >> proteomes/Makefile
+	@echo 'proteome_dbs:' >> $@
+	@echo '	cd proteomes; $$(MAKE) all_blastdbs' >> $@
+	@echo '' >> $@
+	@echo -n "all_blasts: " >> $@
+	@for plsmf in plasmids/*.faa; do \
+	  plsmfbn=$$(basename $$plsmf .faa); \
+	  for prf in proteomes/*.faa.gz; do \
+	    prfbn=$$(basename $$prf .faa.gz); \
+	    echo -n "$${plsmfbn}.$${prfbn}.blast.tsv.gz " >> $@; \
+	  done; \
+	done
+	@echo '' >> $@
+	@echo '' >> $@
+	@for plsmf in plasmids/*.faa; do \
+	  plsmfbn=$$(basename $$plsmf .faa); \
+	  for prf in proteomes/*.faa.gz; do \
+	    prfbn=$$(basename $$prf .faa.gz); \
+	    echo "$${plsmfbn}.$${prfbn}.blast.tsv.gz: $${plsmf} $${prf}" >> $@; \
+	    echo '	blastp -db $$(basename $$(basename $$(word 2, $$^))) -query $$< -outfmt 6 | gzip -c > $$@' >> $@; \
+	    echo '' >> $@; \
+	  done; \
+	done
+	@echo 'plasmid_annotations: $$(subst .faa,.annot.tsv,$$(notdir $$(wildcard plasmids/*.faa)))' >> $@
+	@echo '' >> $@
+	@for pf in plasmids/*.faa; do \
+	  echo "$$(basename $$pf .faa).annot.tsv: $$pf" >> $@ ; \
+	  echo "	grep '>' $$pf | sed 's/>//' | sed 's/  */\t/' > \$$@" >> $@; \
+	done
+
+proteome_sizes.tsv: $(wildcard proteomes/*.faa.gz)
+	for pf in $$^; do \
+	  echo "$$(basename $$pf .faa.gz)	$$(gunzip -c $$pf | grep -c ">")" >> $@; \
+	done
