@@ -32,6 +32,8 @@ all_sam2idxstats: $(subst .sam,.idxstats,$(wildcard *.sam))
 
 all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam))
 
+all_unmappedpairs_fastqpairs: $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam))
+
 .SECONDARY:
 
 %.flagstat: %.bam
@@ -39,24 +41,39 @@ all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam))
 	samtools flagstat $< > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.idxstats: %.bam.bai
+%.idxstats: %.sorted.bam.bai
 	@$(MAKECALL_SAMTOOLS)
 	samtools idxstats $(basename $<) | grep -Pv "\t0\t0$$" > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.bam.bai: %.bam.sorted
+%.sorted.bam.bai: %.sorted.bam
 	@$(MAKECALL_SAMTOOLS)
-	samtools index $(basename $<)
+	samtools index $<
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 		        
-%.bam.sorted: %.bam
+%.sorted.bam: %.bam
 	@$(MAKECALL_SAMTOOLS)
-	samtools sort $< $(basename $<)
-	touch $@
+	samtools sort $< > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.bam: %.sam
 	@$(MAKECALL_SAMTOOLS)
 	samtools view -Sb $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.unmapped.bam: %.bam
+	@$(MAKECALL_SAMTOOLS)
+	samtools view -b -f 4 $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.unmappedpairs.bam: %.bam
+	@$(MAKECALL_SAMTOOLS)
+	samtools view -b -f 12 $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.fastqpairs: %.bam
+	@$(MAKECALL_SAMTOOLS)
+	samtools fastq -1 $(basename $@).r1.fastq.gz -2 $(basename $@).r2.fastq.gz $<
+	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
