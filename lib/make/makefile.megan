@@ -38,10 +38,12 @@ BLAST2RMA_MAF_OPTS = --lcaAlgorithm weighted --acc2taxa $(MEGAN_MAPS_DIR)/nucl_a
 #
 # *Don't redefine!*
 MAKECALL_MGNZR_VERS  = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with daa-meganizer $$($(MEGAN_INSTALL_DIR)/tools/daa-meganizer -h 2>&1 |grep -o 'version [0-9.]*')" > $@.makecall
+MAKECALL_DAA2I_VERS  = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with daa2info $$($(MEGAN_INSTALL_DIR)/tools/daa2info -h 2>&1 |grep -o 'version [0-9.]*')" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(MEGAN_OPTS)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MEGANIZE_MAPS        = echo "	MEGAN maps: `ls -lL $(MEGAN_MAPS_DIR)/*.abin`" >> $@.makecall
 MAKECALL_MEGANIZE    = $(MAKECALL_MGNZR_VERS); $(MAKECALL_PARAMS); $(MAKECALL_INFILES); $(MEGANIZE_MAPS)
+MAKECALL_EXPORT      = $(MAKECALL_DAA2I_VERS); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***
 
@@ -72,103 +74,132 @@ mostly_hiearchy_exports: all_reads2taxonids all_reads2eggnoghiers all_reads2iphi
 all_reads2eggnogs: $(subst .daa,.reads2eggnogs.tsv.gz,$(wildcard *.daa)) all_reads2eggnoghiers all_reads2iphiers all_reads2seedhiers
 
 %.reads2eggnogs.tsv.gz: %.daa
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c EGGNOG --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_reads2eggnoghiers: $(subst .daa,.reads2eggnoghiers.tsv.gz,$(wildcard *.daa))
 
 %.reads2eggnoghiers.tsv.gz: %.daa
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c EGGNOG --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_reads2ips: $(subst .daa,.reads2ips.tsv.gz,$(wildcard *.daa))
 
 %.reads2ips.tsv.gz: %.daa
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c INTERPRO2GO --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_reads2iphiers: $(subst .daa,.reads2iphiers.tsv.gz,$(wildcard *.daa))
 
 %.reads2iphiers.tsv.gz: %.daa
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c INTERPRO2GO --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_reads2seeds: $(subst .daa,.reads2seeds.tsv.gz,$(wildcard *.daa))
 
 %.reads2seeds.tsv.gz: %.daa
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c SEED --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_reads2seedhiers: $(subst .daa,.reads2seedhiers.tsv.gz,$(wildcard *.daa))
 
 %.reads2seedhiers.tsv.gz: %.daa
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c SEED --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_reads2taxonids: $(subst .daa,.reads2taxonids.tsv.gz,$(wildcard *.daa))
 
 %.reads2taxonids.tsv.gz: %.daa
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa2info --in $< \
 	  -r2c Taxonomy | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	$(MAKECALL_EXPORT)
 
 all_rma_exports: all_rma_reads2eggnogs all_rma_reads2ips all_rma_reads2seeds all_rma_reads2taxonids
 
 all_rma_reads2eggnogs: $(subst .rma6,.reads2eggnogs.tsv.gz,$(wildcard *.rma6)) all_rma_reads2eggnoghiers all_rma_reads2iphiers all_rma_reads2seedhiers
 
 %.reads2eggnogs.tsv.gz: %.rma6
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
 	  -r2c EGGNOG --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_rma_reads2eggnoghiers: $(subst .rma6,.reads2eggnoghiers.tsv.gz,$(wildcard *.rma6))
 
 %.reads2eggnoghiers.tsv.gz: %.rma6
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
 	  -r2c EGGNOG --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_rma_reads2ips: $(subst .rma6,.reads2ips.tsv.gz,$(wildcard *.rma6))
 
 %.reads2ips.tsv.gz: %.rma6
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
 	  -r2c INTERPRO2GO --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_rma_reads2iphiers: $(subst .rma6,.reads2iphiers.tsv.gz,$(wildcard *.rma6))
 
 %.reads2iphiers.tsv.gz: %.rma6
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
 	  -r2c INTERPRO2GO --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_rma_reads2seeds: $(subst .rma6,.reads2seeds.tsv.gz,$(wildcard *.rma6))
 
 %.reads2seeds.tsv.gz: %.rma6
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
 	  -r2c SEED --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_rma_reads2seedhiers: $(subst .rma6,.reads2seedhiers.tsv.gz,$(wildcard *.rma6))
 
 %.reads2seedhiers.tsv.gz: %.rma6
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
 	  -r2c SEED --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_rma_reads2taxonids: $(subst .rma6,.reads2taxonids.tsv.gz,$(wildcard *.rma6))
 
 %.reads2taxonids.tsv.gz: %.rma6
+	$(MAKECALL_EXPORT)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/rma2info --in $< \
 	  -r2c Taxonomy | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# *** Handling LAST ***
 %.refseq_rna.sorted.maf.gz: %.refseq_rna.maf.gz %.fna.gz
 	$(MEGAN_INSTALL_DIR)/tools/sort-last-maf \
 	  --input $< --readsFile $(word 2,$^) --output $@
