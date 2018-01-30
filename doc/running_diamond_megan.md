@@ -1,9 +1,9 @@
 # Running Diamond/MEGAN
 
-MEGAN is an annotation tool based on BLAST alignments to some database or
-similar. 
+MEGAN is an annotation tool based on BLAST alignments to a database like NCBI's
+RefSeq. 
 
-It is thought to work on reads, which means it is quantitative directly. This
+It is meant to work on reads, which means it is quantitative directly. This
 means BLAST is out of the question for any modern dataset, but an alternative
 aligner, Diamond, has been developed by Benjamin Buchfink in collaboration with
 the main author of MEGAN: Daniel Huson. Diamond is around five *orders of
@@ -22,7 +22,7 @@ interface, but not a nice hack.)
 ## Running Diamond
 
 Diamond is, at the time of writing, a tool only for protein databases. It has a
-blastx, as well as a blastp, mode though so one can align nucleotide sequences.
+blastx as well as a blastp mode though so one can align nucleotide sequences.
 
 1) Download NCBI's RefSeq protein database
 
@@ -170,6 +170,30 @@ composition of a set of functional annotations, i.e. answering questions like
 "Who are responsible for the increase of ribonucleotide reduction during
 nutrient-rich conditions?". Since the size of output files for this information
 is very large, you will probably want to export both formats.
+
+#### Exports from the command line
+
+There is a command line tool to perform exports -- `daa2info`. With this, one
+can export all four annotation types -- taxonomic, SEED, IP2GO and EGGNOGs.
+
+There are targets for various kinds of exports in `lib/make/makefile.megan`.
+
+At the time of writing, the most recent MEGAN distribution (6.10.6) does not
+export taxonids (at least I can't get it to work), but functional annotations 
+work. MEGAN 6.8.12 works, but 6.8.18 does not. For this reason, one has to 
+point to different MEGAN directories with make macros.
+
+```
+MEGAN_FUNC_EXPORTS_DIR    = /usr/local/megan-6.10.6
+MEGAN_TAXONID_EXPORTS_DIR = /usr/local/megan-6.8.12
+```
+
+*Important*: The result of exports of (at least) the SEED hierarchies is different
+from the command line than the GUI in an important way: Reads assigned to proteins 
+that belong to more than one SEED hierarchy are exported multiple times. This makes
+biological sense, but requires that scripts take this into account.
+
+#### Exports from the MEGAN GUI
 
 Export is found in the menu system under `<File><Export>`. (There's also an
 `<Export image>` option; that's for exporting the view you're looking at.
