@@ -45,8 +45,8 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 %.PROTGAMMAAUTO.ancstates.raxml: %.alnfaa %.newick
 	@$(MAKECALL_RAXML)
 	$(RAXML_BINARY) -f A -s $< -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
-	ln -s RAxML_nodeLabelledRootedTree.$@ $@.nodelabelled.newick 
-	ln -s RAxML_marginalAncestralStates.$@ $@.seqs
+	ln -s RAxML_nodeLabelledRootedTree.$(basename $@) $@.nodelabelled.newick 
+	ln -s RAxML_marginalAncestralStates.$(basename $@) $@.seqs
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.faa: %.seqs
