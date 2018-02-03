@@ -49,5 +49,9 @@ SILVA_CURRENT_SSUParc_tax_silva.fna.gz:
 # This creates unzipped versions of all SILVA_CURRENT_*fna.gz symlinks
 gunzip_current_fnas: $(subst .fna.gz,.fna,$(wildcard SILVA_CURRENT*.fna.gz))
 
+# Concatenate current SSU and LSU; good for filtering programs for instance.
+SILVA_CURRENT_Parc_tax_silva.fna: SILVA_CURRENT_LSUParc_tax_silva.fna SILVA_CURRENT_SSUParc_tax_silva.fna
+	cat $^ > $@
+
 %.fna: %.fna.gz
 	gunzip -c $< > $@
