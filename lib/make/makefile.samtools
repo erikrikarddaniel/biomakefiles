@@ -62,6 +62,11 @@ all_unmappedpairs_fastqpairs: $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard 
 	samtools view -Sb $< > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.bam: %.sam.gz
+	@$(MAKECALL_SAMTOOLS)
+	gunzip -c $< | samtools view -Sb > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.unmapped.bam: %.bam
 	@$(MAKECALL_SAMTOOLS)
 	samtools view -b -f 4 $< > $@
