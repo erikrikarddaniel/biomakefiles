@@ -34,13 +34,13 @@ MAKECALL_BOWTIE2_VERSION      	 = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made w
 MAKECALL_BOWTIE2_ALIGN_PARAMS 	 = echo "	Called with parameters: $(BOWTIE_ALIGN_OPTS)" >> $@.makecall
 MAKECALL_BOWTIE2_BUILD_PARAMS 	 = echo "	Called with parameters: $(BOWTIE_BUILD_OPTS)" >> $@.makecall
 MAKECALL_BOWTIE2_INFILES      	 = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_BOWTIE2_DB	      	 = echo "  Database files: $$(ls -lL $(BOWTIE_INDEX).bt2*)" >> $@.makecall
-MAKECALL_BOWTIE2_SILVAPARCDB  	 = echo "  Database files: $$(ls -lL $(SILVA_DIRECTORY)/SILVA_CURRENT_Parc_tax_silva.bt2*)" >> $@.makecall
-MAKECALL_BOWTIE2_SILVAREFDB   	 = echo "  Database files: $$(ls -lL $(SILVA_DIRECTORY)/SILVA_CURRENT_Ref_tax_silva.bt2*)" >> $@.makecall
+MAKECALL_BOWTIE2_DB	      	 = echo "  Database files: $$(ls -lL $(BOWTIE_INDEX).*)" >> $@.makecall
+MAKECALL_BOWTIE2_SILVAPARCDB  	 = echo "  Database files: $$(ls -lL $(SILVA_DIRECTORY)/SILVA_CURRENT_Parc_tax_silva.u2t.*)" >> $@.makecall
+MAKECALL_BOWTIE2_SILVAREFDB   	 = echo "  Database files: $$(ls -lL $(SILVA_DIRECTORY)/SILVA_CURRENT_Ref_tax_silva.u2t.*)" >> $@.makecall
 MAKECALL_BOWTIE2_ALIGN        	 = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_ALIGN_PARAMS); $(MAKECALL_BOWTIE2_INFILES)
-MAKECALL_BOWTIE2_ALIGN        	 = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_BUILD_PARAMS); $(MAKECALL_BOWTIE2_INFILES); $(MAKECALL_BOTWTIE2_DB)
-MAKECALL_BOWTIE2_SILVAPARC_ALIGN = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_BUILD_PARAMS); $(MAKECALL_BOWTIE2_INFILES); $(MAKECALL_BOTWTIE2_SILVAPARCDB)
-MAKECALL_BOWTIE2_SILVAREF_ALIGN  = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_BUILD_PARAMS); $(MAKECALL_BOWTIE2_INFILES); $(MAKECALL_BOTWTIE2_SILVAREFDB)
+MAKECALL_BOWTIE2_ALIGN        	 = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_BUILD_PARAMS); $(MAKECALL_BOWTIE2_INFILES); $(MAKECALL_BOWTIE2_DB)
+MAKECALL_BOWTIE2_SILVAPARC_ALIGN = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_BUILD_PARAMS); $(MAKECALL_BOWTIE2_INFILES); $(MAKECALL_BOWTIE2_SILVAPARCDB)
+MAKECALL_BOWTIE2_SILVAREF_ALIGN  = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_BUILD_PARAMS); $(MAKECALL_BOWTIE2_INFILES); $(MAKECALL_BOWTIE2_SILVAREFDB)
 MAKECALL_BOWTIE2_BUILD        	 = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE2_BUILD_PARAMS); $(MAKECALL_BOWTIE2_INFILES)
 
 # *** Targets ***
@@ -73,12 +73,12 @@ all_silvarefs: $(subst .r1.fastq.gz,.pe.bowtie2-silvaref.sam.gz,$(wildcard *.r1.
 
 %.pe.bowtie2-silvaparc.sam.gz: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_BOWTIE2_SILVAPARC_ALIGN)
-	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(SILVA_DIRECTORY)/SILVA_CURRENT_Parc_tax_silva -1 $(word 1,$^) -2 $(word 2,$^) 2> $(basename $@).err | gzip -c > $@ 
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(SILVA_DIRECTORY)/SILVA_CURRENT_Parc_tax_silva.u2t -1 $(word 1,$^) -2 $(word 2,$^) 2> $(basename $@).err | gzip -c > $@ 
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.pe.bowtie2-silvaref.sam.gz: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_BOWTIE2_SILVAREF_ALIGN)
-	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(SILVA_DIRECTORY)/SILVA_CURRENT_Ref_tax_silva -1 $(word 1,$^) -2 $(word 2,$^) 2> $(basename $@).err | gzip -c > $@ 
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(SILVA_DIRECTORY)/SILVA_CURRENT_Ref_tax_silva.u2t -1 $(word 1,$^) -2 $(word 2,$^) 2> $(basename $@).err | gzip -c > $@ 
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_bowtie2indeces: $(subst .fna,.bowtie2index,$(wildcard *.fna))

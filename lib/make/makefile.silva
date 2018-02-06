@@ -58,3 +58,6 @@ SILVA_CURRENT_Ref_tax_silva.fna: SILVA_CURRENT_LSURef_tax_silva.fna SILVA_CURREN
 
 %.fna: %.fna.gz
 	gunzip -c $< > $@
+
+%.u2t.fna: %.fna
+	sed '/^>/!s/U/T/g' $< > $@
