@@ -32,7 +32,7 @@ all_sam2idxstats: $(subst .sam,.idxstats,$(wildcard *.sam))
 
 all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam))
 
-all_unmappedpairs_fastqpairs: $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam))
+all_unmappedpairs_fastqpairs: $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam)) $(subst .sam.gz,.unmappedpairs.fastqpairs,$(wildcard *.sam.gz))
 
 .SECONDARY:
 
