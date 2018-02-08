@@ -7,6 +7,10 @@
 # Author: daniel.lundin@lnu.se
 ###
 
+# Set this to suffixes corresponding to the types of files you wish to fetch with some
+# of the targets.
+ACCEPTED_SUFFIXES = faa.gz
+
 # *** Targets ***
 
 # Get listings, i.e. lists of available files
@@ -14,16 +18,23 @@ listings:
 	wget -r -x --no-remove-listing --spider ftp://ftp.ncbi.nih.gov
 
 # Mirror parts of available genome databases in various formats.
-mirror_refseq:
-	wget -O archaea.assembly_summary.txt ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/archaea/assembly_summary.txt
-	wget -O bacteria.assembly_summary.txt ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt
-	wget -O viral.assembly_summary.txt ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/viral/assembly_summary.txt
-	for s in *.assembly_summary.txt; do \
-	  for p in `awk -F "\t" '$$12=="Complete Genome" && $$11=="latest"{print $$20}' $$s`; do \
-	    echo "--> $$p <--"; \
-	    wget -A fna.gz,faa.gz,gbff.gz,gpff.gz --mirror $$p/; \
-	  done; \
-	done
+refseq.assembly_summary.txt:
+	wget -O $@ ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/assembly_summary_refseq.txt
+
+archaea.refseq.assembly_summary.txt:
+	wget -O $@ ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/archaea/assembly_summary.txt
+
+bacteria.refseq.assembly_summary.txt:
+	wget -O $@ ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt
+
+viral.refseq.assembly_summary.txt:
+	wget -O $@ ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/viral/assembly_summary.txt
+
+mirror_refseq: refseq.assembly_summary.txt
+	for p in $$(awk -F "\t" '$$12=="Complete Genome" && $$11=="latest"{print $$20}' $<); do \
+	  echo "--> $$p <--"; \
+	  wget -A fna.gz,faa.gz,gbff.gz,gpff.gz --mirror $$p/; \
+	done;
 
 mirror_bacteria_gbk:
 	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genomes/Bacteria/
@@ -45,6 +56,21 @@ mirror_viruses_faa:
 
 mirror_viruses_gbk:
 	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genomes/Viruses/
+
+selected_genomes.paths.tsv: selected_genomes.tsv refseq.assembly_summary.txt
+	grep -f $< $(word 2,$^) | awk -F "\t" '$$5=="reference genome" || $$5=="representative genome" {print $$20 "\t" $$8}' > $@
+
+mirror_selected_reference_genomes: selected_genomes.paths.tsv 
+	export IFS=$$'\n'; \
+	for o in $$(cut -f 2 $<); do \
+	  ftp=$$(grep "$$o$$" $< | cut -f 1); \
+	  echo "--> $$o: $$ftp <--"; \
+	  tp=$$(echo $$ftp | sed 's/ftp:\/\///'); \
+	  lp=$$(echo $$o | sed 's/ /_/g'); \
+	  wget -A $(ACCEPTED_SUFFIXES) --mirror $$ftp/; \
+	  if [ ! -e selected_genomes ]; then mkdir selected_genomes; fi; \
+	  ( cd selected_genomes ; ln -s ../$$tp $$lp ); \
+	done;
 
 # The NR (non-redundant) and RefSeq protein databases
 

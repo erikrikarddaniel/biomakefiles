@@ -4,7 +4,7 @@
 #
 # Include the full path of this file in your Makefile 
 #
-# Author: __AUTHOR_EMAIL__
+# Author: daniel.lundin@lnu.se
 
 SHELL := /bin/bash
 
@@ -20,18 +20,22 @@ NCBI_BLAST_DB_PATH =
 
 # *** Internal ***
 
-# MAKECALL_BLAST is a macro that defines what will be output to the .makecall
+# MAKECALL_BLAST_BLAST is a macro that defines what will be output to the .makecall
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `blastp --version|grep 'blastp:'`" > $@.makecall
-MAKECALL_NCBI_DBS    = echo "	Called with path to NCBI dbs: $(NCBI_BLAST_DB_PATH)" >> $@.makecall
-MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_BLAST       = $(MAKECALL_VERSION); $(MAKECALL_NCBI_DBS); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+MAKECALL_BLAST_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastp --version|grep 'blastp:')" > $@.makecall
+MAKECALL_BLAST_NCBI_DBS    = echo "	Called with path to NCBI dbs: $(NCBI_BLAST_DB_PATH)" >> $@.makecall
+MAKECALL_BLAST_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DBS); $(MAKECALL_BLAST_INFILES)
 
 # *** Targets ***
 
 %.refseq_protein.blasttab.gz: %.fna
-	$(MAKECALL__NNN__)
+	$(MAKECALL_BLAST)
 	blastx -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.blastdb: %.faa
+	makeblastdb -in $< -out $(basename $@) -dbtype prot
+	touch $@
