@@ -77,7 +77,7 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 
 # Macro for temporary (MEGAN 6.6.3) filtering of header lines. Will be replaced
 # by -n option in next release (won't do any harm after that).
-DAA2INFO_HEADER_FILTER = grep -v "^Version"|grep -v "^Author"|grep -v "^Copyright"|grep -v "^Loading"|grep -v "^\#"
+DAA2INFO_HEADER_FILTER = grep -v "^Version"|grep -v "^Author"|grep -v "^Copyright"|grep -v "^Loading"|grep -v "^\#"|grep -v "Total time:"|grep -v "Peak memory:"
 
 all_exports: all_reads2eggnogs all_reads2ips all_reads2seeds all_reads2taxonids
 
@@ -128,7 +128,7 @@ all_reads2seeds: $(subst .daa,.reads2seeds.tsv.gz,$(wildcard *.daa))
 	  -r2c SEED --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-all_reads2seedhiers: $(subst .daa,.reads2seedhiers.tsv.gz,$(wildcard *.daa))
+all_reads2seedhiers: $(subst .daa,.reads2seedhiers.sep.tsv.gz,$(wildcard *.daa))
 
 %.reads2seedhiers.tsv.gz: %.daa
 	$(MAKECALL_FUNC_EXPORT)
@@ -136,6 +136,10 @@ all_reads2seedhiers: $(subst .daa,.reads2seedhiers.tsv.gz,$(wildcard *.daa))
 	  $(MEGAN_FUNC_EXPORTS_DIR)/tools/daa2info --in $< \
 	  -r2c SEED --paths --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.reads2seedhiers.sep.tsv.gz: %.reads2seedhiers.tsv.gz
+	#Rscript --default-packages=readr,tidyr,dplyr -e "read_tsv('$<', col_names=c('read', 's'), col_types=cols(.default = col_character())) %>% separate(s, c('s0', 's1', 's2, 's3', 's4'), sep=';') %>% select(-s0, -s4) %>% mutate(protein = ifelse(is.na(s3, s2, s3)) %>% write_tsv('$@');"
+	gunzip -c $< | $(DAA2INFO_HEADER_FILTER) | sed 's/;/\t/g' | sed 's/"//g' | sed "s/'//g" | cut -f 1,3,4,5 | Rscript --default-packages=readr,dplyr -e "read_tsv(file('stdin'),col_names=c('r','s1','s2','s3'),col_types=cols(.default=col_character()))%>%mutate(p=ifelse(is.na(s3)|s3=='',s2,s3))%>%write_tsv('$@')"
 
 all_reads2taxonids: $(subst .daa,.reads2taxonids.tsv.gz,$(wildcard *.daa))
 
