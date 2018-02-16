@@ -26,6 +26,8 @@ MAKECALL_CHECKM_PARAMS      = echo "	Called with parameters: $(CHECKM_LINEAGE_WF
 MAKECALL_CHECKM_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_CHECKM             = $(MAKECALL_CHECKM_VERSION); $(MAKECALL_CHECKM_PARAMS); $(MAKECALL_CHECKM_INFILES)
 
+CHECKM_OUT_TO_TSV = grep -v '^-\+' $< | sed 's/^ \+//' | sed 's/ \+$$//' | sed 's/  \+/\t/g' > $@
+
 # *** Targets ***
 
 # This runs checkm lineage_wf on all bins in .fna files in
@@ -42,10 +44,16 @@ checkm.lineage_wf.faa.out: $(wildcard *.faa)
 	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) -x faa --genes --file $@ . checkm/ 2>&1 | tee $(basename $@).err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+checkm.lineage_wf.faa.tsv: checkm.lineage_wf.faa.out
+	$(CHECKM_OUT_TO_TSV)
+
 checkm.tree_qa.out: $(wildcard checkm.lineage_wf*out)
 	@$(MAKECALL_CHECKM)
 	checkm tree_qa --file $@ checkm/ 2>&1 | tee $(basename $@).err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+checkm.tree_qa.tsv: checkm.tree_qa.out
+	$(CHECKM_OUT_TO_TSV)
 
 checkm.bin_qa_plot.faa.pdf: checkm.lineage_wf.faa.out
 	checkm bin_qa_plot --image_type pdf -x faa . checkm/ checkm/plots
