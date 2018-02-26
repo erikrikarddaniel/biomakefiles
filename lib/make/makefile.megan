@@ -65,7 +65,6 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 	$(MAKECALL_MEGANIZE)
 	-xvfb-run --auto-servernum --server-num=1 \
 	  $(MEGAN_INSTALL_DIR)/tools/daa-meganizer --in $< \
-	  --function EGGNOG INTERPRO2GO SEED \
 	  --acc2taxa $(MEGAN_MAPS_DIR)/prot_acc2tax.abin \
 	  --acc2eggnog $(MEGAN_MAPS_DIR)/acc2eggnog.abin \
 	  --acc2interpro2go $(MEGAN_MAPS_DIR)/acc2interpro.abin \
