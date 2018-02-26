@@ -28,6 +28,9 @@ MAKECALL_CLUSTALO      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INF
 
 # *** Targets ***
 
+# Align all faa files
+clustalo_align_all_faas: $(subst .faa,.co.alnfaa,$(wildcard *.faa))
+
 # Align non-aligned amino acid sequences
 %.co.alnfaa: %.faa
 	@$(MAKECALL_CLUSTALO)

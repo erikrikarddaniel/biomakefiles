@@ -28,9 +28,9 @@ MAKECALL_SAMTOOLS      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INF
 
 # *** Targets ***
 
-all_sam2idxstats: $(subst .sam,.idxstats,$(wildcard *.sam))
+all_sam2idxstats: $(subst .sam,.idxstats,$(wildcard *.sam)) $(subst .sam.gz,.idxstats,$(wildcard *.sam.gz))
 
-all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam))
+all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam)) $(subst .sam.gz,.flagstat,$(wildcard *.sam.gz))
 
 all_unmappedpairs_fastqpairs: $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam)) $(subst .sam.gz,.unmappedpairs.fastqpairs,$(wildcard *.sam.gz))
 

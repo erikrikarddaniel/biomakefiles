@@ -58,7 +58,7 @@ mirror_viruses_gbk:
 	wget -A .gbk --mirror  ftp://ftp.ncbi.nih.gov/genomes/Viruses/
 
 selected_genomes.paths.tsv: selected_genomes.tsv refseq.assembly_summary.txt
-	grep -f $< $(word 2,$^) | awk -F "\t" '$$5=="reference genome" || $$5=="representative genome" {print $$20 "\t" $$8}' > $@
+	grep -f $< $(word 2,$^) | awk -F "\t" '$$5=="reference genome" || $$5=="representative genome" || $$12=="Complete Genome" {print $$20 "\t" $$8}' > $@
 
 mirror_selected_reference_genomes: selected_genomes.paths.tsv 
 	export IFS=$$'\n'; \
@@ -69,7 +69,7 @@ mirror_selected_reference_genomes: selected_genomes.paths.tsv
 	  lp=$$(echo $$o | sed 's/ /_/g'); \
 	  wget -A $(ACCEPTED_SUFFIXES) --mirror $$ftp/; \
 	  if [ ! -e selected_genomes ]; then mkdir selected_genomes; fi; \
-	  ( cd selected_genomes ; ln -s ../$$tp $$lp ); \
+	  ( cd selected_genomes ; ln -f -s ../$$tp $$lp ); \
 	done;
 
 # The NR (non-redundant) and RefSeq protein databases
