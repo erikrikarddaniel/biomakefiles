@@ -61,8 +61,8 @@ all.ranked.tsv: $(wildcard *.tblout)
 	hmmsearch \
 	  --tblout=$(basename $@).tblout \
 	  --domtblout=$(basename $@).domtblout \
-	  $< $(HMMER_DB_FAA) \
 	  $(HMMER_OPTS) \
+	  $< $(HMMER_DB_FAA) \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
