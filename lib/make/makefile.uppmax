@@ -1,0 +1,2 @@
+grus_delivery_md5check:
+	for f in *.md5; do echo "--> $$f <--"; md5sum -c $$f; done | tee $@
