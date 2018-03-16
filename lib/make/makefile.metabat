@@ -32,3 +32,7 @@ MAKECALL_METABAT             = $(MAKECALL_METABAT_VERSION); $(MAKECALL_METABAT_P
 	@$(MAKECALL_METABAT)
 	runMetaBat.sh $(METABAT_OPTIONS) $^ 2>&1 | tee $@.out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+contigs2bins.tsv: $(wildcard *.metabat-bins/*.fa)
+	echo "bin	contig" > $@
+	grep '>' $^ | sed 's/:/	/' | sed 's/>//' | sed 's/.*bin\.\(.*\)\.fa/\1/' >> $@
