@@ -93,3 +93,20 @@ hmmer.counts.tsv: $(subst .hmm,.counts.tsv,$(wildcard *.hmm))
 	    echo "$$f	$$n"; \
 	  fi; \
 	done > $@
+
+# Statistics files
+pfile_accept_scores.tsv: $(wildcard *.hmm)
+	echo "pfile	score_type	seq_score	domain_score" > $@
+	grep '^\(GA\)\|\(TC\)\|\(NC\)' $^ | sed 's/:/\t/' | sed 's/ \+/\t/g' | sed 's/;$$//' >> $@
+
+pfile_profiles.tsv: $(wildcard *.hmm)
+	echo "pfile	profile" > $@
+	grep '^NAME' $^ | sed 's/:NAME */\t/' >> $@
+
+pfile_descs.tsv: $(wildcard *.hmm)
+	echo "pfile	description" > $@
+	grep '^DESC' $^ | sed 's/:DESC */\t/' >> $@
+
+profile_accept_scores.tsv: pfile_profiles.tsv pfile_accept_scores.tsv pfile_descs.tsv
+	Rscript --default-packages=readr,dplyr -e "read_tsv('$<',col_types=cols(.default=col_character()))%>%inner_join(read_tsv('$(word 2,$^)',col_types=cols(.default=col_character())),by='pfile')%>%inner_join(read_tsv('$(word 3,$^)',col_types=cols(.default=col_character())),by='pfile')%>%write_tsv('$@')"
+

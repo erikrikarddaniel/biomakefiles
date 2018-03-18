@@ -12,15 +12,3 @@ SHELL := /bin/bash
 
 %.hmm: 
 	wget -O $@ -c "http://pfam.xfam.org/family/$(basename $@)/hmm"
-
-profile_accept_scores.tsv: $(wildcard *.hmm)
-	echo "profile	score_type	seq_score	domain_score" > $@
-	grep '^\(GA\)\|\(TC\)\|\(NC\)' $^ | sed 's/:/\t/' | sed 's/ \+/\t/g' | sed 's/;$$//' >> $@
-
-profile_names.tsv: $(wildcard *.hmm)
-	echo "profile	name" > $@
-	grep '^NAME' $^ | sed 's/:NAME */\t/' >> $@
-
-profile_descs.tsv: $(wildcard *.hmm)
-	echo "profile	description" > $@
-	grep '^DESC' $^ | sed 's/:DESC */\t/' >> $@
