@@ -14,6 +14,7 @@ SHELL := /bin/bash
 # includes this file, see documentation in doc/makefile.md.
 #
 HMMSEARCH_OPTS =
+HMMRANK_OPTS =
 
 # *** Internal ***
 
@@ -27,6 +28,7 @@ MAKECALL_INFILES       = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.
 MAKECALL_HMMSEARCH     = $(MAKECALL_VERSION); $(MAKECALL_SEARCH_PARAMS); $(MAKECALL_INFILES)
 
 # This one *must* be set to point to a fasta file with amino acid sequences.
+# To work with gzipped .faa files, set to something like: "<(gunzip -c file.faa.gz)"
 HMMER_DB_FAA = NEEDS TO BE SET TO A FASTA FILE WITH AMINO ACIDS!
 
 HMMER_OPTS =
@@ -44,25 +46,20 @@ MAKECALL_HMMER             = $(MAKECALL_HMMER_VERSION); $(MAKECALL_HMMER_PARAMS)
 
 # *** Targets ***
 
-%.hmmalign: %.faa 
-	@$(MAKECALL_HMMSEARCH)
-	__PGM_CALL__
-	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
-
 all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
 # This target requires that "hmmrank", a symlink to "hmmrank.r" from 
 # https://github.com/erikrikarddaniel/hmmrank is in your PATH.
 all.ranked.tsv: $(wildcard *.tblout)
-	hmmrank --verbose --outfile=$@ $^
+	hmmrank --verbose --outfile=$@ $(HMMRANK_OPTS) $^
 
 %.hmmout: %.hmm
 	@$(MAKECALL_HMMER)
 	hmmsearch \
 	  --tblout=$(basename $@).tblout \
 	  --domtblout=$(basename $@).domtblout \
-	  $< $(HMMER_DB_FAA) \
 	  $(HMMER_OPTS) \
+	  $< $(HMMER_DB_FAA) \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
@@ -97,3 +94,20 @@ hmmer.counts.tsv: $(subst .hmm,.counts.tsv,$(wildcard *.hmm))
 	    echo "$$f	$$n"; \
 	  fi; \
 	done > $@
+
+# Statistics files
+pfile_accept_scores.tsv: $(wildcard *.hmm)
+	echo "pfile	score_type	seq_score	domain_score" > $@
+	grep '^\(GA\)\|\(TC\)\|\(NC\)' $^ | sed 's/:/\t/' | sed 's/ \+/\t/g' | sed 's/;$$//' >> $@
+
+pfile_profiles.tsv: $(wildcard *.hmm)
+	echo "pfile	profile" > $@
+	grep '^NAME' $^ | sed 's/:NAME */\t/' >> $@
+
+pfile_descs.tsv: $(wildcard *.hmm)
+	echo "pfile	description" > $@
+	grep '^DESC' $^ | sed 's/:DESC */\t/' >> $@
+
+profile_accept_scores.tsv: pfile_profiles.tsv pfile_accept_scores.tsv pfile_descs.tsv
+	Rscript --default-packages=readr,dplyr -e "read_tsv('$<',col_types=cols(.default=col_character()))%>%inner_join(read_tsv('$(word 2,$^)',col_types=cols(.default=col_character())),by='pfile')%>%inner_join(read_tsv('$(word 3,$^)',col_types=cols(.default=col_character())),by='pfile')%>%write_tsv('$@')"
+

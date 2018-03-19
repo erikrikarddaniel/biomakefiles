@@ -52,6 +52,12 @@ CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {
 %.c.faa: %.faa
 	$(CLEAN_FASTA)
 
+%.c.alnfna: %.alnfna
+	$(CLEAN_FASTA)
+
+%.c.alnfaa: %.alnfaa
+	$(CLEAN_FASTA)
+
 ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
 %.only_accno.faa: %.faa

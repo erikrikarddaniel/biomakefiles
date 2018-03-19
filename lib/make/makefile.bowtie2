@@ -81,6 +81,7 @@ all_silvarefs: $(subst .r1.fastq.gz,.pe.bowtie2-silvaref.sam.gz,$(wildcard *.r1.
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(SILVA_DIRECTORY)/SILVA_CURRENT_Ref_tax_silva.u2t -1 $(word 1,$^) -2 $(word 2,$^) 2> $(basename $@).err | gzip -c > $@ 
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# Indices
 all_bowtie2indeces: $(subst .fna,.bowtie2index,$(wildcard *.fna))
 
 %.bowtie2index: %.fna
