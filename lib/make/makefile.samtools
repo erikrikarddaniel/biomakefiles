@@ -34,6 +34,12 @@ all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam)) $(subst .sam.gz,.fl
 
 all_unmappedpairs_fastqpairs: $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam)) $(subst .sam.gz,.unmappedpairs.fastqpairs,$(wildcard *.sam.gz))
 
+idxstats.tsv: $(wildcard *.idxstats)
+	echo "sample	sequence	n_mapped	n_unmapped" > $@
+	for f in $^; do \
+	  cat $$f | sed "s/^/$$(basename $$f .idxstats)\t/" >> $@; \
+	done
+
 .SECONDARY:
 
 %.flagstat: %.bam
