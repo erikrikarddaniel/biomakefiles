@@ -13,8 +13,9 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+HMMBUILD_OPTS  =
 HMMSEARCH_OPTS =
-HMMRANK_OPTS =
+HMMRANK_OPTS   =
 
 # *** Internal ***
 
@@ -48,6 +49,9 @@ MAKECALL_HMMER             = $(MAKECALL_HMMER_VERSION); $(MAKECALL_HMMER_PARAMS)
 
 all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
+%.hmm: %.alnfaa
+	hmmbuild $(HMMBUILD_OPTS) $@ $<
+
 # This target requires that "hmmrank", a symlink to "hmmrank.r" from 
 # https://github.com/erikrikarddaniel/hmmrank is in your PATH.
 all.ranked.tsv: $(wildcard *.tblout)
@@ -60,6 +64,16 @@ all.ranked.tsv: $(wildcard *.tblout)
 	  --domtblout=$(basename $@).domtblout \
 	  $(HMMER_OPTS) \
 	  $< $(HMMER_DB_FAA) \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ncbi_refseq.hmmout: %.hmm
+	@$(MAKECALL_HMMER)
+	hmmsearch \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) \
+	  $< $(NCBI_REFSEQ_FAA) \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
