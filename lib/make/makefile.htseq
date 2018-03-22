@@ -31,9 +31,14 @@ MAKECALL_HTSEQ         = $(MAKECALL_HTSEQ_VERSION); $(MAKECALL_HTSEQ_PARAMS); $(
 
 # *** Targets ***
 
-all_CDS_htseqs: $(subst .sam,.CDS.htseq,$(filter-out $(wildcard *.htseq.sam),$(wildcard *.sam)))
+all_CDS_htseqs: $(subst .sam,.CDS.htseq,$(filter-out $(wildcard *.htseq.sam),$(wildcard *.sam))) $(subst .sam.gz,.CDS.htseq,$(filter-out $(wildcard *.htseq.sam),$(wildcard *.sam.gz)))
 
 %.CDS.htseq: %.sam 
 	@$(MAKECALL_HTSEQ)
 	htseq-count $(HTSEQ_OPTS) --type=CDS --idattr=$(HTSEQ_IDATTR) --samout=$@.sam $^ $(FEATURE_GFF) >$@ 2>$@.err
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.CDS.htseq: %.sam.gz
+	@$(MAKECALL_HTSEQ)
+	gunzip -c $< | htseq-count $(HTSEQ_OPTS) --type=CDS --idattr=$(HTSEQ_IDATTR) --samout=$@.sam - $(FEATURE_GFF) >$@ 2>$@.err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
