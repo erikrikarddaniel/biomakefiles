@@ -49,6 +49,8 @@ MAKECALL_HMMER             = $(MAKECALL_HMMER_VERSION); $(MAKECALL_HMMER_PARAMS)
 
 all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
+all_refseq_hmmout: $(subst .hmm,.ncbi_refseq.hmmout,$(wildcard *.hmm))
+
 %.hmm: %.alnfaa
 	hmmbuild $(HMMBUILD_OPTS) $@ $<
 

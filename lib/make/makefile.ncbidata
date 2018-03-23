@@ -95,7 +95,7 @@ mirror_refseq_protein.blast:
 # Extract sequences from the RefSeq protein database fetched by
 # mirror_refseq_protein.blast.  As far as I know there's no fasta file for this
 # available at NCBI, like there is for NR.
-refseq_protein.faa:
+refseq_protein.faa: $(wildcard ftp.ncbi.nih.gov/blast/db/refseq_protein*)
 	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_protein -entry all -dbtype prot -out $@
 
 mirror_refseq_rna.blast:
