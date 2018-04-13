@@ -1,0 +1,17 @@
+SAMPLES, = glob_wildcards("{smp}.r1.fastq.gz")
+
+rule all:
+    input:
+        expand("{smp}.r1_fastqc.zip", smp=SAMPLES)
+
+rule spades:
+    input:
+        fwd="{smp}.r1.fastq.gz",
+        rev="{smp}.r2.fastq.gz"
+    output:
+        fwd="{smp}.r1_fastqc.zip",
+        rev="{smp}.r2_fastqc.zip"
+    threads: 10
+    shell:
+        "spades  {input.fwd} {input.rev} -t {threads}"
+
