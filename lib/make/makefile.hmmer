@@ -54,6 +54,9 @@ all_refseq_hmmout: $(subst .hmm,.ncbi_refseq.hmmout,$(wildcard *.hmm))
 %.hmm: %.alnfaa
 	hmmbuild $(HMMBUILD_OPTS) $@ $<
 
+%.hmm: %.phy
+	hmmbuild $(HMMBUILD_OPTS) $@ $<
+
 # This target requires that "hmmrank", a symlink to "hmmrank.r" from 
 # https://github.com/erikrikarddaniel/hmmrank is in your PATH.
 all.ranked.tsv: $(wildcard *.tblout)

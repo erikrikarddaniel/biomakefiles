@@ -1,0 +1,27 @@
+# makefile.usearch
+#
+# Library makefile to make running USEARCH simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# Cluster sequences based on fraction identity. Override the CLUSTER_LEVELS
+# macro if you need other levels than the default specified here.
+CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.75 0.70 0.60 0.50
+
+%.uclusters: %.faa
+	for n in $(CLUSTER_LEVELS); do \
+	  d=$(basename $@).uc$$n.clusters.d; \
+	  mkdir $$d; \
+	  rm -f $$d/*.faa; \
+	  usearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
+	done
+	touch $@
