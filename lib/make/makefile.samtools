@@ -28,10 +28,14 @@ MAKECALL_SAMTOOLS      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INF
 
 # *** Targets ***
 
+# Make an idxstats (counts per target) file for each .sam/.sam.gz file.
 all_sam2idxstats: $(subst .sam,.idxstats,$(wildcard *.sam)) $(subst .sam.gz,.idxstats,$(wildcard *.sam.gz))
 
+# Make an flagstat (overarching stats) file for each .sam/.sam.gz file.
 all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam)) $(subst .sam.gz,.flagstat,$(wildcard *.sam.gz))
 
+# Make a pair of fastq files for each .sam/.sam.gz file containing the *unmapped* reads.
+# (Useful for filtering.)
 all_unmappedpairs_fastqpairs: $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam)) $(subst .sam.gz,.unmappedpairs.fastqpairs,$(wildcard *.sam.gz))
 
 idxstats.tsv: $(wildcard *.idxstats)
