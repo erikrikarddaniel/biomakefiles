@@ -1,0 +1,12 @@
+# makefile.biocyc
+#
+# Library makefile to document BioCyc stuff.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+EC-Number_from_All_reactions_of_MetaCyc.tsv:
+	echo "Download by selecting 'Special SmartTables' from the MetaCyc database, press '+' in the EC-number column etc."
