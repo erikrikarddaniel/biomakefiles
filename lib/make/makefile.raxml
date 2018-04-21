@@ -32,15 +32,19 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 
 # *** Targets ***
 
+# Cleans up an aligned fasta file so RAxML accepts it.
+%.rx.alnfaa: %.alnfaa
+	sed '/^>/s/\[\+//' $< | sed '/^>/s/\]\+//g' | sed '/^>/s/-//g' | sed '/^>/s/[:,()]//g' | sed '/^>/s/ \+/_/g' > $@
+
 # Perform a phylogenetic placement
-%.placement.PROTGAMMAAUTO.raxml: %.alnfaa reftree.newick
+%.placement.PROTGAMMAAUTO.raxml: %.rx.alnfaa reftree.newick
 	@$(MAKECALL_RAXML)
 	$(RAXML_BINARY) -s $< -f v -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
 	ln -s RAxML_labelledTree.$(basename $@) $@.labelled_tree.newick
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Perform a rapid bootstrap analysis and tree search using the PROTGAMMAAUTO model
-%.PROTGAMMAAUTO.raxml: %.alnfaa
+%.PROTGAMMAAUTO.raxml: %.rx.alnfaa
 	@$(MAKECALL_RAXML)
 	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
 	ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick
@@ -49,7 +53,7 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Calculate ancestral states
-%.PROTGAMMAAUTO.ancstates.raxml: %.alnfaa %.newick
+%.PROTGAMMAAUTO.ancstates.raxml: %.rx.alnfaa %.newick
 	@$(MAKECALL_RAXML)
 	$(RAXML_BINARY) -f A -s $< -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
 	ln -s RAxML_nodeLabelledRootedTree.$(basename $@) $@.nodelabelled.newick 
