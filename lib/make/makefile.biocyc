@@ -12,4 +12,4 @@ EC-Number_from_All_reactions_of_MetaCyc.tsv:
 	echo "Download by selecting 'Special SmartTables' from the MetaCyc database, press '+' in the EC-number column etc."
 
 metacyc_ecnumbers.tsv: EC-Number_from_All_reactions_of_MetaCyc.tsv
-	sed 's/^"//' $< | sed 's/"\t"/\t/' | sed 's/"$$//' | sed 's/EC-Number from All reactions of MetaCyc/ecnumber/' | sed 's/Matches/metacyc_rxnid/' > $@
+	sed 's/^"//' $< | sed 's/"\t"/\t/' | sed 's/"$$//' | sed 's/EC-Number from All reactions of MetaCyc/ecnumber/' | sed 's/Matches/metacyc_rxnid/' | sed 's/EC-//' | sed 's/^|//' | sed 's/|\t/\t/' > $@
