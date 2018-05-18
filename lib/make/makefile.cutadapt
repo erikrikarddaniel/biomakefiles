@@ -42,3 +42,10 @@ cutall: $(subst .r1.fastq.gz,.ca.r1.fastq.gz,$(filter-out $(wildcard *.ca.r1.fas
 	@$(MAKECALL_CUTADAPT)
 	gunzip -c $< | cutadapt $(CUTADAPT_REV_OPTS) - | gzip -c > $@ 2> $@.report
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+cutallint: $(subst .fastq.gz,.ca.int.fastq.gz,$(filter-out $(wildcard *.ca.int.fastq.gz),$(wildcard *.fastq.gz)))
+
+%.ca.int.fastq.gz: %.fastq.gz
+	@$(MAKECALL_CUTADAPT)
+	gunzip -c $< | cutadapt $(CUTADAPT_FWD_OPTS) - | gzip -c > $@ 2> $@.report
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
