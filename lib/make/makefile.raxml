@@ -36,6 +36,10 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 %.rx.alnfaa: %.alnfaa
 	sed '/^>/s/\[\+//' $< | sed '/^>/s/\]\+//g' | sed '/^>/s/-//g' | sed '/^>/s/[:,()]//g' | sed '/^>/s/ \+/_/g' > $@
 
+# Check that an alignment is correct without running RAxML
+%.raxmlcheck: %.rx.alnfaa
+	$(RAXML_BINARY) -f c -m PROTGAMMAAUTO -s $< -n $(basename $@) | tee $@
+
 # Perform a phylogenetic placement
 %.placement.PROTGAMMAAUTO.raxml: %.rx.alnfaa reftree.newick
 	@$(MAKECALL_RAXML)
@@ -45,6 +49,14 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 
 # Perform a rapid bootstrap analysis and tree search using the PROTGAMMAAUTO model
 %.PROTGAMMAAUTO.raxml: %.rx.alnfaa
+	@$(MAKECALL_RAXML)
+	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
+	if [ ! -e $@.besttree.newick ]; then ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick; fi
+	if [ ! -e $@.bipartitions.newick ]; then ln -s RAxML_bipartitions.$(basename $@) $@.bipartitions.newick; fi
+	if [ ! -e $@.bipartitionsBranchLabels.newick ]; then ln -s RAxML_bipartitionsBranchLabels.$(basename $@) $@.bipartitionsBranchLabels.newick; fi
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.PROTGAMMAAUTO.raxml: %.phylip
 	@$(MAKECALL_RAXML)
 	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
 	if [ ! -e $@.besttree.newick ]; then ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick; fi
