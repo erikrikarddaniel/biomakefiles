@@ -26,7 +26,7 @@ RAXML_OPTS = -T $(NUM_CPUS)
 #
 # *Don't redefine!*
 MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(RAXML_BINARY) `$(RAXML_BINARY) -v|grep -o 'RAxML version [0-9.]*'`" > $@.makecall
-MAKECALL_PARAMS      = echo "	Called with parameters: $(RAXML_OPTS)" >> $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(RAXML_OPTS) -T $(NUM_CPUS)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
@@ -38,19 +38,19 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 
 # Check that an alignment is correct without running RAxML
 %.raxmlcheck: %.rx.alnfaa
-	$(RAXML_BINARY) -f c -m PROTGAMMAAUTO -s $< -n $(basename $@) | tee $@
+	$(RAXML_BINARY) -T $(NUM_CPUS) -f c -m PROTGAMMAAUTO -s $< -n $@ | tee $@
 
 # Perform a phylogenetic placement
 %.placement.PROTGAMMAAUTO.raxml: %.rx.alnfaa reftree.newick
 	@$(MAKECALL_RAXML)
-	$(RAXML_BINARY) -s $< -f v -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
+	$(RAXML_BINARY) -s $< -f v -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) -T $(NUM_CPUS) > $@ 2>&1
 	if [ ! -e $@.labelled_tree.newick ]; then ln -s RAxML_labelledTree.$(basename $@) $@.labelled_tree.newick; fi
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Perform a rapid bootstrap analysis and tree search using the PROTGAMMAAUTO model
 %.PROTGAMMAAUTO.raxml: %.rx.alnfaa
 	@$(MAKECALL_RAXML)
-	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
+	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -T $(NUM_CPUS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
 	if [ ! -e $@.besttree.newick ]; then ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick; fi
 	if [ ! -e $@.bipartitions.newick ]; then ln -s RAxML_bipartitions.$(basename $@) $@.bipartitions.newick; fi
 	if [ ! -e $@.bipartitionsBranchLabels.newick ]; then ln -s RAxML_bipartitionsBranchLabels.$(basename $@) $@.bipartitionsBranchLabels.newick; fi
@@ -58,7 +58,7 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 
 %.PROTGAMMAAUTO.raxml: %.phylip
 	@$(MAKECALL_RAXML)
-	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
+	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -T $(NUM_CPUS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
 	if [ ! -e $@.besttree.newick ]; then ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick; fi
 	if [ ! -e $@.bipartitions.newick ]; then ln -s RAxML_bipartitions.$(basename $@) $@.bipartitions.newick; fi
 	if [ ! -e $@.bipartitionsBranchLabels.newick ]; then ln -s RAxML_bipartitionsBranchLabels.$(basename $@) $@.bipartitionsBranchLabels.newick; fi
@@ -67,7 +67,7 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 # Calculate ancestral states
 %.PROTGAMMAAUTO.ancstates.raxml: %.rx.alnfaa %.newick
 	@$(MAKECALL_RAXML)
-	$(RAXML_BINARY) -f A -s $< -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
+	$(RAXML_BINARY) -f A -s $< -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) -T $(NUM_CPUS) > $@ 2>&1
 	if [ ! -e $@.nodelabelled.newick ]; then ln -s RAxML_nodeLabelledRootedTree.$(basename $@) $@.nodelabelled.newick; fi
 	if [ ! -e $@.seqs ]; then ln -s RAxML_marginalAncestralStates.$(basename $@) $@.seqs; fi
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
