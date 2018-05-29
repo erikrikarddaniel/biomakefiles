@@ -1,0 +1,20 @@
+# makefile.pdb
+#
+# Library makefile to make fetching pdb files, and some more, simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+%.pdb:
+	wget -O $@ https://files.rcsb.org/download/$@
+
+pdb_organism_names.tsv: $(wildcard *.pdb)
+	echo "accno   taxon" > $@
+	grep 'ORGANISM_SCIENTIFIC:' $^ | grep -v 'UNIDENTIFIED' | grep -v '[^;]$$' | sed 's/\(.*\).pdb:SOURCE.*ORGANISM_SCIENTIFIC: *\([^ ]\+ [^ ]\+\).*;/\1\t\L\2/' | sed 's/\t\(.*\)/\t\u\1/' | uniq >> $@
+
+pdb_taxids.tsv: $(wildcard *.pdb)
+	echo "accno	taxonid" > $@
+	for f in $^; do echo "$$(basename $$f .pdb)	$$(grep 'ORGANISM_TAXID:' $$f |head -n 1|sed 's/.*ORGANISM_TAXID: \([0-9]*\).*/\1/')"; done >> $@
