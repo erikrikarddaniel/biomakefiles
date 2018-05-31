@@ -11,10 +11,14 @@ SHELL := /bin/bash
 %.pdb:
 	wget -O $@ https://files.rcsb.org/download/$@
 
+# This finds the organism that's embedded in the file, but, since it's 
+# unstructured data and all caps, it's not pretty. Sometimes missing.
 pdb_organism_names.tsv: $(wildcard *.pdb)
-	echo "accno   taxon" > $@
+	echo "accno	organism" > $@
 	grep 'ORGANISM_SCIENTIFIC:' $^ | grep -v 'UNIDENTIFIED' | grep -v '[^ ;] *$$' | sed 's/\(.*\).pdb:SOURCE.*ORGANISM_SCIENTIFIC: *\([^ ]\+ [^ ]\+\).*;/\1\t\L\2/' | sed 's/\t\(.*\)/\t\u\1/' | uniq >> $@
 
+# This gets the NCBI taxonid, which is sometimes retired and not 
+# possible to lookup.
 pdb_taxids.tsv: $(wildcard *.pdb)
 	echo "accno	taxonid" > $@
 	for f in $^; do echo "$$(basename $$f .pdb)	$$(grep 'ORGANISM_TAXID:' $$f |head -n 1|sed 's/.*ORGANISM_TAXID: \([0-9]*\).*/\1/')"; done >> $@
