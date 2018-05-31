@@ -13,7 +13,7 @@ SHELL := /bin/bash
 
 pdb_organism_names.tsv: $(wildcard *.pdb)
 	echo "accno   taxon" > $@
-	grep 'ORGANISM_SCIENTIFIC:' $^ | grep -v 'UNIDENTIFIED' | grep -v '[^;]$$' | sed 's/\(.*\).pdb:SOURCE.*ORGANISM_SCIENTIFIC: *\([^ ]\+ [^ ]\+\).*;/\1\t\L\2/' | sed 's/\t\(.*\)/\t\u\1/' | uniq >> $@
+	grep 'ORGANISM_SCIENTIFIC:' $^ | grep -v 'UNIDENTIFIED' | grep -v '[^ ;] *$$' | sed 's/\(.*\).pdb:SOURCE.*ORGANISM_SCIENTIFIC: *\([^ ]\+ [^ ]\+\).*;/\1\t\L\2/' | sed 's/\t\(.*\)/\t\u\1/' | uniq >> $@
 
 pdb_taxids.tsv: $(wildcard *.pdb)
 	echo "accno	taxonid" > $@
