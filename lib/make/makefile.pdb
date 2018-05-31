@@ -18,3 +18,7 @@ pdb_organism_names.tsv: $(wildcard *.pdb)
 pdb_taxids.tsv: $(wildcard *.pdb)
 	echo "accno	taxonid" > $@
 	for f in $^; do echo "$$(basename $$f .pdb)	$$(grep 'ORGANISM_TAXID:' $$f |head -n 1|sed 's/.*ORGANISM_TAXID: \([0-9]*\).*/\1/')"; done >> $@
+
+pdb_resolutions.tsv: $(wildcard *.pdb)
+	echo "accno	angstroms" > $@
+	grep "RESOLUTION\." $^ | sed 's/^\(.*\)\.pdb:.*RESOLUTION\. *\([0-9.]\+\).*/\1\t\2/' >> $@
