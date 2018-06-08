@@ -30,23 +30,3 @@ samples.stats.long.tsv: $(wildcard *.r1.fastq.gz)
 	  echo "$(STAT_ORDER)	samples	$$sample	-	r1	$$sample.r1.fastq.gz	$$(echo $$(gunzip -c $$sample.r1.fastq.gz | wc -l)/4 | bc)"; \
 	  echo "$(STAT_ORDER)	samples	$$sample	-	r2	$$sample.r2.fastq.gz	$$(echo $$(gunzip -c $$sample.r2.fastq.gz | wc -l)/4 | bc)"; \
 	done | sort | tee $@
-
-# Create symbolic links to sample files.
-# Note: It looks like this was run in three different sequencing runs, visible
-# by different numbers following S in the original file names, but always with
-# different lanes. To be really general, this rule should take care of the S
-# number too. Thus, if you received sequences from NCBIS all you need to do is to
-# pay attention to the folder structure ({d} variable) which is based on the NCBIS
-# nomenclature and modify it accordingly. 
-links:
-	for d in ../P10353/P10353_10??; do \
-	  for l in {1..6}; do \
-	    for r in 1 2; do \
-	      s=$$(basename $$d); \
-	      p=$${d}/*/*/$${s}_*_L00$${l}_R$${r}_001.fastq.gz; \
-	      if [ -e $${p} ]; then \
-	        ln -s $${p} $${s}.lane00$${l}.r$${r}.fastq.gz; \
-	      fi; \
-	    done; \
-	  done; \
-	done
