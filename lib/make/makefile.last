@@ -70,6 +70,8 @@ MAKECALL_LASTAL_MAKEDB   = $(MAKECALL_LASTAL_VERSION); $(MAKECALL_LASTAL_INFILES
 # present in the current directory.
 all_refseq_rna.fastq2mafs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fastq.gz))
 
+# Run lastal against the NCBI RefSeq RNA database for all fna and fna.gz files
+# present in the current directory.
 all_refseq_rna.fna2mafs: $(subst .fna,.refseq_rna.maf.gz,$(wildcard *.fna)) $(subst .fna.gz,.refseq_rna.maf.gz,$(wildcard *.fna.gz))
 
 # Converts all .maf.gz files (output files from lastal) to tables that are

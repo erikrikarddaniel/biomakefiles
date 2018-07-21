@@ -13,7 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-ADAPTERS = -a GATCGGAAGAGCACACGTCTGAACTCCAGTCAC -a ACACTCTTTCCCTACACGACGCTCTTCCGATCT -a CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -a ACACTCTTTCCCTACACGACGCTCTTCCGATCT -a AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -a CTGTCTCTTATACACATCTGACGCTGCCGACGA
+ADAPTERS = -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -a ACACTCTTTCCCTACACGACGCTCTTCCGATCT -a CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -a ACACTCTTTCCCTACACGACGCTCTTCCGATCT -a AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -a CTGTCTCTTATACACATCTGACGCTGCCGACGA
 CUTADAPT_OPTS =
 CUTADAPT_FWD_OPTS = -e 0.1 $(CUTADAPT_OPTS) $(ADAPTERS)
 CUTADAPT_REV_OPTS = -e 0.2 $(CUTADAPT_OPTS) $(ADAPTERS)
@@ -41,4 +41,11 @@ cutall: $(subst .r1.fastq.gz,.ca.r1.fastq.gz,$(filter-out $(wildcard *.ca.r1.fas
 %.ca.r2.fastq.gz: %.r2.fastq.gz
 	@$(MAKECALL_CUTADAPT)
 	gunzip -c $< | cutadapt $(CUTADAPT_REV_OPTS) - | gzip -c > $@ 2> $@.report
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+cutallint: $(subst .fastq.gz,.ca.int.fastq.gz,$(filter-out $(wildcard *.ca.int.fastq.gz),$(wildcard *.fastq.gz)))
+
+%.ca.int.fastq.gz: %.fastq.gz
+	@$(MAKECALL_CUTADAPT)
+	gunzip -c $< | cutadapt $(CUTADAPT_FWD_OPTS) - | gzip -c > $@ 2> $@.report
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
