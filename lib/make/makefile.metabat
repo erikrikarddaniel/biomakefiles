@@ -28,6 +28,7 @@ MAKECALL_METABAT             = $(MAKECALL_METABAT_VERSION); $(MAKECALL_METABAT_P
 
 # *** Targets ***
 
+# Run metabat. The bam files need to be sorted!
 %.metabat: %.fna $(wildcard *.bam)
 	@$(MAKECALL_METABAT)
 	runMetaBat.sh $(METABAT_OPTIONS) $^ 2>&1 | tee $@.out
