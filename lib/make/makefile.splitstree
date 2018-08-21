@@ -13,4 +13,4 @@ SHELL := /bin/bash
 # (Tries to) clean up an aligned fasta file so SplitsTree (v. 4) will accept
 # it. (DH might be working on a new version which is less picky.)
 %.st.alnfaa: %.alnfaa
-	sed '/^>/s/\[\+//' $< | sed '/^>/s/\]\+//g' | sed '/^>/s/-//g' | sed '/^>/s/[|":,()]//g' | sed '/^>/s/ \+/_/g' | sed 's:/:_:g' | sed 's/=/eq/g' > $@
+	sed '/^>/s/\[\+//' $< | sed '/^>/s/\]\+//g' | sed '/^>/s/-//g' | sed '/^>/s/[|":,()]//g' | sed '/^>/s/ \+/_/g' | sed 's:/:_:g' | sed 's/=/eq/g' | sed "s/'//g" > $@
