@@ -39,6 +39,7 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 # Check that an alignment is correct without running RAxML
 %.raxmlcheck: %.rx.alnfaa
 	$(RAXML_BINARY) -T $(NUM_CPUS) -f c -m PROTGAMMAAUTO -s $< -n $@ | tee $@
+	if [ -e $<.reduced ]; then mv $<.reduced $(basename $<).red.phylip; fi
 
 # Perform a phylogenetic placement
 %.placement.PROTGAMMAAUTO.raxml: %.rx.alnfaa reftree.newick
