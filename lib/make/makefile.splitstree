@@ -8,7 +8,7 @@
 
 SHELL := /bin/bash
 
-SUBST_COMMAND = sed '/^>/s/\[//g' $< | sed '/^>/s/\]//g' | sed '/^>/s/-//g' | sed '/^>/s/[|":;,()]//g' | sed '/^>/s/ \+/_/g' | sed 's:/:_:g' | sed 's/=/eq/g' > $@
+SUBST_COMMAND = sed '/^>/s/\[//g' $< | sed '/^>/s/\]//g' | sed '/^>/s/-//g' | sed '/^>/s/[|":;,()]//g' | sed '/^>/s/ \+/_/g' | sed 's:/:_:g' | sed 's/=/eq/g' | sed "s/'//g" > $@
 
 # *** Parameters ***
 
