@@ -22,7 +22,7 @@ SUBST_COMMAND = sed '/^>/s/\[//g' $< | sed '/^>/s/\]//g' | sed '/^>/s/-//g' | se
 
 # Creates a distance matrix splitstree nexus file from a tsv file
 %.dist.splitstree: %.tsv
-	echo '#nexus' >> $@
+	echo '#nexus' > $@
 	echo 'BEGIN TAXA;' >> $@
 	echo "DIMENSIONS NTAX=$$(tail -n +2 $<|wc -l);" >> $@
 	echo 'TAXLABELS' >> $@
