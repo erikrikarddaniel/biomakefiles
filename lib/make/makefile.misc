@@ -72,9 +72,19 @@ ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
 fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
 
+all_seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz)) $(subst .fna.gz,.seqlens.tsv,$(wildcard *.fna.gz)) $(subst .fna,.seqlens.tsv,$(wildcard *.fna))
+
 %.seqlens.tsv: %.fastq.gz
 	echo "seqlen	n" > $@
 	gunzip -c $< | awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
+
+%.seqlens.tsv: %.fna.gz
+	echo "seqlen	n" > $@
+	gunzip -c $< | awk 'NR%2 == 0 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
+
+%.seqlens.tsv: %.fna
+	echo "seqlen	n" > $@
+	awk 'NR%2 == 0 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' $< | sed 's/ *//g' >> $@
 
 r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 	for f in $^; do \
