@@ -38,13 +38,17 @@ checkm.lineage_wf.fna.out: $(wildcard *.fna)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # This runs checkm lineage_wf on all bins in .faa files in
-# the current directory; includes gene calling.
+# the current directory.
 checkm.lineage_wf.faa.out: $(wildcard *.faa)
 	@$(MAKECALL_CHECKM)
 	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) -x faa --genes --file $@ . checkm/ 2>&1 | tee $(basename $@).err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# This file, or the next, will contain completeness etc.
 checkm.lineage_wf.faa.tsv: checkm.lineage_wf.faa.out
+	$(CHECKM_OUT_TO_TSV)
+
+checkm.lineage_wf.fna.tsv: checkm.lineage_wf.fna.out
 	$(CHECKM_OUT_TO_TSV)
 
 checkm.tree_qa.out: $(wildcard checkm.lineage_wf*out)
