@@ -78,6 +78,8 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 # by -n option in next release (won't do any harm after that).
 DAA2INFO_HEADER_FILTER = grep -v "^Version"|grep -v "^Author"|grep -v "^Copyright"|grep -v "^Loading"|grep -v "^\#"|grep -v "Total time:"|grep -v "Peak memory:"
 
+.SECONDARY:
+
 all_exports: all_reads2eggnogs all_reads2ips all_reads2seeds all_reads2taxonids
 
 mostly_hiearchy_exports: all_reads2taxonids all_reads2eggnoghiers all_reads2iphiers all_reads2seedhiers
@@ -216,6 +218,10 @@ all_rma_reads2taxonids: $(subst .rma6,.reads2taxonids.tsv.gz,$(wildcard *.rma6))
 
 # *** Handling LAST ***
 %.refseq_rna.sorted.maf.gz: %.refseq_rna.maf.gz %.fna.gz
+	$(MEGAN_INSTALL_DIR)/tools/sort-last-maf \
+	  --input $< --readsFile $(word 2,$^) --output $@
+
+%.refseq_rna.sorted.maf.gz: %.refseq_rna.maf.gz %.fna
 	$(MEGAN_INSTALL_DIR)/tools/sort-last-maf \
 	  --input $< --readsFile $(word 2,$^) --output $@
 
