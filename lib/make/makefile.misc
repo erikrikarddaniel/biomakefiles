@@ -58,6 +58,21 @@ CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {
 %.c.alnfaa: %.alnfaa
 	$(CLEAN_FASTA)
 
+# Transform fasta files to tab separated tables (keeping the ">")
+SEQTSV = tr '\n' '\t' < $< | sed 's/\t>/\n>/g' | sed 's/\t$$/\n/' > $@
+
+%.na.tsv: %.fna
+	$(SEQTSV)
+
+%.aa.tsv: %.faa
+	$(SEQTSV)
+
+%.alnna.tsv: %.alnfna
+	$(SEQTSV)
+
+%.alnaa.tsv: %.alnfaa
+	$(SEQTSV)
+
 ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
 %.only_accno.faa: %.faa
@@ -72,9 +87,19 @@ ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
 fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
 
+all_seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz)) $(subst .fna.gz,.seqlens.tsv,$(wildcard *.fna.gz)) $(subst .fna,.seqlens.tsv,$(wildcard *.fna))
+
 %.seqlens.tsv: %.fastq.gz
 	echo "seqlen	n" > $@
 	gunzip -c $< | awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
+
+%.seqlens.tsv: %.fna.gz
+	echo "seqlen	n" > $@
+	gunzip -c $< | awk 'NR%2 == 0 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
+
+%.seqlens.tsv: %.fna
+	echo "seqlen	n" > $@
+	awk 'NR%2 == 0 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' $< | sed 's/ *//g' >> $@
 
 r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 	for f in $^; do \
@@ -82,6 +107,9 @@ r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 	done > $@
 %.seqcount: %.fastq.gz
 	echo $$(expr $$(gunzip -c $< | wc -l) / 4) > $@
+
+%.fna: %.fna.gz
+	gunzip -c $< > $@
 
 %.fna: %.fastq.gz
 	gunzip -c $< | fastq_to_fasta > $@

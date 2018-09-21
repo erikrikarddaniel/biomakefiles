@@ -82,7 +82,7 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 # Here comes individual pattern rules. Defines how programs are actually called
 %.maf.gz: %.fna
 	@$(MAKECALL_LASTAL)
-	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(LAST_DB).lastdb" < $< | gzip -c > $@
+	lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(LAST_DB).lastdb < $< | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.maf.gz: %.faa

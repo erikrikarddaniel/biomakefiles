@@ -61,3 +61,6 @@ checkm.tree_qa.tsv: checkm.tree_qa.out
 
 checkm.bin_qa_plot.faa.pdf: checkm.lineage_wf.faa.out
 	checkm bin_qa_plot --image_type pdf -x faa . checkm/ checkm/plots
+
+checkm.bin_qa_plot.fna.pdf: checkm.lineage_wf.fna.out
+	checkm bin_qa_plot --image_type pdf . checkm/ checkm/plots

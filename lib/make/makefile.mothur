@@ -47,3 +47,14 @@ all.nr.wang.taxonomies: $(subst .fna,.nr.wang.taxonomy.tsv.gz,$(wildcard *.fna))
 	mothur "#classify.seqs(fasta=$<, template=$(SILVA_TEMPLATE_FILE), taxonomy=$(SILVA_TAXONOMY_FILE), processors=$(NUM_PROCESSORS), method=wang$(MOTHUR_OPTS))" | tee $@.out 2>&1
 	mv $(basename $(basename $@)) $(basename $@); gzip -f $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Fetch database files
+MOTHUR_SILVA_PATH = 
+
+Silva.v132.tgz: Silva.nr_v132.tgz Silva.seed_v132.tgz
+
+Silva.nr_v132.tgz:
+	wget https://mothur.org/w/images/3/32/$@
+
+Silva.seed_v132.tgz:
+	wget https://mothur.org/w/images/7/71/Silva.seed_v132.tgz
