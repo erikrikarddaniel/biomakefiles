@@ -1,0 +1,60 @@
+# makefile.qiime2
+#
+# Library makefile to make running programs in the QIIME2 suite simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+QIIME2_OPTS =
+QIIME2_VSEARCH_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_QIIME2 is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_QIIME2_VERSION        = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `qiime --version|grep 'version *[0-9.]\+'`" > $@.makecall
+MAKECALL_QIIME2_PARAMS         = echo "	Called with parameters: $(QIIME2_OPTS)" >> $@.makecall
+MAKECALL_QIIME2_VSEARCH_PARAMS = echo "	Called with parameters: $(QIIME2_OPTS) $(QIIME2_VSEARCH_OPTS)" >> $@.makecall
+MAKECALL_QIIME2_INFILES        = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_QIIME2_VSEARCH        = $(MAKECALL_QIIME2_VERSION); $(MAKECALL_QIIME2_VSEARCH_PARAMS); $(MAKECALL_QIIME2_INFILES)
+MAKECALL_QIIME2                = $(MAKECALL_QIIME2_VERSION); $(MAKECALL_QIIME2_PARAMS); $(MAKECALL_QIIME2_INFILES)
+
+# *** Targets ***
+%.sklearntaxonomy.silva99.qza: %.seqs.qza silva99.qza
+	@$(MAKECALL_QIIME2)
+	qiime feature-classifier classify-sklearn --i-reads $< --i-classifier $(word 2,$^) --o-classification $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.qtax.d/taxonomy.tsv: %.qtax.qza
+	qiime tools export --input-path $< --output-path $(dir $@)
+
+%.vsearchtax.silvaref.qza: %.seqs.qza SILVA_CURRENT_SSURef_tax_silva.q2seqdata.qza SILVA_CURRENT_SSURef_tax_silva.q2taxonomy.qza
+	@$(MAKECALL_QIIME2_VSEARCH)
+	qiime feature-classifier classify-consensus-vsearch --i-query $< --i-reference-reads $(word 2,$^) --i-reference-taxonomy $(word 3,$^) --o-classification $@ $(QIIME2_OPTS) $(QIIME2_VSEARCH_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Use this e.g. to import SILVA's fasta files
+%.q2seqdata.qza: %.fna.gz
+	@$(MAKECALL_QIIME2)
+	gunzip -c $< | sed '/^>/!s/U/T/g' > $(basename $<)
+	qiime tools import --type FeatureData[Sequence] --input-format DNAFASTAFormat --input-path $(basename $<) --output-path $@
+	rm $(basename $<)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Use this e.g. to import SILVA's taxonomy .txt files
+%.q2taxonomy.qza: %.fna.gz
+	@$(MAKECALL_QIIME2)
+	gunzip -c $< | grep '^>' | sed 's/>//' | sed 's/ /\t/' > taxa.tsv
+	qiime tools import --type FeatureData[Taxonomy] --input-format HeaderlessTSVTaxonomyFormat --input-path taxa.tsv --output-path $@
+	#rm $(basename $<)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
