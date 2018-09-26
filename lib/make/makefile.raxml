@@ -32,10 +32,6 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 
 # *** Targets ***
 
-# Cleans up an aligned fasta file so RAxML accepts it.
-%.rx.alnfaa: %.alnfaa
-	sed '/^>/s/\[\+//' $< | sed '/^>/s/\]\+//g' | sed '/^>/s/-//g' | sed '/^>/s/[:,()]//g' | sed '/^>/s/ \+/_/g' > $@
-
 # Check that an alignment is correct without running RAxML
 %.raxmlcheck: %.rx.alnfaa
 	$(RAXML_BINARY) -T $(NUM_CPUS) -f c -m PROTGAMMAAUTO -s $< -n $@ | tee $@
@@ -75,3 +71,9 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 
 %.faa: %.seqs
 	sed 's/^/>/' $< | sed 's/ /\n/' | sed 's/?//g' > $@
+
+.SECONDARY:
+
+# Cleans up an aligned fasta file so RAxML accepts it.
+%.rx.alnfaa: %.alnfaa
+	sed '/^>/s/\[\+//' $< | sed '/^>/s/\]\+//g' | sed '/^>/s/-//g' | sed '/^>/s/[:,()]//g' | sed '/^>/s/ \+/_/g' | sed "s/'//g" > $@
