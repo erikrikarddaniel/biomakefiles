@@ -59,7 +59,7 @@ CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {
 	$(CLEAN_FASTA)
 
 # Transform fasta files to tab separated tables (keeping the ">")
-SEQTSV = tr '\n' '\t' < $< | sed 's/\t>/\n>/g' | sed 's/\t$$/\n/' > $@
+SEQTSV = cat $< | paste - - > $@
 
 %.na.tsv: %.fna
 	$(SEQTSV)
