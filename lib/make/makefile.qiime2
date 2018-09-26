@@ -30,15 +30,24 @@ MAKECALL_QIIME2_VSEARCH        = $(MAKECALL_QIIME2_VERSION); $(MAKECALL_QIIME2_V
 MAKECALL_QIIME2                = $(MAKECALL_QIIME2_VERSION); $(MAKECALL_QIIME2_PARAMS); $(MAKECALL_QIIME2_INFILES)
 
 # *** Targets ***
-%.sklearntaxonomy.silva99.qza: %.seqs.qza silva99.qza
+
+# Create an artefact from a nucleotide fasta file
+%.seqs.qza: %.fna
+	qiime tools import --type "FeatureData[Sequence]" --output-path $@ --input-path $<
+
+# Run the sklearn algorithm with the SILVA 99 database (see QIIME2 docs)
+%.sklearntaxonomy.silva99.qtax.qza: %.seqs.qza silva99.qza
 	@$(MAKECALL_QIIME2)
 	qiime feature-classifier classify-sklearn --i-reads $< --i-classifier $(word 2,$^) --o-classification $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# Extract a tsv file with taxonomy
 %.qtax.d/taxonomy.tsv: %.qtax.qza
 	qiime tools export --input-path $< --output-path $(dir $@)
 
-%.vsearchtax.silvaref.qza: %.seqs.qza SILVA_CURRENT_SSURef_tax_silva.q2seqdata.qza SILVA_CURRENT_SSURef_tax_silva.q2taxonomy.qza
+# Run the VSEARCH taxonomy assignment with the SILVA Ref database
+# (see makefile.silva for recipe)
+%.vsearchtax.silvaref.qtax.qza: %.seqs.qza SILVA_CURRENT_SSURef_tax_silva.q2seqdata.qza SILVA_CURRENT_SSURef_tax_silva.q2taxonomy.qza
 	@$(MAKECALL_QIIME2_VSEARCH)
 	qiime feature-classifier classify-consensus-vsearch --i-query $< --i-reference-reads $(word 2,$^) --i-reference-taxonomy $(word 3,$^) --o-classification $@ $(QIIME2_OPTS) $(QIIME2_VSEARCH_OPTS)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
