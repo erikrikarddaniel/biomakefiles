@@ -64,6 +64,12 @@ SILVA_CURRENT_Parc_tax_silva.fna: SILVA_CURRENT_LSUParc_tax_silva.fna SILVA_CURR
 SILVA_CURRENT_Ref_tax_silva.fna: SILVA_CURRENT_LSURef_tax_silva.fna SILVA_CURRENT_SSURef_tax_silva.fna
 	cat $^ > $@
 
+# Fetch QIIME2 database at 99% for sklearn algorithm
+silva-99-nb-classifier.qza:
+	rm -f $@
+	wget -c silva-$(SILVA_RELEASE)-99-nb-classifier.qza
+	ln -s silva-$(SILVA_RELEASE)-99-nb-classifier.qza $@
+
 %.fna: %.fna.gz
 	gunzip -c $< > $@
 
