@@ -12,3 +12,6 @@ SHELL := /bin/bash
 
 %.hmm: 
 	wget -O $@ -c "http://pfam.xfam.org/family/$(basename $@)/hmm"
+
+Pfam-A.hmm.gz:
+	wget -O $@ -c "ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz"
