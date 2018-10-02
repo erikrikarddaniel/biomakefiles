@@ -95,9 +95,3 @@ all_bowtie2indeces: $(subst .fna,.bowtie2index,$(wildcard *.fna))
 	bowtie2-build $(BOWTIE_INDEX_OPTS) -f $< $(basename $@) > $@.err 2>&1
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
-
-%.bowtie2index: %.fna.gz
-	@$(MAKECALL_BOWTIE2_BUILD)
-	bowtie2-build $(BOWTIE_INDEX_OPTS) -f <(gunzip -c $<) $(basename $@) > $@.err 2>&1
-	touch $@
-	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
