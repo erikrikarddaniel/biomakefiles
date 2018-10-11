@@ -121,3 +121,7 @@ names.dmp: taxdump.tar.gz
 #   https://github.com/erikrikarddaniel/taxdata2taxflat
 taxflat.tsv: nodes.dmp names.dmp
 	taxdata2taxflat --verbose $^ > $@
+
+# The nucleotide blast database
+ncbi_nt:
+	wget "ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.*.tar.gz"
