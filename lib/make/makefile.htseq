@@ -42,3 +42,15 @@ all_CDS_htseqs: $(subst .sam,.CDS.htseq,$(filter-out $(wildcard *.htseq.sam),$(w
 	@$(MAKECALL_HTSEQ)
 	gunzip -c $< | htseq-count $(HTSEQ_OPTS) --type=CDS --idattr=$(HTSEQ_IDATTR) --samout=$@.sam - $(FEATURE_GFF) >$@ 2>$@.err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# I've learnt from experience that htseq does not like quote characters in
+# gff and gtf files. These rules should get rid of them. If you later want to
+# get the quotes back, it's just a matter of replacing SQUOTE and DQUOTE
+# respectively.
+GFF_CLEAN = sed "s/'/SQUOTE/g" $< | sed 's/"/DQUOTE/g' > $@
+
+%.htseq.gff: %.gff
+	$(GFF_CLEAN)
+
+%.htseq.gtf: %.gtf
+	$(GFF_CLEAN)
