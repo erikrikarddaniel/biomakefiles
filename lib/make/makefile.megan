@@ -16,8 +16,10 @@ SHELL := /bin/bash
 # and acc2seed.abin respectively for the different databases.
 MEGAN_MAPS_DIR = megan
 
-# Define a fake X server command. The default is to use xvfb. To run Xvnc, set to
-# XV_RUN_CMD = -Xvnc :1 & DISPLAY=1
+# Define a fake X server command. The default is to use xvfb. 
+# The leading '-' is important since it tells make to ignore errors that comes with
+# xvfb and xvnc.
+# To run Xvnc, set to XV_RUN_CMD = -Xvnc :1 & DISPLAY=1
 XV_RUN_CMD = -xvfb-run --auto-servernum --server-num=1
 
 # Needs to be overridden if you have MEGAN installed in e.g. /opt/megan.
