@@ -131,7 +131,7 @@ all_reads2seeds: $(subst .daa,.reads2seeds.tsv.gz,$(wildcard *.daa))
 	  -r2c SEED --names --list | $(DAA2INFO_HEADER_FILTER) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-all_reads2seedhiers: $(subst .daa,.reads2seedhiers.sep.tsv.gz,$(wildcard *.daa))
+all_reads2seedhiers: $(subst .daa,.reads2seedhiers.tsv.gz,$(wildcard *.daa))
 
 %.reads2seedhiers.tsv.gz: %.daa
 	$(MAKECALL_FUNC_EXPORT)
