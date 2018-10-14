@@ -37,6 +37,11 @@ MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DB
 	blastx -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.refseq_protein.blasttab.gz: %.faa
+	$(MAKECALL_BLAST)
+	blastp -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.blastp6.tsv.gz: %.faa
 	blastp -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 | gzip -c > $@
 
