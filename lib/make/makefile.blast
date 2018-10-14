@@ -25,7 +25,7 @@ BLAST_PROTEIN_DB = YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.b
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_BLAST_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastp --version|grep 'blastp:')" > $@.makecall
+MAKECALL_BLAST_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastp -version|grep 'blastp:')" > $@.makecall
 MAKECALL_BLAST_NCBI_DBS    = echo "	Called with path to NCBI dbs: $(NCBI_BLAST_DB_PATH)" >> $@.makecall
 MAKECALL_BLAST_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DBS); $(MAKECALL_BLAST_INFILES)
