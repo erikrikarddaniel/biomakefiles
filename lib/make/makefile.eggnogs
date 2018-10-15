@@ -8,6 +8,26 @@
 
 SHELL := /bin/bash
 
+EGGNOG_RELEASE = YOU NEED TO SET THIS TO THE CURRENT EGGNOG RELEASE
+
 %.hmm:
 	wget -O $@.gz -c http://eggnogapi.embl.de/nog_data/file/hmm/$(basename $@)
 	gunzip $@.gz
+
+NOG.hmm.tar.gz:
+	wget -O NOG.$(EGGNOG_RELEASE).hmm.tar.gz -c http://eggnogdb.embl.de/download/eggnog_$(EGGNOG_RELEASE)/data/NOG/NOG.hmm.tar.gz
+	ln -s NOG.$(EGGNOG_RELEASE).hmm.tar.gz $@
+
+# Divides the hmm files in NOG_hmm in subdirectories each containing 10000 profiles
+divide_NOG_hmm:
+	ls NOG_hmm | grep '.hmm$$' > NOG_hmm.profiles
+	split -l 10000 NOG_hmm.profiles NOG_hmm.profiles.
+	for f in NOG_hmm.profiles.*; do \
+	  echo "--> $$f <--"; \
+	  suffix=$$(echo $$f|sed 's/NOG_hmm.profiles.//'); \
+	  mkdir NOG_hmm/set.$$suffix; \
+	  for h in $$(cat $$f); do \
+	    ( cd NOG_hmm/set.$$suffix; ln -s ../$$h . ); \
+	  done; \
+	done
+	rm NOG_hmm.profiles.*
