@@ -43,3 +43,7 @@ MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DB
 %.blastdb: %.faa
 	makeblastdb -in $< -out $(basename $@) -dbtype prot
 	touch $@
+
+%.blastdb: %.faa.gz
+	gunzip -c $< | makeblastdb -out $(basename $(basename $@)) -title $(basename $@) -dbtype prot
+	touch $@
