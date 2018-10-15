@@ -13,26 +13,15 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+HMMER_OPTS =
 HMMBUILD_OPTS  =
 HMMSEARCH_OPTS =
 HMMRANK_OPTS   =
 
-# *** Internal ***
-
-# MAKECALLHMMSEARCH is a macro that defines what will be output to the .makecall
-# file, the file that records versions, file stamps, parameters etc.
-#
-# *Don't redefine!*
-MAKECALL_VERSION       = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `hmmsearch -h|grep -o 'HMMER [0-9][^ ]*'`" > $@.makecall
-MAKECALL_SEARCH_PARAMS = echo "	Called with parameters: $(HMMSEARCH_OPTS)" >> $@.makecall
-MAKECALL_INFILES       = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_HMMSEARCH     = $(MAKECALL_VERSION); $(MAKECALL_SEARCH_PARAMS); $(MAKECALL_INFILES)
-
 # This one *must* be set to point to a fasta file with amino acid sequences.
 # To work with gzipped .faa files, set to something like: "<(gunzip -c file.faa.gz)"
 HMMER_DB_FAA = NEEDS TO BE SET TO A FASTA FILE WITH AMINO ACIDS!
-
-HMMER_OPTS =
+HMMSCAN_DB   = NEEDS TO BE SET TO AN hmmscan LIBRARY!
 
 # *** Internal ***
 
@@ -40,10 +29,13 @@ HMMER_OPTS =
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_HMMER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(hmmsearch -h|grep HMMER)" > $@.makecall
-MAKECALL_HMMER_PARAMS      = echo "	Called with parameters: $(HMMER_OPTS)" >> $@.makecall
-MAKECALL_HMMER_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_HMMER             = $(MAKECALL_HMMER_VERSION); $(MAKECALL_HMMER_PARAMS); $(MAKECALL_HMMER_INFILES)
+MAKECALL_HMMSEARCH_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(hmmsearch -h|grep HMMER)" > $@.makecall
+MAKECALL_HMMSEARCH_PARAMS      = echo "	Called with parameters: $(HMMER_OPTS) $(HMMSEARCH_OPTS)" >> $@.makecall
+MAKECALL_HMMSCAN_VERSION       = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(hmmscan -h|grep HMMER)" > $@.makecall
+MAKECALL_HMMSCAN_PARAMS        = echo "	Called with parameters: $(HMMER_OPTS) $(HMMSCAN_OPTS)" >> $@.makecall
+MAKECALL_HMMER_INFILES         = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_HMMSEARCH             = $(MAKECALL_HMMSEARCH_VERSION); $(MAKECALL_HMMSEARCH_PARAMS); $(MAKECALL_HMMER_INFILES)
+MAKECALL_HMMSCAN               = $(MAKECALL_HMMSCAN_VERSION); $(MAKECALL_HMMSCAN_PARAMS); $(MAKECALL_HMMER_INFILES)
 
 # *** Targets ***
 
@@ -63,21 +55,41 @@ all.ranked.tsv: $(wildcard *.tblout)
 	hmmrank --verbose --outfile=$@ $(HMMRANK_OPTS) $^
 
 %.hmmout: %.hmm
-	@$(MAKECALL_HMMER)
+	@$(MAKECALL_HMMSEARCH)
 	hmmsearch \
 	  --tblout=$(basename $@).tblout \
 	  --domtblout=$(basename $@).domtblout \
-	  $(HMMER_OPTS) \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
 	  $< $(HMMER_DB_FAA) \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.hmmscanout: %.faa
+	@$(MAKECALL_HMMSCAN)
+	hmmscan \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $(HMMSCAN_DB) $< \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.hmmscanout: %.faa.gz
+	@$(MAKECALL_HMMSCAN)
+	gunzip -c $< | hmmscan \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $(HMMSCAN_DB) - \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.ncbi_refseq.hmmout: %.hmm
-	@$(MAKECALL_HMMER)
+	@$(MAKECALL_HMMSEARCH)
 	hmmsearch \
 	  --tblout=$(basename $@).tblout \
 	  --domtblout=$(basename $@).domtblout \
-	  $(HMMER_OPTS) \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
 	  $< $(NCBI_REFSEQ_FAA) \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
@@ -90,11 +102,29 @@ hmmsearch_loop:
 	    bshmm=$$(basename $$hmm .hmm); \
 	    bs="$$bsfaa.$$bshmm"; \
 	    hmmsearch \
+	      $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
 	      -o $$bs.hmmout \
 	      --tblout=$$bs.tblout \
 	      --domtblout=$$bs.domtblout \
-	      $$hmm $$faa \
-	      $(HMMER_OPTS); \
+	      $$hmm $$faa; \
+	  done; \
+	done
+	touch $@
+
+# Runs hmmsearch for all combinations of .faa.gz and .hmm files in the directory
+gzhmmsearch_loop:
+	for faa in *.faa.gz; do \
+	  bsfaa=$$(basename $$faa .faa.gz); \
+	  for hmm in *.hmm; do \
+	    bshmm=$$(basename $$hmm .hmm); \
+	    echo "--> $$bsfaa - $$bshmm <--"; \
+	    bs="$$bsfaa.$$bshmm"; \
+	    gunzip -c $$faa | hmmsearch \
+	      $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	      -o $$bs.hmmout \
+	      --tblout=$$bs.tblout \
+	      --domtblout=$$bs.domtblout \
+	      $$hmm -; \
 	  done; \
 	done
 	touch $@
