@@ -4,7 +4,7 @@
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: __AUTHOR_EMAIL__
+# Author: daniel.lundin@lnu.se
 
 SHELL := /bin/bash
 
@@ -13,8 +13,11 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+MW_RAW_READS_DIR = SET TO DIRECTORY WITH UNPACKED FASTQ FILES (ENDING WITH _1.fastq and _2.fastq)
+
 MW_THREADS = -t 20
 MW_MEMORY = -m 120
+MW_QC_OPTS = --skip-bmtagger
 MW_BINNING_OPTS = --run-checkm 
 MW_BINNING_PROGRAMS = --metabat2 --maxbin2 --concoct 
 MW_BIN_REFINE_OPTS =
@@ -32,6 +35,19 @@ MAKECALL_METAWRAP_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)
 MAKECALL_METAWRAP             = $(MAKECALL_METAWRAP_VERSION); $(MAKECALL_METAWRAP_PARAMS); $(MAKECALL_METAWRAP_INFILES)
 
 # *** Targets ***
+
+mwqc.out: $(wildcard $(MW_RAW_READS_DIR)/*.fastq)
+	@$(MAKECALL_METAWRAP)
+	for fwd in $(MW_RAW_READS_DIR)/*_1.fastq; do \
+	  echo "--> $$fwd <--" | tee -a $@; \
+	  metaWRAP read_qc -o $@.$$(basename $$fwd _1.fastq).d -1 $$fwd -2 $${fwd/_1.fastq/_2.fastq} $(MW_QC_OPTS) $(MW_THREADS) | tee -a $@; \
+	done
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.megahit.out: %_1.fastq %_2.fastq
+	@$(MAKECALL_METAWRAP)
+	metaWRAP assembly -o $(basename $@) -1 $< -2 $(word 2,$^) $(MW_ASSEMBLY_OPTS) $(MW_THREADS) $(MW_MEMORY) $(wordlist 2,1000,$^) > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.binning.log: %.fna $(wildcard *_[12].fastq)
 	@$(MAKECALL_METAWRAP)
