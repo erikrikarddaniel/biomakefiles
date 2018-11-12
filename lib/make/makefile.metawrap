@@ -4,7 +4,7 @@
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: __AUTHOR_EMAIL__
+# Author: daniel.lundin@lnu.se
 
 SHELL := /bin/bash
 
@@ -64,7 +64,7 @@ all_reads_2.fastq: $(wildcard *_2.fastq)
 	metaWRAP reassemble_bins -o $(basename $@) -b $< -1 $(word 2,$^) -2 $(word 3,$^) $(MW_REASSEMBLE_OPTS) $(MW_THREADS) $(MW_MEMORY) > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.annotate_bins.log: %.bin_refine/metaWRAP_bins 
+%.annotate_bins.log: $(BIN_DIR)
 	@$(MAKECALL_METAWRAP)
-	metaWRAP annotate_bins -o $(basename $@) -b $< $(word 3,$^) $(MW_ANNOTATE_OPTS) $(MW_THREADS)
+	metaWRAP annotate_bins -o $(basename $@) -b $(BIN_DIR) $(MW_ANNOTATE_OPTS) $(MW_THREADS)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
