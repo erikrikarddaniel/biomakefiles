@@ -13,10 +13,16 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+MW_RAW_READS_DIR = SET TO DIRECTORY WITH UNPACKED FASTQ FILES (ENDING WITH _1.fastq and _2.fastq)
+
 MW_THREADS = -t 20
 MW_MEMORY = -m 120
+MW_QC_OPTS = --skip-bmtagger
 MW_BINNING_OPTS = --run-checkm 
 MW_BINNING_PROGRAMS = --metabat2 --maxbin2 --concoct 
+
+# This macro is used to specificy which bins to refine using the -A, -B and -C flags,
+# e.g. -A all_reads.megahit.binning/concoct_bins -B all_reads.megahit.binning/maxbin2_bins -C all_reads.megahit.binning/metabat2_bins
 MW_BIN_REFINE_OPTS =
 MW_REASSEMBLE_OPTS = -c 70 -x 10
 
@@ -33,14 +39,28 @@ MAKECALL_METAWRAP             = $(MAKECALL_METAWRAP_VERSION); $(MAKECALL_METAWRA
 
 # *** Targets ***
 
-%.binning.log: %.fna $(wildcard *_[12].fastq)
+mwqc.out: $(wildcard $(MW_RAW_READS_DIR)/*.fastq)
 	@$(MAKECALL_METAWRAP)
-	metaWRAP binning -o $(basename $@) -a $< $(MW_BINNING_PROGRAMS) $(MW_BINNING_OPTS) $(MW_THREADS) $(MW_MEMORY) $(wordlist 2,1000,$^) > $@
+	for fwd in $(MW_RAW_READS_DIR)/*_1.fastq; do \
+	  echo "--> $$fwd <--" | tee -a $@; \
+	  metaWRAP read_qc -o $@.$$(basename $$fwd _1.fastq).d -1 $$fwd -2 $${fwd/_1.fastq/_2.fastq} $(MW_QC_OPTS) $(MW_THREADS) | tee -a $@; \
+	done
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.refinement.log: all_samples.megahit.bin_all/maxbin2_bins all_samples.megahit.bin_all/metabat2_bins
+%.megahit.log: %_1.fastq %_2.fastq
 	@$(MAKECALL_METAWRAP)
-	metaWRAP bin_refinement -o $(basename $@) -A $< -B $(word 2,$^) $(MW_BIN_REFINE_OPTS) $(MW_THREADS) $(MW_MEMORY) > $@
+	metaWRAP assembly -o $(basename $@) -1 $< -2 $(word 2,$^) $(MW_ASSEMBLY_OPTS) $(MW_THREADS) $(MW_MEMORY) > $@ 2>&1
+	ln -s $(basename $@)/final_assembly.fasta $(basename $@).fna
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.binning.log: %.fna $(wildcard *_[12].fastq)
+	@$(MAKECALL_METAWRAP)
+	metaWRAP binning -o $(basename $@) -a $< $(MW_BINNING_PROGRAMS) $(MW_BINNING_OPTS) $(MW_THREADS) $(MW_MEMORY) $(wordlist 2,1000,$^) > $@ 2>&1
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.refinement.log: 
+	@$(MAKECALL_METAWRAP)
+	metaWRAP bin_refinement -o $(basename $@) $(MW_BIN_REFINE_OPTS) $(MW_THREADS) $(MW_MEMORY) > $@ 2>&1
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.blobology.log: %.fna %.bin_refine/metaWRAP_bins $(wildcard *_[12].fastq)
@@ -52,12 +72,6 @@ MAKECALL_METAWRAP             = $(MAKECALL_METAWRAP_VERSION); $(MAKECALL_METAWRA
 	@$(MAKECALL_METAWRAP)
 	metaWRAP quant_bins -o $(basename $@) -a $< -b $(word 2,$^) $(MW_THREADS) $(wordlist 3,1000,$^) > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
-
-all_reads_1.fastq: $(wildcard *_1.fastq)
-	cat $(sort $^) > $@
-
-all_reads_2.fastq: $(wildcard *_2.fastq)
-	cat $(sort $^) > $@
 
 %.reassemble_bins.log: %.bin_refine/metaWRAP_bins all_reads_1.fastq all_reads_2.fastq
 	@$(MAKECALL_METAWRAP)
