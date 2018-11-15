@@ -95,7 +95,7 @@ all.ranked.tsv: $(wildcard *.tblout)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Runs hmmsearch for all combinations of .faa and .hmm files in the directory
-hmmsearch_loop:
+hmmsearch_loop: $(wildcard *.hmm) $(wildcard *.faa)
 	for faa in *.faa; do \
 	  bsfaa=$$(basename $$faa .faa); \
 	  for hmm in *.hmm; do \
