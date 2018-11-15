@@ -24,3 +24,4 @@ silva.mothur.nr.*
 *.rds
 *.qza
 *_report_cache*
+*.feather
