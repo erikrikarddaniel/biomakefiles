@@ -101,6 +101,7 @@ hmmsearch_loop: $(wildcard *.hmm) $(wildcard *.faa)
 	  for hmm in *.hmm; do \
 	    bshmm=$$(basename $$hmm .hmm); \
 	    bs="$$bsfaa.$$bshmm"; \
+	    echo "--> searching $${faa} with $$hmm <--"; \
 	    hmmsearch \
 	      $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
 	      -o $$bs.hmmout \
