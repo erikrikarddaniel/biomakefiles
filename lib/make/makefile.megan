@@ -34,7 +34,8 @@ MEGAN_INSTALL_DIR = /usr/local/megan
 
 # Exports of hierarchies work in the 6.10.x series, so set this to a directory
 # where you have that.
-MEGAN_FUNC_EXPORTS_DIR = /usr/local/megan-func-exports
+# Since ca. 6.12 MEGAN a single MEGAN does it all, but this may of course change.
+MEGAN_FUNC_EXPORTS_DIR = /usr/local/megan
 
 # Exports of taxonids does not work at all in 6.9.x and 6.10.x (as far as I 
 # know). Set this to someplace where you have a 6.8.x install.
