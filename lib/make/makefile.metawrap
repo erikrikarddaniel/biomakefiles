@@ -78,7 +78,18 @@ mwqc.out: $(wildcard $(MW_RAW_READS_DIR)/*.fastq)
 	metaWRAP reassemble_bins -o $(basename $@) -b $< -1 $(word 2,$^) -2 $(word 3,$^) $(MW_REASSEMBLE_OPTS) $(MW_THREADS) $(MW_MEMORY) | tee $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.annotate_bins.log: $(BIN_DIR)
+# Run functional annotation with Prokka
+#
+# For this to work, there needs to be a directory with a name ending with .d
+# containing .fna files.  A new directory will be created with "annotate_bins"
+# tucked in in the name before .d.
+#
+# Note 1: I'm not using the MW_THREADS macro here. Use the MW_ANNOTATE_OPTS for
+# the -t flag instead.
+#
+# Note 2: This can be run on a directory with a single fasta file if binning
+# wasn't run.
+%.annotate_bins.d: %.d
 	@$(MAKECALL_METAWRAP)
-	metaWRAP annotate_bins -o $(basename $@) -b $(BIN_DIR) $(MW_ANNOTATE_OPTS) $(MW_THREADS)
+	metaWRAP annotate_bins -o $@ -b $< $(MW_ANNOTATE_OPTS) | tee $(basename $@).out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
