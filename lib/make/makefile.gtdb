@@ -14,11 +14,17 @@ SHELL := /bin/bash
 # includes this file, see documentation in doc/makefile.md.
 #
 GTDB_RELEASE = 86
+GTDBTK_OPTIONS =
 
 # *** Internal ***
 
 # *** Targets ***
 
+# Run the standard workflow on all genomes in "genome_bins"
+gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
+	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
+
+# Download data (easier to do with the script included in the distribution)
 arc_taxonomy.genomes.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_taxonomy_r$(GTDB_RELEASE).tsv
 	ln -s arc_taxonomy_r$(GTDB_RELEASE).tsv $@
