@@ -92,6 +92,6 @@ all_bowtie2indeces: $(subst .fna,.bowtie2index,$(wildcard *.fna))
 
 %.bowtie2index: %.fna
 	@$(MAKECALL_BOWTIE2_BUILD)
-	bowtie2-build $(BOWTIE_INDEX_OPTS) -f $< $(basename $@) > $@.err 2>&1
+	bowtie2-build $(BOWTIE_INDEX_OPTS) -f $< $(basename $@) | tee $@.err 2>&1
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
