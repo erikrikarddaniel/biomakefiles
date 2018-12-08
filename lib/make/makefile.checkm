@@ -30,6 +30,10 @@ CHECKM_OUT_TO_TSV = grep -v '^-\+' $< | sed 's/^ \+//' | sed 's/ \+$$//' | sed '
 
 # *** Targets ***
 
+# This will have to be updated when new data is released...
+fetch_data:
+	wget https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz
+
 # This runs checkm lineage_wf on all bins in .fna files in
 # the current directory; includes gene calling.
 checkm.lineage_wf.fna.out: $(wildcard *.fna)
