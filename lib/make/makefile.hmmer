@@ -18,10 +18,17 @@ HMMBUILD_OPTS  =
 HMMSEARCH_OPTS =
 HMMRANK_OPTS   =
 
-# This one *must* be set to point to a fasta file with amino acid sequences.
+# This one *must* be set to point to a fasta file with amino acid sequences, unless you're 
+# running against an NCBI faa database (see below for those).
 # To work with gzipped .faa files, set to something like: "<(gunzip -c file.faa.gz)"
 HMMER_DB_FAA = NEEDS TO BE SET TO A FASTA FILE WITH AMINO ACIDS!
 HMMSCAN_DB   = NEEDS TO BE SET TO AN hmmscan LIBRARY!
+
+# If you're using any of the NCBI targets (ncbi_env_nr, ncbi_nr or ncbi_refseq), set one of the 
+# below.
+NCBI_ENV_NR_FAA = ncbi/env_nr.faa
+NCBI_NR_FAA 	= ncbi/nr.faa
+NCBI_REFSEQ_FAA = ncbi/refseq_protein.faa
 
 # *** Internal ***
 
@@ -81,6 +88,26 @@ all.ranked.tsv: $(wildcard *.tblout)
 	  --domtblout=$(basename $@).domtblout \
 	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
 	  $(HMMSCAN_DB) - \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ncbi_env_nr.hmmout: %.hmm
+	@$(MAKECALL_HMMSEARCH)
+	hmmsearch \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $< $(NCBI_ENV_NR_FAA) \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ncbi_nr.hmmout: %.hmm
+	@$(MAKECALL_HMMSEARCH)
+	hmmsearch \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $< $(NCBI_NR_FAA) \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
