@@ -76,7 +76,7 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 	  --acc2eggnog $(MEGAN_MAPS_DIR)/acc2eggnog.abin \
 	  --acc2interpro2go $(MEGAN_MAPS_DIR)/acc2interpro.abin \
 	  --acc2seed $(MEGAN_MAPS_DIR)/acc2seed.abin \
-	  $(MEGANIZE_OPTS) > $@ 2>&1
+	  $(MEGANIZE_OPTS) | tee $@ 2>&1
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # ** Exports **
