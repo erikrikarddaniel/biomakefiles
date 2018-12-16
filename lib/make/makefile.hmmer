@@ -50,6 +50,8 @@ all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
 all_refseq_hmmout: $(subst .hmm,.ncbi_refseq.hmmout,$(wildcard *.hmm))
 
+all_env_nr_hmmout: $(subst .hmm,.ncbi_env_nr.hmmout,$(wildcard *.hmm))
+
 %.hmm: %.alnfaa
 	hmmbuild $(HMMBUILD_OPTS) $@ $<
 
