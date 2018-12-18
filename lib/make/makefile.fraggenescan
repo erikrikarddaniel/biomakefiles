@@ -1,0 +1,36 @@
+# makefile.fraggenescan
+#
+# Library makefile to make running FragGeneScan simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+FRAGGENESCAN_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_FRAGGENESCAN is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_FRAGGENESCAN_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with FragGeneScan unknown version" > $@.makecall
+MAKECALL_FRAGGENESCAN_PARAMS      = echo "	Called with parameters: $(FRAGGENESCAN_OPTS)" >> $@.makecall
+MAKECALL_FRAGGENESCAN_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_FRAGGENESCAN             = $(MAKECALL_FRAGGENESCAN_VERSION); $(MAKECALL_FRAGGENESCAN_PARAMS); $(MAKECALL_FRAGGENESCAN_INFILES)
+
+# *** Targets ***
+
+# This requiers a link to the "train" directory in the fraggenescan install directory. (In my current
+# Conda environment, this is ~/miniconda2/pkgs/fraggenescan-1.30-h470a237_2/bin/train.)
+%.short_reads_illumina10.fgs: %.fna
+	@$(MAKECALL_FRAGGENESCAN)
+	FragGeneScan -s $< -o $@ -w 0 -t illumina_10 $(FRAGGENESCAN_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
