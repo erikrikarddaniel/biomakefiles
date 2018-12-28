@@ -63,6 +63,9 @@ all_env_nr_hmmout: $(subst .hmm,.ncbi_env_nr.hmmout,$(wildcard *.hmm))
 all.ranked.tsv: $(wildcard *.tblout)
 	hmmrank --verbose --outfile=$@ $(HMMRANK_OPTS) $^
 
+best_scoring.ranked.tsv: $(wildcard *.tblout)
+	hmmrank --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
+
 %.hmmout: %.hmm
 	@$(MAKECALL_HMMSEARCH)
 	hmmsearch \
