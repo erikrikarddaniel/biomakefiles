@@ -1,0 +1,55 @@
+# makefile.imgmer
+#
+# Library makefile to make handling downloads from IMG/MER easier
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Targets ***
+
+all_READMEs: $(subst .tar.gz,.README,$(wildcard *.tar.gz))
+
+all_configs: $(subst .tar.gz,.config,$(wildcard *.tar.gz))
+
+all_assembled_faas: $(subst .tar.gz,.a.faa,$(wildcard *.tar.gz)) $(subst .tar.gz,.genes.faa,$(wildcard *.tar.gz))
+
+# Extract README (identical for all, so no real need)
+%.README: %.tar.gz
+	tar xzf $< $$(tar tfz $< | grep README) && if [ -e $@ ]; then ln -s $(basename $(basename $<))/README* $@; fi
+	touch $(basename $(basename $<))/README*
+
+# Extract config 
+%.config: %.tar.gz
+	@f=$$(tar tfz $< | grep config); \
+	echo "--> $$f <--"; \
+	if [ "x$$f" = "x" ]; then \
+	  touch $@; \
+	else \
+	  tar xzf $< $$f && if [ ! -e $@ ]; then ln -s $(basename $(basename $<))/$@ .; fi; \
+	  touch $(basename $(basename $<))/*config; \
+	fi
+
+# Extract assembled faa file
+%.a.faa: %.tar.gz
+	@f=$$(tar tfz $< | grep a\.faa); \
+	echo "--> $$f <--"; \
+	if [ "x$$f" = "x" ]; then \
+	  touch $@; \
+	else \
+	  tar xzf $< $$f && if [ ! -e $@ ]; then ln -s $(basename $(basename $<))/$@ .; fi; \
+	  touch $(basename $(basename $<))/*a.faa; \
+	fi
+
+# Extract assembled faa file, old format with "genes" in name
+%.genes.faa: %.tar.gz
+	@f=$$(tar tfz $< | grep genes\.faa); \
+	echo "--> $$f <--"; \
+	if [ "x$$f" = "x" ]; then \
+	  touch $@; \
+	else \
+	  tar xzf $< $$f && if [ ! -e $@ ]; then ln -s $(basename $(basename $<))/$@ .; fi; \
+	  touch $(basename $(basename $<))/*genes.faa; \
+	fi
