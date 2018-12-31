@@ -10,6 +10,9 @@ SHELL := /bin/bash
 
 EXTRACT_AND_LINK = echo -n "--> $@ "; e=$$(echo $@ | sed "s/$$(basename $< .tar.gz)//"); f=$$(tar tfz $< | grep $$e); echo -n "($$f)"; if [ "x$$f" = "x" ]; then touch $@; else tar xzf $< $$f && if [ ! -e $@ ]; then ln -s $(basename $(basename $<))/$@ .; fi; touch $(basename $(basename $<))/*a.faa; fi; echo " <--"
 
+# This URL leads to genome description pages. Requires logging in...
+#https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=
+
 # *** Targets ***
 
 all_READMEs: $(subst .tar.gz,.README,$(wildcard *.tar.gz))
@@ -34,3 +37,4 @@ all_assembled_faas: $(subst .tar.gz,.a.faa,$(wildcard *.tar.gz)) $(subst .tar.gz
 # Extract assembled faa file, old format with "genes" in name
 %.genes.faa: %.tar.gz
 	@$(EXTRACT_AND_LINK)
+
