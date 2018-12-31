@@ -13,6 +13,8 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+# Set HMMER_OPTS = --cpu 4 to use four cores.
+#
 HMMER_OPTS =
 HMMBUILD_OPTS  =
 HMMSEARCH_OPTS =
