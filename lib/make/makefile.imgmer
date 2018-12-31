@@ -2,6 +2,23 @@
 #
 # Library makefile to make handling downloads from IMG/MER easier
 #
+# The general procedure is o manually download files from the IMG/MER data mart
+# (https://img.jgi.doe.gov/mer/) and then process the tarballs with the tools
+# here.
+#
+# Download is done by adding a set of genomes to your "cart" ("Select All", "Add
+# Selected Genomes to Genome Cart"), select all genomes in the cart ("Select
+# All"), click on the "Upload & Export & # Save" tab and click "Download
+# Genomes".
+#
+# After download, faa files and config files (metadata; not always present) can
+# be extracted from the archives with the all_configs and _assembled_faas
+# targets. This also creates symlinks in the current directory pointing to the
+# actual file or, if a particular file was not found in the archive, an empty
+# place holder file. 
+#
+# Subsequently, faa files can be gzipped with gzip_faas (uses pigz).
+#
 # Include the full path of this file in your Makefile ...
 #
 # Author: daniel.lundin@dbb.su.se daniel.lundin@lnu.se
@@ -44,3 +61,7 @@ gzip_faas:
 # Extract assembled faa file, old format with "genes" in name
 %.genes.faa: %.tar.gz
 	@$(EXTRACT_AND_LINK)
+
+# NOT TESTED
+%.html:
+	wget -O $@ "https://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=$(basename $@)
