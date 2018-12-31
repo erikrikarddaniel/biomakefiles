@@ -21,6 +21,13 @@ all_configs: $(subst .tar.gz,.config,$(wildcard *.tar.gz))
 
 all_assembled_faas: $(subst .tar.gz,.a.faa,$(wildcard *.tar.gz)) $(subst .tar.gz,.genes.faa,$(wildcard *.tar.gz))
 
+gzip_faas:
+	for f in $$(find . -maxdepth 2 -name "*.faa" -type f -size +0c); do \
+	  l=$$(find -L . -samefile $$f -xtype l); \
+	  echo "--> $${f} ($$l) <--"; \
+	  pigz $$f; rm $$l; ln -s $${f}.gz; \
+	done; \
+
 # Extract README (identical for all, so no real need)
 %.README: %.tar.gz
 	tar xzf $< $$(tar tfz $< | grep README) && if [ -e $@ ]; then ln -s $(basename $(basename $<))/README* $@; fi
@@ -37,4 +44,3 @@ all_assembled_faas: $(subst .tar.gz,.a.faa,$(wildcard *.tar.gz)) $(subst .tar.gz
 # Extract assembled faa file, old format with "genes" in name
 %.genes.faa: %.tar.gz
 	@$(EXTRACT_AND_LINK)
-
