@@ -25,7 +25,7 @@
 
 SHELL := /bin/bash
 
-EXTRACT_AND_LINK = echo -n "--> $@ "; e=$$(echo $@ | sed "s/$$(basename $< .tar.gz)//"); f=$$(tar tfz $< | grep $$e); echo -n "($$f)"; if [ "x$$f" = "x" ]; then touch $@; else tar xzf $< $$f && if [ ! -e $@ ]; then ln -s $(basename $(basename $<))/$@ .; fi; touch $(basename $(basename $<))/*a.faa; fi; echo " <--"
+EXTRACT_AND_LINK = echo -n "--> $@ "; e=$$(echo $@ | sed "s/$$(basename $< .tar.gz)//"); f=$$(tar tfz $< | grep $$e); echo -n "($$f)"; if [ "x$$f" = "x" ]; then touch $@; else tar xzf $< $$f && if [ ! -e $@ ]; then ln -s $(basename $(basename $<))/$@ .; touch $(basename $(basename $<))/*$$e; fi; fi; echo " <--"
 
 # This URL leads to genome description pages. Requires logging in...
 #https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=
@@ -62,6 +62,6 @@ gzip_faas:
 %.genes.faa: %.tar.gz
 	@$(EXTRACT_AND_LINK)
 
-# NOT TESTED
+# Doesn't work -- working on it.
 %.html:
-	wget -O $@ "https://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=$(basename $@)
+	wget -O $@ "https://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=$(basename $@)"
