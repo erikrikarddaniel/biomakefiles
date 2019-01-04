@@ -1,0 +1,67 @@
+# makefile.imgmer
+#
+# Library makefile to make handling downloads from IMG/MER easier
+#
+# The general procedure is o manually download files from the IMG/MER data mart
+# (https://img.jgi.doe.gov/mer/) and then process the tarballs with the tools
+# here.
+#
+# Download is done by adding a set of genomes to your "cart" ("Select All", "Add
+# Selected Genomes to Genome Cart"), select all genomes in the cart ("Select
+# All"), click on the "Upload & Export & # Save" tab and click "Download
+# Genomes".
+#
+# After download, faa files and config files (metadata; not always present) can
+# be extracted from the archives with the all_configs and _assembled_faas
+# targets. This also creates symlinks in the current directory pointing to the
+# actual file or, if a particular file was not found in the archive, an empty
+# place holder file. 
+#
+# Subsequently, faa files can be gzipped with gzip_faas (uses pigz).
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+EXTRACT_AND_LINK = echo -n "--> $@ "; e=$$(echo $@ | sed "s/$$(basename $< .tar.gz)//"); f=$$(tar tfz $< | grep $$e); echo -n "($$f)"; if [ "x$$f" = "x" ]; then touch $@; else tar xzf $< $$f && if [ ! -e $@ ]; then ln -s $(basename $(basename $<))/$@ .; touch $(basename $(basename $<))/*$$e; fi; fi; echo " <--"
+
+# This URL leads to genome description pages. Requires logging in...
+#https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=
+
+# *** Targets ***
+
+all_READMEs: $(subst .tar.gz,.README,$(wildcard *.tar.gz))
+
+all_configs: $(subst .tar.gz,.config,$(wildcard *.tar.gz))
+
+all_assembled_faas: $(subst .tar.gz,.a.faa,$(wildcard *.tar.gz)) $(subst .tar.gz,.genes.faa,$(wildcard *.tar.gz))
+
+gzip_faas:
+	for f in $$(find . -maxdepth 2 -name "*.faa" -type f -size +0c); do \
+	  l=$$(find -L . -samefile $$f -xtype l); \
+	  echo "--> $${f} ($$l) <--"; \
+	  pigz $$f; rm $$l; ln -s $${f}.gz; \
+	done; \
+
+# Extract README (identical for all, so no real need)
+%.README: %.tar.gz
+	tar xzf $< $$(tar tfz $< | grep README) && if [ -e $@ ]; then ln -s $(basename $(basename $<))/README* $@; fi
+	touch $(basename $(basename $<))/README*
+
+# Extract config 
+%.config: %.tar.gz
+	@$(EXTRACT_AND_LINK)
+
+# Extract assembled faa file
+%.a.faa: %.tar.gz
+	@$(EXTRACT_AND_LINK)
+
+# Extract assembled faa file, old format with "genes" in name
+%.genes.faa: %.tar.gz
+	@$(EXTRACT_AND_LINK)
+
+# Doesn't work -- working on it.
+%.html:
+	wget -O $@ "https://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=$(basename $@)"
