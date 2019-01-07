@@ -74,6 +74,12 @@ all.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
 best.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
 	hmmrank --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
 
+accno_files: best.ranked.tsv
+	for p in $$(ls *.hmm | sed 's/\.hmm//'); do \
+	  grep $$p $< | cut -f 1 > $${p}.accnos; \
+	done
+	touch $@
+
 %.hmmout: %.hmm
 	@$(MAKECALL_HMMSEARCH)
 	hmmsearch \
