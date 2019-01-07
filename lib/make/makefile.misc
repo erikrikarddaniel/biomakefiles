@@ -120,3 +120,14 @@ numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))
 
 %.numnucl.tsv: %.fna
 	echo "$<	$$(grep -v '>' $< | tr -d '\n' | awk '{ print length; }')" > $@
+
+# Mask a multiple alignment. Uses the maskaln.r script from the
+# https://github.com/erikrikarddaniel/maskaln repo.
+
+MASKALN_OPTS =
+
+%.masked.alnfaa: %.alnfaa %.protect
+	maskaln.r --protect_taxa $(word 2,$^) $(MASKALN_OPTS) $< $@
+
+%.masked.alnfaa: %.alnfaa
+	maskaln.r $(MASKALN_OPTS) $< $@
