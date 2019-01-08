@@ -1,0 +1,32 @@
+# makefile.tara
+#
+# Library makefile to make fetching sequences from various TARA projects simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+
+# *** Targets ***
+delmont2018.non-redundant_mags.tar.gz:
+	wget -O $@ https://ndownloader.figshare.com/files/8243654
+
+delmont2018.non-redudant_mags.faa.gz: $(wildcard NON_REDUNDANT_MAGs/TARA_*_MAG_*.fa)
+	cat $^ | gzip -c > $@
+
+delmont2018.all_aa_sequences.zip:
+	wget -O $@ https://ndownloader.figshare.com/articles/4902917/versions/1
+
+delmont2018.all_aa_sequences.faa.gz: $(wildcard TARA_*-AA_sequences.fa.gz)
+	rm -f $@
+	for f in $^; do \
+	  pf=$$(echo $$f | sed 's/-AA_sequences.fa.gz//'); \
+	  unpigz -c $$f | sed "s/^>/>$${pf}_/" | gzip -c >> $@; \
+	done
