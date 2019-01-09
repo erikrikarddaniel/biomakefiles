@@ -81,9 +81,12 @@ best.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
 # prefixed with '>' but no other measure to ensure uniqueness is applied. If
 # your original fasta files contains very simples sequence names, e.g.  just
 # numbers, you will probably have to modify the patterns in the accnos files to
-# be more specific.
+# be more specific. Moreover, the matching for profile name is not very
+# specific and if the profile name is a substring of another profile name all
+# will be included.
 accno_files: best.ranked.tsv
-	for p in $$(ls *.hmm | sed 's/\.hmm//'); do \
+	for h in *.hmm; do \
+	  p=$$(grep "^NAME" $$h | sed 's/NAME *//'); \
 	  grep $$p $< | cut -f 1 | sed 's/^/>/' > $${p}.accnos; \
 	done
 	touch $@
