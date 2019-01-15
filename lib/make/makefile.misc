@@ -14,6 +14,9 @@ SHELL := /bin/bash
 # Concate a number of gzipped files and write to a gzipped file.
 CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
 
+# Put fasta sequences on one line
+CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g'
+
 # *** Targets ***
 
 # Interleave two fastq files (named %.r1.fastq and %.r2.fastq respectively).
@@ -44,7 +47,6 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 # Clean up a fasta file so that names does not contain spaces, dashes and other
 # characters that cause problems in various programs. Also places sequences on
 # one line so that one can more easily select sequences with grep.
-CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g'
 
 %.c.fna: %.fna
 	cat $< | $(CLEAN_FASTA) > $@
@@ -120,3 +122,10 @@ numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))
 
 %.numnucl.tsv: %.fna
 	echo "$<	$$(grep -v '>' $< | tr -d '\n' | awk '{ print length; }')" > $@
+
+# Translate DNA fasta files to AA fasta files with Emboss' transeq
+%.faa: %.fna
+	transeq -sequence $< -outseq $@
+
+%.alnfaa: %.alnfna
+	transeq -sequence $< -outseq $@
