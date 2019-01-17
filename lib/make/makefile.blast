@@ -16,8 +16,9 @@ SHELL := /bin/bash
 # This needs to point to wherever you store NCBI data for the refseq targets to
 # work. Make sure it's a relative path, probably to a symlink within the local
 # copy of the project. (Don't want to set environment variables.)
-NCBI_BLAST_DB_PATH = YOU NEED TO SET THE NCBI_BLAST_DB_PATH VARIABLE (see makefile.blast)
-BLAST_PROTEIN_DB = YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.blast)
+NCBI_BLAST_DB_PATH  = YOU NEED TO SET THE NCBI_BLAST_DB_PATH VARIABLE (see makefile.blast)
+BLAST_PROTEIN_DB    = YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.blast)
+BLAST_NUCLEOTIDE_DB = YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.blast)
 
 # *** Internal ***
 
@@ -34,16 +35,21 @@ MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DB
 
 %.refseq_protein.blasttab.gz: %.fna
 	$(MAKECALL_BLAST)
-	blastx -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 | gzip -c > $@
+	blastx -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_protein.blasttab.gz: %.faa
 	$(MAKECALL_BLAST)
-	blastp -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 | gzip -c > $@
+	blastp -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.nt.mega.blastp6.tsv.gz: %.fna
+	$(MAKECALL_BLAST)
+	blastn -task megablast -db $(NCBI_BLAST_DB_PATH)/nt -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.blastp6.tsv.gz: %.faa
-	blastp -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 | gzip -c > $@
+	blastp -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
 
 %.blastdb: %.faa
 	makeblastdb -in $< -out $(basename $@) -dbtype prot
