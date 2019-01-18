@@ -51,6 +51,9 @@ MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DB
 %.blastp6.tsv.gz: %.faa
 	blastp -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
 
+%.accnos: %.blastp6.tsv.gz
+	gunzip -c $< | cut -f 2 | sort -u > $@
+
 %.blastdb: %.faa
 	makeblastdb -in $< -out $(basename $@) -dbtype prot
 	touch $@
