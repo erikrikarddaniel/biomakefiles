@@ -1,0 +1,31 @@
+# makefile.imicrobe
+#
+# Library makefile to make fetching data from iMicrobe simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+IMICROBE_FTP = ftp://ftp.imicrobe.us
+
+sample-attr.tab.tsv: $(wildcard ftp.imicrobe.us/projects/*/sample-attr.tab.gz)
+	echo "project_number	sample_id	sample_name	attr_type	attr_value" > $@
+	for f in $^; do \
+	  gunzip -c $$f | grep -v '^sample_id' | sed "s:^:$$(dirname $$f)\t:" >> $@; \
+	done
+
+mirror_projects_csv.gzs:
+	wget -A csv.gz --mirror $(IMICROBE_FTP)/projects/
+
+mirror_sample_attr.gzs:
+	wget -A sample-attr.tab.gz -R "*/projects/104/*" --mirror $(IMICROBE_FTP)/projects/
+
+mirror_all:
+	wget -R fastq.tar.gz,fastq.gz,fastq --mirror $(IMICROBE_FTP)/projects/
+
+project_csv_list:
+	find . -name "*.csv.gz" > $@
+
