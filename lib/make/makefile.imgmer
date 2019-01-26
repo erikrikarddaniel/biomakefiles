@@ -23,6 +23,11 @@
 #
 # Author: daniel.lundin@dbb.su.se daniel.lundin@lnu.se
 
+# Parameters
+
+# This can be redefined to select fields from IMG metagenome config files for samples.tsv
+IMG_GENOME_FIELDS = submission_date project_oid sample_oid taxon_name gold_id sample_gold_id ir_class ir_order
+
 SHELL := /bin/bash
 
 EXTRACT_AND_LINK = echo -n "--> $@ "; e=$$(echo $@ | sed "s/$$(basename $< .tar.gz)//"); f=$$(tar tfz $< | grep $$e); echo -n "($$f)"; if [ "x$$f" = "x" ]; then touch $@; else tar xzf $< $$f && if [ ! -e $@ ]; then ln -s $(basename $(basename $<))/$@ .; touch $(basename $(basename $<))/*$$e; fi; fi; echo " <--"
@@ -62,6 +67,14 @@ gzip_faas:
 %.genes.faa: %.tar.gz
 	@$(EXTRACT_AND_LINK)
 
-# Doesn't work -- working on it.
-%.html:
-	wget -O $@ "https://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=$(basename $@)"
+samples.tsv: $(wildcard *.config)
+	echo -n 'id	' > $@
+	echo $(IMG_GENOME_FIELDS) | sed 's/ /\t/g' >> $@
+	for cf in $^; do \
+	  echo -n $$(basename $$cf .config) >> $@; \
+	  for f in $(IMG_GENOME_FIELDS); do \
+	    d=`grep "\.$$f" $$cf | sed "s/.$$f *//"`; \
+	    echo -n "	$$d" >> $@; \
+	  done; \
+	  echo >> $@; \
+	done
