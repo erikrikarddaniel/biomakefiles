@@ -78,3 +78,17 @@ samples.tsv: $(wildcard *.config)
 	  done; \
 	  echo >> $@; \
 	done
+
+mags.tsv: $(wildcard [0-9]*.faa.gz [0-9]*.faa)
+	echo "id	taxon" >> $@; \
+	for f in $^; do \
+	  echo -n $$(echo $$f|grep -o "^[0-9]\+") >> $@; \
+	  if [ $$(echo $$f|grep "\.gz$$") ]; then \
+	    gunzip -c $$f|head -n 1|sed 's/.*\[/\t/'|sed 's/\].*//'; \
+	  elif [ -s $$f ]; then \
+	    head -n 1 $$f|sed 's/.*\[/\t/'|sed 's/\].*//'; \
+	  fi >> $@; \
+	done
+
+sags.tsv: mags.tsv
+	mv $< $@
