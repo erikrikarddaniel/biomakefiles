@@ -51,6 +51,9 @@ MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DB
 %.blastp6.tsv.gz: %.faa
 	blastp -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
 
+%.mega.blastn6.tsv.gz: %.fna
+	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+
 %.accnos: %.blastp6.tsv.gz
 	gunzip -c $< | cut -f 2 | sort -u > $@
 
@@ -60,4 +63,12 @@ MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DB
 
 %.blastdb: %.faa.gz
 	gunzip -c $< | makeblastdb -out $(basename $@) -title $(basename $@) -dbtype prot
+	touch $@
+
+%.blastdb: %.fna
+	makeblastdb -in $< -out $(basename $@) -dbtype nucl
+	touch $@
+
+%.blastdb: %.fna.gz
+	gunzip -c $< | makeblastdb -out $(basename $@) -title $(basename $@) -dbtype nucl
 	touch $@
