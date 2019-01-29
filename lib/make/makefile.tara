@@ -31,3 +31,42 @@ delmont2018.all_aa_sequences.faa.gz: $(wildcard TARA_*-AA_sequences.fa.gz)
 	  echo "--> $$f (pf: $$pf) <--"; \
 	  unpigz -c $$f | sed "s/^>/>$${pf}_/" | gzip -c >> $@; \
 	done
+
+delmont2018.raw_assembly.fna.gz: TARA_ANE_RAW.fa.gz TARA_ANW_RAW.fa.gz TARA_ASE_RAW.fa.gz TARA_ASW_RAW.fa.gz TARA_ION_RAW.fa.gz TARA_IOS_RAW.fa.gz TARA_MED_RAW.fa.gz TARA_PON_RAW.fa.gz TARA_PSE_RAW.fa.gz TARA_PSW_RAW.fa.gz TARA_RED_RAW.fa.gz TARA_SOC_RAW.fa.gz
+	unpigz -c $^ | pigz -c > $@
+
+TARA_ANE_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243627
+
+TARA_ANW_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243633
+
+TARA_ASE_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243648
+
+TARA_ASW_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243651
+
+TARA_ION_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243657
+
+TARA_IOS_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243660
+
+TARA_MED_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243663
+
+TARA_PON_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243666
+
+TARA_PSE_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243669
+
+TARA_PSW_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243672
+
+TARA_RED_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243675
+
+TARA_SOC_RAW.fa.gz:
+	wget -O  $@ -c https://ndownloader.figshare.com/files/8243678
