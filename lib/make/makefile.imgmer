@@ -43,11 +43,25 @@ all_configs: $(subst .tar.gz,.config,$(wildcard *.tar.gz))
 
 all_assembled_faas: $(subst .tar.gz,.a.faa,$(wildcard *.tar.gz)) $(subst .tar.gz,.genes.faa,$(wildcard *.tar.gz))
 
+all_assembled_fnas: $(subst .tar.gz,.a.fna,$(wildcard *.tar.gz)) $(subst .tar.gz,.genes.fna,$(wildcard *.tar.gz))
+
+IMG.metag.fna.gz: $(filter-out $@, $(wildcard *.fna.gz))
+	unpigz -c $^ | pigz -c > $@
+
 gzip_faas:
 	for f in $$(find . -maxdepth 2 -name "*.faa" -type f -size +0c); do \
 	  l=$$(find -L . -samefile $$f -xtype l); \
 	  echo "--> $${f} ($$l) <--"; \
 	  pigz $$f; rm $$l; ln -s $${f}.gz; \
+	  touch $$l; \
+	done; \
+
+gzip_fnas:
+	for f in $$(find . -maxdepth 2 -name "*.fna" -type f -size +0c); do \
+	  l=$$(find -L . -samefile $$f -xtype l); \
+	  echo "--> $${f} ($$l) <--"; \
+	  pigz $$f; rm $$l; ln -s $${f}.gz; \
+	  touch $$l; \
 	done; \
 
 # Extract README (identical for all, so no real need)
@@ -65,6 +79,14 @@ gzip_faas:
 
 # Extract assembled faa file, old format with "genes" in name
 %.genes.faa: %.tar.gz
+	@$(EXTRACT_AND_LINK)
+
+# Extract assembled fna file
+%.a.fna: %.tar.gz
+	@$(EXTRACT_AND_LINK)
+
+# Extract assembled fna file, old format with "genes" in name
+%.genes.fna: %.tar.gz
 	@$(EXTRACT_AND_LINK)
 
 samples.tsv: $(wildcard *.config)
