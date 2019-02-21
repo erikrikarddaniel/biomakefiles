@@ -1,0 +1,18 @@
+# makefile.foam
+#
+# Library makefile to make downloading data from the FOAM HMM db easier.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# *** Targets ***
+#
+# The download page for FOAM works with posts from JavaScript, which I haven't
+# tried to decipher, so one has to do it via a browser:
+#
+# https://cbb.pnnl.gov/portal/software/FOAM.html
