@@ -101,7 +101,25 @@ all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(word 2, $^)" < $< | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
+all_fna_lastdbs: $(subst .fna,.lastdb,$(wildcard *.fna))
+
+all_fnas_xwise: all_fna_lastdbs $(wildcard *.fna)
+	for f0 in *.fna; do \
+	  for f1 in *.fna; do \
+	    if [ $$f0 != $$f1 ]; then \
+	      echo "--> Aligning $$f0 to $$f1 <--"; \
+	      lastal $(LASTAL_OPTS) $$(basename $$f1 .fna).lastdb < $$f0 | gzip -c > $$(basename $$f0 .fna).$$(basename $$f1 .fna).maf.gz; \
+	    fi; \
+	  done; \
+	done
+	touch $@
+
 %.xwise.maf.gz: %.fna.gz %.lastdb
+	@$(MAKECALL_LASTAL)
+	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/$(word 2, $^) | gzip -c > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.xwise.maf.gz: %.fna %.lastdb
 	@$(MAKECALL_LASTAL)
 	gunzip -c $< | lastal $(LASTAL_OPTS) $(LAST_DB_PATH)/$(word 2, $^) | gzip -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
