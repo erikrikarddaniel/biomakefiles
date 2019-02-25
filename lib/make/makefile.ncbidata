@@ -96,7 +96,7 @@ env_nr.faa: ftp.ncbi.nih.gov/blast/db/FASTA/env_nr.gz
 # Fetch the RefSeq protein database, and unpack the tar files.
 mirror_refseq_protein.blast:
 	wget -A "refseq_protein.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
-	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_protein.*.tar.gz; do echo "--> gunzipping $$f <--"; tar xzf $$f; done )
+	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_protein.*.tar.gz; do echo "--> untarring $$f <--"; tar xzf $$f; done )
 
 # Extract sequences from the RefSeq protein database fetched by
 # mirror_refseq_protein.blast.  As far as I know there's no fasta file for this
@@ -106,7 +106,7 @@ refseq_protein.faa: $(wildcard ftp.ncbi.nih.gov/blast/db/refseq_protein*)
 
 mirror_refseq_rna.blast:
 	wget -A "refseq_rna.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
-	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_rna.*.tar.gz; do echo "--> gunzipping $$f <--"; tar xzf $$f; done )
+	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_rna.*.tar.gz; do echo "--> untarring $$f <--"; tar xzf $$f; done )
 
 refseq_rna.fna:
 	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_rna -entry all -dbtype nucl -out $@
