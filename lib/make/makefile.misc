@@ -15,7 +15,9 @@ SHELL := /bin/bash
 CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
 
 # Put fasta sequences on one line
-CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g'
+CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' | sed '/^>/!s/ //g'
+
+SEQLENS = tr '\n' '\t' < $< | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
 
 # *** Targets ***
 
@@ -74,6 +76,22 @@ SEQTSV = cat $< | paste - - > $@
 
 %.alnaa.tsv: %.alnfaa
 	$(SEQTSV)
+
+# Calculate tsv file with sequence lengths. Should be run on files that have 
+# already been cleaned with CLEAN_FASTA, see above.
+# Note: There are targets for %.seqlens.tsv below; they are for statistics and
+# does not give a table of sequence name + sequence length.
+%.seqlen.tsv: %.fna
+	$(SEQLENS) > $@
+
+%.seqlen.tsv: %.faa
+	$(SEQLENS) > $@
+
+%.seqlen.tsv: %.alnfna
+	$(SEQLENS) > $@
+
+%.seqlen.tsv: %.alnfaa
+	$(SEQLENS) > $@
 
 ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
