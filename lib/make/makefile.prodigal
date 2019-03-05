@@ -54,6 +54,16 @@ all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard 
 	prodigal -f gff -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.meta_prodigal.gbk: %.fna.gz
+	@$(MAKECALL_PRODIGAL)
+	unpigz -c $< | prodigal -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.meta_prodigal.gff: %.fna.gz
+	@$(MAKECALL_PRODIGAL)
+	unpigz -c $< | prodigal -f gff -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.meta_prodigal.gbk: %.fa
 	@$(MAKECALL_PRODIGAL)
 	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
