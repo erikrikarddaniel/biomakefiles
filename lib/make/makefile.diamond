@@ -15,10 +15,13 @@ SHELL := /bin/bash
 
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
-#
-# DIAMOND_DB_PATH sets the directory where to look for the database files. The
-# default is the current directory.
+
+# DIAMOND_DB_PATH sets the directory where to look for generic database files
+# like the protein RefSeq. The default is the current directory.
 DIAMOND_DB_PATH = .
+
+# Specify this when you want to point to a specific, non-generic, database
+DIAMOND_DB =
 
 # DIAMOND_ALIGN_OPTS sets non-essential parameters for diamond alignment
 #
@@ -49,6 +52,27 @@ MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 # *** Targets ***
 
 # Running the Diamond aligner
+#
+
+# Non-generic databases (requires the DIAMOND_DB to be set to the full path,
+# except the .dmnd suffix, of the database file).
+
+# RefSeq targets
+
+%.daa: %.fna.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.daa: %.fna
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.daa: %.fastq.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 # Nucleotides in fastq.gz file against the NCBI RefSeq protein database
 fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *.fastq.gz))
@@ -83,6 +107,10 @@ faa2refseq_protein.daas: $(subst .faa.gz,.refseq_protein.daa,$(wildcard *.faa.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastp -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+# Reformating the daa output
+%.blasttab.tsv.gz: %.daa
+	diamond view --daa $< -f 6 | gzip -c > $@
 
 # Creating the database
 
