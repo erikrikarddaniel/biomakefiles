@@ -63,13 +63,18 @@ MAST-4_clade_E.faa.gz:
 	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/SAG-v1/m4e.faa.gz
 
 
-# Delmont et al. reassembly and MAGs
+# Delmont et al. 2018 MAGs
+
+# Make this one and the next (delmont2018.non-redudant_mags.fna.gz) to get the
+# nucleotides for *each MAG* in a file
 delmont2018.non-redundant_mags.tar.gz:
 	wget -O $@ https://ndownloader.figshare.com/files/8243654
 
-delmont2018.non-redudant_mags.faa.gz: $(wildcard NON_REDUNDANT_MAGs/TARA_*_MAG_*.fa)
+delmont2018.non-redudant_mags.fna.gz: $(wildcard NON_REDUNDANT_MAGs/TARA_*_MAG_*.fa)
 	cat $^ | gzip -c > $@
 
+# This one and the next (delmont2018.all_aa_sequences.faa.gz) gives all amino
+# acids in a file
 delmont2018.all_aa_sequences.zip:
 	wget -O $@ https://ndownloader.figshare.com/articles/4902917/versions/1
 
