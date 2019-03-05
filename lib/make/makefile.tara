@@ -15,6 +15,55 @@ SHELL := /bin/bash
 #
 
 # *** Targets ***
+
+# Eukaryotes
+diamond: eukaryote_unigenes.fna.gz eukaryote_taxonomy.tsv.gz eukaryote_pfams.tsv.gz eukaryote_metag_occurrences.tsv.gz eukaryote_metat_occurrences.tsv.gz eukaryote_unigene_clusters_composition.tsv.gz eukaryote_unigene_clusters_properties.tsv.gz
+
+eukaryote_unigenes.fna.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/Geneset-v1/MATOU-v1.fna.gz
+
+eukaryote_taxonomy.tsv.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/Geneset-v1/taxonomy.tsv.gz
+
+eukaryote_pfams.tsv.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/Geneset-v1/pfam.tsv.gz
+
+eukaryote_metag_occurrences.tsv.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/Geneset-v1/metagenomic_occurrences.tsv.gz
+
+eukaryote_metat_occurrences.tsv.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/Geneset-v1/metatranscriptomic_occurrences.tsv.gz
+
+eukaryote_unigene_clusters_composition.tsv.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/Geneset-v1/unigeneID_clusterID.tsv.gz
+
+eukaryote_unigene_clusters_properties.tsv.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/Geneset-v1/clusters.tsv.gz
+
+# Eukaryotic SAGs
+eukaryote_SAGs.faa.gz: MAST-3_clade_A.faa.gz MAST-3_clade_F.faa.gz MAST-4_clade_A_1.faa.gz MAST-4_clade_A_2.faa.gz MAST-4_clade_C.faa.gz MAST-4_clade_E.faa.gz
+	unpigz -c $^ | pigz -c > $@
+
+MAST-3_clade_A.faa.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/SAG-v1/m3a.faa.gz
+
+MAST-3_clade_F.faa.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/SAG-v1/m3f.faa.gz
+
+MAST-4_clade_A_1.faa.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/SAG-v1/m4a1.faa.gz
+
+MAST-4_clade_A_2.faa.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/SAG-v1/m4a2.faa.gz
+
+MAST-4_clade_C.faa.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/SAG-v1/m4c.faa.gz
+
+MAST-4_clade_E.faa.gz:
+	wget -O $@ http://www.genoscope.cns.fr/tara/localdata/data/SAG-v1/m4e.faa.gz
+
+
+# Delmont et al. reassembly and MAGs
 delmont2018.non-redundant_mags.tar.gz:
 	wget -O $@ https://ndownloader.figshare.com/files/8243654
 
