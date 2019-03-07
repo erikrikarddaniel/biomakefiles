@@ -37,8 +37,12 @@ MAKECALL_EDIRECT             = $(MAKECALL_EDIRECT_VERSION); $(MAKECALL_EDIRECT_P
 	@$(MAKECALL_EDIRECT)
 	@if [ ! -e $@ ]; then mkdir $@; fi
 	@for a in $$(sort -u $<); do \
-	  echo "--> Fetching $$a <--"; \
-	  efetch -db nucleotide -id $$a -format docsum -mode json > $@/$$a.nucl.docsum.json; \
+	  if [ ! -e $@/$$a.nucl.docsum.json ]; then \
+	    echo "--> Fetching $$a <--"; \
+	    efetch -db nucleotide -id $$a -format docsum -mode json > $@/$$a.nucl.docsum.json; \
+	  else \
+	    echo "--> $$a already present <--"; \
+	  fi; \
 	done
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
