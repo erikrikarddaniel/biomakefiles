@@ -36,6 +36,9 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 	gunzip -c $< | cut -f 1,2,12 > $@
 
 # MCL clustering
+%.mci: %.abc.tsv.gz
+	mcxload -abc <(gunzip -c $<) --stream-mirror -write-tab $(basename $@).mcldata -o $@
+
 %.mci: %.abc.tsv
 	mcxload -abc $< --stream-mirror -write-tab $(basename $@).mcldata -o $@
 
