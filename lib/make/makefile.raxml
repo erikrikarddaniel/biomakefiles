@@ -67,6 +67,7 @@ MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILE
 # is:
 #
 # make nnn.red.PROTGAMMAAUTO.raxml
+#
 %.PROTGAMMAAUTO.raxml: %.phylip
 	@$(MAKECALL_RAXML)
 	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -T $(NUM_CPUS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
