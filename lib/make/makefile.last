@@ -24,6 +24,7 @@ SILVA_SSU_DB = SILVA_CURRENT_SSURef_tax_silva.lastdb
 # File name, excluding .lastdb, of last database to use for general target (file_to_align.maf.gz)
 LAST_DB_PATH = .
 LAST_DB = YOU NEED TO SPECIFY THE DATABASE
+LAST_DB_OPTS =
 
 # LASTAL_OPTS sets parameters for the lastal run. (-P4 tells it to use 4 cpu
 # threads, -e200 to only keep hits with at least 200 score.)
@@ -80,9 +81,16 @@ all_refseq_rna.fna2mafs: $(subst .fna,.refseq_rna.maf.gz,$(wildcard *.fna)) $(su
 all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.megantab.gz,$(wildcard *.maf))
 
 # Here comes individual pattern rules. Defines how programs are actually called
+all_fna_lasts: $(subst .fna,.maf.gz,$(wildcard *.fna)) $(subst .fna.gz,.maf.gz,$(wildcard *.fna.gz))
+
 %.maf.gz: %.fna
 	@$(MAKECALL_LASTAL)
 	lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(LAST_DB).lastdb < $< | gzip -c > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.maf.gz: %.fna.gz
+	@$(MAKECALL_LASTAL)
+	unpigz -c -p $(N_CPUS) $< | lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(LAST_DB).lastdb | pigz -c -p $(N_CPUS) > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.maf.gz: %.faa
@@ -176,20 +184,27 @@ all_fnas_xwise: all_fna_lastdbs $(wildcard *.fna)
 # At least 24 GiB memory for RefSeq protein
 %.lastdb: %.faa
 	$(MAKECALL_LASTAL_MAKEDB)
-	lastdb -p -c $@ $<
+	lastdb -p -c $@ $< $(LASTDB_OPTS)
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
 
 # Nucleotide sequences in an fna file
 %.lastdb: %.fna
 	$(MAKECALL_LASTAL_MAKEDB)
-	lastdb -c $@ < $<
+	lastdb -c $@ < $< $(LASTDB_OPTS)
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
 
 # Nucleotide sequences in a gzipped file ending with .fna.gz
 %.lastdb: %.fna.gz
 	$(MAKECALL_LASTAL_MAKEDB)
-	gunzip -c $< | lastdb -c $@
+	gunzip -c $< | lastdb -c $@ $(LASTDB_OPTS)
+	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	touch $@
+
+# Nucleotide sequences in a gzipped file ending with .fna.gz
+%.lastdb8: %.fna.gz
+	$(MAKECALL_LASTAL_MAKEDB)
+	gunzip -c $< | lastdb8 -c $@ $(LASTDB_OPTS)
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
