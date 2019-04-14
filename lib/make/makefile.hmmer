@@ -48,6 +48,8 @@ MAKECALL_HMMSCAN               = $(MAKECALL_HMMSCAN_VERSION); $(MAKECALL_HMMSCAN
 
 # *** Targets ***
 
+all_hmms: $(subst .alnfaa,.hmm,$(wildcard *.alnfaa))
+
 all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
 all_refseq_hmmout: $(subst .hmm,.ncbi_refseq.hmmout,$(wildcard *.hmm))
