@@ -41,6 +41,16 @@ all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildc
 	prodigal -f gff -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.single_prodigal.gbk: %.fna.gz
+	@$(MAKECALL_PRODIGAL)
+	gunzip -c $< | prodigal -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.single_prodigal.gff: %.fna.gz
+	@$(MAKECALL_PRODIGAL)
+	gunzip -c $< | prodigal -f gff -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 # Anonymous mode: Use for non-binned metagenomes!
 all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fa,.meta_prodigal.gbk,$(wildcard *.fa))
 
