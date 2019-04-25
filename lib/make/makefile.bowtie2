@@ -76,7 +76,7 @@ all_se_sams.gz: $(subst .fastq.gz,.se.bowtie2.sam.gz,$(wildcard *.fastq.gz))
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.se.bowtie2.sam.gz: %.fastq.gz
-	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< > $@ 2> $@.err | gzip -c > $@
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< 2> $@.err | gzip -c > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # SILVA mapping targets
