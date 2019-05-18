@@ -1,4 +1,6 @@
-# makefile.gtdb
+# makefile.gtdbtk
+#
+# THIS SHOULD BE MERGED INTO makefile.gtdb!
 #
 # Library makefile to make it easier to fetch data files for GTDB tk.
 #
