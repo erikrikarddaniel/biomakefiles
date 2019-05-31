@@ -29,7 +29,7 @@ MAKECALL_PRODIGAL             = $(MAKECALL_PRODIGAL_VERSION); $(MAKECALL_PRODIGA
 
 # *** Targets ***
 
-all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna)))
+all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fna.gz,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna.gz),$(wildcard *.fna.gz)))
 
 %.single_prodigal.gbk: %.fna
 	@$(MAKECALL_PRODIGAL)
@@ -52,7 +52,7 @@ all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildc
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Anonymous mode: Use for non-binned metagenomes!
-all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fa,.meta_prodigal.gbk,$(wildcard *.fa))
+all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fna.gz,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna.gz),$(wildcard *.fna.gz))) $(subst .fa,.meta_prodigal.gbk,$(wildcard *.fa))
 
 %.meta_prodigal.gbk: %.fna
 	@$(MAKECALL_PRODIGAL)
