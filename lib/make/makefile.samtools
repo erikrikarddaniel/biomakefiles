@@ -37,7 +37,7 @@ all_sam2flagstats: $(subst .sam,.flagstat,$(wildcard *.sam)) $(subst .sam.gz,.fl
 all_bam2flagstats: $(subst .bam,.flagstat,$(wildcard *.bam))
 
 # idxstats from sorted bam files
-all_sorted_bams_to_idxstats: $(subst .sorted.bam,.idxstats,$(wildcard *.sorted.bam))
+all_sorted_bams_to_idxstats: $(subst .sorted.bam,.idxstats.gz,$(wildcard *.sorted.bam))
 
 # Convert all sam files to bam
 all_samgz2bams: $(subst .sam,.bam,$(wildcard *.sam)) $(subst .sam.gz,.bam,$(wildcard *.sam.gz))
@@ -50,10 +50,16 @@ all_samgz2sortedbams: $(subst .sam,.sorted.bam,$(wildcard *.sam)) $(subst .sam.g
 all_unmappedpairs_fastqpairs: $(subst .bam,.unmappedpairs.fastqpairs,$(wildcard *.bam)) $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam)) $(subst .sam.gz,.unmappedpairs.fastqpairs,$(wildcard *.sam.gz))
 
 idxstats.tsv: $(wildcard *.idxstats)
-	echo "sample	sequence	length	n_mapped	n_unmapped" > $@
+	echo "sample	sequence	seqlen	n_mapped	n_unmapped" > $@
 	for f in $^; do \
 	  cat $$f | sed "s/^/$$(basename $$f .idxstats)\t/" >> $@; \
 	done
+
+idxstats.tsv.gz: $(wildcard *.idxstats.gz)
+	echo "sample	sequence	seqlen	n_mapped	n_unmapped"|gzip -c > $@; \
+	for f in $^; do \
+	  gunzip -c $$f | sed "s/^/$$(basename $$f .idxstats.gz)\t/"; \
+	done | gzip -c >> $@
 
 .SECONDARY:
 
@@ -62,9 +68,9 @@ idxstats.tsv: $(wildcard *.idxstats)
 	samtools flagstat $< > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.idxstats: %.sorted.bam.bai
+%.idxstats.gz: %.sorted.bam.bai
 	@$(MAKECALL_SAMTOOLS)
-	samtools idxstats $(basename $<) | grep -Pv "\t0\t0$$" > $@
+	samtools idxstats $(basename $<) | grep -Pv "\t0\t0$$" | gzip -c > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.sorted.bam.bai: %.sorted.bam
