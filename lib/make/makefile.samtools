@@ -15,6 +15,9 @@ SHELL := /bin/bash
 #
 SAMTOOLS_OPTS =
 
+# Redefine if you want to add options to the samtools $(SAMTOOLS_IDXSTATS_OPTS) $(SAMTOOLS_OPTS) idxstats calls
+SAMTOOLS_IDXSTATS_OPTS =
+
 # *** Internal ***
 
 # MAKECALLsamtools is a macro that defines what will be output to the .makecall
@@ -70,7 +73,7 @@ idxstats.tsv.gz: $(wildcard *.idxstats.gz)
 
 %.idxstats.gz: %.sorted.bam.bai
 	@$(MAKECALL_SAMTOOLS)
-	samtools idxstats $(basename $<) | grep -Pv "\t0\t0$$" | gzip -c > $@
+	samtools $(SAMTOOLS_IDXSTATS_OPTS) $(SAMTOOLS_OPTS) idxstats $(basename $<) | grep -Pv "\t0\t0$$" | gzip -c > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.sorted.bam.bai: %.sorted.bam
