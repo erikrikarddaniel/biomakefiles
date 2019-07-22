@@ -69,6 +69,9 @@ MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
+# Run diamond against the database in DIAMOND_DB for all fastq.gz files in the directory.
+fastq.gz2daas: $(subst .fastq.gz,.daa,$(wildcard *.fastq.gz))
+
 %.daa: %.fastq.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
