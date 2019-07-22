@@ -53,6 +53,8 @@ all_se_sams: $(subst .r1.fastq.gz,.se.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
 all_se_sams.gz: $(subst .fastq.gz,.se.bowtie2.sam.gz,$(wildcard *.fastq.gz))
 
+all_interleaved_sorted_bams: $(subst .int.fastq.gz,.int.bowtie2.sorted.bam,$(wildcard *.int.fastq.gz))
+
 %.pe.bowtie2.sam: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_BOWTIE2_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) > $@ 2> $@.err
@@ -71,6 +73,11 @@ all_se_sams.gz: $(subst .fastq.gz,.se.bowtie2.sam.gz,$(wildcard *.fastq.gz))
 %.se.bowtie2.sam.gz: %.fastq.gz
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< > $@ 2> $@.err | gzip -c > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+	
+%.interleaved.pe.bowtie2.sorted.bam: %.int.fastq.gz
+	@$(MAKECALL_BOWTIE2_ALIGN)
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) --interleaved $(word 1,$^) 2> $@.err | samtools view -Sb | samtools sort > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall	
 
 # SILVA mapping targets
 all_silvaparcs: $(subst .r1.fastq.gz,.pe.bowtie2-silvaparc.sam.gz,$(wildcard *.r1.fastq.gz))
