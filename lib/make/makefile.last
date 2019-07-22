@@ -75,13 +75,20 @@ all_refseq_rna.fastq2mafs: $(subst .fastq.gz,.refseq_rna.maf.gz,$(wildcard *.fas
 # present in the current directory.
 all_refseq_rna.fna2mafs: $(subst .fna,.refseq_rna.maf.gz,$(wildcard *.fna)) $(subst .fna.gz,.refseq_rna.maf.gz,$(wildcard *.fna.gz))
 
+# Run lastal for all .fna and .fna.gz files in the current directory against
+# the database in LAST_DB.
+all_fna_lasts: $(subst .fna,.maf.gz,$(wildcard *.fna)) $(subst .fna.gz,.maf.gz,$(wildcard *.fna.gz))
+
+# Run lastal for all .fastq and .fastq.gz files in the current directory against
+# the database in LAST_DB.
+all_fastq_lasts: $(subst .fastq,.maf.gz,$(wildcard *.fastq)) $(subst .fastq.gz,.maf.gz,$(wildcard *.fastq.gz))
+
 # Converts all .maf.gz files (output files from lastal) to tables that are
 # sufficiently similar to BLAST's -m 8 tabular format to allow import into
 # MEGAN.
 all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.megantab.gz,$(wildcard *.maf))
 
 # Here comes individual pattern rules. Defines how programs are actually called
-all_fna_lasts: $(subst .fna,.maf.gz,$(wildcard *.fna)) $(subst .fna.gz,.maf.gz,$(wildcard *.fna.gz))
 
 %.maf.gz: %.fna
 	@$(MAKECALL_LASTAL)
@@ -91,6 +98,16 @@ all_fna_lasts: $(subst .fna,.maf.gz,$(wildcard *.fna)) $(subst .fna.gz,.maf.gz,$
 %.maf.gz: %.fna.gz
 	@$(MAKECALL_LASTAL)
 	unpigz -c -p $(N_CPUS) $< | lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(LAST_DB).lastdb | pigz -c -p $(N_CPUS) > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.maf.gz: %.fastq
+	@$(MAKECALL_LASTAL)
+	parallel-fastq --keep-order --no-notice $(PARALLEL_OPTS) < $< "lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/$(LAST_DB).lastdb" | pigz $(N_CPUS) -c > $@
+	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+
+%.maf.gz: %.fastq.gz
+	@$(MAKECALL_LASTAL)
+	unpigz -c -p $(N_CPUS) $< | parallel-fastq --keep-order --no-notice $(PARALLEL_OPTS) "lastal $(LASTAL_OPTS) $(FASTQ_FORMAT) $(LAST_DB_PATH)/$(LAST_DB).lastdb" | pigz -p $(N_CPUS) -c > $@
 	@echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
 
 %.maf.gz: %.faa
