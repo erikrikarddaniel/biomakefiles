@@ -53,8 +53,14 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 %.c.fna: %.fna
 	cat $< | $(CLEAN_FASTA) > $@
 
+%.c.fna.gz: %.fna.gz
+	gunzip -c $< | $(CLEAN_FASTA) | gzip -c > $@
+
 %.c.faa: %.faa
 	cat $< | $(CLEAN_FASTA) > $@
+
+%.c.faa.gz: %.faa.gz
+	gunzip -c $< | $(CLEAN_FASTA) | gzip -c > $@
 
 %.c.alnfna: %.alnfna
 	cat $< | $(CLEAN_FASTA) > $@
