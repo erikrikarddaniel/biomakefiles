@@ -54,8 +54,8 @@ AWK_LASTTAB2MEGANTAB = awk '/^[^\#]/ { print $$7 "\t" $$2 "\t100\t" $$4 "\t0\t0\
 
 # MAKECALL_LAST is a macro that defines what will be output to the .makecall
 # file, the file that records versions, file stamps, parameters etc.
-MAKECALL_LASTAL_VERSION  = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with `lastal --version`" > $@.makecall
-MAKECALL_MT_VERSION      = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with transformation: $(AWK_LASTTAB2MEGANTAB)" > $@.makecall
+MAKECALL_LASTAL_VERSION  = echo "`date +"%Y-%m-%d %H:%M:%S"`: $@ was made with `lastal --version`" > $@.makecall
+MAKECALL_MT_VERSION      = echo "`date +"%Y-%m-%d %H:%M:"`: $@ was made with transformation: $(AWK_LASTTAB2MEGANTAB)" > $@.makecall
 MAKECALL_LASTAL_PARAMS   = echo "	Called with parameters: $(LASTAL_OPTS)" >> $@.makecall
 MAKECALL_LASTAL_DB       = echo "  Last database: $(LAST_DB_PATH)/$(LAST_DB), timestamp: $(ls -lL $(LAST_DB_PATH)/$(LAST_DB).lastdb)" >> $@.makecall
 MAKECALL_LASTAL_DB_RFRNA = echo "	Database: $(DIAMOND_DB_PATH)/refseq_rna (`ls -lL $(LAST_DB_PATH)/refseq_rna.lastdb`)" >> $@.makecall
