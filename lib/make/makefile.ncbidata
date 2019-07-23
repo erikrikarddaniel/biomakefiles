@@ -88,10 +88,10 @@ mirror_env_nr.faa:
 # This one only unpacks, what was fetched in mirror_nr.faa. The latter hence
 # has to be run first.
 nr.faa: ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz 
-	gunzip -c $< | awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);}  END {printf("\n");}' | sed '/^>/! { s/-//g }' > $@
+	gunzip -c $< | awk '/^>/ {printf("\n%d\n",$$0);next; } { printf("%s",$$0);}  END {printf("\n");}' | sed '/^>/! { s/-//g }' > $@
 
 env_nr.faa: ftp.ncbi.nih.gov/blast/db/FASTA/env_nr.gz 
-	gunzip -c $< | awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);}  END {printf("\n");}' | sed '/^>/! { s/-//g }' > $@
+	gunzip -c $< | awk '/^>/ {printf("\n%d\n",$$0);next; } { printf("%s",$$0);}  END {printf("\n");}' | sed '/^>/! { s/-//g }' > $@
 
 # Fetch the RefSeq protein database, and unpack the tar files.
 mirror_refseq_protein.blast:
