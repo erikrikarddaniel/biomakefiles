@@ -145,6 +145,9 @@ numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))
 %.faa: %.fna
 	transeq -sequence $< -outseq $@
 
+%.faa.gz: %.fna.gz
+	transeq -sequence <(gunzip -c $<) -outseq >(gzip -c > $@)
+
 %.alnfaa: %.alnfna
 	transeq -sequence $< -outseq $@
 	
