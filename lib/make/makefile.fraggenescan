@@ -4,7 +4,7 @@
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: __AUTHOR_EMAIL__
+# Author: daniel.lundin@lnu.se
 
 SHELL := /bin/bash
 
@@ -33,4 +33,9 @@ MAKECALL_FRAGGENESCAN             = $(MAKECALL_FRAGGENESCAN_VERSION); $(MAKECALL
 %.short_reads_illumina10.fgs: %.fna
 	@$(MAKECALL_FRAGGENESCAN)
 	FragGeneScan -s $< -o $@ -w 0 -t illumina_10 $(FRAGGENESCAN_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.short_reads_illumina10.fgs: %.fna
+	@$(MAKECALL_FRAGGENESCAN)
+	FragGeneScan -s $< -o $@ -w 0 -t illumina_5 $(FRAGGENESCAN_OPTS)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

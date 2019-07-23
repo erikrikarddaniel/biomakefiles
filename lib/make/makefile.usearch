@@ -27,3 +27,12 @@ all_uclusters: $(subst .faa,.uclusters,$(filter-out $(wildcard *.uc[01].*.faa),$
 	  usearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
 	done
 	touch $@
+
+%.uclusters: %.fna
+	for n in $(CLUSTER_LEVELS); do \
+	  d=$(basename $@).uc$$n.clusters.d; \
+	  mkdir $$d; \
+	  rm -f $$d/*.fna; \
+	  usearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.fna -clusters $$d/cluster_; \
+	done
+	touch $@
