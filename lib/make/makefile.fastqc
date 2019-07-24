@@ -13,3 +13,23 @@ all_fastqc: $(subst .r1.fastq.gz,.r1_fastqc.html,$(wildcard *.r1.fastq.gz)) $(su
 %.r2_fastqc.html: %.r2.fastq.gz
 	fastqc $<
 
+#
+fastqc_summary.tsv: $(wildcard *_fastqc.zip)
+	@echo "sample	basic_statistics	per_base_sequence_quality	per_tile_sequence_quality	per_sequence_quality_scores	per_base_sequence_content	per_sequence_gc_content	per_base_n_content	sequence_length_distribution	sequence_duplication_levels	overrepresented_sequences	adapter_content" > $@
+	@for z in $^; do \
+	  s=$$(basename $$z .zip)/summary.txt; \
+	  if [ ! -e $$s ]; then unzip $$z $$s; fi; \
+	  echo -n "$$(basename $$z _fastqc.zip)"; \
+	  echo -n "	$$(grep 'Basic Statistics' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Per base sequence quality' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Per tile sequence quality' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Per sequence quality scores' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Per base sequence content' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Per sequence GC content' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Per base N content' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Sequence Length Distribution' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Sequence Duplication Levels' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Overrepresented sequences' $$s|sed 's/\t.*//')"; \
+	  echo -n "	$$(grep 'Adapter Content' $$s|sed 's/\t.*//')"; \
+	  echo; \
+	done >> $@
