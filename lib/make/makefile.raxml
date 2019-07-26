@@ -17,7 +17,7 @@ RAXML_BINARY = raxmlHPC-PTHREADS-SSE3
 NUM_CPUS = 4
 RANDOM_PARSIMONY = SET_RANDOM_PARSIMONY_TO_A_NUMBER
 RANDOM_RAPIDBS   = SET_RANDOM_PARSIMONY_TO_A_NUMBER
-RAXML_OPTS = -T $(NUM_CPUS)
+RAXML_OPTS = 
 
 # *** Internal ***
 
@@ -26,28 +26,82 @@ RAXML_OPTS = -T $(NUM_CPUS)
 #
 # *Don't redefine!*
 MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(RAXML_BINARY) `$(RAXML_BINARY) -v|grep -o 'RAxML version [0-9.]*'`" > $@.makecall
-MAKECALL_PARAMS      = echo "	Called with parameters: $(RAXML_OPTS)" >> $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(RAXML_OPTS) -T $(NUM_CPUS)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_RAXML      = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
 
 # *** Targets ***
 
-# Perform a rapid bootstrap analysis and tree search using the PROTGAMMAAUTO model
-%.PROTGAMMAAUTO.raxml: %.alnfaa
+# Check that an alignment is correct without running RAxML
+#
+# This takes as input a file call nnn.alnfaa and, if this contains duplicate,
+# produces a file called nnn.red.phylip. After this step you can run the actual
+# phylogeny estimation from *either* the nnn.alnfaa (no duplicates) or
+# nnn.red.phylip (if there were duplicates).
+# 
+%.raxmlcheck: %.rx.alnfaa 
+	$(RAXML_BINARY) -T $(NUM_CPUS) -f c -m PROTGAMMAAUTO -s $< -n $@ | tee $@ 
+	if [ -e $<.reduced ]; then mv $<.reduced $(basename $<).red.phylip; fi
+
+# Perform a rapid bootstrap analysis and tree search using the PROTGAMMAAUTO
+# model
+#
+# This one assumes an alignment called nnn.alnfaa and is called:
+#
+# make nnn.PROTGAMMAAUTO.raxml
+#
+%.PROTGAMMAAUTO.raxml: %.rx.alnfaa
 	@$(MAKECALL_RAXML)
-	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
-	ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick
-	ln -s RAxML_bipartitions.$(basename $@) $@.bipartitions.newick
-	ln -s RAxML_bipartitionsBranchLabels.$(basename $@) $@.bipartitionsBranchLabels.newick
+	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -T $(NUM_CPUS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
+	if [ ! -e $@.besttree.newick ]; then ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick; fi
+	if [ ! -e $@.bipartitions.newick ]; then ln -s RAxML_bipartitions.$(basename $@) $@.bipartitions.newick; fi
+	if [ ! -e $@.bipartitionsBranchLabels.newick ]; then ln -s RAxML_bipartitionsBranchLabels.$(basename $@) $@.bipartitionsBranchLabels.newick; fi
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# This one assumes an alignment in phylip format called nnn.phylip:
+#
+# make nnn.PROTGAMMAAUTO.raxml
+#
+# In the special case when you have a reduced phylip alignment from the
+# raxmlcheck step, you have an alignment called nnn.red.phylip and your call
+# is:
+#
+# make nnn.red.PROTGAMMAAUTO.raxml
+#
+%.PROTGAMMAAUTO.raxml: %.phylip
+	@$(MAKECALL_RAXML)
+	$(RAXML_BINARY) -s $< -f a -m PROTGAMMAAUTO -n $(basename $@) -N autoMRE $(RAXML_OPTS) -T $(NUM_CPUS) -p $(RANDOM_PARSIMONY) -x $(RANDOM_RAPIDBS) > $@ 2>&1
+	if [ ! -e $@.besttree.newick ]; then ln -s RAxML_bestTree.$(basename $@) $@.besttree.newick; fi
+	if [ ! -e $@.bipartitions.newick ]; then ln -s RAxML_bipartitions.$(basename $@) $@.bipartitions.newick; fi
+	if [ ! -e $@.bipartitionsBranchLabels.newick ]; then ln -s RAxML_bipartitionsBranchLabels.$(basename $@) $@.bipartitionsBranchLabels.newick; fi
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Perform a phylogenetic placement
+%.placement.PROTGAMMAAUTO.raxml: %.rx.alnfaa reftree.newick
+	@$(MAKECALL_RAXML)
+	$(RAXML_BINARY) -s $< -f v -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) -T $(NUM_CPUS) > $@ 2>&1
+	if [ ! -e $@.labelled_tree.newick ]; then ln -s RAxML_labelledTree.$(basename $@) $@.labelled_tree.newick; fi
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.placement.PROTGAMMAAUTO.raxml: %.phylip reftree.newick
+	@$(MAKECALL_RAXML)
+	$(RAXML_BINARY) -s $< -f v -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) -T $(NUM_CPUS) > $@ 2>&1
+	if [ ! -e $@.labelled_tree.newick ]; then ln -s RAxML_labelledTree.$(basename $@) $@.labelled_tree.newick; fi
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Calculate ancestral states
-%.PROTGAMMAAUTO.ancstates.raxml: %.alnfaa %.newick
+%.PROTGAMMAAUTO.ancstates.raxml: %.rx.alnfaa %.newick
 	@$(MAKECALL_RAXML)
-	$(RAXML_BINARY) -f A -s $< -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) > $@ 2>&1
-	ln -s RAxML_nodeLabelledRootedTree.$(basename $@) $@.nodelabelled.newick 
-	ln -s RAxML_marginalAncestralStates.$(basename $@) $@.seqs
+	$(RAXML_BINARY) -f A -s $< -t $(word 2,$^) -m PROTGAMMAAUTO -n $(basename $@) $(RAXML_OPTS) -T $(NUM_CPUS) > $@ 2>&1
+	if [ ! -e $@.nodelabelled.newick ]; then ln -s RAxML_nodeLabelledRootedTree.$(basename $@) $@.nodelabelled.newick; fi
+	if [ ! -e $@.seqs ]; then ln -s RAxML_marginalAncestralStates.$(basename $@) $@.seqs; fi
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.faa: %.seqs
 	sed 's/^/>/' $< | sed 's/ /\n/' | sed 's/?//g' > $@
+
+.SECONDARY:
+
+# Cleans up an aligned fasta file so RAxML accepts it.
+%.rx.alnfaa: %.alnfaa
+	sed '/^>/s/\[\+//' $< | sed '/^>/s/\]\+//g' | sed '/^>/s/-//g' | sed '/^>/s/[:,()]//g' | sed '/^>/s/ \+/_/g' | sed "s/'//g" > $@

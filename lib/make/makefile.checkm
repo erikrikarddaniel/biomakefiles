@@ -30,6 +30,10 @@ CHECKM_OUT_TO_TSV = grep -v '^-\+' $< | sed 's/^ \+//' | sed 's/ \+$$//' | sed '
 
 # *** Targets ***
 
+# This will have to be updated when new data is released...
+fetch_data:
+	wget https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz
+
 # This runs checkm lineage_wf on all bins in .fna files in
 # the current directory; includes gene calling.
 checkm.lineage_wf.fna.out: $(wildcard *.fna)
@@ -38,13 +42,17 @@ checkm.lineage_wf.fna.out: $(wildcard *.fna)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # This runs checkm lineage_wf on all bins in .faa files in
-# the current directory; includes gene calling.
+# the current directory.
 checkm.lineage_wf.faa.out: $(wildcard *.faa)
 	@$(MAKECALL_CHECKM)
 	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) -x faa --genes --file $@ . checkm/ 2>&1 | tee $(basename $@).err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# This file, or the next, will contain completeness etc.
 checkm.lineage_wf.faa.tsv: checkm.lineage_wf.faa.out
+	$(CHECKM_OUT_TO_TSV)
+
+checkm.lineage_wf.fna.tsv: checkm.lineage_wf.fna.out
 	$(CHECKM_OUT_TO_TSV)
 
 checkm.tree_qa.out: $(wildcard checkm.lineage_wf*out)
@@ -57,3 +65,6 @@ checkm.tree_qa.tsv: checkm.tree_qa.out
 
 checkm.bin_qa_plot.faa.pdf: checkm.lineage_wf.faa.out
 	checkm bin_qa_plot --image_type pdf -x faa . checkm/ checkm/plots
+
+checkm.bin_qa_plot.fna.pdf: checkm.lineage_wf.fna.out
+	checkm bin_qa_plot --image_type pdf . checkm/ checkm/plots

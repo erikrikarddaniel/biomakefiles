@@ -14,6 +14,11 @@ SHELL := /bin/bash
 # Concate a number of gzipped files and write to a gzipped file.
 CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
 
+# Put fasta sequences on one line
+CLEAN_FASTA = awk '/^>/ {printf("\n%d\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' | sed '/^>/!s/ //g'
+
+SEQLENS = tr '\n' '\t' < $< | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
+
 # *** Targets ***
 
 # Interleave two fastq files (named %.r1.fastq and %.r2.fastq respectively).
@@ -44,19 +49,55 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 # Clean up a fasta file so that names does not contain spaces, dashes and other
 # characters that cause problems in various programs. Also places sequences on
 # one line so that one can more easily select sequences with grep.
-CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' $< | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' > $@
 
 %.c.fna: %.fna
-	$(CLEAN_FASTA)
+	cat $< | $(CLEAN_FASTA) > $@
+
+%.c.fna.gz: %.fna.gz
+	gunzip -c $< | $(CLEAN_FASTA) | gzip -c > $@
 
 %.c.faa: %.faa
-	$(CLEAN_FASTA)
+	cat $< | $(CLEAN_FASTA) > $@
+
+%.c.faa.gz: %.faa.gz
+	gunzip -c $< | $(CLEAN_FASTA) | gzip -c > $@
 
 %.c.alnfna: %.alnfna
-	$(CLEAN_FASTA)
+	cat $< | $(CLEAN_FASTA) > $@
 
 %.c.alnfaa: %.alnfaa
-	$(CLEAN_FASTA)
+	cat $< | $(CLEAN_FASTA) > $@
+
+# Transform fasta files to tab separated tables (keeping the ">")
+SEQTSV = cat $< | paste - - > $@
+
+%.na.tsv: %.fna
+	$(SEQTSV)
+
+%.aa.tsv: %.faa
+	$(SEQTSV)
+
+%.alnna.tsv: %.alnfna
+	$(SEQTSV)
+
+%.alnaa.tsv: %.alnfaa
+	$(SEQTSV)
+
+# Calculate tsv file with sequence lengths. Should be run on files that have 
+# already been cleaned with CLEAN_FASTA, see above.
+# Note: There are targets for %.seqlens.tsv below; they are for statistics and
+# does not give a table of sequence name + sequence length.
+%.seqlen.tsv: %.fna
+	$(SEQLENS) > $@
+
+%.seqlen.tsv: %.faa
+	$(SEQLENS) > $@
+
+%.seqlen.tsv: %.alnfna
+	$(SEQLENS) > $@
+
+%.seqlen.tsv: %.alnfaa
+	$(SEQLENS) > $@
 
 ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
@@ -68,26 +109,23 @@ ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
 %.phylip: %.alnfaa
 	echo "$$(grep -c '>' $<) $$(grep -v '>' $< | head -n 1 | awk '{ print length($$1); }')" > $@
-	awk '/^>(.*)/ { printf("%s ", substr($$1, 2)); next; } !/^>/ { print $$0; }' $< >> $@
-
-# Cluster sequences based on fraction identity. Override the CLUSTER_LEVELS
-# macro if you need other levels than the default specified here.
-CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.75 0.70 0.60 0.50
-
-%.uclusters: %.faa
-	for n in $(CLUSTER_LEVELS); do \
-	  d=$(basename $@).uc$$n.clusters.d; \
-	  mkdir $$d; \
-	  rm -f $$d/*.faa; \
-	  usearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
-	done
-	touch $@
+	awk '/^>(.*)/ { printf("%d ", substr($$1, 2)); next; } !/^>/ { print $$0; }' $< >> $@
 
 fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
+
+all_seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz)) $(subst .fna.gz,.seqlens.tsv,$(wildcard *.fna.gz)) $(subst .fna,.seqlens.tsv,$(wildcard *.fna))
 
 %.seqlens.tsv: %.fastq.gz
 	echo "seqlen	n" > $@
 	gunzip -c $< | awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
+
+%.seqlens.tsv: %.fna.gz
+	echo "seqlen	n" > $@
+	gunzip -c $< | awk 'NR%2 == 0 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' | sed 's/ *//g' >> $@
+
+%.seqlens.tsv: %.fna
+	echo "seqlen	n" > $@
+	awk 'NR%2 == 0 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' $< | sed 's/ *//g' >> $@
 
 r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 	for f in $^; do \
@@ -95,6 +133,9 @@ r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 	done > $@
 %.seqcount: %.fastq.gz
 	echo $$(expr $$(gunzip -c $< | wc -l) / 4) > $@
+
+%.fna: %.fna.gz
+	gunzip -c $< > $@
 
 %.fna: %.fastq.gz
 	gunzip -c $< | fastq_to_fasta > $@
@@ -105,3 +146,24 @@ numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))
 
 %.numnucl.tsv: %.fna
 	echo "$<	$$(grep -v '>' $< | tr -d '\n' | awk '{ print length; }')" > $@
+
+# Translate DNA fasta files to AA fasta files with Emboss' transeq
+%.faa: %.fna
+	transeq -sequence $< -outseq $@
+
+%.faa.gz: %.fna.gz
+	transeq -sequence <(gunzip -c $<) -outseq >(gzip -c > $@)
+
+%.alnfaa: %.alnfna
+	transeq -sequence $< -outseq $@
+	
+# Mask a multiple alignment. Uses the maskaln.r script from the
+# https://github.com/erikrikarddaniel/maskaln repo.
+
+MASKALN_OPTS =
+
+%.masked.alnfaa: %.alnfaa %.protect
+	maskaln.r --protect_taxa $(word 2,$^) $(MASKALN_OPTS) $< $@
+
+%.masked.alnfaa: %.alnfaa
+	maskaln.r $(MASKALN_OPTS) $< $@

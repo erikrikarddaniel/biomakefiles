@@ -82,25 +82,31 @@ mirror_nr.blast:
 mirror_nr.faa:
 	wget --mirror ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
 
+mirror_env_nr.faa:
+	wget --mirror ftp://ftp.ncbi.nih.gov/blast/db/FASTA/env_nr.gz
+
 # This one only unpacks, what was fetched in mirror_nr.faa. The latter hence
 # has to be run first.
 nr.faa: ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz 
-	gunzip -c $< | awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);}  END {printf("\n");}' | sed '/^>/! { s/-//g }' > $@
+	gunzip -c $< | awk '/^>/ {printf("\n%d\n",$$0);next; } { printf("%s",$$0);}  END {printf("\n");}' | sed '/^>/! { s/-//g }' > $@
+
+env_nr.faa: ftp.ncbi.nih.gov/blast/db/FASTA/env_nr.gz 
+	gunzip -c $< | awk '/^>/ {printf("\n%d\n",$$0);next; } { printf("%s",$$0);}  END {printf("\n");}' | sed '/^>/! { s/-//g }' > $@
 
 # Fetch the RefSeq protein database, and unpack the tar files.
 mirror_refseq_protein.blast:
 	wget -A "refseq_protein.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
-	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_protein.*.tar.gz; do echo "--> gunzipping $$f <--"; tar xzf $$f; done )
+	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_protein.*.tar.gz; do echo "--> untarring $$f <--"; tar xzf $$f; done )
 
 # Extract sequences from the RefSeq protein database fetched by
 # mirror_refseq_protein.blast.  As far as I know there's no fasta file for this
 # available at NCBI, like there is for NR.
-refseq_protein.faa:
+refseq_protein.faa: $(wildcard ftp.ncbi.nih.gov/blast/db/refseq_protein*)
 	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_protein -entry all -dbtype prot -out $@
 
 mirror_refseq_rna.blast:
 	wget -A "refseq_rna.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
-	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_rna.*.tar.gz; do echo "--> gunzipping $$f <--"; tar xzf $$f; done )
+	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_rna.*.tar.gz; do echo "--> untarring $$f <--"; tar xzf $$f; done )
 
 refseq_rna.fna:
 	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_rna -entry all -dbtype nucl -out $@
@@ -121,3 +127,7 @@ names.dmp: taxdump.tar.gz
 #   https://github.com/erikrikarddaniel/taxdata2taxflat
 taxflat.tsv: nodes.dmp names.dmp
 	taxdata2taxflat --verbose $^ > $@
+
+# The nucleotide blast database
+ncbi_nt:
+	wget "ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.*.tar.gz"

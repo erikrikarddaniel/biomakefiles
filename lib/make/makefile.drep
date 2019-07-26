@@ -1,0 +1,34 @@
+# makefile.drep
+#
+# Library makefile to make running dRep simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+DREP_DEREPLICATE_OPTS = 
+
+# *** Internal ***
+
+# MAKECALL_DREP is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_DREP_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dRep -h|grep 'dRep v'`" > $@.makecall
+MAKECALL_DREP_PARAMS      = echo "	Called with parameters: $(DREP_OPTS)" >> $@.makecall
+MAKECALL_DREP_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_DREP             = $(MAKECALL_DREP_VERSION); $(MAKECALL_DREP_PARAMS); $(MAKECALL_DREP_INFILES)
+
+# *** Targets ***
+
+%.dereplicate.out: %.d
+	@$(MAKECALL_DREP)
+	dRep dereplicate $(basename $@).drep.d $(DREP_DEREPLICATE_OPTS) -g $</*.fna | tee $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

@@ -36,6 +36,9 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 	gunzip -c $< | cut -f 1,2,12 > $@
 
 # MCL clustering
+%.mci: %.abc.tsv.gz
+	mcxload -abc <(gunzip -c $<) --stream-mirror -write-tab $(basename $@).mcldata -o $@
+
 %.mci: %.abc.tsv
 	mcxload -abc $< --stream-mirror -write-tab $(basename $@).mcldata -o $@
 
@@ -63,7 +66,7 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 
 %.R.tsv: %.mcxdump.tsv
 	sed 's/\t/:::/g' $< > $@.tmp
-	i=0; for l in `cat $@.tmp`; do printf "Cluster%04d\t%s\n" $$i `echo $$l | sed 's/\t/:::/g'`; i=`expr $$i + 1`; done > $@
+	i=0; for l in `cat $@.tmp`; do printf "Cluster%04d\t%d\n" $$i `echo $$l | sed 's/\t/:::/g'`; i=`expr $$i + 1`; done > $@
 	while [ `grep -c ':::' $@` -gt 0 ]; do \
 	  sed -i 's/\(.*\)\t\(.*\):::\(.*\)/\1\t\2\n\1\t\3/' $@; \
 	done

@@ -1,0 +1,17 @@
+# makefile.rast
+#
+# Library makefile to facilitate some tasks for RAST annotations.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# *** Targets ***
+
+%.rast.tsv: %.gff
+	echo "feature	name" > $@
+	grep -v '^#' $< | sed 's/.*ID=//' | sed 's/;Name=/\t/' | sed 's/;.*//' >> $@

@@ -15,10 +15,13 @@ SHELL := /bin/bash
 
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
-#
-# DIAMOND_DB_PATH sets the directory where to look for the database files. The
-# default is the current directory.
+
+# DIAMOND_DB_PATH sets the directory where to look for generic database files
+# like the protein RefSeq. The default is the current directory.
 DIAMOND_DB_PATH = .
+
+# Specify this when you want to point to a specific, non-generic, database
+DIAMOND_DB =
 
 # DIAMOND_ALIGN_OPTS sets non-essential parameters for diamond alignment
 #
@@ -39,7 +42,7 @@ DIAMOND_ALIGN_OPTS =
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
+MAKECALL_VERSION     = echo "`date +"%Y-%m-%d %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)" >> $@.makecall
 MAKECALL_DB_RFP      = echo "	Database: $(DIAMOND_DB_PATH)/refseq_protein (`ls -lL $(DIAMOND_DB_PATH)/refseq_protein.dmnd`)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
@@ -49,6 +52,30 @@ MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 # *** Targets ***
 
 # Running the Diamond aligner
+#
+
+# Non-generic databases (requires the DIAMOND_DB to be set to the full path,
+# except the .dmnd suffix, of the database file).
+
+# RefSeq targets
+
+%.daa: %.fna.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.daa: %.fna
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Run diamond against the database in DIAMOND_DB for all fastq.gz files in the directory.
+fastq.gz2daas: $(subst .fastq.gz,.daa,$(wildcard *.fastq.gz))
+
+%.daa: %.fastq.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Nucleotides in fastq.gz file against the NCBI RefSeq protein database
 fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *.fastq.gz))
@@ -56,15 +83,7 @@ fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *
 %.refseq_protein.daa: %.fastq.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
-
-# Nucleotides in fna.gz file against the NCBI RefSeq protein database
-fna.gz2refseq_protein.daas: $(subst .fna.gz,.refseq_protein.daa,$(wildcard *.fna.gz))
-
-%.refseq_protein.daa: %.fna.gz
-	$(MAKECALL_DIAMOND_RFP)
-	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Protein sequences in faa.gz file against the NCBI RefSeq protein database
 faa2refseq_protein.daas: $(subst .faa.gz,.refseq_protein.daa,$(wildcard *.faa.gz)) $(subst .faa,.refseq_protein.daa,$(wildcard *.faa))
@@ -72,18 +91,40 @@ faa2refseq_protein.daas: $(subst .faa.gz,.refseq_protein.daa,$(wildcard *.faa.gz
 %.refseq_protein.daa: %.faa.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastp -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_protein.daa: %.faa
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastp -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Nucleotides in fna.gz file against the NCBI RefSeq protein database
+fna2refseq_protein.daas: $(subst .fna.gz,.refseq_protein.daa,$(wildcard *.fna.gz)) $(subst .fna,.refseq_protein.daa,$(wildcard *.fna))
+
+%.refseq_protein.daa: %.fna.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.refseq_protein.daa: %.fna
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Reformating the daa output
+%.blasttab.tsv.gz: %.daa
+	diamond view --daa $< -f 6 | gzip -c > $@
 
 # Creating the database
 
 # From protein sequences in a file ending with .faa
 # (Currently, Diamond only works with protein sequence databases.)
+%.dmnd: %.faa.gz
+	$(MAKECALL_MAKEDB)
+	gunzip -c $< | diamond makedb -d $(basename $@)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.dmnd: %.faa
 	$(MAKECALL_MAKEDB)
 	diamond makedb --in $< -d $(basename $@)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall

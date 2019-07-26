@@ -1,0 +1,23 @@
+# makefile.expasy
+#
+# Library makefile to facilitate fetching data from Expasy.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+FTP_URL = ftp://ftp.expasy.org/databases/enzyme/
+
+# *** Parameters ***
+
+enzclass.txt:
+	wget $(FTP_URL)/$@
+
+enzyme.dat:
+	wget $(FTP_URL)/$@
+
+ec-numbers.tsv: enzyme.dat
+	echo "ecnumber	enzyme" > $@
+	grep "^\(ID\)\|\(DE\)" $< | grep -A 1 '^ID' | grep -v '^--$$' | tr '\n' '\t' | sed 's/ID \+/\n/g' | sed 's/DE \+//g' | sed 's/\t\+$$//' | grep -v '^$$' >> $@

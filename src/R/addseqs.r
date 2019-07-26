@@ -78,10 +78,12 @@ logmsg(sprintf("Read new data table %s, %d unique sequences", opt$intable, lengt
 # Find new sequences by right joining with the present set and assign names to them
 nonames = seqidtable %>% right_join(newdata %>% select(seq) %>% distinct(), by='seq') %>% 
   filter(is.na(seqid)) %>% select(seq) %>% arrange(seq)
+logmsg(sprintf("Found new sequences, nrow: %d, assigning new names", nonames %>% nrow()))
 nonames$seqid = sprintf("%s_%010d", opt$prefix, seq(from=lastnum + 1, to=lastnum + length(nonames$seq)))
 
 # Write all names to the outseqidfile
 newseqidtable = union(seqidtable, nonames) %>% arrange(seqid)
+logmsg(sprintf("Union of old and new names, nrow: %d", newseqidtable %>% nrow()))
 write_tsv(newseqidtable, opt$outseqidfile)
 logmsg(sprintf("Wrote union sequence file %s with %d sequences.", opt$outseqidfile, length(newseqidtable$seq)))
 

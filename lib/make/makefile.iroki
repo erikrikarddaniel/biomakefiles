@@ -1,0 +1,18 @@
+# makefile.iroki
+#
+# Library makefile to make running the online iroki tree viewer simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+IROKI_CLEAN = sed 's/;\(.\)/_\1/g' $< > $@
+
+# *** Parameters ***
+
+# *** Targets ***
+
+%.iroki.tree: %.tree
+	$(IROKI_CLEAN)

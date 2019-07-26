@@ -1,0 +1,54 @@
+# makefile.splitstree
+#
+# Library makefile to make running SplitsTree simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+SUBST_COMMAND = sed '/^>/s/\[//g' $< | sed '/^>/s/\]//g' | sed '/^>/s/-//g' | sed '/^>/s/[|":;,()]//g' | sed '/^>/s/ \+/_/g' | sed 's:/:_:g' | sed 's/=/eq/g' | sed "s/'//g" > $@
+
+# *** Parameters ***
+
+# (Tries to) clean up an aligned fasta file so SplitsTree (v. 4) will accept
+# it. (DH might be working on a new version which is less picky.)
+%.st.alnfaa: %.alnfaa
+	$(SUBST_COMMAND)	
+
+%.st.newick: %.newick
+	$(SUBST_COMMAND)	
+
+# Creates a distance matrix splitstree nexus file from a tsv file
+%.dist.splitstree: %.tsv
+	echo '#nexus' > $@
+	echo 'BEGIN TAXA;' >> $@
+	echo "DIMENSIONS NTAX=$$(tail -n +2 $<|wc -l);" >> $@
+	echo 'TAXLABELS' >> $@
+	tail -n +2 $< | cut -f 1 | sed "s/.*/'&'/" >> $@
+	echo ';' >> $@
+	echo 'END;' >> $@
+	echo 'BEGIN DISTANCES;' >> $@
+	echo "DIMENSIONS NTAX=$$(tail -n +2 $<|wc -l);" >> $@
+	echo "FORMAT labels=left diagonal triangle=both;" >> $@
+	echo "MATRIX" >> $@
+	tail -n +2 $< | sed "s/^[^\t]*/'&'/" >> $@
+	echo ';' >> $@
+	echo 'END;' >> $@
+
+# Creates a distance matrix splitstree nexus file from megantab (see e.g. makefile.last) file
+%.dist.splitstree: %.megantab.gz
+	echo '#nexus' > $@
+	echo 'BEGIN TAXA;' >> $@
+	echo "DIMENSIONS NTAX=$$(gunzip -c $< | wc -l);" >> $@
+	echo 'TAXLABELS' >> $@
+	gunzip -c $< | cut -f 1 | sed "s/.*/'&'/" >> $@
+	echo ';' >> $@
+	echo 'END;' >> $@
+	echo 'BEGIN DISTANCES;' >> $@
+	echo "DIMENSIONS NTAX=$$(gunzip -c $< | wc -l);" >> $@
+	echo "FORMAT labels=left diagonal triangle=both;" >> $@
+	echo "MATRIX" >> $@
+	echo ';' >> $@
+	echo 'END;' >> $@

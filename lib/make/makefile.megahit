@@ -32,17 +32,19 @@ space:= $(empty) $(empty)
 
 # *** Targets ***
 
-%.megahit_out: %.r1.fastq.gz %.r2.fastq.gz
-	$(MAKECALL_MEGAHIT_MEGAHIT)
-	megahit -1 $< -2 $(word 2,$^) -o $@ $(MEGAHIT_OPTS) 2>&1 | tee $@.out
-	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
-
 all.megahit_out: $(wildcard *.r?.fastq.gz)
 	$(MAKECALL_MEGAHIT_MEGAHIT)
 	megahit \
 	  -1 $(subst $(space),$(comma),$(sort $(filter %.r1.fastq.gz,$^))) \
 	  -2 $(subst $(space),$(comma),$(sort $(filter %.r2.fastq.gz,$^))) \
 	  -o $@ $(MEGAHIT_OPTS) 2>&1 | tee $@.out
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+all_separate_megahits: $(subst .r1.fastq.gz,.megahit_out,$(wildcard *.r1.fastq.gz))
+
+%.megahit_out: %.r1.fastq.gz %.r2.fastq.gz
+	$(MAKECALL_MEGAHIT_MEGAHIT)
+	megahit -1 $< -2 $(word 2,$^) -o $@ $(MEGAHIT_OPTS) 2>&1 | tee $@.out
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Creates tar balls and gzipped fasta files for all megahit assemblies run in

@@ -1,0 +1,65 @@
+# makefile.subread
+#
+# Library makefile to make running the Subread programs simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+FEATURE_COUNTS_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_SUBREAD is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_FEATURE_COUNTS_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `featureCounts -v 2>&1 | grep feature`" > $@.makecall
+MAKECALL_FEATURE_COUNTS_PARAMS      = echo "	Called with parameters: $(FEATURE_COUNTS_OPTS)" >> $@.makecall
+MAKECALL_FEATURE_COUNTS_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_FEATURE_COUNTS             = $(MAKECALL_FEATURE_COUNTS_VERSION); $(MAKECALL_FEATURE_COUNTS_PARAMS); $(MAKECALL_FEATURE_COUNTS_INFILES)
+
+# *** Targets ***
+all_fc: all_fc.CDSs all_fc.rRNAs all_fc.tRNAs all_fc.tmRNAs all_fc.repeat_regions
+
+all_fc.CDSs: $(subst .gff,.fc.CDS.tsv,$(wildcard *.gff))
+
+all_fc.rRNAs: $(subst .gff,.fc.rRNA.tsv,$(wildcard *.gff))
+
+all_fc.tRNAs: $(subst .gff,.fc.tRNA.tsv,$(wildcard *.gff))
+
+all_fc.tmRNAs: $(subst .gff,.fc.tmRNA.tsv,$(wildcard *.gff))
+
+all_fc.repeat_regions: $(subst .gff,.fc.repeat_region.tsv,$(wildcard *.gff))
+
+%.fc.CDS.tsv: %.gff $(wildcard *.bam)
+	@$(MAKECALL_FEATURE_COUNTS)
+	featureCounts $(FEATURE_COUNTS_OPTS) -t CDS -o $@ -a $^ 2>&1 | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.fc.rRNA.tsv: %.gff $(wildcard *.bam)
+	@$(MAKECALL_FEATURE_COUNTS)
+	featureCounts $(FEATURE_COUNTS_OPTS) -t rRNA -o $@ -a $^ 2>&1 | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.fc.tRNA.tsv: %.gff $(wildcard *.bam)
+	@$(MAKECALL_FEATURE_COUNTS)
+	featureCounts $(FEATURE_COUNTS_OPTS) -t tRNA -o $@ -a $^ 2>&1 | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.fc.tmRNA.tsv: %.gff $(wildcard *.bam)
+	@$(MAKECALL_FEATURE_COUNTS)
+	featureCounts $(FEATURE_COUNTS_OPTS) -t tmRNA -o $@ -a $^ 2>&1 | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.fc.repeat_region.tsv: %.gff $(wildcard *.bam)
+	@$(MAKECALL_FEATURE_COUNTS)
+	featureCounts $(FEATURE_COUNTS_OPTS) -t repeat_region -o $@ -a $^ 2>&1 | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

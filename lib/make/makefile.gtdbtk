@@ -1,0 +1,20 @@
+# makefile.gtdbtk
+#
+# THIS SHOULD BE MERGED INTO makefile.gtdb!
+#
+# Library makefile to make it easier to fetch data files for GTDB tk.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+GTDBTK_RELEASE = SET GTDBTK_RELEASE TO THE CURRENT RELEASE (JUST THE NUMBER, E.G. 86)
+
+# *** Targets ***

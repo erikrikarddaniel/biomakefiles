@@ -1,0 +1,25 @@
+# makefile.gcua
+#
+# Library makefile to make running the gcua program simpler.
+#
+# You can download the program from here:
+#
+# http://mcinerneylab.com/software/gcua/
+#
+# It's not the easiest to program...
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# *** Targets ***
+
+%.gcua.codons: %.fna
+	echo -e "\n1\n$<\n2\n5\n$@\nq\n" | gcua
+
+%.gcua.codons.tsv: %.gcua.codons
+	sed 's/) */)\n/' $< | grep '(.\+)' | sed 's/^.*\([ACGU][ACGU][ACGU]\) \+\([0-9]\+\) \+(\(.*\))/$(basename $(basename $<))\t\1\t\2\t\3/' > $@

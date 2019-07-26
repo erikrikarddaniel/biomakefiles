@@ -13,25 +13,24 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-HMMSEARCH_OPTS =
-HMMRANK_OPTS =
-
-# *** Internal ***
-
-# MAKECALLHMMSEARCH is a macro that defines what will be output to the .makecall
-# file, the file that records versions, file stamps, parameters etc.
+# Set HMMER_OPTS = --cpu 4 to use four cores.
 #
-# *Don't redefine!*
-MAKECALL_VERSION       = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `hmmsearch -h|grep -o 'HMMER [0-9][^ ]*'`" > $@.makecall
-MAKECALL_SEARCH_PARAMS = echo "	Called with parameters: $(HMMSEARCH_OPTS)" >> $@.makecall
-MAKECALL_INFILES       = echo "	Input files: $^ (`ls -l $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_HMMSEARCH     = $(MAKECALL_VERSION); $(MAKECALL_SEARCH_PARAMS); $(MAKECALL_INFILES)
+HMMER_OPTS =
+HMMBUILD_OPTS  =
+HMMSEARCH_OPTS =
+HMMRANK_OPTS   =
 
-# This one *must* be set to point to a fasta file with amino acid sequences.
+# This one *must* be set to point to a fasta file with amino acid sequences, unless you're 
+# running against an NCBI faa database (see below for those).
 # To work with gzipped .faa files, set to something like: "<(gunzip -c file.faa.gz)"
 HMMER_DB_FAA = NEEDS TO BE SET TO A FASTA FILE WITH AMINO ACIDS!
+HMMSCAN_DB   = NEEDS TO BE SET TO AN hmmscan LIBRARY!
 
-HMMER_OPTS =
+# If you're using any of the NCBI targets (ncbi_env_nr, ncbi_nr or ncbi_refseq), set one of the 
+# below.
+NCBI_ENV_NR_FAA = ncbi/env_nr.faa
+NCBI_NR_FAA 	= ncbi/nr.faa
+NCBI_REFSEQ_FAA = ncbi/refseq_protein.faa
 
 # *** Internal ***
 
@@ -39,43 +38,158 @@ HMMER_OPTS =
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_HMMER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(hmmsearch -h|grep HMMER)" > $@.makecall
-MAKECALL_HMMER_PARAMS      = echo "	Called with parameters: $(HMMER_OPTS)" >> $@.makecall
-MAKECALL_HMMER_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_HMMER             = $(MAKECALL_HMMER_VERSION); $(MAKECALL_HMMER_PARAMS); $(MAKECALL_HMMER_INFILES)
+MAKECALL_HMMSEARCH_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(hmmsearch -h|grep HMMER)" > $@.makecall
+MAKECALL_HMMSEARCH_PARAMS      = echo "	Called with parameters: $(HMMER_OPTS) $(HMMSEARCH_OPTS)" >> $@.makecall
+MAKECALL_HMMSCAN_VERSION       = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(hmmscan -h|grep HMMER)" > $@.makecall
+MAKECALL_HMMSCAN_PARAMS        = echo "	Called with parameters: $(HMMER_OPTS) $(HMMSCAN_OPTS)" >> $@.makecall
+MAKECALL_HMMER_INFILES         = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_HMMSEARCH             = $(MAKECALL_HMMSEARCH_VERSION); $(MAKECALL_HMMSEARCH_PARAMS); $(MAKECALL_HMMER_INFILES)
+MAKECALL_HMMSCAN               = $(MAKECALL_HMMSCAN_VERSION); $(MAKECALL_HMMSCAN_PARAMS); $(MAKECALL_HMMER_INFILES)
 
 # *** Targets ***
 
+all_hmms: $(subst .alnfaa,.hmm,$(wildcard *.alnfaa))
+
+all_consensus: $(subst .hmm,.consensus.faa,$(wildcard *.hmm))
+
 all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
+
+all_refseq_hmmout: $(subst .hmm,.ncbi_refseq.hmmout,$(wildcard *.hmm))
+
+all_env_nr_hmmout: $(subst .hmm,.ncbi_env_nr.hmmout,$(wildcard *.hmm))
+
+%.hmm: %.alnfaa
+	hmmbuild $(HMMBUILD_OPTS) $@ $<
+
+%.hmm: %.phy
+	hmmbuild $(HMMBUILD_OPTS) $@ $<
+
+%.consensus.faa: %.hmm
+	hmmemit -c $< > $@
 
 # This target requires that "hmmrank", a symlink to "hmmrank.r" from 
 # https://github.com/erikrikarddaniel/hmmrank is in your PATH.
 all.ranked.tsv: $(wildcard *.tblout)
 	hmmrank --verbose --outfile=$@ $(HMMRANK_OPTS) $^
 
+best.ranked.tsv: $(wildcard *.tblout)
+	hmmrank --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
+
+all.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
+	hmmrank --verbose --outfile=$@ $(HMMRANK_OPTS) $^
+
+best.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
+	hmmrank --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
+
+# This loops over all hmm files, greps for each in the best.ranked.tsv and
+# produces a file with "accession numbers", i.e. column 1 from the
+# best.ranked.tsv. The accno files are supposed to be used to grep the original
+# fasta file to produce profile specific fasta files. Each accession is
+# prefixed with '>' but no other measure to ensure uniqueness is applied. If
+# your original fasta files contains very simples sequence names, e.g.  just
+# numbers, you will probably have to modify the patterns in the accnos files to
+# be more specific. Moreover, the matching for profile name is not very
+# specific and if the profile name is a substring of another profile name all
+# will be included.
+accno_files: best.ranked.tsv
+	for h in *.hmm; do \
+	  p=$$(grep "^NAME" $$h | sed 's/NAME *//'); \
+	  grep $$p $< | cut -f 1 | sed 's/^/>/' > $${p}.accnos; \
+	done
+	touch $@
+
 %.hmmout: %.hmm
-	@$(MAKECALL_HMMER)
+	@$(MAKECALL_HMMSEARCH)
 	hmmsearch \
 	  --tblout=$(basename $@).tblout \
 	  --domtblout=$(basename $@).domtblout \
-	  $(HMMER_OPTS) \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
 	  $< $(HMMER_DB_FAA) \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.hmmscanout: %.faa
+	@$(MAKECALL_HMMSCAN)
+	hmmscan \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $(HMMSCAN_DB) $< \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.hmmscanout: %.faa.gz
+	@$(MAKECALL_HMMSCAN)
+	gunzip -c $< | hmmscan \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $(HMMSCAN_DB) - \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ncbi_env_nr.hmmout: %.hmm
+	@$(MAKECALL_HMMSEARCH)
+	hmmsearch \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $< $(NCBI_ENV_NR_FAA) \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ncbi_nr.hmmout: %.hmm
+	@$(MAKECALL_HMMSEARCH)
+	hmmsearch \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $< $(NCBI_NR_FAA) \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ncbi_refseq.hmmout: %.hmm
+	@$(MAKECALL_HMMSEARCH)
+	hmmsearch \
+	  --tblout=$(basename $@).tblout \
+	  --domtblout=$(basename $@).domtblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $< $(NCBI_REFSEQ_FAA) \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 # Runs hmmsearch for all combinations of .faa and .hmm files in the directory
-hmmsearch_loop:
+hmmsearch_loop: $(wildcard *.hmm) $(wildcard *.faa)
 	for faa in *.faa; do \
 	  bsfaa=$$(basename $$faa .faa); \
 	  for hmm in *.hmm; do \
 	    bshmm=$$(basename $$hmm .hmm); \
 	    bs="$$bsfaa.$$bshmm"; \
+	    echo "--> searching $${faa} with $$hmm <--"; \
 	    hmmsearch \
+	      $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
 	      -o $$bs.hmmout \
 	      --tblout=$$bs.tblout \
 	      --domtblout=$$bs.domtblout \
-	      $$hmm $$faa \
-	      $(HMMER_OPTS); \
+	      $$hmm $$faa; \
+	  done; \
+	done
+	touch $@
+
+# Runs hmmsearch for all combinations of .faa.gz and .hmm files in the directory
+gzhmmsearch_loop:
+	for faa in *.faa.gz; do \
+	  bsfaa=$$(basename $$faa .faa.gz); \
+	  for hmm in *.hmm; do \
+	    bshmm=$$(basename $$hmm .hmm); \
+	    echo "--> $$bsfaa - $$bshmm <--"; \
+	    bs="$$bsfaa.$$bshmm"; \
+	    gunzip -c $$faa | hmmsearch \
+	      $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	      -o $$bs.hmmout \
+	      --tblout=$$bs.tblout \
+	      --domtblout=$$bs.domtblout \
+	      $$hmm -; \
 	  done; \
 	done
 	touch $@

@@ -42,6 +42,17 @@ clustalo_align_all_faas: $(subst .faa,.co.alnfaa,$(wildcard *.faa))
 	gunzip -c $<  | clustalo -i - -o $@ --force $(CLUSTALO_OPTS)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# Align amino acids to an alignment with an hmm profile present
+%.co.hmm.alnfaa: %.faa profile.hmm 
+	@$(MAKECALL_CLUSTALO)
+	clustalo -i $< -o $@ --hmm-in=$(word 2,$^) --force $(CLUSTALO_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.co.profile.alnfaa: %.faa profile.alnfaa
+	@$(MAKECALL_CLUSTALO)
+	clustalo -i $< -o $@ --profile1=$(word 2,$^) --force $(CLUSTALO_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 # Align non-aligned nucleotide sequences
 %.co.alnfna: %.fna
 	@$(MAKECALL_CLUSTALO)

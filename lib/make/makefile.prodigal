@@ -29,19 +29,49 @@ MAKECALL_PRODIGAL             = $(MAKECALL_PRODIGAL_VERSION); $(MAKECALL_PRODIGA
 
 # *** Targets ***
 
-all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna)))
+all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fna.gz,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna.gz),$(wildcard *.fna.gz)))
 
 %.single_prodigal.gbk: %.fna
 	@$(MAKECALL_PRODIGAL)
 	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.single_prodigal.gff: %.fna
+	@$(MAKECALL_PRODIGAL)
+	prodigal -f gff -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.single_prodigal.gbk: %.fna.gz
+	@$(MAKECALL_PRODIGAL)
+	gunzip -c $< | prodigal -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.single_prodigal.gff: %.fna.gz
+	@$(MAKECALL_PRODIGAL)
+	gunzip -c $< | prodigal -f gff -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 # Anonymous mode: Use for non-binned metagenomes!
-all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fa,.meta_prodigal.gbk,$(wildcard *.fa))
+all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fna.gz,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna.gz),$(wildcard *.fna.gz))) $(subst .fa,.meta_prodigal.gbk,$(wildcard *.fa))
 
 %.meta_prodigal.gbk: %.fna
 	@$(MAKECALL_PRODIGAL)
 	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.meta_prodigal.gff: %.fna
+	@$(MAKECALL_PRODIGAL)
+	prodigal -f gff -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.meta_prodigal.gbk: %.fna.gz
+	@$(MAKECALL_PRODIGAL)
+	unpigz -c $< | prodigal -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.meta_prodigal.gff: %.fna.gz
+	@$(MAKECALL_PRODIGAL)
+	unpigz -c $< | prodigal -f gff -o $@ -a $(basename $@).faa -d $(basename $@).fna -p meta | tee $@.out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.meta_prodigal.gbk: %.fa

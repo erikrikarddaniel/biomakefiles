@@ -1,0 +1,61 @@
+# makefile.gtdb
+#
+# Library makefile to make fetching data from GTDB simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se, daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+GTDB_RELEASE = 86
+GTDBTK_OPTIONS =
+
+# *** Internal ***
+
+# *** Targets ***
+
+# Fetch data
+gtdbtk_current_data.tar.gz:
+	wget https://data.ace.uq.edu.au/public/gtdbtk/release_$(GTDBTK_RELEASE)/gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz
+	ln -s gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz $@
+
+# Run the standard workflow on all genomes in "genome_bins"
+gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
+	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
+
+# Download data (easier to do with the script included in the distribution)
+arc_taxonomy.genomes.tsv:
+	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_taxonomy_r$(GTDB_RELEASE).tsv
+	ln -s arc_taxonomy_r$(GTDB_RELEASE).tsv $@
+
+arc122_tree.newick:
+	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc122_r$(GTDB_RELEASE).1.tree
+	ln -s arc122_r$(GTDB_RELEASE).1.tree $@
+
+bac_taxonomy.genomes.tsv:
+	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac_taxonomy_r$(GTDB_RELEASE).tsv
+	ln -s bac_taxonomy_r$(GTDB_RELEASE).tsv $@
+
+bac120_tree.newick:
+	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac120_r$(GTDB_RELEASE).1.tree
+	ln -s bac120_r$(GTDB_RELEASE).1.tree $@
+
+# Splits the ; separated hierarchy in the original files to a tab separated
+%.split.tsv: %.tsv
+	sed 's/\td__/\t/' $< | sed 's/;[a-z]__/\t/g' > $@
+
+# Makes a file with unique species lineages, by removing the genome accno and finding the unique
+%.uniqlineages.tsv: %.genomes.split.tsv
+	cut -f 2-20 $< | sort -u > $@
+
+# Just playing around...
+arc_bac.phyla.newick: arc_taxonomy.phyla.newick bac_taxonomy.phyla.newick
+	echo "($$(sed 's/;//' $<),$$(sed 's/;//' $(word 2,$^)));" > $@
+%.phyla.newick: %.uniqlineages.tsv
+	echo "($$(cut -f 2 $< | sort -u | tr '\n' ',' | sed 's/,$$//' ))$$(cut -f 1 $< | sort -u | tr '\n' ' ');" > $@

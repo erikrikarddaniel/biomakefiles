@@ -1,0 +1,59 @@
+# makefile.ncbi-edirect
+#
+# Library makefile to make running EDirect programs simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+EDIRECT_OPTS =
+
+# Check out a json file and pick fields from this for an .accessions.tsv file.
+# Only "simple" fields, i.e. not the hierarchically nested ones.
+ACCESSION_FIELDS = title taxid genome completeness organism
+
+# *** Internal ***
+
+# MAKECALL_EDIRECT is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_EDIRECT_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `efetch -version`" > $@.makecall
+MAKECALL_EDIRECT_PARAMS      = echo "	Called with parameters: $(EDIRECT_OPTS)" >> $@.makecall
+MAKECALL_EDIRECT_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_EDIRECT             = $(MAKECALL_EDIRECT_VERSION); $(MAKECALL_EDIRECT_PARAMS); $(MAKECALL_EDIRECT_INFILES)
+
+# *** Targets ***
+
+# Fetch nucleotide summaries as json files for all accessions in %.accnos
+%.nucl.docsums.jsons.d: %.accnos
+	@$(MAKECALL_EDIRECT)
+	@if [ ! -e $@ ]; then mkdir $@; fi
+	@for a in $$(sort -u $<); do \
+	  if [ ! -e $@/$$a.nucl.docsum.json ]; then \
+	    echo "--> Fetching $$a <--"; \
+	    efetch -db nucleotide -id $$a -format docsum -mode json > $@/$$a.nucl.docsum.json; \
+	  else \
+	    echo "--> $$a already present <--"; \
+	  fi; \
+	done
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Create a tsv summary of the above; see ACCESSION_FIELDS macro at the top.
+%.accessions.tsv: %.nucl.docsums.jsons.d
+	echo "accno	$$(echo $(ACCESSION_FIELDS) | sed 's/ /\t/g')" > $@; \
+	for f in $</*.json; do \
+	  echo -n $$(basename $$f .nucl.docsum.json) >> $@; \
+	  for t in $(ACCESSION_FIELDS); do \
+	    tf=`grep "\"$$t\"" $$f | sed "s/.*\"$$t\": *//" | sed 's/"\(.*\)"/\1/' | sed 's/,$$//'`; \
+	    echo -n "	$$tf" >> $@; \
+	  done; \
+	  echo >> $@; \
+	done

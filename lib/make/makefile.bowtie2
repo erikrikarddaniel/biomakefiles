@@ -47,6 +47,8 @@ MAKECALL_BOWTIE2_BUILD        	 = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE
 
 all_pe_sams: $(subst .r1.fastq.gz,.pe.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
+all_pe_sorted_bams: $(subst .r1.fastq.gz,.pe.bowtie2.sorted.bam,$(wildcard *.r1.fastq.gz))
+
 all_pe_sams.gz: $(subst .r1.fastq.gz,.pe.bowtie2.sam.gz,$(wildcard *.r1.fastq.gz))
 
 all_se_sams: $(subst .r1.fastq.gz,.se.bowtie2.sam,$(wildcard *.r1.fastq.gz))
@@ -60,6 +62,11 @@ all_interleaved_sorted_bams: $(subst .int.fastq.gz,.int.bowtie2.sorted.bam,$(wil
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) > $@ 2> $@.err
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.pe.bowtie2.sorted.bam: %.r1.fastq.gz %.r2.fastq.gz
+	@$(MAKECALL_BOWTIE2_ALIGN)
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) 2> $@.err | samtools view -Sb | samtools sort > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.pe.bowtie2.sam.gz: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_BOWTIE2_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) 2> $(basename $@).err | gzip -c > $@ 
@@ -71,13 +78,14 @@ all_interleaved_sorted_bams: $(subst .int.fastq.gz,.int.bowtie2.sorted.bam,$(wil
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.se.bowtie2.sam.gz: %.fastq.gz
-	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< > $@ 2> $@.err | gzip -c > $@
+	@$(MAKECALL_BOWTIE2_ALIGN)
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< 2> $@.err | gzip -c > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 	
 %.interleaved.pe.bowtie2.sorted.bam: %.int.fastq.gz
 	@$(MAKECALL_BOWTIE2_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) --interleaved $(word 1,$^) 2> $@.err | samtools view -Sb | samtools sort > $@
-	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall	
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # SILVA mapping targets
 all_silvaparcs: $(subst .r1.fastq.gz,.pe.bowtie2-silvaparc.sam.gz,$(wildcard *.r1.fastq.gz))
@@ -99,6 +107,6 @@ all_bowtie2indeces: $(subst .fna,.bowtie2index,$(wildcard *.fna))
 
 %.bowtie2index: %.fna
 	@$(MAKECALL_BOWTIE2_BUILD)
-	bowtie2-build $(BOWTIE_INDEX_OPTS) -f $< $(basename $@) > $@.err 2>&1
+	bowtie2-build $(BOWTIE_INDEX_OPTS) -f $< $(basename $@) | tee $@.err 2>&1
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
