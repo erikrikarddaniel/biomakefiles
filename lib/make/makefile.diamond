@@ -43,7 +43,7 @@ DIAMOND_ALIGN_OPTS =
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_VERSION     = echo "`date +"%Y-%m-%s %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
+MAKECALL_VERSION     = echo "`date +"%Y-%m-%d %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)" >> $@.makecall
 MAKECALL_DB_RFP      = echo "	Database: $(DIAMOND_DB_PATH)/refseq_protein (`ls -lL $(DIAMOND_DB_PATH)/refseq_protein.dmnd`)" >> $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
@@ -63,12 +63,12 @@ MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 %.daa: %.fna.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.daa: %.fna
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Run diamond against the database in DIAMOND_DB for all fastq.gz files in the directory.
 fastq.gz2daas: $(subst .fastq.gz,.daa,$(wildcard *.fastq.gz))
@@ -76,7 +76,7 @@ fastq.gz2daas: $(subst .fastq.gz,.daa,$(wildcard *.fastq.gz))
 %.daa: %.fastq.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Nucleotides in fastq.gz file against the NCBI RefSeq protein database
 fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *.fastq.gz))
@@ -84,7 +84,7 @@ fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *
 %.refseq_protein.daa: %.fastq.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Protein sequences in faa.gz file against the NCBI RefSeq protein database
 faa2refseq_protein.daas: $(subst .faa.gz,.refseq_protein.daa,$(wildcard *.faa.gz)) $(subst .faa,.refseq_protein.daa,$(wildcard *.faa))
@@ -92,12 +92,12 @@ faa2refseq_protein.daas: $(subst .faa.gz,.refseq_protein.daa,$(wildcard *.faa.gz
 %.refseq_protein.daa: %.faa.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastp -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_protein.daa: %.faa
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastp -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Nucleotides in fna.gz file against the NCBI RefSeq protein database
 fna2refseq_protein.daas: $(subst .fna.gz,.refseq_protein.daa,$(wildcard *.fna.gz)) $(subst .fna,.refseq_protein.daa,$(wildcard *.fna))
@@ -105,12 +105,12 @@ fna2refseq_protein.daas: $(subst .fna.gz,.refseq_protein.daa,$(wildcard *.fna.gz
 %.refseq_protein.daa: %.fna.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_protein.daa: %.fna
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Reformating the daa output
 all_blasttab.tsv.gzs: $(subst .daa,.blasttab.tsv.gz,$(wildcard *.daa))
@@ -125,9 +125,9 @@ all_blasttab.tsv.gzs: $(subst .daa,.blasttab.tsv.gz,$(wildcard *.daa))
 %.dmnd: %.faa.gz
 	$(MAKECALL_MAKEDB)
 	gunzip -c $< | diamond makedb -d $(basename $@)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.dmnd: %.faa
 	$(MAKECALL_MAKEDB)
 	diamond makedb --in $< -d $(basename $@)
-	echo "`date +"%Y-%m-%s %H:%M:%S"`: DONE" >> $@.makecall
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall

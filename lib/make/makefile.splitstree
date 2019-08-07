@@ -36,3 +36,19 @@ SUBST_COMMAND = sed '/^>/s/\[//g' $< | sed '/^>/s/\]//g' | sed '/^>/s/-//g' | se
 	tail -n +2 $< | sed "s/^[^\t]*/'&'/" >> $@
 	echo ';' >> $@
 	echo 'END;' >> $@
+
+# Creates a distance matrix splitstree nexus file from megantab (see e.g. makefile.last) file
+%.dist.splitstree: %.megantab.gz
+	echo '#nexus' > $@
+	echo 'BEGIN TAXA;' >> $@
+	echo "DIMENSIONS NTAX=$$(gunzip -c $< | wc -l);" >> $@
+	echo 'TAXLABELS' >> $@
+	gunzip -c $< | cut -f 1 | sed "s/.*/'&'/" >> $@
+	echo ';' >> $@
+	echo 'END;' >> $@
+	echo 'BEGIN DISTANCES;' >> $@
+	echo "DIMENSIONS NTAX=$$(gunzip -c $< | wc -l);" >> $@
+	echo "FORMAT labels=left diagonal triangle=both;" >> $@
+	echo "MATRIX" >> $@
+	echo ';' >> $@
+	echo 'END;' >> $@

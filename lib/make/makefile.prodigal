@@ -31,6 +31,8 @@ MAKECALL_PRODIGAL             = $(MAKECALL_PRODIGAL_VERSION); $(MAKECALL_PRODIGA
 
 all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fna.gz,.single_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna.gz),$(wildcard *.fna.gz)))
 
+all_single_prodigal_gffs: $(subst .fna,.single_prodigal.gff,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fna.gz,.single_prodigal.gff,$(filter-out $(wildcard *prodigal.fna.gz),$(wildcard *.fna.gz)))
+
 %.single_prodigal.gbk: %.fna
 	@$(MAKECALL_PRODIGAL)
 	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
@@ -53,6 +55,8 @@ all_single_prodigal_gbks: $(subst .fna,.single_prodigal.gbk,$(filter-out $(wildc
 
 # Anonymous mode: Use for non-binned metagenomes!
 all_meta_prodigal_gbks: $(subst .fna,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fna.gz,.meta_prodigal.gbk,$(filter-out $(wildcard *prodigal.fna.gz),$(wildcard *.fna.gz))) $(subst .fa,.meta_prodigal.gbk,$(wildcard *.fa))
+
+all_meta_prodigal_gffs: $(subst .fna,.meta_prodigal.gff,$(filter-out $(wildcard *prodigal.fna),$(wildcard *.fna))) $(subst .fna.gz,.meta_prodigal.gff,$(filter-out $(wildcard *prodigal.fna.gz),$(wildcard *.fna.gz))) $(subst .fa,.meta_prodigal.gff,$(wildcard *.fa))
 
 %.meta_prodigal.gbk: %.fna
 	@$(MAKECALL_PRODIGAL)
