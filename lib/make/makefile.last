@@ -88,6 +88,9 @@ all_fastq_lasts: $(subst .fastq,.maf.gz,$(wildcard *.fastq)) $(subst .fastq.gz,.
 # MEGAN.
 all_megantabs: $(subst .maf.gz,.megantab.gz,$(wildcard *.maf.gz)) $(subst .maf,.megantab.gz,$(wildcard *.maf))
 
+# Converts all maf files to LAST's interpretation of the tabular BLAST output.
+all_blasttabs: $(subst .maf.gz,.blasttab.gz,$(wildcard *.maf.gz)) $(subst .maf,.blasttab.gz,$(wildcard *.maf))
+
 # Here comes individual pattern rules. Defines how programs are actually called
 
 %.maf.gz: %.fna
