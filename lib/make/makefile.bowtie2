@@ -13,6 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+# The number of threads to use is --threads N for both building and aligning.
 BOWTIE_BUILD_OPTS =
 BOWTIE_ALIGN_OPTS =
 
