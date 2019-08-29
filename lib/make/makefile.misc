@@ -113,7 +113,10 @@ ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
 fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
 
-all_seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz)) $(subst .fna.gz,.seqlens.tsv,$(wildcard *.fna.gz)) $(subst .fna,.seqlens.tsv,$(wildcard *.fna))
+all_seqlens.tsv: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz)) $(subst .fna.gz,.seqlens.tsv,$(wildcard *.fna.gz)) $(subst .fna,.seqlens.tsv,$(wildcard *.fna))
+	for f in $^; do \
+	  cat $$f | sed "s/^/$$(basename $$f .seqlens.tsv)\t&/"; \
+	done
 
 %.seqlens.tsv: %.fastq.gz
 	echo "seqlen	n" > $@
