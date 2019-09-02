@@ -119,14 +119,16 @@ all_blasttabs: $(subst .maf.gz,.blasttab.gz,$(wildcard *.maf.gz)) $(subst .maf,.
 	@echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # All against all alignments
+
+# I don't know why I'm using parallel-fasta here, but not in the corresponding fna recipes!
 %.xwise.maf.gz: %.faa %.lastdb
 	@$(MAKECALL_LASTAL)
 	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(word 2, $^)" < $< | gzip -c > $@
 	@echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.xwise.maf.gz: %.faa %.lastdb
+%.xwise.maf.gz: %.faa.gz %.lastdb
 	@$(MAKECALL_LASTAL)
-	parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(word 2, $^)" < $< | gzip -c > $@
+	gunzip -c $< | parallel-fasta --keep-order --no-notice $(PARALLEL_OPTS) "lastal -Q0 $(LASTAL_OPTS) $(LAST_DB_PATH)/$(word 2, $^)" | gzip -c > $@
 	@echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_fna_lastdbs: $(subst .fna,.lastdb,$(wildcard *.fna))
