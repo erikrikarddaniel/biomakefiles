@@ -48,6 +48,10 @@ MAKECALL_HMMSCAN               = $(MAKECALL_HMMSCAN_VERSION); $(MAKECALL_HMMSCAN
 
 # *** Targets ***
 
+all_hmms: $(subst .alnfaa,.hmm,$(wildcard *.alnfaa))
+
+all_consensus: $(subst .hmm,.consensus.faa,$(wildcard *.hmm))
+
 all_hmmout: $(subst .hmm,.hmmout,$(wildcard *.hmm))
 
 all_refseq_hmmout: $(subst .hmm,.ncbi_refseq.hmmout,$(wildcard *.hmm))
@@ -59,6 +63,9 @@ all_env_nr_hmmout: $(subst .hmm,.ncbi_env_nr.hmmout,$(wildcard *.hmm))
 
 %.hmm: %.phy
 	hmmbuild $(HMMBUILD_OPTS) $@ $<
+
+%.consensus.faa: %.hmm
+	hmmemit -c $< > $@
 
 # This target requires that "hmmrank", a symlink to "hmmrank.r" from 
 # https://github.com/erikrikarddaniel/hmmrank is in your PATH.

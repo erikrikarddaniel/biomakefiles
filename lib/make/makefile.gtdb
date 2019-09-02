@@ -20,6 +20,11 @@ GTDBTK_OPTIONS =
 
 # *** Targets ***
 
+# Fetch data
+gtdbtk_current_data.tar.gz:
+	wget https://data.ace.uq.edu.au/public/gtdbtk/release_$(GTDBTK_RELEASE)/gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz
+	ln -s gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz $@
+
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
 	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)

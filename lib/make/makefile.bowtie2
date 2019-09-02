@@ -13,6 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+# The number of threads to use is --threads N for both building and aligning.
 BOWTIE_BUILD_OPTS =
 BOWTIE_ALIGN_OPTS =
 
@@ -47,15 +48,24 @@ MAKECALL_BOWTIE2_BUILD        	 = $(MAKECALL_BOWTIE2_VERSION); $(MAKECALL_BOWTIE
 
 all_pe_sams: $(subst .r1.fastq.gz,.pe.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
+all_pe_sorted_bams: $(subst .r1.fastq.gz,.pe.bowtie2.sorted.bam,$(wildcard *.r1.fastq.gz))
+
 all_pe_sams.gz: $(subst .r1.fastq.gz,.pe.bowtie2.sam.gz,$(wildcard *.r1.fastq.gz))
 
 all_se_sams: $(subst .r1.fastq.gz,.se.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
 all_se_sams.gz: $(subst .fastq.gz,.se.bowtie2.sam.gz,$(wildcard *.fastq.gz))
 
+all_interleaved_sorted_bams: $(subst .int.fastq.gz,.int.bowtie2.sorted.bam,$(wildcard *.int.fastq.gz))
+
 %.pe.bowtie2.sam: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_BOWTIE2_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) > $@ 2> $@.err
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.pe.bowtie2.sorted.bam: %.r1.fastq.gz %.r2.fastq.gz
+	@$(MAKECALL_BOWTIE2_ALIGN)
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -1 $(word 1,$^) -2 $(word 2,$^) 2> $@.err | samtools view -Sb | samtools sort > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.pe.bowtie2.sam.gz: %.r1.fastq.gz %.r2.fastq.gz
@@ -69,7 +79,13 @@ all_se_sams.gz: $(subst .fastq.gz,.se.bowtie2.sam.gz,$(wildcard *.fastq.gz))
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.se.bowtie2.sam.gz: %.fastq.gz
-	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< > $@ 2> $@.err | gzip -c > $@
+	@$(MAKECALL_BOWTIE2_ALIGN)
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< 2> $@.err | gzip -c > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+	
+%.interleaved.pe.bowtie2.sorted.bam: %.int.fastq.gz
+	@$(MAKECALL_BOWTIE2_ALIGN)
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) --interleaved $(word 1,$^) 2> $@.err | samtools view -Sb | samtools sort > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # SILVA mapping targets

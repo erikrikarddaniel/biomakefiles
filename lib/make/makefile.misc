@@ -15,7 +15,7 @@ SHELL := /bin/bash
 CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
 
 # Put fasta sequences on one line
-CLEAN_FASTA = awk '/^>/ {printf("\n%s\n",$$0);next; } { printf("%s",$$0);} END {printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' | sed '/^>/!s/ //g'
+CLEAN_FASTA = awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' | sed '/^>/!s/ //g'
 
 SEQLENS = tr '\n' '\t' < $< | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
 
@@ -53,8 +53,14 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 %.c.fna: %.fna
 	cat $< | $(CLEAN_FASTA) > $@
 
+%.c.fna.gz: %.fna.gz
+	gunzip -c $< | $(CLEAN_FASTA) | gzip -c > $@
+
 %.c.faa: %.faa
 	cat $< | $(CLEAN_FASTA) > $@
+
+%.c.faa.gz: %.faa.gz
+	gunzip -c $< | $(CLEAN_FASTA) | gzip -c > $@
 
 %.c.alnfna: %.alnfna
 	cat $< | $(CLEAN_FASTA) > $@
@@ -103,11 +109,14 @@ ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
 %.phylip: %.alnfaa
 	echo "$$(grep -c '>' $<) $$(grep -v '>' $< | head -n 1 | awk '{ print length($$1); }')" > $@
-	awk '/^>(.*)/ { printf("%s ", substr($$1, 2)); next; } !/^>/ { print $$0; }' $< >> $@
+	awk '/^>(.*)/ { printf("%d ", substr($$1, 2)); next; } !/^>/ { print $$0; }' $< >> $@
 
 fastqgzs2seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz))
 
-all_seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz)) $(subst .fna.gz,.seqlens.tsv,$(wildcard *.fna.gz)) $(subst .fna,.seqlens.tsv,$(wildcard *.fna))
+all_seqlens.tsv: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz)) $(subst .fna.gz,.seqlens.tsv,$(wildcard *.fna.gz)) $(subst .fna,.seqlens.tsv,$(wildcard *.fna))
+	for f in $^; do \
+	  cat $$f | sed "s/^/$$(basename $$f .seqlens.tsv)\t&/"; \
+	done
 
 %.seqlens.tsv: %.fastq.gz
 	echo "seqlen	n" > $@
@@ -121,16 +130,21 @@ all_seqlens: $(subst .fastq.gz,.seqlens.tsv,$(wildcard *.fastq.gz)) $(subst .fna
 	echo "seqlen	n" > $@
 	awk 'NR%2 == 0 {lengths[length($0)]++} END {for (l in lengths) {print l,"\t",lengths[l]}}' $< | sed 's/ *//g' >> $@
 
+# Count the number of sequences in a set of r1.fastq.gz files
 r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 	for f in $^; do \
 	  echo "$$(basename $$f .r1.seqcount)	$$(cat $$f)"; \
 	done > $@
+
+# Make an individual seqcount file from a gzipped fastq file. Used by the r1.seqcounts.tsv target above.
 %.seqcount: %.fastq.gz
 	echo $$(expr $$(gunzip -c $< | wc -l) / 4) > $@
 
+# Gunzip an fna.gz file
 %.fna: %.fna.gz
 	gunzip -c $< > $@
 
+# Convert a gzipped fastq file to fasta
 %.fna: %.fastq.gz
 	gunzip -c $< | fastq_to_fasta > $@
 
@@ -144,6 +158,9 @@ numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))
 # Translate DNA fasta files to AA fasta files with Emboss' transeq
 %.faa: %.fna
 	transeq -sequence $< -outseq $@
+
+%.faa.gz: %.fna.gz
+	transeq -sequence <(gunzip -c $<) -outseq >(gzip -c > $@)
 
 %.alnfaa: %.alnfna
 	transeq -sequence $< -outseq $@

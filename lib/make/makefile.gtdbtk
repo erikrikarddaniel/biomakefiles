@@ -1,4 +1,6 @@
-# makefile.gtdb
+# makefile.gtdbtk
+#
+# THIS SHOULD BE MERGED INTO makefile.gtdb!
 #
 # Library makefile to make it easier to fetch data files for GTDB tk.
 #
@@ -16,6 +18,3 @@ SHELL := /bin/bash
 GTDBTK_RELEASE = SET GTDBTK_RELEASE TO THE CURRENT RELEASE (JUST THE NUMBER, E.G. 86)
 
 # *** Targets ***
-gtdbtk_current_data.tar.gz:
-	wget https://data.ace.uq.edu.au/public/gtdbtk/release_$(GTDBTK_RELEASE)/gtdbtk_r$(GTDBTK_RELEASE)_data.tar.gz
-	ln -s gtdbtk_r$(GTDBTK_RELEASE)_data.tar.gz $@
