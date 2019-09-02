@@ -31,7 +31,8 @@ viral.refseq.assembly_summary.txt:
 	wget -O $@ ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/viral/assembly_summary.txt
 
 mirror_refseq: refseq.assembly_summary.txt
-	for p in $$(awk -F "\t" '$$12=="Complete Genome" && $$11=="latest"{print $$20}' $<); do \
+	for p in $$(awk -F "\t" '($$5=="reference genome" || $$5=="representative genome" || $$12=="Complete Genome") && $$11=="latest"{print $$20}' $<); do \
+	#for p in $$(awk -F "\t" '$$11=="latest"{print $$20}' $<); do \
 	  echo "--> $$p <--"; \
 	  wget -A fna.gz,faa.gz,gbff.gz,gpff.gz --mirror $$p/; \
 	done;
@@ -71,6 +72,9 @@ mirror_selected_reference_genomes: selected_genomes.paths.tsv
 	  if [ ! -e selected_genomes ]; then mkdir selected_genomes; fi; \
 	  ( cd selected_genomes ; ln -f -s ../$$tp $$lp ); \
 	done;
+
+mirror_all_proteomes:
+	wget -A .faa.gz --mirror ftp://ftp.ncbi.nlm.nih.gov/genomes/all/
 
 # The NR (non-redundant) and RefSeq protein databases
 
