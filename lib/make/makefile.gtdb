@@ -29,6 +29,10 @@ arc_taxonomy.genomes.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_taxonomy_r$(GTDB_RELEASE).tsv
 	ln -s arc_taxonomy_r$(GTDB_RELEASE).tsv $@
 
+arc_metadata.tsv:
+	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_metadata_r$(GTDB_RELEASE).tsv
+	ln -s arc_metadata_r$(GTDB_RELEASE).tsv $@
+
 arc122_tree.newick:
 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc122_r$(GTDB_RELEASE).1.tree
 	ln -s arc122_r$(GTDB_RELEASE).1.tree $@
@@ -37,9 +41,16 @@ bac_taxonomy.genomes.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac_taxonomy_r$(GTDB_RELEASE).tsv
 	ln -s bac_taxonomy_r$(GTDB_RELEASE).tsv $@
 
+bac_metadata.tsv:
+	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac_metadata_r$(GTDB_RELEASE).tsv
+	ln -s bac_metadata_r$(GTDB_RELEASE).tsv $@
+
 bac120_tree.newick:
 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac120_r$(GTDB_RELEASE).1.tree
 	ln -s bac120_r$(GTDB_RELEASE).1.tree $@
+
+ncbi_genome_accnos.tsv: arc_metadata.tsv bac_metadata.tsv
+	cut -f 1 $^ | grep -v 'accession' | sed 's/^[A-Z][A-Z]_//' > $@
 
 # Splits the ; separated hierarchy in the original files to a tab separated
 %.split.tsv: %.tsv
