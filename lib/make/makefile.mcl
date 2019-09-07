@@ -74,6 +74,12 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 	rm $@.tmp
 	
 # (Note, work in progress: This is similarity, not distance!)
+%.bitscore.abc.tsv: %.blasttab.gz
+	gunzip -c $< | cut -f 1,2,12 > $@
+
+%.bitscore.abc.tsv.gz: %.blasttab.gz
+	gunzip -c $< | cut -f 1,2,12 | gzip -c > $@
+
 %.bitscore.abc.tsv: %.megantab.gz
 	gunzip -c $< | cut -f 1,2,12 > $@
 
