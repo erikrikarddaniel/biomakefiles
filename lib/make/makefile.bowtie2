@@ -82,7 +82,7 @@ all_interleaved_sorted_bams: $(subst .int.fastq.gz,.int.bowtie2.sorted.bam,$(wil
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) -U $< 2> $@.err | gzip -c > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 	
-%.interleaved.pe.bowtie2.sorted.bam: %.int.fastq.gz
+%.int.bowtie2.sorted.bam: %.int.fastq.gz
 	@$(MAKECALL_BOWTIE2_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) --interleaved $(word 1,$^) 2> $@.err | samtools view -Sb | samtools sort > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
