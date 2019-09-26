@@ -24,10 +24,10 @@ DADA2_BIMERAS_OPTS   = --verbose --minab=8 --overab=4 --oneoff
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_FILTER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2filter --version`" > $@.makecall 2>&1
-MAKECALL_ERRMODELS_VERSION  = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2errmodels --version`" > $@.makecall 2>&1
-MAKECALL_CLEAN_VERSION      = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2cleanNmerge --version`" > $@.makecall 2>&1
-MAKECALL_BIMERAS_VERSION    = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2bimeras --version`" > $@.makecall 2>&1
+MAKECALL_FILTER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2filter.R --version`" > $@.makecall 2>&1
+MAKECALL_ERRMODELS_VERSION  = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2errmodels.R --version`" > $@.makecall 2>&1
+MAKECALL_CLEAN_VERSION      = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2cleanNmerge.R --version`" > $@.makecall 2>&1
+MAKECALL_BIMERAS_VERSION    = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `dada2bimeras.R --version`" > $@.makecall 2>&1
 MAKECALL_FILTER_PARAMS      = echo "	Called with parameters: $(DADA2_FILTER_OPTS)" >> $@.makecall
 MAKECALL_ERRMODELS_PARAMS   = echo "	Called with parameters: $(DADA2_ERRMODELS_OPTS)" >> $@.makecall
 MAKECALL_CLEAN_PARAMS       = echo "	Called with parameters: $(DADA2_CLEAN_OPTS)" >> $@.makecall
@@ -43,27 +43,27 @@ MAKECALL_DADA2BIMERAS       = $(MAKECALL_BIMERAS_VERSION); $(MAKECALL_BIMERAS_PA
 # 1. Truncate and filter (QC)
 dada2filter.out: $(wildcard *.fastq.gz)
 	@$(MAKECALL_DADA2FILTER)
-	dada2filter $(DADA2_FILTER_OPTS) >$@ 2>&1
+	dada2filter.R $(DADA2_FILTER_OPTS) >$@ 2>&1
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # 2. Estimate error models
 dada2errmodels.out: dada2filter.out
 	@$(MAKECALL_DADA2ERRMODELS)
-	dada2errmodels $(DADA2_ERRMODELS_OPTS) >$@ 2>&1
+	dada2errmodels.R $(DADA2_ERRMODELS_OPTS) >$@ 2>&1
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 
 # 3. Correct and merge reads
 dada2.cleaned.merged.rds: seq.dada2errmodels.fwd.errorates.rds seq.dada2errmodels.rev.errorates.rds 
 	@$(MAKECALL_DADA2CLEAN)
-	dada2cleanNmerge $(DADA2_CLEAN_OPTS) --fwderrmodel=$< --reverrmodel=$(word 2,$^) >$(basename $@).out 2>&1
+	dada2cleanNmerge.R $(DADA2_CLEAN_OPTS) --fwderrmodel=$< --reverrmodel=$(word 2,$^) >$(basename $@).out 2>&1
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 
 # 4. Filter out bimeras
 dada2.cleaned.merged.bimeras.rds: dada2.cleaned.merged.rds
 	@$(MAKECALL_DADA2BIMERAS)
-	dada2bimeras --verbose --seqtabfile=$< --prefix=$(basename $@) $(DADA2_BIMERAS_OPTS) >$(basename $@).out 2>&1
+	dada2bimeras.R --verbose --seqtabfile=$< --prefix=$(basename $@) $(DADA2_BIMERAS_OPTS) >$(basename $@).out 2>&1
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # The following two are for technical reasons
