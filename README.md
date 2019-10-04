@@ -6,6 +6,8 @@ The library of makefiles in `lib/make` are meant for those who want to run commo
 bioinformatic tools a little bit easier with better documentation of which programs
 were run, using which files etc., without commiting to a "pipeline".
 
+Ghada did this!
+
 # Overview -- wet lab analogy
 
 The idea behind this is to set up a "lab" for computational analyses:
