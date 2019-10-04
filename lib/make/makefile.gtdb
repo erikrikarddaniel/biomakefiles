@@ -4,6 +4,8 @@
 #
 # Include the full path of this file in your Makefile ...
 #
+################# makefile.gtdb_refseq_mags will complete the downloads with data from RefSeq and Archeaeal mags from GTDB website ######################### 
+#
 # Author: daniel.lundin@lnu.se, daniel.lundin@dbb.su.se
 
 SHELL := /bin/bash

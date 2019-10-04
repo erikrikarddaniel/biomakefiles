@@ -1,0 +1,25 @@
+makefile.gtdb_refseq
+#Library makefile to complete the GTDB data from refseq and from GTDB website (archeaeal mags)
+#Include the full path of this file in your makefile
+#Author: daniel.lundin@lnu.se, daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+#Parameters
+
+#Parameters can be specified/changed in the Makefile after including the path to this one.
+
+GTDB_RELEASE = latest
+
+#Fetch Refseq data
+#Modified from rsync_refseq.sh script from https://github.com/Ecogenomics/GTDBNCBI/blob/master/scripts_dev/rsync/rsync_refseq.sh
+
+
+	  rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/archaea/ gtdb_refseq_genomes/.
+	  rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/bacteria/ gtdb_refseq_genomes/.
+
+
+#Fetch archeaeal mags from gtdb website
+
+       wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDBTK_RELEASE)/gtdb_uba_mags_arc.tar.gz
+       gunzip gtdb_uba_mags_arc.tar.gz > gtdb_ar_mags/.
