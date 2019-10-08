@@ -33,6 +33,15 @@ ncbi_data:
 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/archaea/ gtdb_ncbi_genomes/.
 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/bacteria/ gtdb_ncbi_genomes/.
 
+#Modified from rsync_refseq.sh script from https://github.com/Ecogenomics/GTDBNCBI/
+refseq_data:
+          rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/archaea/ gtdb_refseq_genomes/.
+          rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/bacteria/ gtdb_refseq_genomes/.
+
+#Fetch archeaeal mags from gtdb website
+uba_mags_data:
+       wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDBTK_RELEASE)/gtdb_uba_mags_arc.tar.gz
+       gunzip -r -c gtdb_uba_mags_arc.tar.gz > gtdb_uba_mags/.
 
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
