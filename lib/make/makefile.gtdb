@@ -15,7 +15,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-GTDB_RELEASE = 86
+GTDB_RELEASE = latest
 GTDBTK_OPTIONS =
 
 # *** Internal ***
@@ -35,17 +35,17 @@ ncbi_data:
 
 #Modified from rsync_refseq.sh script from https://github.com/Ecogenomics/GTDBNCBI/
 refseq_data:
-          rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/archaea/ gtdb_refseq_genomes/.
-          rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/bacteria/ gtdb_refseq_genomes/.
+	rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/archaea/ gtdb_refseq_genomes/.
+	       rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/bacteria/ gtdb_refseq_genomes/.
 
 #Fetch archeaeal mags from gtdb website
 uba_mags_data:
-       wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDBTK_RELEASE)/gtdb_uba_mags_arc.tar.gz
-       mkdir gtdb_uba_mags && tar -C ./gtdb_uba_mags/ -xvf gtdb_uba_mags_arc.tar.gz 
+	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/gtdb_uba_mags_arc.tar.gz
+	mkdir gtdb_uba_mags && tar -C ./gtdb_uba_mags/ -xvf gtdb_uba_mags_arc.tar.gz && rm gtdb_uba_mags_arc.tar.gz 
 
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
-	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
+		      gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
 
 # Download data (easier to do with the script included in the distribution)
 arc_taxonomy.genomes.tsv:
