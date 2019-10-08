@@ -41,7 +41,7 @@ refseq_data:
 #Fetch archeaeal mags from gtdb website
 uba_mags_data:
        wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDBTK_RELEASE)/gtdb_uba_mags_arc.tar.gz
-       gunzip -r -c gtdb_uba_mags_arc.tar.gz > gtdb_uba_mags_arc.fna
+       gunzip -r -c gtdb_uba_mags_arc.tar.gz| tar -xvf 
 
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
