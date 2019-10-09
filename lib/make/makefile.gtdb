@@ -33,6 +33,7 @@ ncbi_data:
 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/archaea/ gtdb_ncbi_genomes/.
 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/bacteria/ gtdb_ncbi_genomes/.
 
+#Fetch Refseq dat
 #Modified from rsync_refseq.sh script from https://github.com/Ecogenomics/GTDBNCBI/
 refseq_data:
 	rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/archaea/ gtdb_refseq_genomes/.
@@ -51,9 +52,10 @@ gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
 arc_taxonomy.genomes.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_taxonomy_r$(GTDB_RELEASE).tsv
 	ln -s arc_taxonomy_r$(GTDB_RELEASE).tsv $@
-
+	
+# N.B. The name and the html path of the file can change and may have to be updated
 arc_metadata.tsv:
-	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/arc122_metadat.tsv
+	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/arc122_metadata.tsv
 	ln -s arc122_metadata.tsv $@
 
 arc122_tree.newick:
@@ -64,6 +66,7 @@ bac_taxonomy.genomes.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac_taxonomy_r$(GTDB_RELEASE).tsv
 	ln -s bac_taxonomy_r$(GTDB_RELEASE).tsv $@
 
+# N.B. The name and the html path of the file can change and may have to be updated
 bac_metadata.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/bac120_metadata.tsv
 	ln -s bac120_metadata.tsv $@
