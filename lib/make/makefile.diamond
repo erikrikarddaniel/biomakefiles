@@ -136,3 +136,8 @@ all_daa.md5sums: $(subst .daa,.daa.md5,$(wildcard *.daa))
 
 %.daa.md5: %.daa
 	md5sum $< > $@
+
+all_blasttab.md5sums: $(subst .blasttab.tsv.gz,.blasttab.tsv.gz.md5,$(wildcard *.blasttab.tsv.gz))
+
+%.blasttab.tsv.gz.md5: %.blasttab.tsv.gz
+	md5sum $< > $@
