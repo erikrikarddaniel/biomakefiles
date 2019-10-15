@@ -13,13 +13,16 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-GTDB_RELEASE = 86
+GTDB_LATEST_URL = https://data.ace.uq.edu.au/public/gtdb/data/releases/latest
+
+# MOVE to makefile.gtdbtk
 GTDBTK_OPTIONS =
 
 # *** Internal ***
 
 # *** Targets ***
 
+# MOVE the GTDBtk stuff to makefile.gtdbtk
 # Fetch data
 gtdbtk_current_data.tar.gz:
 	wget https://data.ace.uq.edu.au/public/gtdbtk/release_$(GTDBTK_RELEASE)/gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz
@@ -29,30 +32,36 @@ gtdbtk_current_data.tar.gz:
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
 	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
 
+taxonomies: ar122_taxonomy.tsv bac120_taxonomy.tsv
+
+metadata: ar122_metadata.tsv bac120_metadata.tsv
+
+trees: ar122.tree bac120.tree ar122.sp_labels.tree bac120.sp_labels.tree
+
 # Download data (easier to do with the script included in the distribution)
-arc_taxonomy.genomes.tsv:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_taxonomy_r$(GTDB_RELEASE).tsv
-	ln -s arc_taxonomy_r$(GTDB_RELEASE).tsv $@
+ar122_taxonomy.tsv:
+	wget $(GTDB_LATEST_URL)/$@
 
-arc_metadata.tsv:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_metadata_r$(GTDB_RELEASE).tsv
-	ln -s arc_metadata_r$(GTDB_RELEASE).tsv $@
+ar122_metadata.tsv:
+	wget $(GTDB_LATEST_URL)/$@
 
-arc122_tree.newick:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc122_r$(GTDB_RELEASE).1.tree
-	ln -s arc122_r$(GTDB_RELEASE).1.tree $@
+ar122.tree:
+	wget $(GTDB_LATEST_URL)/$@
 
-bac_taxonomy.genomes.tsv:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac_taxonomy_r$(GTDB_RELEASE).tsv
-	ln -s bac_taxonomy_r$(GTDB_RELEASE).tsv $@
+ar122.sp_labels.tree:
+	wget $(GTDB_LATEST_URL)/$@
 
-bac_metadata.tsv:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac_metadata_r$(GTDB_RELEASE).tsv
-	ln -s bac_metadata_r$(GTDB_RELEASE).tsv $@
+bac120_taxonomy.tsv:
+	wget $(GTDB_LATEST_URL)/$@
 
-bac120_tree.newick:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac120_r$(GTDB_RELEASE).1.tree
-	ln -s bac120_r$(GTDB_RELEASE).1.tree $@
+bac120_metadata.tsv:
+	wget $(GTDB_LATEST_URL)/$@
+
+bac120.tree:
+	wget $(GTDB_LATEST_URL)/$@
+
+bac120.sp_labels.tree:
+	wget $(GTDB_LATEST_URL)/$@
 
 ncbi_genome_accnos.tsv: arc_metadata.tsv bac_metadata.tsv
 	cut -f 1 $^ | grep -v 'accession' | sed 's/^[A-Z][A-Z]_//' > $@
