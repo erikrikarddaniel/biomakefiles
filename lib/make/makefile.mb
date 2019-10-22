@@ -34,9 +34,6 @@ MAKECALL_MRBAYES             = $(MAKECALL_MRBAYES_VERSION); $(MAKECALL_MRBAYES_P
 	sed 's/@/_accno_/' | sed "s/'//g" | sed 's:["/]::g' $< > $@
 
 %.mb.out: %.mb
+	@$(MAKECALL_MRBAYES)
 	mb $< | tee $@
-
-###%.suffix0: %.suffix1 %.suffix1 %.suffixn
-###	@$(MAKECALL_MRBAYES)
-###	__PGM_CALL__
-###	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
