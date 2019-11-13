@@ -93,6 +93,16 @@ mostly_hiearchy_exports: all_reads2taxonids all_reads2eggnoghiers all_reads2iphi
 
 all_reads2eggnogs: $(subst .daa,.reads2eggnogs.tsv.gz,$(wildcard *.daa)) all_reads2eggnoghiers all_reads2iphiers all_reads2seedhiers
 
+split_ip2go_hierarchy: reads2ips.tsv.gz ip2gohier.tsv.gz
+
+reads2ips.tsv.gz: $(wildcard *.reads2iphiers.tsv.gz)
+	for f in $^; do \
+	  gunzip -c $$f | perl -pe 's/\t.*?;IPR/\tIPR/' | sed 's/; *$$//g' | sed "s/^/$$(basename $$f .reads2iphiers.tsv.gz)\t/"; \
+	done | gzip -c > $@
+
+ip2gohier.tsv.gz: $(wildcard *.reads2iphiers.tsv.gz)
+	gunzip -c $^ | cut -f 2-20 | perl -pe 's/(.*?);(IPR.*)/\1\t\2/' | sed 's/; *$$//' | sort -u | gzip -c > $@
+
 %.reads2eggnogs.tsv.gz: %.daa
 	$(MAKECALL_FUNC_EXPORT)
 	$(XV_RUN_CMD) \

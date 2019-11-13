@@ -112,3 +112,8 @@ idxstats.tsv.gz: $(wildcard *.idxstats.gz)
 	samtools fastq -1 $(basename $@).r1.fastq.gz -2 $(basename $@).r2.fastq.gz $<
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+all_bam.md5s: $(subst .bam,.bam.md5,$(wildcard *.bam))
+
+%.bam.md5: %.bam
+	md5sum $< > $@
