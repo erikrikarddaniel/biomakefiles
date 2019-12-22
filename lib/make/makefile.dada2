@@ -84,3 +84,15 @@ dada2.cleaned.merged.bimeras.fna: dada2.cleaned.merged.bimeras.tsv.gz
 
 %.name2seq.tsv.gz: %.fna.gz
 	gunzip -c $< | paste - - | sed 's/>//' | gzip -c > $@
+
+# Data files for taxonomy assignment
+silva_v132: silva_nr_v132_train_set.fa.gz silva_species_assignment_v132.fa.gz SILVA_SSU_r132_March_2018.RData
+
+silva_nr_v132_train_set.fa.gz:
+	wget -O $@ -c "https://zenodo.org/record/1172783/files/silva_nr_v132_train_set.fa.gz?download=1"
+
+silva_species_assignment_v132.fa.gz:
+	wget -O $@ -c "https://zenodo.org/record/1172783/files/silva_species_assignment_v132.fa.gz?download=1"
+
+SILVA_SSU_r132_March_2018.RData:
+	wget -O $@ -c "http://www2.decipher.codes/Classification/TrainingSets/SILVA_SSU_r132_March2018.RData"
