@@ -1,0 +1,34 @@
+# makefile.fasttree
+#
+# Library makefile to make running FastTree simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+FASTTREE_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_FASTTREE is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_FASTTREE_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $$(FastTree -expert 2>&1|grep 'Detailed usage for FastTree'|sed 's/Detailed usage for //')" > $@.makecall
+MAKECALL_FASTTREE_PARAMS      = echo "	Called with parameters: $(FASTTREE_OPTS)" >> $@.makecall
+MAKECALL_FASTTREE_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_FASTTREE             = $(MAKECALL_FASTTREE_VERSION); $(MAKECALL_FASTTREE_PARAMS); $(MAKECALL_FASTTREE_INFILES)
+
+# *** Targets ***
+
+%.ft.LGCAT.newick: %.alnfaa
+	@$(MAKECALL_FASTTREE)
+	FastTree $(FASTTREE_OPTS) -lg -log $@.ft.log $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
