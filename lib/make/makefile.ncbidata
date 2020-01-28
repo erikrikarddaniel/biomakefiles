@@ -135,3 +135,7 @@ taxflat.tsv: nodes.dmp names.dmp
 # The nucleotide blast database
 ncbi_nt:
 	wget "ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.*.tar.gz"
+
+# The Univec database of vector (and e.g. primer) sequences
+univec.fna:
+	wget -O $@ ftp://ftp.ncbi.nlm.nih.gov/pub/UniVec/UniVec
