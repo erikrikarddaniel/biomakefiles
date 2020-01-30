@@ -49,11 +49,11 @@ gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
 		      gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
 
 # Download data (easier to do with the script included in the distribution)
+# N.B. The name and the html path of the file can change and may have to be updated
 arc_taxonomy.genomes.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_taxonomy_r$(GTDB_RELEASE).tsv
 	ln -s arc_taxonomy_r$(GTDB_RELEASE).tsv $@
 	
-# N.B. The name and the html path of the file can change and may have to be updated
 arc_metadata.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/arc122_metadata.tsv
 	ln -s arc122_metadata.tsv $@
@@ -63,10 +63,9 @@ arc122_tree.newick:
 	ln -s arc122_r$(GTDB_RELEASE).1.tree $@
 
 bac_taxonomy.genomes.tsv:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac_taxonomy_r$(GTDB_RELEASE).tsv
-	ln -s bac_taxonomy_r$(GTDB_RELEASE).tsv $@
+	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/bac120_taxonomy.tsv
+	ln -s bac120_taxonomy.tsv $@
 
-# N.B. The name and the html path of the file can change and may have to be updated
 bac_metadata.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/bac120_metadata.tsv
 	ln -s bac120_metadata.tsv $@

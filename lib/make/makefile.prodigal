@@ -35,7 +35,7 @@ all_single_prodigal_gffs: $(subst .fna,.single_prodigal.gff,$(filter-out $(wildc
 
 %.single_prodigal.gbk: %.fna
 	@$(MAKECALL_PRODIGAL)
-	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single | tee $@.out
+	prodigal -i $< -o $@ -a $(basename $@).faa -d $(basename $@).fna -p single $(PRODIGAL_OPTS)| tee $@.out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.single_prodigal.gff: %.fna
