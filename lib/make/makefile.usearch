@@ -19,13 +19,24 @@ CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.75 0.70 0.60 0.5
 
 all_uclusters: $(subst .faa,.uclusters,$(filter-out $(wildcard *.uc[01].*.faa),$(wildcard *.faa)))
 
+#Regular run
 %.uclusters: %.faa
+	for n in $(CLUSTER_LEVELS); do \
+        d=$(basename $@).uc$$n.clusters.d; \
+	mkdir $$d; \
+	rm -f $$d/*.faa; \
+	usearch -cluster_smallmem $< -sortedby other -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
+	done
+	touch $@
+
+#Run with specific order of the sequences (order of appearance in the infile) 
+%.or.uclusters: %.faa
 	for n in $(CLUSTER_LEVELS); do \
 	  d=$(basename $@).uc$$n.clusters.d; \
 	  mkdir $$d; \
 	  rm -f $$d/*.faa; \
-	  usearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
-	done
+	  usearch -cluster_smallmem $< -sortedby other -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
+	  done
 	touch $@
 
 %.uclusters: %.fna
