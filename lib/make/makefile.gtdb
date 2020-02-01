@@ -81,8 +81,23 @@ ncbi_genome_accnos.tsv: arc_metadata.tsv bac_metadata.tsv
 %.uniqlineages.tsv: %.genomes.split.tsv
 	cut -f 2-20 $< | sort -u > $@
 
-# Just playing around...
-arc_bac.phyla.newick: arc_taxonomy.phyla.newick bac_taxonomy.phyla.newick
-	echo "($$(sed 's/;//' $<),$$(sed 's/;//' $(word 2,$^)));" > $@
-%.phyla.newick: %.uniqlineages.tsv
-	echo "($$(cut -f 2 $< | sort -u | tr '\n' ',' | sed 's/,$$//' ))$$(cut -f 1 $< | sort -u | tr '\n' ' ');" > $@
+#Creating a makefile.fetch that uses a list of ftp urls of the gtdb genomes (assembly_summary_refseq.txt) to download these genomes
+
+ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
+
+assembly_summary_genbank_gtdb: accnos_list assembly_summary_genbank.txt
+        grep -f $^ > $@
+
+makefile.fetch: assembly_summary_genbank_gtdb unsolved_accnos
+        @echo "all: $$(grep -v '^#' $< | grep -v -f $(word 2,$^) | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
+        @echo >> $@
+        @for f in $$(grep -v '^#' $< |cut -f 20); do \
+        echo "$$(echo $$f | $(ADD_DONE) | tr '\n' ' '):"; \
+        echo "  if [ \$$\$$(wget -S --spider $$f  2>&1 | grep 'HTTP/1.1 200 OK') ]; then \\"; \
+        echo "  wget --mirror -A *genom*fna.gz -R *cds_from_genomic* $$f; \\"; \
+        echo "  touch \$$@; \\"; \
+        echo "  else \\"; \
+        echo "  echo \$$\$$(basename $$f) >> $(word 2,$^); \\"; \
+        echo "  fi"; \
+        echo ; \
+        done >> $@
