@@ -89,15 +89,15 @@ assembly_summary_genbank_gtdb: accnos_list assembly_summary_genbank.txt
         grep -f $^ > $@
 
 makefile.fetch: assembly_summary_genbank_gtdb unsolved_accnos
-        @echo "all: $$(grep -v '^#' $< | grep -v -f $(word 2,$^) | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
-        @echo >> $@
-        @for f in $$(grep -v '^#' $< |cut -f 20); do \
-        echo "$$(echo $$f | $(ADD_DONE) | tr '\n' ' '):"; \
-        echo "  if [ \$$\$$(wget -S --spider $$f  2>&1 | grep 'HTTP/1.1 200 OK') ]; then \\"; \
-        echo "  wget --mirror -A *genom*fna.gz -R *cds_from_genomic* $$f; \\"; \
-        echo "  touch \$$@; \\"; \
-        echo "  else \\"; \
-        echo "  echo \$$\$$(basename $$f) >> $(word 2,$^); \\"; \
-        echo "  fi"; \
-        echo ; \
-        done >> $@
+	@echo "all: $$(grep -v '^#' $< | grep -v -f $(word 2,$^) | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
+	@echo >> $@
+	@for f in $$(grep -v '^#' $< |cut -f 20); do \
+	echo "$$(echo $$f | $(ADD_DONE) | tr '\n' ' '):"; \
+	echo "  if [ \$$\$$(wget -S --spider $$f  2>&1 | grep 'HTTP/1.1 200 OK') ]; then \\"; \
+	echo "  wget --mirror -A *genom*fna.gz -R *cds_from_genomic* $$f; \\"; \
+	echo "  touch \$$@; \\"; \
+	echo "  else \\"; \
+	echo "  echo \$$\$$(basename $$f) >> $(word 2,$^); \\"; \
+	echo "  fi"; \
+	echo ; \
+	done >> $@
