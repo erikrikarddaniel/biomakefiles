@@ -86,7 +86,7 @@ ncbi_genome_accnos.tsv: arc_metadata.tsv bac_metadata.tsv
 ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
 
 assembly_summary_genbank_gtdb: accnos_list assembly_summary_genbank.txt
-        grep -f $^ > $@
+	grep -f $^ > $@
 
 makefile.fetch: assembly_summary_genbank_gtdb unsolved_accnos
 	@echo "all: $$(grep -v '^#' $< | grep -v -f $(word 2,$^) | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
