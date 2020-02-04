@@ -18,3 +18,7 @@ SHELL := /bin/bash
 GTDBTK_RELEASE = SET GTDBTK_RELEASE TO THE CURRENT RELEASE (JUST THE NUMBER, E.G. 86)
 
 # *** Targets ***
+
+# Run the standard workflow on all genomes in "genome_bins"
+gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
+	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
