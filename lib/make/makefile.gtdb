@@ -76,10 +76,6 @@ ncbi_genome_accnos.tsv: ar122_metadata.tsv bac120_metadata.tsv
 %.uniqlineages.tsv: %.genomes.split.tsv
 	cut -f 2-20 $< | sort -u > $@
 
-#Creating a makefile.fetch that uses a list of ftp urls of the gtdb genomes (assembly_summary_refseq.txt) to download these genomes
-
-ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
-
 assembly_summary_genbank.txt: 
 	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
 
@@ -92,6 +88,7 @@ absent_accnos:
 
 # This creates a temporary makefile that can be used to fetch everything.
 # Useful for parallelisation.
+ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
 makefile.fetch: gtdb_genbank_genomes.tsv absent_accnos
 	@echo "--> all <--"
 	@echo "all: $$(grep -v '^#' $< | grep -v -f $(word 2,$^) | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
@@ -99,7 +96,7 @@ makefile.fetch: gtdb_genbank_genomes.tsv absent_accnos
 	@echo "--> Individual targets <--"
 	@for f in $$(grep -v '^#' $< |cut -f 20); do \
 	echo "$$(echo $$f | $(ADD_DONE) | tr '\n' ' '):"; \
-	echo "	if [ \$$\$$(wget -S --spider $$f  2>&1 | grep '\(File.*exists\)\|\(HTTP/1.1 200 OK\)') ]; then \\"; \
+	echo "	if [ \$$\$$(wget -S --spider $$f  2>&1 | grep -c '\(File.*exists\)\|\(HTTP/1.1 200 OK\)') -gt 0 ]; then \\"; \
 	echo "	wget --mirror -A *genom*fna.gz -R *cds_from_genomic* -R *assembly_structure* $$f; \\"; \
 	echo "	touch \$$@; \\"; \
 	echo "	else \\"; \
