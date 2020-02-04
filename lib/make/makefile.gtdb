@@ -34,11 +34,6 @@ ncbi_data:
 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/archaea/ gtdb_ncbi_genomes/.
 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/bacteria/ gtdb_ncbi_genomes/.
 
-
-# Run the standard workflow on all genomes in "genome_bins"
-gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
-	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
-
 taxonomies: ar122_taxonomy.tsv bac120_taxonomy.tsv
 
 metadata: ar122_metadata.tsv bac120_metadata.tsv
@@ -70,7 +65,7 @@ bac120.tree:
 bac120.sp_labels.tree:
 	wget $(GTDB_LATEST_URL)/$@
 
-ncbi_genome_accnos.tsv: arc_metadata.tsv bac_metadata.tsv
+ncbi_genome_accnos.tsv: ar122_metadata.tsv bac120_metadata.tsv
 	cut -f 1 $^ | grep -v 'accession' | sed 's/^[A-Z][A-Z]_//' > $@
 
 # Splits the ; separated hierarchy in the original files to a tab separated
@@ -85,19 +80,30 @@ ncbi_genome_accnos.tsv: arc_metadata.tsv bac_metadata.tsv
 
 ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
 
-assembly_summary_genbank_gtdb: accnos_list assembly_summary_genbank.txt
-	grep -f $^ > $@
+assembly_summary_genbank.txt: 
+	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
 
-makefile.fetch: assembly_summary_genbank_gtdb unsolved_accnos
+gtdb_genbank_genomes.tsv: ar122_metadata.tsv bac120_metadata.tsv assembly_summary_genbank.txt
+	grep -f <(cut -f 1 $(wordlist 1,2,$^) | sed 's/^[A-Z][A-Z]_//') $(word 3,$^) > $@
+
+# This will contain accessions that weren't available last time we checked
+absent_accnos:
+	touch $@
+
+# This creates a temporary makefile that can be used to fetch everything.
+# Useful for parallelisation.
+makefile.fetch: gtdb_genbank_genomes.tsv absent_accnos
+	@echo "--> all <--"
 	@echo "all: $$(grep -v '^#' $< | grep -v -f $(word 2,$^) | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
 	@echo >> $@
+	@echo "--> Individual targets <--"
 	@for f in $$(grep -v '^#' $< |cut -f 20); do \
 	echo "$$(echo $$f | $(ADD_DONE) | tr '\n' ' '):"; \
-	echo "  if [ \$$\$$(wget -S --spider $$f  2>&1 | grep 'HTTP/1.1 200 OK') ]; then \\"; \
-	echo "  wget --mirror -A *genom*fna.gz -R *cds_from_genomic* $$f; \\"; \
-	echo "  touch \$$@; \\"; \
-	echo "  else \\"; \
-	echo "  echo \$$\$$(basename $$f) >> $(word 2,$^); \\"; \
-	echo "  fi"; \
+	echo "	if [ \$$\$$(wget -S --spider $$f  2>&1 | grep '\(File.*exists\)\|\(HTTP/1.1 200 OK\)') ]; then \\"; \
+	echo "	wget --mirror -A *genom*fna.gz -R *cds_from_genomic* -R *assembly_structure* $$f; \\"; \
+	echo "	touch \$$@; \\"; \
+	echo "	else \\"; \
+	echo "	echo \$$\$$(basename $$f) >> $(word 2,$^); \\"; \
+	echo "	fi"; \
 	echo ; \
 	done >> $@
