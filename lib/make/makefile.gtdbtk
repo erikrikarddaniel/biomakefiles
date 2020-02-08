@@ -1,7 +1,5 @@
 # makefile.gtdbtk
 #
-# THIS SHOULD BE MERGED INTO makefile.gtdb!
-#
 # Library makefile to make it easier to fetch data files for GTDB tk.
 #
 # Include the full path of this file in your Makefile ...
@@ -17,7 +15,15 @@ SHELL := /bin/bash
 #
 GTDBTK_RELEASE = SET GTDBTK_RELEASE TO THE CURRENT RELEASE (JUST THE NUMBER, E.G. 86)
 
+# Use --cpus N to set number of cores
+GTDBTK_OPTIONS = 
+
 # *** Targets ***
+
+# Fetch data
+gtdbtk_current_data.tar.gz:
+	wget https://data.ace.uq.edu.au/public/gtdbtk/release_$(GTDBTK_RELEASE)/gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz
+	ln -s gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz $@
 
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)

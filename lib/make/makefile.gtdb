@@ -15,18 +15,9 @@ SHELL := /bin/bash
 #
 GTDB_LATEST_URL = https://data.ace.uq.edu.au/public/gtdb/data/releases/latest
 
-# MOVE to makefile.gtdbtk
-GTDBTK_OPTIONS =
-
 # *** Internal ***
 
 # *** Targets ***
-
-# MOVE the GTDBtk stuff to makefile.gtdbtk
-# Fetch data
-gtdbtk_current_data.tar.gz:
-	wget https://data.ace.uq.edu.au/public/gtdbtk/release_$(GTDBTK_RELEASE)/gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz
-	ln -s gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz $@
 
 # Fetch NCBI data
 # Modified from rsync_genbank.sh script in https://github.com/Ecogenomics/GTDBNCBI/
