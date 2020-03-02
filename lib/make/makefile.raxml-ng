@@ -1,0 +1,38 @@
+# makefile.raxml-ng
+#
+# Library makefile to make running raxml-ng simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# Don't use too many threads; the authors recommend 200-1000 alignment 
+# patterns per thread!
+RAXML_NG_OPTS = --threads 1 
+
+# *** Internal ***
+
+# MAKECALL_RAXML_NG is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_RAXML_NG_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `raxml-ng --version | grep RAxML-NG`" > $@.makecall
+MAKECALL_RAXML_NG_PARAMS      = echo "	Called with parameters: $(RAXML_NG_OPTS)" >> $@.makecall
+MAKECALL_RAXML_NG_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_NG_PARAMS); $(MAKECALL_RAXML_NG_INFILES)
+
+# *** Targets ***
+
+%.LGG8F.ancstates.raxml-ng: %.rx.alnfaa %.newick
+	@$(MAKECALL_RAXML_NG)
+	raxml-ng --ancestral --msa $< --tree $(word 2,$^) --model LG+G8+F --prefix $(basename $@) $(RAXML_NG_OPTS) 2>&1 | tee $@
+	ln -s $(basename $@).raxml.ancestralTree $(basename $@).newick
+	sed "s/\(.*\)\t\(.*\)/>\1\n\2/" $(basename $@).raxml.ancestralStates > $(basename $@).alnfaa
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

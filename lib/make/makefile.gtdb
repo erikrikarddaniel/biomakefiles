@@ -16,16 +16,14 @@ SHELL := /bin/bash
 # includes this file, see documentation in doc/makefile.md.
 #
 GTDB_RELEASE = latest
-GTDBTK_OPTIONS =
+GTDB_LATEST_URL = https://data.ace.uq.edu.au/public/gtdb/data/releases/latest
 
 # *** Internal ***
 
 # *** Targets ***
 
-# Fetch data
-gtdbtk_current_data.tar.gz:
-	wget https://data.ace.uq.edu.au/public/gtdbtk/release_$(GTDBTK_RELEASE)/gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz
-	ln -s gtdbtk.r$(GTDBTK_RELEASE)_data.tar.gz $@
+# I'm not sure which of the ncbi_data, refseq_data and uba_mags_data targets are needed
+# in light of the makefile.fetch target further down.
 
 # Fetch NCBI data
 # Modified from rsync_genbank.sh script in https://github.com/Ecogenomics/GTDBNCBI/
@@ -33,13 +31,13 @@ ncbi_data:
 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/archaea/ gtdb_ncbi_genomes/.
 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/bacteria/ gtdb_ncbi_genomes/.
 
-#Fetch Refseq dat
-#Modified from rsync_refseq.sh script from https://github.com/Ecogenomics/GTDBNCBI/
+# Fetch Refseq dat
+# Modified from rsync_refseq.sh script from https://github.com/Ecogenomics/GTDBNCBI/
 refseq_data:
 	rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/archaea/ gtdb_refseq_genomes/.
 	       rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/bacteria/ gtdb_refseq_genomes/.
 
-#Fetch archeaeal mags from gtdb website
+# Fetch archeaeal mags from gtdb website
 uba_mags_data:
 	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/gtdb_uba_mags_arc.tar.gz
 	mkdir gtdb_uba_mags && tar -C ./gtdb_uba_mags/ -xvf gtdb_uba_mags_arc.tar.gz && rm gtdb_uba_mags_arc.tar.gz 
@@ -58,23 +56,38 @@ arc_metadata.tsv:
 	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/arc122_metadata.tsv
 	ln -s arc122_metadata.tsv $@
 
-arc122_tree.newick:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc122_r$(GTDB_RELEASE).1.tree
-	ln -s arc122_r$(GTDB_RELEASE).1.tree $@
+taxonomies: ar122_taxonomy.tsv bac120_taxonomy.tsv
 
-bac_taxonomy.genomes.tsv:
-	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/bac120_taxonomy.tsv
-	ln -s bac120_taxonomy.tsv $@
+metadata: ar122_metadata.tsv bac120_metadata.tsv
 
-bac_metadata.tsv:
-	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/bac120_metadata.tsv
-	ln -s bac120_metadata.tsv $@
+trees: ar122.tree bac120.tree ar122.sp_labels.tree bac120.sp_labels.tree
 
-bac120_tree.newick:
-	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/bac120_r$(GTDB_RELEASE).1.tree
-	ln -s bac120_r$(GTDB_RELEASE).1.tree $@
+# Download data (easier to do with the script included in the distribution)
+ar122_taxonomy.tsv:
+	wget $(GTDB_LATEST_URL)/$@
 
-ncbi_genome_accnos.tsv: arc_metadata.tsv bac_metadata.tsv
+ar122_metadata.tsv:
+	wget $(GTDB_LATEST_URL)/$@
+
+ar122.tree:
+	wget $(GTDB_LATEST_URL)/$@
+
+ar122.sp_labels.tree:
+	wget $(GTDB_LATEST_URL)/$@
+
+bac120_taxonomy.tsv:
+	wget $(GTDB_LATEST_URL)/$@
+
+bac120_metadata.tsv:
+	wget $(GTDB_LATEST_URL)/$@
+
+bac120.tree:
+	wget $(GTDB_LATEST_URL)/$@
+
+bac120.sp_labels.tree:
+	wget $(GTDB_LATEST_URL)/$@
+
+ncbi_genome_accnos.tsv: ar122_metadata.tsv bac120_metadata.tsv
 	cut -f 1 $^ | grep -v 'accession' | sed 's/^[A-Z][A-Z]_//' > $@
 
 # Splits the ; separated hierarchy in the original files to a tab separated
@@ -85,8 +98,31 @@ ncbi_genome_accnos.tsv: arc_metadata.tsv bac_metadata.tsv
 %.uniqlineages.tsv: %.genomes.split.tsv
 	cut -f 2-20 $< | sort -u > $@
 
-# Just playing around...
-arc_bac.phyla.newick: arc_taxonomy.phyla.newick bac_taxonomy.phyla.newick
-	echo "($$(sed 's/;//' $<),$$(sed 's/;//' $(word 2,$^)));" > $@
-%.phyla.newick: %.uniqlineages.tsv
-	echo "($$(cut -f 2 $< | sort -u | tr '\n' ',' | sed 's/,$$//' ))$$(cut -f 1 $< | sort -u | tr '\n' ' ');" > $@
+assembly_summary_genbank.txt: 
+	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
+
+gtdb_genbank_genomes.tsv: ar122_metadata.tsv bac120_metadata.tsv assembly_summary_genbank.txt
+	grep -f <(cut -f 1 $(wordlist 1,2,$^) | sed 's/^[A-Z][A-Z]_//') $(word 3,$^) > $@
+
+# This will contain accessions that weren't available last time we checked
+absent_accnos:
+	touch $@
+
+# This creates a temporary makefile that can be used to fetch everything.
+# Useful for parallelisation.
+ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
+makefile.fetch: gtdb_genbank_genomes.tsv absent_accnos
+	@echo "--> all <--"
+	@echo "all: $$(grep -v '^#' $< | grep -v -f $(word 2,$^) | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
+	@echo >> $@
+	@echo "--> Individual targets <--"
+	@for f in $$(grep -v '^#' $< |cut -f 20); do \
+	echo "$$(echo $$f | $(ADD_DONE) | tr '\n' ' '):"; \
+	echo "	if [ \$$\$$(wget -S --spider $$f  2>&1 | grep -c '\(File.*exists\)\|\(HTTP/1.1 200 OK\)') -gt 0 ]; then \\"; \
+	echo "	wget --mirror -A *genom*fna.gz -R *cds_from_genomic* -R *assembly_structure* $$f; \\"; \
+	echo "	touch \$$@; \\"; \
+	echo "	else \\"; \
+	echo "	echo \$$\$$(basename $$f) >> $(word 2,$^); \\"; \
+	echo "	fi"; \
+	echo ; \
+	done >> $@

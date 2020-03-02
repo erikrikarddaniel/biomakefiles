@@ -50,7 +50,8 @@ all_samgz2sortedbams: $(subst .sam,.sorted.bam,$(wildcard *.sam)) $(subst .sam.g
 
 # Make a pair of fastq files for each .sam/.sam.gz file containing the *unmapped* reads.
 # (Useful for filtering.)
-all_unmappedpairs_fastqpairs: $(subst .bam,.unmappedpairs.fastqpairs,$(wildcard *.bam)) $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam)) $(subst .sam.gz,.unmappedpairs.fastqpairs,$(wildcard *.sam.gz))
+#all_unmappedpairs_fastqpairs: $(subst .bam,.unmappedpairs.fastqpairs,$(wildcard *.bam)) $(subst .sam,.unmappedpairs.fastqpairs,$(wildcard *.sam)) $(subst .sam.gz,.unmappedpairs.fastqpairs,$(wildcard *.sam.gz))
+all_unmappedpairs_fastqpairs: $(subst .bam,.unmappedpairs.fastqpairs,$(wildcard *.bam))
 
 idxstats.tsv: $(wildcard *.idxstats)
 	echo "sample	sequence	seqlen	n_mapped	n_unmapped" > $@
@@ -102,13 +103,13 @@ idxstats.tsv.gz: $(wildcard *.idxstats.gz)
 	samtools view -b -f 4 $< > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.unmappedpairs.bam: %.bam
+%.unmappedpairs.fastqpairs: %.bam
 	@$(MAKECALL_SAMTOOLS)
-	samtools view -b -f 12 $< > $@
-	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
-
-%.fastqpairs: %.bam
-	@$(MAKECALL_SAMTOOLS)
-	samtools fastq -1 $(basename $@).r1.fastq.gz -2 $(basename $@).r2.fastq.gz $<
+	samtools view -b -f 12 $< | samtools fastq -1 $(basename $@).r1.fastq.gz -2 $(basename $@).r2.fastq.gz $<
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+all_bam.md5s: $(subst .bam,.bam.md5,$(wildcard *.bam))
+
+%.bam.md5: %.bam
+	md5sum $< > $@

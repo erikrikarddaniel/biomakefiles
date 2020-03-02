@@ -1,0 +1,55 @@
+# makefile.barrnap
+#
+# Library makefile to make running barrnap simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+BARRNAP_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_BARRNAP is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_BARRNAP_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `barrnap --version`" > $@.makecall
+MAKECALL_BARRNAP_PARAMS      = echo "	Called with parameters: $(BARRNAP_OPTS)" >> $@.makecall
+MAKECALL_BARRNAP_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_BARRNAP             = $(MAKECALL_BARRNAP_VERSION); $(MAKECALL_BARRNAP_PARAMS); $(MAKECALL_BARRNAP_INFILES)
+
+# *** Targets ***
+
+%.all_barrnap_fnas: %.fna
+	make $(basename $@).euk_barrnap.fna
+	make $(basename $@).bac_barrnap.fna
+	make $(basename $@).arc_barrnap.fna
+	make $(basename $@).mito_barrnap.fna
+	
+%.euk_barrnap.fna: %.fna
+	@$(MAKECALL_BARRNAP)
+	barrnap --kingdom euk --outseq $@ $(BARRNAP_OPTS) $<
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.bac_barrnap.fna: %.fna
+	@$(MAKECALL_BARRNAP)
+	barrnap --kingdom bac --outseq $@ $(BARRNAP_OPTS) $<
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.arc_barrnap.fna: %.fna
+	@$(MAKECALL_BARRNAP)
+	barrnap --kingdom arc --outseq $@ $(BARRNAP_OPTS) $<
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.mito_barrnap.fna: %.fna
+	@$(MAKECALL_BARRNAP)
+	barrnap --kingdom mito --outseq $@ $(BARRNAP_OPTS) $<
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

@@ -1,0 +1,56 @@
+# makefile.malt
+#
+# Library makefile to make running malt simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+MALT_INDEX = NEED TO BE SET TO THE PATH OF A MALT INDEX DIRECTORY
+
+# -t n for n threads; many other options available, see malt-run -h and
+#  malt-build -h respectively (-wlca for weighted LCA (malt-run)).
+MALT_RUN_OPTS = 
+MALT_BUILD_OPTS =
+
+# Set to the path of a 
+ACC2TAXONID_MAP =
+ACC2EGGNOG_MAP =
+ACC2INTERPRO2GO_MAP =
+
+# Define a fake X server command. The default is to use xvfb. 
+# The leading '-' is important since it tells make to ignore errors that comes with
+# xvfb and xvnc.
+# To run Xvnc, set to XV_RUN_CMD = -Xvnc :1 & DISPLAY=1
+XV_RUN_CMD = -xvfb-run --auto-servernum --server-num=1
+
+# *** Internal ***
+
+# MAKECALL_MALT is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_MALT_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `malt-build -h 2>&1|grep 'MALT (version'`" > $@.makecall
+MAKECALL_MALT_PARAMS      = echo "	Called with parameters: $(MALT_OPTS)" >> $@.makecall
+MAKECALL_MALT_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_MALT             = $(MAKECALL_MALT_VERSION); $(MAKECALL_MALT_PARAMS); $(MAKECALL_MALT_INFILES)
+
+# *** Targets ***
+
+%.rma6: %.faa.gz
+	@$(MAKECALL_MALT)
+	$(XV_RUN_CMD) malt-run -m BlastP -i $< -d $(MALT_INDEX) -o $@ $(MALT_RUN_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+
+%.malt-index: %.faa.gz
+	@$(MAKECALL_MALT)
+	$(XV_RUN_CMD) malt-build -i $< -d $@ -s Protein -a2taxonomy $(ACC2TAXONID_MAP) -a2eggnog $(ACC2EGGNOG_MAP) -a2interpro2go $(ACC2INTERPRO2GO_MAP) $(MALT_BUILD_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

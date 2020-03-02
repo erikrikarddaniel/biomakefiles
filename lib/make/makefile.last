@@ -210,6 +210,12 @@ all_fnas_xwise: all_fna_lastdbs $(wildcard *.fna)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
 
+%.lastdb: %.faa.gz
+	$(MAKECALL_LASTAL_MAKEDB)
+	lastdb -p -c $@ <(gunzip -c $<) $(LASTDB_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+	touch $@
+
 # Nucleotide sequences in an fna file
 %.lastdb: %.fna
 	$(MAKECALL_LASTAL_MAKEDB)
@@ -230,3 +236,13 @@ all_fnas_xwise: all_fna_lastdbs $(wildcard *.fna)
 	gunzip -c $< | lastdb8 -c $@ $(LASTDB_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
+
+all_maf.gz.md5s: $(subst .maf.gz,.maf.gz.md5,$(wildcard *.maf.gz))
+
+%.maf.gz.md5: %.maf.gz
+	md5sum $< > $@
+
+all_blasttab.gz.md5s: $(subst .blasttab.gz,.blasttab.gz.md5,$(wildcard *.blasttab.gz))
+
+%.blasttab.gz.md5: %.blasttab.gz
+	md5sum $< > $@

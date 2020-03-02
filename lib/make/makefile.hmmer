@@ -158,6 +158,13 @@ accno_files: best.ranked.tsv
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# This one gets sequence names from a tblout file and searches the file in HMMER_DB_FAA.
+# To work well, it requires sequence names to be nice in a regexp way (i.e. not contain
+# regexp meta characters that interfere with results) and the file in HMMER_DB_FAA to
+# have sequences on a single line.
+%.hits.faa.gz: %.tblout
+	grep -A 1 -f <(grep -v '^#' $< | sed 's/ .*//') $(HMMER_DB_FAA) | grep -v '^--' | gzip -c > $@
+
 # Runs hmmsearch for all combinations of .faa and .hmm files in the directory
 hmmsearch_loop: $(wildcard *.hmm) $(wildcard *.faa)
 	for faa in *.faa; do \
