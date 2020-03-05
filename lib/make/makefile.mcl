@@ -73,7 +73,7 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 	sed -i '/^$$/d' $@
 	rm $@.tmp
 	
-# (Note, work in progress: This is similarity, not distance!)
+# Calculate *similarity* matrices from (pairwise, i.e. "xwise") LAST output
 %.bitscore.abc.tsv: %.blasttab.gz
 	gunzip -c $< | cut -f 1,2,12 > $@
 
