@@ -80,18 +80,14 @@ assembly_summary_genbank.txt:
 	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
 
 gtdb_genbank_genomes.tsv: ar122_metadata.tsv bac120_metadata.tsv assembly_summary_genbank.txt
-	grep -f <(cut -f 1 $(wordlist 1,2,$^) | sed 's/^[A-Z][A-Z]_//') $(word 3,$^) > $@
-
-# This will contain accessions that weren't available last time we checked
-absent_accnos:
-	touch $@
+	grep -f <(cut -f 1 $(wordlist 1,2,$^) | sed 's/^[A-Z][A-Z]_//' | sed 's/\.[0-9]\+$$//') $(word 3,$^) > $@
 
 # This creates a temporary makefile that can be used to fetch everything.
 # Useful for parallelisation.
 ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
-makefile.fetch: gtdb_genbank_genomes.tsv absent_accnos
+makefile.fetch: gtdb_genbank_genomes.tsv 
 	@echo "--> all <--"
-	@echo "all: $$(grep -v '^#' $< | grep -v -f $(word 2,$^) | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
+	@echo "all: $$(grep -v '^#' $< | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
 	@echo >> $@
 	@echo "--> Individual targets <--"
 	@for f in $$(grep -v '^#' $< |cut -f 20); do \
@@ -99,8 +95,6 @@ makefile.fetch: gtdb_genbank_genomes.tsv absent_accnos
 	echo "	if [ \$$\$$(wget -S --spider $$f  2>&1 | grep -c '\(File.*exists\)\|\(HTTP/1.1 200 OK\)') -gt 0 ]; then \\"; \
 	echo "	wget --mirror -A *genom*fna.gz -R *cds_from_genomic* -R *assembly_structure* $$f; \\"; \
 	echo "	touch \$$@; \\"; \
-	echo "	else \\"; \
-	echo "	echo \$$\$$(basename $$f) >> $(word 2,$^); \\"; \
 	echo "	fi"; \
 	echo ; \
 	done >> $@
