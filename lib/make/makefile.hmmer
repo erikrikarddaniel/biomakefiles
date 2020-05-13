@@ -163,7 +163,7 @@ accno_files: best.ranked.tsv
 # regexp meta characters that interfere with results) and the file in HMMER_DB_FAA to
 # have sequences on a single line.
 %.hits.faa.gz: %.tblout
-	grep -A 1 -f <(grep -v '^#' $< | sed 's/ .*//') $(HMMER_DB_FAA) | grep -v '^--' | gzip -c > $@
+	grep -A 1 -f <(grep -v '^#' $< | sed 's/ .*//' | sort -u) $(HMMER_DB_FAA) | grep -v '^--' | gzip -c > $@
 
 # Runs hmmsearch for all combinations of .faa and .hmm files in the directory
 hmmsearch_loop: $(wildcard *.hmm) $(wildcard *.faa)
