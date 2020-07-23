@@ -1,0 +1,46 @@
+# makefile.trimgalore
+#
+# Library makefile to make running trim_galore simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+TRIMGALORE_OPTS = 
+
+# <INT> is the Phred score used for quality trimming
+# (Subtract <INT> from all qualities; compute partial sums from all indices to the end of the sequence;
+# cut sequence at the index at which the sum is minimal)
+QUALITY_OPTS = 20
+
+# *** Internal ***
+
+# MAKECALL_TRIMGALORE is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `trim_galore --version`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(TRIMGALORE_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_TRIMGALORE  = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_INFILES)
+
+# *** Targets ***
+
+#The following runs lazy adapter removal and read quality trimming plus quality check.
+#Works only for paired, gzipped read files
+trimgalore_fastq.gz: $(subst .r1.fastq.gz,.trimgalore,$(filter-out $(wildcard *trimgalore.r?.fastq.gz),$(wildcard *.r1.fastq.gz)))
+
+# Target for a single pair of files. To mark that the target is done, an empty
+# file with .trimgalore suffix is created.
+%.trimgalore: %.r1.fastq.gz %.r2.fastq.gz
+	@$(MAKECALL_TRIMGALORE)
+	trim_galore --paired --fastqc --gzip --quality $(QUALITY_OPTS) \
+		$(TRIMGALORE_OPTS) $(word 1,$^) $(word 2,$^) 2>&1 > $@.report
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
