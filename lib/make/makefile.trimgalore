@@ -4,7 +4,7 @@
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: daniel.lundin@lnu.se
+# Author: diego.brambilla@lnu.se
 
 SHELL := /bin/bash
 
