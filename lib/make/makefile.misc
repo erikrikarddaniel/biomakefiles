@@ -148,6 +148,10 @@ r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 %.fna: %.fastq.gz
 	gunzip -c $< | fastq_to_fasta > $@
 
+# Convert a gzipped fastq file to gzipped fasta
+%.fna.gz: %.fastq.gz
+	gunzip -c $< | fastq_to_fasta | gzip -c > $@
+
 # Count the total number of nucleotides in a set of .fna files
 numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))
 	cat $^ > $@
