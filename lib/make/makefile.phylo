@@ -14,3 +14,16 @@ SHELL := /bin/bash
 # *** Internal ***
 
 # *** Targets ***
+
+# To handle, and record, deletion of sequences, use this target, with a file,
+# %.interesting.faa, containing prioritized sequences and a file containing
+# sequences you don't want, deleted_sequences (see next recipe). Make sure
+# fasta files have sequences on one line (see %.c.faa target in makefile.misc).
+%.correct.faa: %.correct_sequences %.faa %.interesting.faa
+	cat $(word 3,$^) > $@
+	grep -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
+
+# Remove deleted_sequences from .faa file 
+%.correct_sequences: %.faa deleted_sequences 
+	grep '>' $< | grep -v -f $(word 2,$^) | sed 's/.*@//' > $@
+
