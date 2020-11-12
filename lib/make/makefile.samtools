@@ -42,6 +42,9 @@ all_bam2flagstats: $(subst .bam,.flagstat,$(wildcard *.bam))
 # idxstats from sorted bam files
 all_sorted_bams_to_idxstats: $(subst .sorted.bam,.idxstats.gz,$(wildcard *.sorted.bam))
 
+# Extract only the mapped reads from sorted bam files (to reduce size of bams)
+all_sorted_bams_to_mapped_bams: $(subst .sorted.bam,.mapped.bam,$(wildcard *.sorted.bam))
+
 # Convert all sam files to bam
 all_samgz2bams: $(subst .sam,.bam,$(wildcard *.sam)) $(subst .sam.gz,.bam,$(wildcard *.sam.gz))
 
@@ -70,6 +73,11 @@ idxstats.tsv.gz: $(wildcard *.idxstats.gz)
 %.flagstat: %.bam
 	@$(MAKECALL_SAMTOOLS)
 	samtools flagstat $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.mapped.bam: %.sorted.bam
+	@$(MAKECALL_SAMTOOLS)
+	samtools view -F 4 $< > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.idxstats.gz: %.sorted.bam.bai
