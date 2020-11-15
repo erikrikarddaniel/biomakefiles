@@ -18,6 +18,8 @@
 #
 # Author: erik.rikard.daniel@gmail.com
 
+BMGE = bmge
+
 # Default settings
 %.bmge.alnfaa: %.alnfaa
 	$(BMGE) -i $< -of $@ -t AA
