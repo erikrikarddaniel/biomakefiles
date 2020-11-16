@@ -37,7 +37,9 @@ LASTAL_OPTS = -e200
 # more than a few percent of a core. The problems does not seem to be due to too
 # much IO, since I can start *many* parallel processes without cpu usage per
 # process going down.
-PARALLEL_OPTS = -P 0
+# IMPORTANT! Do not change -P from the default (0), it will cause misbehaviours
+# instead, set -j (numer of CPUS per parallel process)
+PARALLEL_OPTS = -j 1
 
 # If you use something else than the sanger flavour of fastq you should reset
 # this one, see the LAST documentation: http://last.cbrc.jp/. Not needed for 
