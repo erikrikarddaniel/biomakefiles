@@ -19,6 +19,17 @@ SHELL := /bin/bash
 NCBI_BLAST_DB_PATH  = YOU NEED TO SET THE NCBI_BLAST_DB_PATH VARIABLE (see makefile.blast)
 BLAST_PROTEIN_DB    = YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.blast)
 BLAST_NUCLEOTIDE_DB = YOU NEED TO SET THE BLAST_NUCLEOTIDE_DB VARIABLE (see makefile.blast)
+BLAST_NUCLEOTIDE_DB_PATH = .
+BLAST_PROTEIN_DB_PATH = .
+BLAST_PROTEIN_DB =  YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.blast)
+#Note: you can set identity thresholds with BLASTn but not with BLASTx or BLASTp!
+BLASTx_OPTS = -max_target_seqs 1 -evalue 1e-7 -outfmt 6
+# Override in your local Makefile to custom BLASTn settings and thresholds
+BLASTn_OPTS = -max_target_seqs 1 -evalue 0.01 -perc_identity 95 -outfmt 6
+# Number of threads per process used by GNU Parallel.
+# IMPORTANT! Redefine on your local Makefile according to available resources,
+# or all_parallel_blastn6 will not work
+N_TASKS = 
 
 # *** Internal ***
 
@@ -31,10 +42,49 @@ MAKECALL_BLAST_NCBI_DBS    = echo "	Called with path to NCBI dbs: $(NCBI_BLAST_D
 MAKECALL_BLAST_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DBS); $(MAKECALL_BLAST_INFILES)
 
+# BLASTn-specific macros
+#
+# *Don't redefine!*
+MAKECALL_BLASTn_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastn -version|grep 'blastn:')" > $@.makecall
+MAKECALL_BLASTn_PARAMS    = echo "	Called with parameters: $(BLASTn_OPTS)" >> $@.makecall
+
+MAKECALL_BLASTn_DB  = echo "  BLAST database: $(BLAST_NUCLEOTIDE_DB_PATH)/$(BLAST_NUCLEOTIDE_DB), timestamp: $(ls -lL $(BLAST_NUCLEOTIDE_DB_PATH)/$(BLAST_NUCLEOTIDE_DB).blastdb)" >> $@.makecall
+MAKECALL_BLAST_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_BLASTn             = $(MAKECALL_BLASTn_VERSION); $(MAKECALL_BLASTn_PARAMS); $(MAKECALL_BLASTn_DB); $(MAKECALL_BLAST_INFILES)
+
+# BLASTx-specific macros
+#
+# *Don't redefine!*
+MAKECALL_BLASTx_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastx -version|grep 'blastx:')" > $@.makecall
+MAKECALL_BLASTx_PARAMS    = echo "	Called with parameters: $(BLASTx_OPTS)" >> $@.makecall
+
+MAKECALL_BLASTx_DB  = echo "  BLAST database: $(BLAST_PROTEIN_DB_PATH)/$(BLAST_PROTEIN_DB), timestamp: $(ls -lL $(BLAST_PROTEIN_DB_PATH)/$(BLAST_PROTEIN_DB).blastdb)" >> $@.makecall
+MAKECALL_BLAST_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_BLASTx             = $(MAKECALL_BLASTx_VERSION); $(MAKECALL_BLASTx_PARAMS); $(MAKECALL_BLASTx_DB); $(MAKECALL_BLAST_INFILES)
+
+
 # *** Targets ***
 
 # UNTESTED and assumes you've also included makefile.misc that can convert a fastq.gz to an fna:
 all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
+
+# Running BLASTn on uncompressed FASTA files with GNU Parallel
+# Returns a .m8 tabular file (BLAST default output format, BLOSUM62 matrix)
+all_parallel_blastn6: $(subst .fna,blastn.m8,$(wildcard *.fna))
+
+%blastn.m8: %.fna
+	$(MAKECALL_BLASTn)
+	cat $< | parallel -j $(N_TASKS) --block 100k --recstart '>' --pipe blastn $(BLASTn_OPTS) -db $(BLAST_NUCLEOTIDE_DB_PATH)/$(BLAST_NUCLEOTIDE_DB) -query - > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Running BLASTx on uncompressed FASTA files with GNU Parallel
+# Returns a .m8 tabular file (BLAST default output format, BLOSUM62 matrix)
+all_parallel_blastx6: $(subst .fna,.blastx.m8,$(wildcard *.fna))
+
+%.blastx.m8: %.fna
+	$(MAKECALL_BLASTx)
+	cat $< | parallel -j $(N_TASKS) --block 100k --recstart '>' --pipe blastx $(BLASTx_OPTS) -db $(BLAST_PROTEIN_DB_PATH)/$(BLAST_PROTEIN_DB) -query - > $@
+	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_protein.blasttab.gz: %.fna
 	$(MAKECALL_BLAST)
@@ -77,4 +127,9 @@ all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
 
 %.blastdb: %.fna.gz
 	gunzip -c $< | makeblastdb -out $(basename $@) -title $(basename $@) -dbtype nucl
-	touch $@
+	touch $
+# Create .md5 files out of compressed BLAST tablar files (.m8.gz)
+all_m8s.gz.md5s: $(subst .m8.gz,.m8.gz.md5,$(wildcard *.m8.gz))
+
+%.m8.gz.md5: %.m8.gz
+	md5sum $< > $@
