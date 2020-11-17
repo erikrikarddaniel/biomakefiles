@@ -127,7 +127,7 @@ all_parallel_blastx6: $(subst .fna,.blastx.m8,$(wildcard *.fna))
 
 %.blastdb: %.fna.gz
 	gunzip -c $< | makeblastdb -out $(basename $@) -title $(basename $@) -dbtype nucl
-	touch $
+	touch $@
 # Create .md5 files out of compressed BLAST tablar files (.m8.gz)
 all_m8s.gz.md5s: $(subst .m8.gz,.m8.gz.md5,$(wildcard *.m8.gz))
 
