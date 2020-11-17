@@ -1,52 +1,56 @@
-include /marconi_work/mBI20_AmbCo/diego/biomakefiles/lib/make/makefile.diamond
-include /marconi_work/mBI20_AmbCo/diego/biomakefiles/lib/make/makefile.misc
-
-# DIAMOND-specific macros
-MAKECALL_DIAMOND_DEEPARG = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_DEEPARG); $(MAKECALL_INFILES)
-MAKECALL_DB_DEEPARG      = echo "	Database: $(DIAMOND_DB_PATH)/arg (`ls -lL $(DIAMOND_DB_PATH)/arg.dmnd`)" >> $@.makecall
-DIAMOND_ALIGN_OPTS = --id 90 --evalue 0.00001 -f $(OUTFMT) 
-OUTFMT= 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovhsp
-DIAMOND_DB_PATH = arg_db
-DIAMOND_DB = /marconi_scratch/userexternal/afranzet/icme9/arg_db/arg
-#deeparg.py specific macro: define minimum a.a. alignemnt length threshold
-ALENGTH = 37.5
-
-
-# From: https://github.com/erikrikarddaniel/biomakefiles/blob/master/doc/running_diamond_megan.md
-# There doesn't seem to be a way of producing one meganized daa file from two input daa files.
-# It's therefore preferable to run Diamond on an interleaved fastq file (can be gzipped) containing both reads from each pair.
-# To interleave sequences, look in the makefile.misc file. 
-
-
-# *** Misc Targets *** 
-
-# Compress with gzip a .fastq file
-#%.fastq.gz: %.fastq
-#	gzip -c $< > $@
-
-%.intlv.fastq.gz: %.R1.fastq.gz %.R2.fastq.gz
-	python interleave_fastq.py $^ | gzip -c > $@
-
-%.intlv.fastq: %.R1.fastq %.R2.fastq
-	python interleave_fastq.py $^ > $@
-
-# Interleave two fastq files (named %.R1.fastq and %.R2.fastq respectively).
+# makefile.diamond
 #
-# The target uses a python script -- interleave_fastq.py -- cloned from this
-# gist:
+# Library makefile to make running the Diamond aligner simpler.
 #
-#   https://gist.github.com/rpucheq/cf50eeea794529ca6b0e
-#  *** Warning! ***
-# The aforementioned script works for bot .gzip and uncompressed files
-# but it has been written in PYTHON 2!!!
+# Include the full path of this file in your Makefile and making databases and
+# running the aligner can be done via make. See documentation in in
+# the biomakefile Git repository: doc/makefile.md and documentation for
+# individual targets below.
 #
-# Dependencies will automatically be unzipped if not present in unzipped format
-# thanks to the pattern above. Unzipped files will be deleted after
-# interleaving.
-interleave_all_fastq.gzs: $(subst .R1.fastq.gz,.intlv.fastq.gz,$(wildcard *.R1.fastq.gz))
+# Author: erik.rikard.daniel@gmail.com
 
-# The same, but not zipping
-interleave_all_fastqs: $(subst .R1.fastq,.intlv.fastq,$(wildcard *.R1.fastq))
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+
+# DIAMOND_DB_PATH sets the directory where to look for generic database files
+# like the protein RefSeq. The default is the current directory.
+DIAMOND_DB_PATH = .
+
+# Specify this when you want to point to a specific, non-generic, database.
+# Full path, without ".dmnd".
+DIAMOND_DB =
+
+# DIAMOND_ALIGN_OPTS sets non-essential parameters for diamond alignment
+#
+# See the Diamond documentation available at GitHub:
+# https://github.com/bbuchfink/diamond. 
+#
+# Look particularly at options for sensitivity, scoring and memory and
+# performance.
+#
+# To set options, override this by inserting a row similar to the one below but
+# with whatever options you'd like to add in your Makefile *after* you include
+# this file.
+DIAMOND_ALIGN_OPTS = 
+
+# *** Internal ***
+
+# MAKECALL_DIAMOND is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y-%m-%d %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)" >> $@.makecall
+MAKECALL_DB_RFP      = echo "	Database: $(DIAMOND_DB_PATH)/refseq_protein (`ls -lL $(DIAMOND_DB_PATH)/refseq_protein.dmnd`)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_DIAMOND_RFP = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_RFP); $(MAKECALL_INFILES)
+MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
+
+# *** Targets ***
 
 # Running the Diamond aligner
 #
@@ -54,45 +58,86 @@ interleave_all_fastqs: $(subst .R1.fastq,.intlv.fastq,$(wildcard *.R1.fastq))
 # Non-generic databases (requires the DIAMOND_DB to be set to the full path,
 # except the .dmnd suffix, of the database file).
 
-# *** DIAMOND targets ***
+# RefSeq targets
 
-%.argdb.m8: %.fastq.gz
-	$(MAKECALL_DIAMOND_DEEPARG)
-	diamond blastx -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
-	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
-#same pattern for a different target (.fna files)
-
-%.argdb.m8: %.fna
-	$(MAKECALL_DIAMOND_DEEPARG)
-	diamond blastx -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+%.daa: %.fna.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.argdb.sort.best.m8: %.argdb.m8
-	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->sorting $><--"
-	sort -u -k1,1 $< > $@
+%.daa: %.fna
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.argdb.filter.sort.best.m8: %.argdb.sort.best.m8
-	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->filtering $><--"
-	python deeparg.py $< $(ALENGTH) $@
+# Run diamond against the database in DIAMOND_DB for all fastq.gz files in the directory.
+fastq.gz2daas: $(subst .fastq.gz,.daa,$(wildcard *.fastq.gz))
 
-%.genelist.tsv: %.m8
-	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->sorting $><--"
-	cut -f 1,2 $< | sed 's/|/\t/g' | sort -u -k6,6 - > $@
+%.daa: %.fastq.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
-# *** Make rules ***
-# compress all .fastq files in the work directory.
-compress_all_fastqs: $(subst .fastq,.fastq.gz, $(wildcard *.fastq))
+# Nucleotides in fastq.gz file against the NCBI RefSeq protein database
+fastq.gz2refseq_protein.daas: $(subst .fastq.gz,.refseq_protein.daa,$(wildcard *.fastq.gz))
 
-# parses DIAMOND m8 matrix to get unique tab-separated hits
-sort_best_m8: $(subst .argdb.m8,.argdb.sort.best.m8, $(wildcard *.argdb.m8))
+%.refseq_protein.daa: %.fastq.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
-#filters out DIAMOND m8 matrix to select hits based on alignment length cutoff (input)
-# N.B.: depends on the python script "deeparg.py" that requires python 3.6*-3.8* (see also required dependencies at the top of the file)
-argdb_alength_filter: $(subst .argdb.m8,.argdb.filter.sort.best.m8, $(wildcard *.argdb.m8))
+# Protein sequences in faa.gz file against the NCBI RefSeq protein database
+faa2refseq_protein.daas: $(subst .faa.gz,.refseq_protein.daa,$(wildcard *.faa.gz)) $(subst .faa,.refseq_protein.daa,$(wildcard *.faa))
 
-# parses DIMAOND m8 matrix to get an annotated gene list
-sort_argdb_genelist_tsv: $(subst .argdb.m8,.genelist.tsv, $(wildcard *.argdb..m8))
+%.refseq_protein.daa: %.faa.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastp -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
-# Nucleotides in fastq file against the NCBI RefSeq protein database
-fastq2arg_db.m8s: $(subst .fastq.gz,.argdb.m8,$(wildcard *.fastq.gz)) $(subst .fna,.argdb.m8,$(wildcard *.fna))
+%.refseq_protein.daa: %.faa
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastp -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# Nucleotides in fna.gz file against the NCBI RefSeq protein database
+fna2refseq_protein.daas: $(subst .fna.gz,.refseq_protein.daa,$(wildcard *.fna.gz)) $(subst .fna,.refseq_protein.daa,$(wildcard *.fna))
+
+%.refseq_protein.daa: %.fna.gz
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.refseq_protein.daa: %.fna
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Reformating the daa output
+all_blasttab.tsv.gzs: $(subst .daa,.blasttab.tsv.gz,$(wildcard *.daa))
+
+%.blasttab.tsv.gz: %.daa
+	diamond view --daa $< -f 6 | gzip -c > $@
+
+# Creating the database
+
+# From protein sequences in a file ending with .faa
+# (Currently, Diamond only works with protein sequence databases.)
+%.dmnd: %.faa.gz
+	$(MAKECALL_MAKEDB)
+	gunzip -c $< | diamond makedb -d $(basename $@)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.dmnd: %.faa
+	$(MAKECALL_MAKEDB)
+	diamond makedb --in $< -d $(basename $@)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+all_daa.md5sums: $(subst .daa,.daa.md5,$(wildcard *.daa))
+
+%.daa.md5: %.daa
+	md5sum $< > $@
+
+all_blasttab.md5sums: $(subst .blasttab.tsv.gz,.blasttab.tsv.gz.md5,$(wildcard *.blasttab.tsv.gz))
+
+%.blasttab.tsv.gz.md5: %.blasttab.tsv.gz
+	md5sum $< > $@
