@@ -31,16 +31,6 @@ all_uclusters: $(subst .faa,.uclusters,$(filter-out $(wildcard *.uc[01].*.faa),$
 	done
 	touch $@
 
-# Run with specific order of the sequences (order of appearance in the infile) 
-%.or.uclusters: %.faa
-	for n in $(CLUSTER_LEVELS); do \
-	  d=$(basename $@).uc$$n.clusters.d; \
-	  mkdir $$d; \
-	  rm -f $$d/*.faa; \
-	  usearch -cluster_smallmem $< -sortedby other -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_; \
-	  done
-	touch $@
-
 %.uclusters: %.fna
 	for n in $(CLUSTER_LEVELS); do \
 	  d=$(basename $@).uc$$n.clusters.d; \
