@@ -86,6 +86,13 @@ SEQTSV = cat $< | paste - - > $@
 %.alnaa.tsv: %.alnfaa
 	$(SEQTSV)
 
+# Convert stockholm alignment format (hmmer) to alnfaa. Requires the any2fasta
+# program (https://github.com/tseemann/any2fasta; hopefully my PR is accepted
+# and -S supported in upstream, otherwise use my version: 
+# https://github.com/erikrikarddaniel).
+%.alnfaa: %.sth
+	any2fasta -S $< > $@
+
 # Calculate tsv file with sequence lengths. Should be run on files that have 
 # already been cleaned with CLEAN_FASTA, see above.
 # Note: There are targets for %.seqlens.tsv below; they are for statistics and
@@ -150,6 +157,10 @@ r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 # Convert a gzipped fastq file to fasta
 %.fna: %.fastq.gz
 	gunzip -c $< | fastq_to_fasta > $@
+
+# Convert a gzipped fastq file to gzipped fasta
+%.fna.gz: %.fastq.gz
+	gunzip -c $< | fastq_to_fasta | gzip -c > $@
 
 # Count the total number of nucleotides in a set of .fna files
 numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))

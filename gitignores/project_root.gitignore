@@ -26,3 +26,4 @@ silva.mothur.nr.*
 *_report_cache*
 *.feather
 _cache
+.*.sw?
