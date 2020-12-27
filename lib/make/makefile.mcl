@@ -44,6 +44,7 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 
 .SECONDARY:
 
+# This doesn't work...
 %.mcls: %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl4.mclout %.mcl6.mclout
 
 %.mcl1_2.mclout: %.mci
@@ -64,14 +65,18 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 %.mcxdump.tsv: %.mclout
 	mcxdump -icl $< -tabr $(basename $(basename $<)).mcldata -o $@
 
-%.R.tsv: %.mcxdump.tsv
-	sed 's/\t/:::/g' $< > $@.tmp
-	i=0; for l in `cat $@.tmp`; do printf "Cluster%04d\t%d\n" $$i `echo $$l | sed 's/\t/:::/g'`; i=`expr $$i + 1`; done > $@
-	while [ `grep -c ':::' $@` -gt 0 ]; do \
-	  sed -i 's/\(.*\)\t\(.*\):::\(.*\)/\1\t\2\n\1\t\3/' $@; \
+all_R.tsv.gz: $(subst mcxdump.tsv,R.tsv.gz,$(wildcard *.mcxdump.tsv))
+
+%.R.tsv.gz: %.mcxdump.tsv
+	sed 's/\t/:::/g' $< | sed 's/ /<space>/g' > $(basename $@).tmp
+	i=0; for l in `cat $(basename $@).tmp`; do printf "Cluster%04d\t%s\n" $$i `echo $$l | sed 's/\t/:::/g'`; i=`expr $$i + 1`; done > $(basename $@)
+	while [ `grep -c ':::' $(basename $@)` -gt 0 ]; do \
+	  sed -i 's/\(.*\)\t\(.*\):::\(.*\)/\1\t\2\n\1\t\3/' $(basename $@); \
 	done
-	sed -i '/^$$/d' $@
-	rm $@.tmp
+	sed -i 's/<space>/ /g' $(basename $@)
+	sed -i '/^$$/d' $(basename $@)
+	gzip $(basename $@)
+	rm $(basename $@).tmp
 	
 # Calculate *similarity* matrices from (pairwise, i.e. "xwise") LAST output,
 # that can be loaded into Cytoscape.
