@@ -28,3 +28,11 @@ gtdbtk_current_data.tar.gz:
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
 	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
+
+# Splits the ; separated hierarchy in the original files to a tab separated
+%.split.tsv: %.tsv
+	sed 's/\td__/\t/' $< | sed 's/;[a-z]__/\t/g' > $@
+
+# Makes a file with unique species lineages, by removing the genome accno and finding the unique
+%.uniqlineages.tsv: %.genomes.split.tsv
+	cut -f 2-20 $< | sort -u > $@
