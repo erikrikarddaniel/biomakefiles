@@ -1,0 +1,40 @@
+# makefile.dbcan
+#
+# Library makefile to make running run_dbcan.py simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+DBCAN_DB_DIR = YOU MUST SET TO DIRECTORY WHERE YOU DOWNLOADED DBCAN'S DATA FILES
+
+# Use for any other options, i.e. except database directory and any cpu option
+DBCAN_OPTS = 
+
+# *** Internal ***
+
+# MAKECALL_DBCAN is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_DBCAN_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `run_dbcan.py --version`" > $@.makecall
+MAKECALL_DBCAN_PARAMS      = echo "	Called with parameters: $(DBCAN_OPTS)" >> $@.makecall
+MAKECALL_DBCAN_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_DBCAN             = $(MAKECALL_DBCAN_VERSION); $(MAKECALL_DBCAN_PARAMS); $(MAKECALL_DBCAN_INFILES)
+
+# *** Targets ***
+
+all_faa_dbcans: $(subst .faa,.dbcan.out,$(wildcard *.faa))
+
+# Quite slow, don't run on more than N sequences
+%.dbcan.out: %.faa
+	@$(MAKECALL_DBCAN)
+	run_dbcan.py --db_dir $(DBCAN_DB_DIR) --dia_cpu 1 --hmm_cpu 1 --hotpep_cpu 1 --tf_cpu 1 --stp_cpu 1 --out_dir $@.d/ $(DBCAN_OPTS) $< protein > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
