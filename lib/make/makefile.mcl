@@ -47,8 +47,11 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 # This doesn't work...
 %.mcls: %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl4.mclout %.mcl6.mclout
 
+%.mcl1_1.mclout: %.mci
+	mcl $< -I 1.1 -o $@
+
 %.mcl1_2.mclout: %.mci
-	mcl $< -I 1.4 -o $@
+	mcl $< -I 1.2 -o $@
 
 %.mcl1_4.mclout: %.mci
 	mcl $< -I 1.4 -o $@
@@ -66,6 +69,12 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 	mcxdump -icl $< -tabr $(basename $(basename $<)).mcldata -o $@
 
 all_R.tsv.gz: $(subst mcxdump.tsv,R.tsv.gz,$(wildcard *.mcxdump.tsv))
+	echo "inflation	cluster	item" > $(basename $@)
+	for f in $^; do \
+	  c=$$(echo $$f | grep -o "mcl[0-9_]*"|sed 's/mcl//'|sed 's/_/./'); \
+	  gunzip -c $$f | sed "s/^/$$c\t/" >> $(basename $@); \
+	done
+	gzip $(basename $@)
 
 %.R.tsv.gz: %.mcxdump.tsv
 	sed 's/\t/:::/g' $< | sed 's/ /<space>/g' > $(basename $@).tmp
