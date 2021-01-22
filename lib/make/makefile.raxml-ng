@@ -52,6 +52,9 @@ MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_N
 %.rf.rfDistances: %.mlTrees.gz
 	raxml-ng --rfdist --tree <(gunzip -c $<) --prefix $(basename $@)
 
+# Run after tree estimation finishes, replacing .log from the log file with .stats
+%.stats: %.likelihoods.tsv %.runstats.tsv
+	
 # Run on the log from tree estimation
 %.likelihoods.tsv: %.log
 	echo "tree	log_likelihood" > $@
