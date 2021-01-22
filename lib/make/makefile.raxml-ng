@@ -17,6 +17,12 @@ SHELL := /bin/bash
 # patterns per thread!
 RAXML_NG_OPTS = --threads 1 
 
+RAXML_NG_SEED = SET SEED TO SOMETHING
+RAXML_NG_N_STARTING_TREES = 10
+
+# Set to --threads N after running the rba target
+RAXML_NG_OPTS =
+
 # *** Internal ***
 
 # MAKECALL_RAXML_NG is a macro that defines what will be output to the .makecall
@@ -30,9 +36,17 @@ MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_N
 
 # *** Targets ***
 
+%.LGG8F.raxml.rba: %.alnfaa
+	raxml-ng --parse --msa $< --model LG+G8+F --prefix $(basename $(basename $@))
+
+%.raxml.bestTree: %.raxml.rba
+	raxml-ng --all --msa $< --prefix $(basename $(basename $@)) $(RAXML_NG_OPTS) --seed $(RAXML_NG_SEED) --tree pars{$(RAXML_NG_N_STARTING_TREES)},rand{$(RAXML_NG_N_STARTING_TREES)}
+
 %.LGG8F.ancstates.raxml-ng: %.rx.alnfaa %.newick
 	@$(MAKECALL_RAXML_NG)
 	raxml-ng --ancestral --msa $< --tree $(word 2,$^) --model LG+G8+F --prefix $(basename $@) $(RAXML_NG_OPTS) 2>&1 | tee $@
 	ln -s $(basename $@).raxml.ancestralTree $(basename $@).newick
 	sed "s/\(.*\)\t\(.*\)/>\1\n\2/" $(basename $@).raxml.ancestralStates > $(basename $@).alnfaa
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+
