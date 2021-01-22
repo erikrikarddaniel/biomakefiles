@@ -23,6 +23,9 @@ SHELL := /bin/bash
 	cat $(word 3,$^) > $@
 	grep -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
 
+%.interesting.faa:
+	touch $@
+
 # Remove deleted_sequences from .faa file 
 %.correct_sequences: %.faa deleted_sequences 
 	grep '>' $< | grep -v -f $(word 2,$^) | sed 's/.*@//' > $@
