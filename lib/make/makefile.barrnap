@@ -28,11 +28,8 @@ MAKECALL_BARRNAP             = $(MAKECALL_BARRNAP_VERSION); $(MAKECALL_BARRNAP_P
 
 # *** Targets ***
 
-%.all_barrnap_fnas: %.fna
-	make $(basename $@).euk_barrnap.fna
-	make $(basename $@).bac_barrnap.fna
-	make $(basename $@).arc_barrnap.fna
-	make $(basename $@).mito_barrnap.fna
+%.rrnas.tsv: %.euk_barrnap.fna %.bac_barrnap.fna %.arc_barrnap.fna %.mito_barrnap.fna
+	grep -h '>' $^ | sed 's/^>//' | sed 's/:\+/\t/g' | sort -u > $@
 	
 %.euk_barrnap.fna: %.fna
 	@$(MAKECALL_BARRNAP)
