@@ -1,0 +1,3 @@
+eukaryota.all.2015.fna.gz:
+	wget https://github.com/BioInf-Wuerzburg/ITS2database_update_2015/raw/master/data/2015/eukaryota.all.fasta.bz2
+	bunzip2 eukaryota.all.fasta.bz2; gzip -c eukaryota.all.fasta > $@; rm eukaryota.all.fasta.bz2

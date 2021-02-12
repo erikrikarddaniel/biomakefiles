@@ -1,0 +1,38 @@
+# makefile.eggnog-mapper
+#
+# Library makefile to make running eggnog-mapper simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+EGGNOG_MAPPER_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_EGGNOG_MAPPER is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_EGGNOG_MAPPER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `emapper.py --version`" > $@.makecall
+MAKECALL_EGGNOG_MAPPER_PARAMS      = echo "	Called with parameters: $(EGGNOG_MAPPER_OPTS)" >> $@.makecall
+MAKECALL_EGGNOG_MAPPER_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_EGGNOG_MAPPER             = $(MAKECALL_EGGNOG_MAPPER_VERSION); $(MAKECALL_EGGNOG_MAPPER_PARAMS); $(MAKECALL_EGGNOG_MAPPER_INFILES)
+
+# *** Targets ***
+
+all.emapper.annotations.tsv: $(wildcard *.emapper.annotations)
+	grep '#query_name' $< | sed 's/#//' > $@
+	grep -v '^#' $^ >> $@
+
+%.emapper.annotations: %.faa
+	@$(MAKECALL_EGGNOG_MAPPER)
+	emapper.py $(EGGNOG_MAPPER_OPTS) -i $< --output $(basename $(basename $@)) > $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

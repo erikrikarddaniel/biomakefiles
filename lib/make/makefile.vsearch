@@ -21,14 +21,8 @@ VSEARCH_OPTS = --fasta_width 0
 # macro if you need other levels than the default specified here.
 CLUSTER_LEVELS = 1.00 0.99 0.98 0.97 0.95 0.93 0.90 0.85 0.80 0.75 0.70 0.60 0.50
 
-%.vclusters: %.faa
-	for n in $(CLUSTER_LEVELS); do \
-	  d=$(basename $@).uc$$n.clusters.d; \
-	  mkdir $$d; \
-	  rm -f $$d/*.faa; \
-	  vsearch -cluster_fast $< -id $$n -centroids $(basename $@).uc$$n.faa -clusters $$d/cluster_ $(VSEARCH_OPTS); \
-	done
-	touch $@
+# Vsearch doesn't work with amino acids, but looks like it works except that it warns about 
+# deleting amino acid letters that are not correct nucleotide IUPAC codes!
 
 %.vclusters: %.fna
 	for n in $(CLUSTER_LEVELS); do \

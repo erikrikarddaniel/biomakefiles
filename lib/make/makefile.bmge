@@ -18,9 +18,11 @@
 #
 # Author: erik.rikard.daniel@gmail.com
 
+BMGE = bmge
+
 # Default settings
 %.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA
+	$(BMGE) -i $< -of $@ -t AA
 
 # Lots of targets for various BMGE calls followed by output of a NEXUS character
 # sets clause for inclusion in e.g. seaview files.
@@ -32,93 +34,93 @@
 	grep 'selected:' $< | sed "s/ *selected: */  CHARSET '$$n' =/" | sed 's/$$/;/' > $@
 
 %.BLOSUM30.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM30
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM30
 
 %.BLOSUM35.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM35
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM35
 
 %.BLOSUM40.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM40
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM40
 
 %.BLOSUM45.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM45
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM45
 
 %.BLOSUM50.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM50
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM50
 
 %.BLOSUM55.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM55
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM55
 
 %.BLOSUM60.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM60
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM60
 
 %.BLOSUM62.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM62
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM62
 
 %.BLOSUM65.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM65
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM65
 
 %.BLOSUM70.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM70
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM70
 
 %.BLOSUM75.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM75
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM75
 
 %.BLOSUM80.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM80
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM80
 
 %.BLOSUM85.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM85
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM85
 
 %.BLOSUM90.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM90
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM90
 
 %.BLOSUM95.bmge.html: %.alnfaa
-	bmge -i $< -oh $@ -t AA -m BLOSUM95
+	$(BMGE) -i $< -oh $@ -t AA -m BLOSUM95
 
 .SECONDARY:
 
 %.BLOSUM30.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM30
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM30
 
 %.BLOSUM35.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM35
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM35
 
 %.BLOSUM40.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM40
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM40
 
 %.BLOSUM45.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM45
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM45
 
 %.BLOSUM50.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM50
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM50
 
 %.BLOSUM55.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM55
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM55
 
 %.BLOSUM60.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM60
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM60
 
 %.BLOSUM62.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM62
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM62
 
 %.BLOSUM65.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM65
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM65
 
 %.BLOSUM70.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM70
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM70
 
 %.BLOSUM75.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM75
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM75
 
 %.BLOSUM80.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM80
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM80
 
 %.BLOSUM85.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM85
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM85
 
 %.BLOSUM90.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM90
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM90
 
 %.BLOSUM95.bmge.alnfaa: %.alnfaa
-	bmge -i $< -of $@ -t AA -m BLOSUM95
+	$(BMGE) -i $< -of $@ -t AA -m BLOSUM95

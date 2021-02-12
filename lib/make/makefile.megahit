@@ -12,7 +12,8 @@ SHELL := /bin/bash
 
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
-#
+
+# To use 20 cores, set to -t 20
 MEGAHIT_OPTS = 
 
 # *** Internal ***

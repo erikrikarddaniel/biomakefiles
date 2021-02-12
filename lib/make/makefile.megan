@@ -72,10 +72,7 @@ meganize_all: $(subst .daa,.daa.meganize.out,$(wildcard *.daa))
 	$(MAKECALL_MEGANIZE)
 	$(XV_RUN_CMD) \
 	  $(MEGAN_INSTALL_DIR)/tools/daa-meganizer --in $< \
-	  --acc2taxa $(MEGAN_MAPS_DIR)/prot_acc2tax.abin \
-	  --acc2eggnog $(MEGAN_MAPS_DIR)/acc2eggnog.abin \
-	  --acc2interpro2go $(MEGAN_MAPS_DIR)/acc2interpro.abin \
-	  --acc2seed $(MEGAN_MAPS_DIR)/acc2seed.abin \
+	  --mapDB $(MEGAN_MAPS_DIR)/megan-map-Oct2019.db \
 	  $(MEGANIZE_OPTS) | tee $@ 2>&1
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
@@ -91,7 +88,7 @@ all_exports: all_reads2eggnogs all_reads2ips all_reads2seeds all_reads2taxonids
 
 mostly_hiearchy_exports: all_reads2taxonids all_reads2eggnoghiers all_reads2iphiers all_reads2seedhiers
 
-all_reads2eggnogs: $(subst .daa,.reads2eggnogs.tsv.gz,$(wildcard *.daa)) all_reads2eggnoghiers all_reads2iphiers all_reads2seedhiers
+all_reads2eggnogs: $(subst .daa,.reads2eggnogs.tsv.gz,$(wildcard *.daa)) 
 
 split_ip2go_hierarchy: reads2ips.tsv.gz ip2gohier.tsv.gz
 
