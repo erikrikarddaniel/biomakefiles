@@ -27,3 +27,5 @@ silva.mothur.nr.*
 *.feather
 _cache
 .*.sw?
+.~*#
+*.html
