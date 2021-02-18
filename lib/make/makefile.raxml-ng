@@ -40,7 +40,7 @@ MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_N
 	raxml-ng --parse --msa $< --model LG+G8+F --prefix $(basename $(basename $@))
 
 %.raxml.bestTree: %.raxml.rba
-	raxml-ng --all --msa $< --prefix $(basename $(basename $@)) $(RAXML_NG_OPTS) --seed $(RAXML_NG_SEED) --tree pars{$(RAXML_NG_N_STARTING_TREES)},rand{$(RAXML_NG_N_STARTING_TREES)}
+	raxml-ng --all --msa $< --prefix $(basename $(basename $@)) $(RAXML_NG_OPTS) --seed $(RAXML_NG_SEED) --tree pars{$(RAXML_NG_N_STARTING_TREES)},rand{$(RAXML_NG_N_STARTING_TREES)} --bs-metric fbp,tbe
 
 %.LGG8F.ancstates.raxml-ng: %.rx.alnfaa %.newick
 	@$(MAKECALL_RAXML_NG)
