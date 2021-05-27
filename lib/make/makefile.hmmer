@@ -158,10 +158,12 @@ accno_files: best.ranked.tsv
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-# Align sequences to a profile. The resulting stockholm file can be converted
-# to fasta with makefile.misc.
+# Align sequences to a profile. 
 %.hmmer.sth: profile.hmm %.faa
 	hmmalign $^ > $@
+
+%.hmmer.alnfaa: %.hmmer.sth
+	esl-reformat -n afa $< > $@
 
 # This one gets sequence names from a tblout file and searches the file in HMMER_DB_FAA.
 # To work well, it requires sequence names to be nice in a regexp way (i.e. not contain
