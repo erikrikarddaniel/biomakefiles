@@ -45,6 +45,16 @@ assembly_summary_genbank.txt:
 gtdb_genbank_genomes.tsv: ar122_metadata.tsv bac120_metadata.tsv assembly_summary_genbank.txt
 	grep -f <(cut -f 1 $(wordlist 1,2,$^) | sed 's/^[A-Z][A-Z]_//' | sed 's/\.[0-9]\+$$//') $(word 3,$^) > $@
 
+ssu_all.tar.gz:
+	wget https://data.gtdb.ecogenomic.org/releases/latest/genomic_files_all/$@
+
+# Try to get rid of version number som day
+bacteria_ssu_all.fna.gz: ssu_all.tar.gz
+	tar xzfO $< | grep -A 1 Bacteria | grep -v '^--' | gzip -c > $@
+
+archaea_ssu_all.fna.gz: ssu_all.tar.gz
+	tar xzfO $< | grep -A 1 Archaea | grep -v '^--' | gzip -c > $@
+
 # This creates a temporary makefile that can be used to fetch everything.
 # Useful for parallelisation.
 ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
