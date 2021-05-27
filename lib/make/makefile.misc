@@ -20,7 +20,7 @@ CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
 # Put fasta sequences on one line
 CLEAN_FASTA = awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' | sed '/^>/!s/ //g'
 
-SEQLENS = tr '\n' '\t' < $< | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
+SEQLENS = sed 's/> */>/' $< | sed '/^>/s/ .*//' | tr '\n' '\t' | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
 
 # *** Targets ***
 
