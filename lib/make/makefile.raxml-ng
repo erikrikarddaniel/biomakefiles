@@ -36,6 +36,8 @@ MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_N
 
 # *** Targets ***
 
+.SECONDARY:
+
 %.LGG8F.raxml.rba: %.alnfaa
 	raxml-ng --parse --msa $< --model LG+G8+F --prefix $(basename $(basename $@))
 
