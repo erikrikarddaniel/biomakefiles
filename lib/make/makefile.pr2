@@ -1,0 +1,24 @@
+# makefile.pr2
+#
+# Library makefile to simplify download of PR2 files.
+#
+# It currently doesn't help much, but documents...
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+PR2_VERSION = 4.12.0
+
+# *** Parameters ***
+
+dada2: pr2_16S_dada2.fna.gz pr2_18S_dada2.fna.gz
+
+pr2_16S_dada2.fna.gz:
+	wget https://github.com/pr2database/pr2database/releases/download/v$(PR2_VERSION)/pr2_version_$(PR2_VERSION)_16S_dada2.fasta.gz
+	ln -s pr2_version_$(PR2_VERSION)_16S_dada2.fasta.gz $@
+
+pr2_18S_dada2.fna.gz:
+	wget https://github.com/pr2database/pr2database/releases/download/v$(PR2_VERSION)/pr2_version_$(PR2_VERSION)_18S_dada2.fasta.gz
+	ln -s pr2_version_$(PR2_VERSION)_18S_dada2.fasta.gz $@

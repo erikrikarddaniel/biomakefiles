@@ -14,7 +14,7 @@ SHELL := /bin/bash
 # includes this file, see documentation in doc/makefile.md.
 #
 RAXML_BINARY = raxmlHPC-PTHREADS-SSE3 
-NUM_CPUS = 4
+NUM_CPUS = 1
 RANDOM_PARSIMONY = SET_RANDOM_PARSIMONY_TO_A_NUMBER
 RANDOM_RAPIDBS   = SET_RANDOM_RAPIDBS_TO_A_NUMBER
 RAXML_OPTS = 
