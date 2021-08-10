@@ -71,3 +71,7 @@ MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_N
 %.runstats.tsv: %.log %.rf.raxml.log
 	echo "raxml_version	run_mode	start_trees	model	n_sites	n_patterns	perc_gaps	perc_invariant	n_bootstraps	n_uniq_topos	mean_absolute_rf	mean_relative_rf	command" > $@
 	echo "$$(grep '^RAxML-NG v.' $<)	$$(grep 'run mode:' $< | sed 's/.*run mode: //')	$$(grep 'start tree' $< | sed 's/.*start tree(s): //')	$$(grep 'Model:' $< | sed 's/.*Model: //')	$$(grep 'Alignment sites' $< | sed 's/.*: //' | sed 's:/:\t:')	$$(grep 'Gaps:' $< | sed 's/.*Gaps: \([0-9.]\+\).*/\1/')	$$(grep 'Invariant sites:' $< | sed 's/.*Invariant sites: \([0-9.]\+\).*/\1/')	$$(grep 'Bootstrapping converged after' $< | sed 's/.*Bootstrapping converged after \([0-9]\+\).*/\1/')	$$(grep 'Number of unique topologies in this tree set' $(word 2, $^) | sed 's/Number of unique topologies in this tree set: //')	$$(grep 'Average absolute RF distance in this tree set: ' $(word 2,$^) | sed 's/Average absolute RF distance in this tree set: //')	$$(grep 'Average relative RF distance in this tree set: ' $(word 2,$^) | sed 's/Average relative RF distance in this tree set: //')	$$(grep '^raxml-ng' $<)" >> $@
+
+# Decorate a tree with bootstraps
+%.support: %.bestTree %.bootstraps.gz
+	raxml-ng --support --tree $< --bs-trees <(gunzip -c $(word 2,$^)) --prefix $(basename $@) --threads 2
