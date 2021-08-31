@@ -1,0 +1,98 @@
+# makefile.gralign
+#
+# Library makefile to make running the GR-Align programs simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+# --> Install programs <--
+#
+# Before running GR-Align, the programs need to be installed. They can be found
+# at http://www0.cs.ucl.ac.uk/staff/natasa/GR-Align/index.html.  Make sure you
+# install the GR-Align program under that name and not as it may be downloaded
+# containing a version number. The best way to do this is to make a symlink, as
+# the calls will be documented with an `ls -l` on GR-Align, that could that way
+# show the version.
+#
+# To convert .sim files to matrices and GR-Align alignments to fasta, install
+# the `gralign-tools` conda package: 
+#
+# ``` conda install -c matricaria gralign-tools ```
+#
+# --> Analysis <--
+#
+# To make an analysis, start by making a separate directory in which you
+# collect the pdb files, create a Makefile that includes this one and run `make
+# all_A_gws` `make all_ndumps`. (If you want to use another chain than A in
+# some, you need to write your own targets for that.) Use the CMAP_OPTS macro
+# to set options to CMAP.
+#
+# When the above is done, create an .lst file listing the accessions (i.e. pdb
+# file name minus ".pdb") in the first column and the name you want to use for
+# the structure as the second, separated by a tab.
+#
+# Create a Makefile in the directory with the .lst and make sure you have a
+# symlink to the gw/ndump directory called like the .lst but with a .gw_ndumps
+# suffix. Run `make name.sim` where name is the same as the prefix to the .lst
+# and .gw_ndumps. Use the GRALIGN_OPTS macro to set options.
+#
+# To make fasta representations of the alignments, enter the alignment
+# subdirectory, write a Makefile that includes this one and run `make 
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+CMAP_OPTS    = -d 12
+GRALIGN_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_GRALIGN is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_GRALIGN_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $$(ls -l $$(which GR-Align))" > $@.makecall
+MAKECALL_GRALIGN_PARAMS      = echo "	Called with parameters: $(GRALIGN_OPTS)" >> $@.makecall
+MAKECALL_GRALIGN_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_GRALIGN             = $(MAKECALL_GRALIGN_VERSION); $(MAKECALL_GRALIGN_PARAMS); $(MAKECALL_GRALIGN_INFILES)
+
+# *** Targets ***
+
+# Contact maps. Only targets for the A chain provided. You'll have to make other chains manually
+all_A_gws: $(subst .pdb,A.gw,$(wildcard *.pdb))
+
+%A.gw: %.pdb
+	@$(MAKECALL_GRALIGN)
+	CMap -i $< -c A -o $@ $(CMAP_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Graphlet degree signature
+all_ndumps: $(subst .gw,.ndump,$(wildcard *.gw))
+
+%.ndump: %.gw
+	@$(MAKECALL_GRALIGN)
+	DCount -i $< -o $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.sim: %.lst %.gw_ndumps 
+	if [ ! -e $(basename $@)_alignments ]; then mkdir $(basename $@)_alignments; fi
+	GR-Align -q $< -r $(word 2,$^) -d $(basename $@)_alignments -o $(basename $@) -x true $(GRALIGN_OPTS)
+
+%.inverse.splitstree: %.sim
+	grasim2matrix --format=splitstree --transform=inverse $< > $@
+
+%.one_minus.splitstree: %.sim
+	grasim2matrix --format=splitstree --transform=minus --transformval=1 $< > $@
+
+all_alnfaas: $(subst ali,alnfaa,$(wildcard ?????~?????.ali))
+
+%.alnfaa: %.ali
+        n=`echo $< | grep -o "^.*\~[^.]*" | sed 's/~/,/'`; \
+        f0=`echo $$n | sed 's/.,.*//'`; \
+        f1=`echo $$n | sed 's/.*,\(.*\).$$/\1/'`; \
+        gralign2mfa --verbose --seqnames=$$n $< $$f0.faa $$f1.faa > $@
