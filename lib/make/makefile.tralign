@@ -33,6 +33,8 @@ MAKECALL_TMALIGN             = $(MAKECALL_TMALIGN_VERSION); $(MAKECALL_TMALIGN_P
 # current directory (except a file with itself). It creates unique combinations
 # by only running for pairs in alphabetical order.
 #
+# Note: You can use -j to parallelize.
+#
 # The work is done by first creating a file with all combinations, then a
 # temporary makefile and lastly calling make for all targets in that file. The
 # temporary two files are removed automatically. To check them, call each
