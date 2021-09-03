@@ -45,6 +45,9 @@ all_combinations: makefile.combinations
 	done
 	rm $<
 
+all_combinations.splitstree: $(wildcard *.tmalign)
+	tmalign2matrix --transform minus $^ > $@
+
 combinations: $(wildcard *.pdb)
 	for a in $^; do \
 	  for b in $^; do \
