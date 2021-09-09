@@ -43,10 +43,30 @@ all_combinations: makefile.combinations
 	for t in $$(grep ':' $< | sed 's/:.*//'); do \
 	  $(MAKE) $(MAKEFLAGS) -f $< $$(grep ':' $< | sed 's/:.*//' | tr '\n' ' '); \
 	done
-	rm $<
 
 all_combinations.splitstree: $(wildcard *.tmalign)
 	tmalign2matrix --transform minus $^ > $@
+
+all_combinations.max.splitstree: $(wildcard *.tmalign)
+	tmalign2matrix --score=max --transform maxus $^ > $@
+
+all_combinations.mean.splitstree: $(wildcard *.tmalign)
+	tmalign2matrix --score=mean --transform minus $^ > $@
+
+all_combinations.min.splitstree: $(wildcard *.tmalign)
+	tmalign2matrix --score=min --transform minus $^ > $@
+
+all_combinations.tsv: $(wildcard *.tmalign)
+	tmalign2matrix --format=tsv --transform minus $^ > $@
+
+all_combinations.max.tsv: $(wildcard *.tmalign)
+	tmalign2matrix --format=tsv --score=max --transform minus $^ > $@
+
+all_combinations.mean.tsv: $(wildcard *.tmalign)
+	tmalign2matrix --format=tsv --score=mean --transform minus $^ > $@
+
+all_combinations.min.tsv: $(wildcard *.tmalign)
+	tmalign2matrix --format=tsv --score=min --transform minus $^ > $@
 
 combinations: $(wildcard *.pdb)
 	for a in $^; do \
@@ -59,7 +79,6 @@ combinations: $(wildcard *.pdb)
 
 makefile.combinations: combinations
 	sed 's/\(.*\)-\(.*\)/&.tmalign: \1.pdb \2.pdb/' $< | sed 's:$$:\n\t@if [ ! -e $$(basename $$@).d ]; then mkdir $$(basename $$@).d; else rm -f $$(basename $$@).d/*; fi\n\tTMalign $$^ -o $$(basename $$@).d/$$(basename $$@).sup > $$@\n:' > $@
-	rm $<
 
 %.suffix0: %.suffix1 %.suffix1 %.suffixn
 	@$(MAKECALL_TMALIGN)
