@@ -163,6 +163,24 @@ accno_files: best.ranked.tsv
 %.hmmer.sth: profile.hmm %.faa
 	hmmalign $^ > $@
 
+%.hmmer.sth: profile.hmm %.fna.gz
+	gunzip -c $(word 2,$^) | hmmalign $< - > $@
+
+%.hmmer.sth.gz: profile.hmm %.fna.gz
+	gunzip -c $(word 2,$^) | hmmalign $< - | gzip -c > $@
+
+%.hmmer.alnfna.gz: %.hmmer.sth
+	esl-reformat afa $< | gzip -c > $@
+
+%.hmmer.alnfna.gz: %.hmmer.sth.gz
+	gunzip -c $< | esl-reformat afa - | gzip -c > $@
+
+%.hmmer.rfmask.alnfna.gz: %.hmmer.sth
+	esl-alimask --rf-is-mask $< | esl-reformat afa - | gzip -c > $@
+
+%.hmmer.rfmask.alnfna.gz: %.hmmer.sth.gz
+	gunzip -c $< | esl-alimask --rf-is-mask - | esl-reformat afa - | gzip -c > $@
+
 # This one gets sequence names from a tblout file and searches the file in HMMER_DB_FAA.
 # To work well, it requires sequence names to be nice in a regexp way (i.e. not contain
 # regexp meta characters that interfere with results) and the file in HMMER_DB_FAA to
