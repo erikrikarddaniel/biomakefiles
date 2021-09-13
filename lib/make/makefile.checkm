@@ -41,6 +41,12 @@ checkm.lineage_wf.fna.out: $(wildcard *.fna)
 	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) . checkm/ 2>&1 | tee $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# Run checkm lineage_wf on all bins in the genome_bins subdirectory
+checkm.lineage_wf.d: $(wildcard genome_bins/*.fna)
+	@$(MAKECALL_CHECKM)
+	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) genome_bins/ $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 # This runs checkm lineage_wf on all bins in .faa files in
 # the current directory.
 checkm.lineage_wf.faa.out: $(wildcard *.faa)
