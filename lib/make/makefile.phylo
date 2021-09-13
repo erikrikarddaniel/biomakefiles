@@ -30,3 +30,5 @@ SHELL := /bin/bash
 %.correct_sequences: %.faa deleted_sequences 
 	grep '>' $< | grep -v -f $(word 2,$^) | sed 's/.*@//' > $@
 
+deleted_sequences: $(wildcard problem_sequences.*)
+	        sort -u $^ > $@

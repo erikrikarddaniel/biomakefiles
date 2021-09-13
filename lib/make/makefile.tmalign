@@ -1,0 +1,86 @@
+# makefile.tralign
+#
+# Library makefile to make running the TMalign (https://zhanggroup.org/TM-align/) 
+# program simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+TMALIGN_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_TMALIGN is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_TMALIGN_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `__PROGRAM__ --version`" > $@.makecall
+MAKECALL_TMALIGN_PARAMS      = echo "	Called with parameters: $(TMALIGN_OPTS)" >> $@.makecall
+MAKECALL_TMALIGN_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_TMALIGN             = $(MAKECALL_TMALIGN_VERSION); $(MAKECALL_TMALIGN_PARAMS); $(MAKECALL_TMALIGN_INFILES)
+
+# *** Targets ***
+
+# This is the main target. It runs TMalign on all pairs of pdb files in the
+# current directory (except a file with itself). It creates unique combinations
+# by only running for pairs in alphabetical order.
+#
+# Note: You can use -j to parallelize.
+#
+# The work is done by first creating a file with all combinations, then a
+# temporary makefile and lastly calling make for all targets in that file. The
+# temporary two files are removed automatically. To check them, call each
+# separately.
+all_combinations: makefile.combinations
+	for t in $$(grep ':' $< | sed 's/:.*//'); do \
+	  $(MAKE) $(MAKEFLAGS) -f $< $$(grep ':' $< | sed 's/:.*//' | tr '\n' ' '); \
+	done
+
+all_combinations.splitstree: $(wildcard *.tmalign)
+	tmalign2matrix --transform minus $^ > $@
+
+all_combinations.max.splitstree: $(wildcard *.tmalign)
+	tmalign2matrix --score=max --transform maxus $^ > $@
+
+all_combinations.mean.splitstree: $(wildcard *.tmalign)
+	tmalign2matrix --score=mean --transform minus $^ > $@
+
+all_combinations.min.splitstree: $(wildcard *.tmalign)
+	tmalign2matrix --score=min --transform minus $^ > $@
+
+all_combinations.tsv: $(wildcard *.tmalign)
+	tmalign2matrix --format=tsv --transform minus $^ > $@
+
+all_combinations.max.tsv: $(wildcard *.tmalign)
+	tmalign2matrix --format=tsv --score=max --transform minus $^ > $@
+
+all_combinations.mean.tsv: $(wildcard *.tmalign)
+	tmalign2matrix --format=tsv --score=mean --transform minus $^ > $@
+
+all_combinations.min.tsv: $(wildcard *.tmalign)
+	tmalign2matrix --format=tsv --score=min --transform minus $^ > $@
+
+combinations: $(wildcard *.pdb)
+	for a in $^; do \
+	  for b in $^; do \
+	    if [ "$${a}" != "$${b}" ]; then \
+	      echo "$$(basename $${a} .pdb) $$(basename $${b} .pdb)" | tr " " "\n" | sort | tr "\n" "-" | sed 's/-$$/\n/'; \
+	    fi; \
+	  done; \
+	done | sort -u > $@
+
+makefile.combinations: combinations
+	sed 's/\(.*\)-\(.*\)/&.tmalign: \1.pdb \2.pdb/' $< | sed 's:$$:\n\t@if [ ! -e $$(basename $$@).d ]; then mkdir $$(basename $$@).d; else rm -f $$(basename $$@).d/*; fi\n\tTMalign $$^ -o $$(basename $$@).d/$$(basename $$@).sup > $$@\n:' > $@
+
+%.suffix0: %.suffix1 %.suffix1 %.suffixn
+	@$(MAKECALL_TMALIGN)
+	__PGM_CALL__
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

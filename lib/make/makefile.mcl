@@ -74,7 +74,7 @@ all_R.tsv.gz: $(subst mcxdump.tsv,R.tsv.gz,$(wildcard *.mcxdump.tsv))
 	  c=$$(echo $$f | grep -o "mcl[0-9_]*"|sed 's/mcl//'|sed 's/_/./'); \
 	  gunzip -c $$f | sed "s/^/$$c\t/" >> $(basename $@); \
 	done
-	gzip $(basename $@)
+	gzip -f $(basename $@)
 
 %.R.tsv.gz: %.mcxdump.tsv
 	sed 's/\t/:::/g' $< | sed 's/ /<space>/g' > $(basename $@).tmp
@@ -84,7 +84,7 @@ all_R.tsv.gz: $(subst mcxdump.tsv,R.tsv.gz,$(wildcard *.mcxdump.tsv))
 	done
 	sed -i 's/<space>/ /g' $(basename $@)
 	sed -i '/^$$/d' $(basename $@)
-	gzip $(basename $@)
+	gzip -f $(basename $@)
 	rm $(basename $@).tmp
 	
 # Calculate *similarity* matrices from (pairwise, i.e. "xwise") LAST output,
