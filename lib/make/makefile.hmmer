@@ -70,19 +70,18 @@ all_env_nr_hmmout: $(subst .hmm,.ncbi_env_nr.hmmout,$(wildcard *.hmm))
 %.consensus.faa: %.hmm
 	hmmemit -c $< > $@
 
-# This target requires that "hmmrank", a symlink to "hmmrank.r" from 
-# https://github.com/erikrikarddaniel/hmmrank is in your PATH.
+# This target requires that the "hmmrank" Conda package from the "matricaria" channel is installed and activated.
 all.ranked.tsv: $(wildcard *.tblout)
-	hmmrank --verbose --outfile=$@ $(HMMRANK_OPTS) $^
+	hmmrank.r --verbose --outfile=$@ $(HMMRANK_OPTS) $^
 
 best.ranked.tsv: $(wildcard *.tblout)
-	hmmrank --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
+	hmmrank.r --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
 
 all.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
-	hmmrank --verbose --outfile=$@ $(HMMRANK_OPTS) $^
+	hmmrank.r --verbose --outfile=$@ $(HMMRANK_OPTS) $^
 
 best.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
-	hmmrank --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
+	hmmrank.r --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
 
 # This loops over all hmm files, greps for each in the best.ranked.tsv and
 # produces a file with "accession numbers", i.e. column 1 from the
@@ -185,6 +184,9 @@ accno_files: best.ranked.tsv
 
 %.hmmer.alnfna: %.hmmer.sthna
 	esl-reformat -n afa $< > $@
+
+%.hmmer.alnfna.gz: %.hmmer.sth
+	esl-reformat afa $< | gzip -c > $@
 
 # This one gets sequence names from a tblout file and searches the file in HMMER_DB_FAA.
 # To work well, it requires sequence names to be nice in a regexp way (i.e. not contain
