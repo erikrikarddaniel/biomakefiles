@@ -61,6 +61,9 @@ all_env_nr_hmmout: $(subst .hmm,.ncbi_env_nr.hmmout,$(wildcard *.hmm))
 %.hmm: %.alnfaa
 	hmmbuild $(HMMBUILD_OPTS) $@ $<
 
+%.hmm: %.alnfna
+	hmmbuild $(HMMBUILD_OPTS) $@ $<
+
 %.hmm: %.phy
 	hmmbuild $(HMMBUILD_OPTS) $@ $<
 
@@ -159,10 +162,28 @@ accno_files: best.ranked.tsv
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Align sequences to a profile. 
-%.hmmer.sth: profile.hmm %.faa
+%.hmmer.sthaa: profile.hmm %.faa
 	hmmalign $^ > $@
 
-%.hmmer.alnfaa: %.hmmer.sth
+%.hmmer.sthna: profile.hmm %.fna
+	hmmalign $^ > $@
+
+%.hmmer.sthaa: profile.hmm %.faa.gz
+	hmmalign $< <(gunzip -c $(word 2,$^)) > $@
+
+%.hmmer.sthna: profile.hmm %.fna.gz
+	hmmalign $< <(gunzip -c $(word 2,$^)) > $@
+
+%.rfmask.hmmer.sthaa: %.hmmer.sthaa
+	esl-alimask --rf-is-mask $< > $@
+
+%.rfmask.hmmer.sthna: %.hmmer.sthna
+	esl-alimask --rf-is-mask $< > $@
+
+%.hmmer.alnfaa: %.hmmer.sthaa
+	esl-reformat -n afa $< > $@
+
+%.hmmer.alnfna: %.hmmer.sthna
 	esl-reformat -n afa $< > $@
 
 # This one gets sequence names from a tblout file and searches the file in HMMER_DB_FAA.
