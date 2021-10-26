@@ -42,8 +42,47 @@ bac120_metadata.tar.gz:
 assembly_summary_genbank.txt: 
 	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
 
-gtdb_genbank_genomes.tsv: ar122_metadata.tsv bac120_metadata.tsv assembly_summary_genbank.txt
-	grep -f <(cut -f 1 $(wordlist 1,2,$^) | sed 's/^[A-Z][A-Z]_//' | sed 's/\.[0-9]\+$$//') $(word 3,$^) > $@
+assembly_summary_refseq.txt: 
+	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
+
+assembly_summary_genbank_historical.txt: 
+	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
+
+assembly_summary_refseq_historical.txt: 
+	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
+
+RED_PATTERNS = Rscript --default-packages=data.table -e "fwrite(fread('/tmp/gtdb_genbank_genomes.tsv.patterns', col.names = 'acc')[!fread('/tmp/gtdb_genbank_genomes.tsv.accno', col.names = 'acc'), on = .(acc)], '/tmp/gtdb_genbank_genomes.tsv.patterns', quote = F, col.names = F)"; echo "--> $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') - $$(wc -l $@ | sed 's/[^0-9]*//g') <--"
+
+gtdb_genbank_genomes.tsv: ar122_metadata.tsv bac120_metadata.tsv assembly_summary_refseq.txt assembly_summary_genbank.txt assembly_summary_refseq_historical.txt assembly_summary_genbank_historical.txt 
+	# Get a list of accessions
+	cut -f 1 $(wordlist 1,2,$^) | grep -v '^accession' | sed 's/^[A-Z][A-Z]_//' > /tmp/$@.patterns
+	echo -n > $@
+	echo "--> $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') - $$(wc -l $@ | sed 's/[^0-9]*//g') <--"
+	# Find them in the main assembly summaries, first refseq, then genbank
+	split -l 1000 -d /tmp/$@.patterns /tmp/$@.split
+	for f in /tmp/$@.split*; do \
+	  grep -h -f $$f $(word 3,$^) >> $@; \
+	done
+	cut -f 1 $@ > /tmp/$@.accno
+	$(RED_PATTERNS)
+	grep -h -f /tmp/$@.patterns $(word 4,$^) >> $@
+	# Remove patterns that were found and make them more general in the third (A or F) position
+	cut -f 1 $@ > /tmp/$@.accno
+	$(RED_PATTERNS)
+	sed -i 's/GC./GC./' /tmp/$@.patterns
+	grep -h -f /tmp/$@.patterns $(word 3,$^) >> $@; \
+	cut -f 1 $@ | sed 's/GC./GC./' > /tmp/$@.accno
+	$(RED_PATTERNS)
+	grep -h -f /tmp/$@.patterns $(word 4,$^) >> $@
+	# Search the historical assembly summaries
+	cut -f 1 $@ | sed 's/GC./GC./' > /tmp/$@.accno
+	$(RED_PATTERNS)
+	grep -h -f /tmp/$@.patterns $(word 5,$^) >> $@
+	cut -f 1 $@ | sed 's/GC./GC./' > /tmp/$@.accno
+	$(RED_PATTERNS)
+	grep -h -f /tmp/$@.patterns $(word 6,$^) >> $@
+	cut -f 1 $@ | sed 's/GC./GC./' > /tmp/$@.accno
+	$(RED_PATTERNS)
 
 ssu_all.tar.gz:
 	wget https://data.gtdb.ecogenomic.org/releases/latest/genomic_files_all/$@
