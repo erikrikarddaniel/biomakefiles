@@ -1,0 +1,46 @@
+# makefile.ena
+#
+# Library makefile to make it easier to collect data from ENA.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+XSLT =
+
+# *** Targets ***
+
+# Starting from one or more project accessions you can step by step download sample metadata using the rules here.
+
+# 1a. Create a table, projects.tsv, containing all project accessions, one per line, then run make all_project_tsvs
+
+all_project_tsvs: projects.tsv
+	for p in $$(cat $<); do make $${p}.project.tsv; done
+
+# 1b. Or go directly here, and make the individual project tsvs manualy
+%.project.tsv:
+	wget -O $@ "https://www.ebi.ac.uk/ena/portal/api/filereport?accession=PRJEB25224&result=read_run&fields=study_accession,sample_accession,experiment_accession,run_accession,tax_id,scientific_name,fastq_ftp,submitted_ftp,sra_ftp&format=tsv&download=true&limit=0"
+
+# 2. Download all sample xml files mentioned in the *.projects.tsv files
+all_sample_xmls: $(wildcard *.project.tsv)
+	for s in $$(cut -f 2 $^ | grep -v sample_accession | sort -u); do make $$s.sample.xml; done
+
+%.sample.xml:
+	wget -O $@ -c "https://www.ebi.ac.uk/ena/browser/api/xml/$(basename $(basename $@))"
+
+# 3. Convert the xml files to tsv
+samples.tsv: transform.xsl $(wildcard *.sample.xml)
+	xsltproc $^ | \
+	    Rscript --default-packages=utils,tidyr,dplyr,stringr \
+		-e "read.table(file('stdin'), header=F, sep='\t', col.names=c('sample', 'var', 'val')) %>% mutate(var = str_replace_all(var, ' +', '_') %>% str_replace('_$$', '') %>% str_replace_all('[^a-zA-Z0-9_]', '')) %>% pivot_wider(names_from = var, values_from = val) %>% write.table(stdout(), row.names=F, sep = '\t', quote=F)" \
+	> $@
+
+transform.xsl:
+	wget  -O $@ https://github.com/erikrikarddaniel/biomakefiles/raw/master/lib/xsl/transform_ena_sample_xml.xsl
