@@ -1,0 +1,209 @@
+# makefile.bacmet
+#
+# Library makefile to make running DIAMOND simpler against the bacmet database.
+#
+# Include the full path of this file in your Makefile and making databases and
+# running the aligner can be done via make. See documentation in in
+# the biomakefile Git repository: doc/makefile.md and documentation for
+# individual targets below.
+#
+# Author: diego.brambilla@tim.it
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+
+# DIAMOND_DB_PATH sets the directory where to look for generic database files
+# like the protein RefSeq. The default is the current directory.
+DIAMOND_DB_PATH = .
+
+# Specify this when you want to point to a specific, non-generic, database.
+# Set DIAMOND_DB in a local Makefile to the
+# full path of the database file, without the ".dmnd" suffix.
+DIAMOND_DB =
+
+#deeparg.py specific macro: define minimum a.a. alignemnt length threshold
+ALENGTH = 37.5
+
+# Set this to suffixes corresponding to the types of files you wish to fetch with some
+# of the t$(DIAMOND_DB)ets.
+ACCEPTED_SUFFIXES =
+
+# DIAMOND_ALIGN_OPTS sets non-essential parameters for diamond alignment
+#
+# See the Diamond documentation available at GitHub:
+# https://github.com/bbuchfink/diamond. 
+#
+# Look particularly at options for sensitivity, scoring and memory and
+# performance.
+#
+# To set options, override this by inserting a row similar to the one below but
+# with whatever options you'd like to add in your Makefile *after* you include
+# this file.
+DIAMOND_ALIGN_OPTS =  
+
+# Output format of the DIAMOND results. The default value refers to a tabular file.
+# For more format options see https://github.com/bbuchfink/diamond.
+OUTFMT= 6
+
+# Download HTTP URL for the BacMet protein database
+# In case you are not using ftp, you can override this macro and paste here the https URL.
+HTTP = http://bacmet.biomedicine.gu.se/download/BacMet2_EXP_database.fasta
+# IMPORTANT: databases are updated recurrently, so always check the availability of the http
+
+# Download HTTPS URL for the bacmet.py script, necessary for the downstream analyses
+HTTPS = https://gist.github.com/08ab264f0ea127cc242d99bc3844c743.git 
+# IMPORTANT: bacmet.py needs to be placed inside the directory that has the DIAMOND output
+# so run mirror_bacmet.py into the directory that contains .bacmet.sort.best.m8 files
+# N.B.: the python script "bacmetg.py" requires python 3.6*-3.8*
+
+# *** Internal ***
+
+# MAKECALL_DIAMOND_BACMET is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_VERSION     = echo "`date +"%Y-%m-%d %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
+MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)" >> $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_DB_BACMET      = echo "	Database: $(DIAMOND_DB_PATH)/$(DIAMOND_DB) (`ls -lL $(DIAMOND_DB_PATH)/$(DIAMOND_DB).dmnd`)" >> $@.makecall
+MAKECALL_DIAMOND_BACMET = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_BACMET); $(MAKECALL_INFILES)
+MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
+
+# *** misc targets ***
+
+# compress all .fastq files in the work directory.
+compress_all_fastqs: $(subst .fastq,.fastq.gz, $(wildcard *.fastq))
+
+# Interleave two fastq files (named %.R1.fastq and %.R2.fastq respectively).
+#
+# The target uses a python script -- interleave_fastq.py -- cloned from this
+# gist:
+#
+#   https://gist.github.com/rpucheq/cf50eeea794529ca6b0e
+#  *** Warning! ***
+# The aforementioned script works for bot .gzip and uncompressed files
+# but it has been written in PYTHON 2!!!
+#
+# Dependencies will automatically be unzipped if not present in unzipped format
+# thanks to the pattern above. Unzipped files will be deleted after
+# interleaving.
+interleave_all_fastq.gzs: $(subst .R1.fastq.gz,.intlv.fastq.gz,$(wildcard *.R1.fastq.gz))
+
+# The same, but not zipping
+interleave_all_fastqs: $(subst .R1.fastq,.intlv.fastq,$(wildcard *.R1.fastq))
+
+# *** DIAMOND BacMet targets ***
+
+# Fetch the BacMet protein database, and unpack the tar files.
+mirror_bacmet:
+	wget $(HTTP)
+
+# Fetch the bacmet.py script
+# Uses git as a prerequisite, if not available you can manually download the file via wget
+mirror_bacmet.py:
+	git clone $(HTTPS)
+
+# Creating the database
+# From protein sequences in a file ending with .faa
+# (Currently, Diamond only works with protein sequence databases.)
+create_bacmetdb:$(subst .faa,.dmnd,$(wildcard *.faa))
+
+# Nucleotides or proteins in fastq/fna/faa files against the BacMet protein database
+f2bacmetdb.m8s: $(subst .fastq.gz,.bacmet.m8,$(wildcard *.fastq.gz)) $(subst .fna,.bacmet.m8,$(wildcard *.fna)) $(subst .faa,.bacmet.m8,$(wildcard *.faa))
+
+# parses DIAMOND m8 matrix to get unique tab-separated hits
+sort_best_m8: $(subst .bacmet.m8,.bacmet.sort.best.m8, $(wildcard *.bacmet.m8))
+
+#filters out DIAMOND m8 matrix to select hits based on alignment length cutoff (input)
+
+bacmet_alength_filter: $(subst .bacmet.m8,.bacmet.filter.sort.best.m8, $(wildcard *.bacmet.m8))
+
+# parses DIMAOND m8 matrix to get an annotated gene list
+sort_bacmet_genelist_tsv: $(subst .bacmet.m8,.genelist.tsv, $(wildcard *.bacmet..m8))
+
+
+# *** Make rules ***
+
+# Compress with gzip a .fastq file
+%.fastq.gz: %.fastq
+	gzip -c $< > $@
+
+%.intlv.fastq.gz: %.R1.fastq.gz %.R2.fastq.gz
+	python interleave_fastq.py $^ | gzip -c > $@
+
+%.intlv.fastq: %.R1.fastq %.R2.fastq
+	python interleave_fastq.py $^ > $@
+
+#Create the DIAMOND database
+# From protein sequences in a file ending with .faa
+# (Currently, Diamond only works with protein sequence databases.)
+%.dmnd: %.faa.gz
+	$(MAKECALL_MAKEDB)
+	gunzip -c $< | diamond makedb -d $(basename $@)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.dmnd: %.faa
+	$(MAKECALL_MAKEDB)
+	diamond makedb --in $< -d $(basename $@)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Pattern for a BLASTx against a compressed nucleotide target (.fastq.gz)
+%.bacmet.m8: %.fastq.gz
+	$(MAKECALL_DIAMOND_BACMET)
+	diamond blastx -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS) -f $(OUTFMT)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+#same pattern for a different target (.fna files)
+%.bacmet.m8: %.fna
+	$(MAKECALL_DIAMOND_BACMET)
+	diamond blastx -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS) -f $(OUTFMT)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+#same pattern for a different target (.faa files)
+%.bacmet.m8: %.faa
+	$(MAKECALL_DIAMOND_BACMET)
+	diamond blastp -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS) -f $(OUTFMT)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.bacmet.sort.best.m8: %.bacmet.m8
+	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->sorting $><--"
+	sort -u -k1,1 $< | sed 's/|/\t/g' > $@
+
+%.bacmet.filter.sort.best.m8: %.bacmet.sort.best.m8
+	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->filtering $><--"
+	python bacmet.py $< $(ALENGTH) $@
+
+%.genelist.tsv: %.m8
+	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->sorting $><--"
+	cut -f 1,2 $< | sed 's/|/\t/g' | sort -u -k6,6 - > $@
+
+# Reformating the daa output
+all_blasttab.tsv.gzs: $(subst .daa,.blasttab.tsv.gz,$(wildcard *.daa))
+
+%.blasttab.tsv.gz: %.daa
+	diamond view --daa $< -f 6 | gzip -c > $@
+
+#Create md5sum unique hashes for DIAMOND .daa file extension
+all_daa.md5sums: $(subst .daa,.daa.md5,$(wildcard *.daa))
+
+%.daa.md5: %.daa
+	md5sum $< > $@
+
+#Create md5sum unique hashes for blast tabular files
+
+all_m8s.md5sums: $(subst .m8.gz,.m8.gz.md5,$(wildcard *.m8.gz)) $(subst .m8,.m8.md5,$(wildcard *.m8))
+
+%.m8.gz.md5: %.m8.gz
+	md5sum $< > $@
+
+%.m8.md5: %.m8
+	md5sum $< > $@
+ 
+all_blasttab.md5sums: $(subst .blasttab.tsv.gz,.blasttab.tsv.gz.md5,$(wildcard *.blasttab.tsv.gz))
+
+%.blasttab.tsv.gz.md5: %.blasttab.tsv.gz
+	md5sum $< > $@
