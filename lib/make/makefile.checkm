@@ -26,7 +26,7 @@ MAKECALL_CHECKM_PARAMS      = echo "	Called with parameters: $(CHECKM_LINEAGE_WF
 MAKECALL_CHECKM_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_CHECKM             = $(MAKECALL_CHECKM_VERSION); $(MAKECALL_CHECKM_PARAMS); $(MAKECALL_CHECKM_INFILES)
 
-CHECKM_OUT_TO_TSV = grep -v '^-\+' $< | sed 's/^ \+//' | sed 's/ \+$$//' | sed 's/  \+/\t/g' > $@
+CHECKM_OUT_TO_TSV =  tail -n +$$(grep -n 'Bin Id' $<|sed 's/:.*//') $< | grep -v '^-\+' | sed 's/^ \+//' | sed 's/ \+$$//' | sed 's/  \+/\t/g' | grep -v 'INFO:.*Current' > $@
 
 # *** Targets ***
 
@@ -41,6 +41,12 @@ checkm.lineage_wf.fna.out: $(wildcard *.fna)
 	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) . checkm/ 2>&1 | tee $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# Run checkm lineage_wf on all bins in the genome_bins subdirectory
+checkm.lineage_wf.genome_bins.fna.out: $(wildcard genome_bins/*.fna)
+	@$(MAKECALL_CHECKM)
+	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) genome_bins/ $(basename $@).d | tee $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 # This runs checkm lineage_wf on all bins in .faa files in
 # the current directory.
 checkm.lineage_wf.faa.out: $(wildcard *.faa)
@@ -53,6 +59,9 @@ checkm.lineage_wf.faa.tsv: checkm.lineage_wf.faa.out
 	$(CHECKM_OUT_TO_TSV)
 
 checkm.lineage_wf.fna.tsv: checkm.lineage_wf.fna.out
+	$(CHECKM_OUT_TO_TSV)
+
+checkm.lineage_wf.genome_bins.fna.tsv: checkm.lineage_wf.genome_bins.fna.out
 	$(CHECKM_OUT_TO_TSV)
 
 checkm.tree_qa.out: $(wildcard checkm.lineage_wf*out)

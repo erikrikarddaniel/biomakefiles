@@ -19,11 +19,26 @@ SHELL := /bin/bash
 # %.interesting.faa, containing prioritized sequences and a file containing
 # sequences you don't want, deleted_sequences (see next recipe). Make sure
 # fasta files have sequences on one line (see %.c.faa target in makefile.misc).
+deleted_sequences: $(wildcard problem_sequences.*)
+	        sort -u $^ > $@
+
 %.correct.faa: %.correct_sequences %.faa %.interesting.faa
 	cat $(word 3,$^) > $@
 	grep -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
 
-# Remove deleted_sequences from .faa file 
+%.interesting.faa:
+	touch $@
+
 %.correct_sequences: %.faa deleted_sequences 
 	grep '>' $< | grep -v -f $(word 2,$^) | sed 's/.*@//' > $@
 
+# Remove deleted_sequences from .fna file 
+%.correct_sequences: %.fna deleted_sequences 
+	grep '>' $< | grep -v -f $(word 2,$^) | sed 's/.*@//' > $@
+
+%.correct.fna: %.correct_sequences %.fna %.interesting.fna
+	cat $(word 3,$^) > $@
+	grep -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
+
+%.interesting.fna:
+	touch $@

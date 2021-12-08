@@ -107,8 +107,17 @@ all_parallel_blastx6: $(subst .fna,.blastx.m8,$(wildcard *.fna))
 %.blastx.blastp6.tsv.gz: %.fna
 	blastx -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
 
+%.mega.blastout.gz: %.fna
+	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
+
+%.mega.blastout: %.fna
+	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) > $@
+
 %.mega.blastn6.tsv.gz: %.fna
 	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+
+%.mega.blastn6.tsv: %.fna
+	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< -outfmt 6 $(BLAST_OPTS) > $@
 
 %.accnos: %.blastp6.tsv.gz
 	gunzip -c $< | cut -f 2 | sort -u > $@

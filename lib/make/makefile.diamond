@@ -35,7 +35,10 @@ DIAMOND_DB =
 # To set options, override this by inserting a row similar to the one below but
 # with whatever options you'd like to add in your Makefile *after* you include
 # this file.
-DIAMOND_ALIGN_OPTS = 
+# Set number of threads with --threads; supposedly works with both aligning and
+# makedb.
+DIAMOND_ALIGN_OPTS  = 
+DIAMOND_MAKEDB_OPTS = 
 
 # *** Internal ***
 
@@ -124,12 +127,12 @@ all_blasttab.tsv.gzs: $(subst .daa,.blasttab.tsv.gz,$(wildcard *.daa))
 # (Currently, Diamond only works with protein sequence databases.)
 %.dmnd: %.faa.gz
 	$(MAKECALL_MAKEDB)
-	gunzip -c $< | diamond makedb -d $(basename $@)
+	gunzip -c $< | diamond makedb -d $(basename $@) $(DIAMOND_MAKEDB_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.dmnd: %.faa
 	$(MAKECALL_MAKEDB)
-	diamond makedb --in $< -d $(basename $@)
+	diamond makedb --in $< -d $(basename $@) $(DIAMOND_MAKEDB_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
 all_daa.md5sums: $(subst .daa,.daa.md5,$(wildcard *.daa))

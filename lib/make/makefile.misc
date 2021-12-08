@@ -9,15 +9,18 @@
 
 SHELL := /bin/bash
 
+# Set if you want to use the %.split_f[na]a targets below
+N_SEQ_LINES = 200000
+
 # Some general purpose macros
 
 # Concate a number of gzipped files and write to a gzipped file.
 CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
 
 # Put fasta sequences on one line
-CLEAN_FASTA = awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[-(),:;+|]//g' | sed '/^>/!s/ //g'
+CLEAN_FASTA = awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[(),:;+|]//g' | sed '/^>/!s/ //g'
 
-SEQLENS = tr '\n' '\t' < $< | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
+SEQLENS = sed 's/> */>/' $< | sed '/^>/s/ .*//' | tr '\n' '\t' | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
 
 # *** Targets ***
 
@@ -175,6 +178,23 @@ numnucl.tsv: $(subst .fna,.numnucl.tsv,$(wildcard *.fna))
 
 %.alnfaa: %.alnfna
 	transeq -sequence $< -outseq $@
+
+# This splits an input fasta file into smaller files, each containing N_SEQ_LINES/2 sequences.
+%.split_faa: %.faa.gz
+	gunzip -c $< | $(CLEAN_FASTA) | split -l $(N_SEQ_LINES) -a 5 -d --additional-suffix=.faa - $(basename $@).
+	touch $@
+	
+%.split_faa: %.faa
+	cat $< | $(CLEAN_FASTA) | split -l $(N_SEQ_LINES) -a 5 -d --additional-suffix=.faa - $(basename $@).
+	touch $@
+	
+%.split_fna: %.fna.gz
+	gunzip -c $< | $(CLEAN_FASTA) | split -l $(N_SEQ_LINES) -a 5 -d --additional-suffix=.fna - $(basename $@).
+	touch $@
+	
+%.split_fna: %.fna
+	cat $< | $(CLEAN_FASTA) | split -l $(N_SEQ_LINES) -a 5 -d --additional-suffix=.fna - $(basename $@).
+	touch $@
 	
 # Mask a multiple alignment. Uses the maskaln.r script from the
 # https://github.com/erikrikarddaniel/maskaln repo.

@@ -13,6 +13,8 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+# Common options include -T n for number of cores and -g ID to set the
+# name of the identifier field from the default "gene_id" to "ID".
 FEATURE_COUNTS_OPTS =
 
 # *** Internal ***
