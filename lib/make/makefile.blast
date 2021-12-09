@@ -19,13 +19,11 @@ SHELL := /bin/bash
 NCBI_BLAST_DB_PATH  = YOU NEED TO SET THE NCBI_BLAST_DB_PATH VARIABLE (see makefile.blast)
 BLAST_PROTEIN_DB    = YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.blast)
 BLAST_NUCLEOTIDE_DB = YOU NEED TO SET THE BLAST_NUCLEOTIDE_DB VARIABLE (see makefile.blast)
-BLAST_NUCLEOTIDE_DB_PATH = .
-BLAST_PROTEIN_DB_PATH = .
 BLAST_PROTEIN_DB =  YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.blast)
 #Note: you can set identity thresholds with BLASTn but not with BLASTx or BLASTp!
-BLASTx_OPTS = -max_target_seqs 1 -evalue 1e-7 -outfmt 6
+BLASTX_OPTS = -max_target_seqs 1 -evalue 1e-7 -outfmt 6
 # Override in your local Makefile to custom BLASTn settings and thresholds
-BLASTn_OPTS = -max_target_seqs 1 -evalue 0.01 -perc_identity 95 -outfmt 6
+BLASTN_OPTS = -max_target_seqs 1 -evalue 0.01 -perc_identity 95 -outfmt 6
 # Number of threads per process used by GNU Parallel.
 # IMPORTANT! Redefine on your local Makefile according to available resources,
 # or all_parallel_blastn6 will not work
@@ -33,7 +31,7 @@ N_TASKS =
 
 # *** Internal ***
 
-# MAKECALL_BLAST_BLAST is a macro that defines what will be output to the .makecall
+# MAKECALL_BLAST is a macro that defines what will be output to the .makecall
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
@@ -45,36 +43,36 @@ MAKECALL_BLAST             = $(MAKECALL_BLAST_VERSION); $(MAKECALL_BLAST_NCBI_DB
 # BLASTn-specific macros
 #
 # *Don't redefine!*
-MAKECALL_BLASTn_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastn -version|grep 'blastn:')" > $@.makecall
-MAKECALL_BLASTn_PARAMS    = echo "	Called with parameters: $(BLASTn_OPTS)" >> $@.makecall
+MAKECALL_BLASTN_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastn -version|grep 'blastn:')" > $@.makecall
+MAKECALL_BLASTN_PARAMS    = echo "	Called with parameters: $(BLASTN_OPTS)" >> $@.makecall
 
-MAKECALL_BLASTn_DB  = echo "  BLAST database: $(BLAST_NUCLEOTIDE_DB_PATH)/$(BLAST_NUCLEOTIDE_DB), timestamp: $(ls -lL $(BLAST_NUCLEOTIDE_DB_PATH)/$(BLAST_NUCLEOTIDE_DB).blastdb)" >> $@.makecall
+MAKECALL_BLASTN_DB  = echo "  BLAST database: $(BLAST_NUCLEOTIDE_DB), timestamp: $(ls -lL $(BLAST_NUCLEOTIDE_DB).blastdb)" >> $@.makecall
 MAKECALL_BLAST_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_BLASTn             = $(MAKECALL_BLASTn_VERSION); $(MAKECALL_BLASTn_PARAMS); $(MAKECALL_BLASTn_DB); $(MAKECALL_BLAST_INFILES)
+MAKECALL_BLASTN             = $(MAKECALL_BLASTN_VERSION); $(MAKECALL_BLASTN_PARAMS); $(MAKECALL_BLASTN_DB); $(MAKECALL_BLAST_INFILES)
 
 # BLASTx-specific macros
 #
 # *Don't redefine!*
-MAKECALL_BLASTx_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastx -version|grep 'blastx:')" > $@.makecall
-MAKECALL_BLASTx_PARAMS    = echo "	Called with parameters: $(BLASTx_OPTS)" >> $@.makecall
+MAKECALL_BLASTX_VERSION     = echo "$$(date +"%Y%m%d %H:%M:%S"): $@ was made with $$(blastx -version|grep 'blastx:')" > $@.makecall
+MAKECALL_BLASTX_PARAMS    = echo "	Called with parameters: $(BLASTX_OPTS)" >> $@.makecall
 
-MAKECALL_BLASTx_DB  = echo "  BLAST database: $(BLAST_PROTEIN_DB_PATH)/$(BLAST_PROTEIN_DB), timestamp: $(ls -lL $(BLAST_PROTEIN_DB_PATH)/$(BLAST_PROTEIN_DB).blastdb)" >> $@.makecall
+MAKECALL_BLASTX_DB  = echo "  BLAST database: $(BLAST_PROTEIN_DB), timestamp: $(ls -lL $(BLAST_PROTEIN_DB).blastdb)" >> $@.makecall
 MAKECALL_BLAST_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL_BLASTx             = $(MAKECALL_BLASTx_VERSION); $(MAKECALL_BLASTx_PARAMS); $(MAKECALL_BLASTx_DB); $(MAKECALL_BLAST_INFILES)
+MAKECALL_BLASTX             = $(MAKECALL_BLASTX_VERSION); $(MAKECALL_BLASTX_PARAMS); $(MAKECALL_BLASTX_DB); $(MAKECALL_BLAST_INFILES)
 
 
 # *** Targets ***
 
-# UNTESTED and assumes you've also included makefile.misc that can convert a fastq.gz to an fna:
-all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
+# UNTESTED and assumes you've previously converted fastq.gz files to .fna through makefile.misc:
+all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fna))
 
 # Running BLASTn on uncompressed FASTA files with GNU Parallel
 # Returns a .m8 tabular file (BLAST default output format, BLOSUM62 matrix)
 all_parallel_blastn6: $(subst .fna,blastn.m8,$(wildcard *.fna))
 
 %blastn.m8: %.fna
-	$(MAKECALL_BLASTn)
-	cat $< | parallel -j $(N_TASKS) --block 100k --recstart '>' --pipe blastn $(BLASTn_OPTS) -db $(BLAST_NUCLEOTIDE_DB_PATH)/$(BLAST_NUCLEOTIDE_DB) -query - > $@
+	$(MAKECALL_BLASTN)
+	cat $< | parallel -j $(N_TASKS) --block 100k --recstart '>' --pipe blastn $(BLASTN_OPTS) -db $(BLAST_NUCLEOTIDE_DB) -query - > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # Running BLASTx on uncompressed FASTA files with GNU Parallel
@@ -82,36 +80,36 @@ all_parallel_blastn6: $(subst .fna,blastn.m8,$(wildcard *.fna))
 all_parallel_blastx6: $(subst .fna,.blastx.m8,$(wildcard *.fna))
 
 %.blastx.m8: %.fna
-	$(MAKECALL_BLASTx)
-	cat $< | parallel -j $(N_TASKS) --block 100k --recstart '>' --pipe blastx $(BLASTx_OPTS) -db $(BLAST_PROTEIN_DB_PATH)/$(BLAST_PROTEIN_DB) -query - > $@
+	$(MAKECALL_BLASTX)
+	cat $< | parallel -j $(N_TASKS) --block 100k --recstart '>' --pipe blastx $(BLASTX_OPTS) -db $(BLAST_PROTEIN_DB) -query - > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_protein.blasttab.gz: %.fna
 	$(MAKECALL_BLAST)
-	blastx -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+	blastx -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 $(BLASTX_OPTS) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.refseq_protein.blasttab.gz: %.faa
 	$(MAKECALL_BLAST)
-	blastp -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+	blastp -db $(NCBI_BLAST_DB_PATH)/refseq_protein -query $< -outfmt 6 $(BLASTX_OPTS) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.nt.mega.blastn6.tsv.gz: %.fna
 	$(MAKECALL_BLAST)
-	blastn -task megablast -db $(NCBI_BLAST_DB_PATH)/nt -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+	blastn -task megablast -db $(NCBI_BLAST_DB_PATH)/nt -query $< -outfmt 6 $(BLASTN_OPTS) | gzip -c > $@
 	echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.blastp6.tsv.gz: %.faa
-	blastp -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+	blastp -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLASTX_OPTS) | gzip -c > $@
 
 %.blastx.blastp6.tsv.gz: %.fna
-	blastx -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+	blastx -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLASTX_OPTS) | gzip -c > $@
 
 %.mega.blastout.gz: %.fna
-	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
+	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLASTN_OPTS) | gzip -c > $@
 
 %.mega.blastout: %.fna
-	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) > $@
+	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLASTN_OPTS) > $@
 
 %.mega.blastn6.tsv.gz: %.fna
 	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
