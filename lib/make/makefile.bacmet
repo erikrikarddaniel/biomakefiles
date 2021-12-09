@@ -19,18 +19,9 @@ SHELL := /bin/bash
 # bacmet.py specific macro
 # DIAMOND output associate some scores to each match, 
 # including the aminoacidic (a.a.) alignement length.
-# Defines the desired minimum a.a. alignemnt length threshold that bacmet.py will use
+# Defines the desired minimum a.a. alignemnt length threshold that bacmet.py will use, default is 37.5
 ALENGTH = 37.5
 
-# Download HTTP URL for the BacMet protein database
-# In case you are not using ftp, you can override this macro and paste here the https URL.
-HTTP = http://bacmet.biomedicine.gu.se/download/BacMet2_EXP_database.fasta
-# IMPORTANT: databases are updated recurrently, so always check the availability of the http
-
-# Download HTTPS URL for the bacmet.py script, necessary for the downstream analyses
-HTTPS = https://gist.github.com/08ab264f0ea127cc242d99bc3844c743.git 
-# IMPORTANT: after running mirror_bacmet.py, have bacmet.py inside one of the directories listed in the $PATH variable.
-# N.B.: the python script "bacmetg.py" requires python 3.6*-3.8*
 
 # *** Internal ***
 
@@ -42,17 +33,8 @@ MAKECALL_DATE     = echo "`date +"%Y-%m-%d %H:%M:%S"`" > $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_BACMET = $(MAKECALL_DATE); $(MAKECALL_INFILES)
 
+
 # *** BacMet targets ***
-
-# Fetch the BacMet protein database, and unpack the tar files.
-mirror_bacmet:
-	wget $(HTTP)
-
-# Fetch the bacmet.py script
-# Uses git as a prerequisite, if not available you can manually download the file via wget
-mirror_bacmet.py:
-	git clone $(HTTPS)
-
 
 # parses DIAMOND m8 matrix to get unique tab-separated hits
 sort_best_m8: $(subst .bacmet.m8,.bacmet.sort.best.m8, $(wildcard *.bacmet.m8))

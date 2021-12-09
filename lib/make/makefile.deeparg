@@ -19,28 +19,9 @@ SHELL := /bin/bash
 #deeparg.py specific macro
 # DIAMOND output associate some scores to each match, 
 # including the aminoacidic (a.a.) alignement length.
-# Defines the desired minimum a.a. alignemnt length threshold that deeparg.py will use
+# Defines the desired minimum a.a. alignemnt length threshold that deeparg.py will use, default is 37.5
 ALENGTH = 37.5
 
-# IMPORTANT: how to download the deeparg database
-# 1) $ git clone https://bitbucket.org/gusphdproj/deeparg-ss.git
-# then, go to the "database" directory, choose the version (v1 or v2)
-# and link the file "features.fasta" into the DIAMOND work directory
-# 2) install deeparg, e.g. via conda
-# $ conda create -n deeparg_env python=2.7.18
-# $ source activate deeparg_env
-# $ pip install deeparg==1.0.2
-# $ deeparg download_data -o /path/to/local/directory/
-# then look for the "features.fasta" file as above.
-# More about the deeparg installation on bitbucket:
-# https://bitbucket.org/gusphdproj/deeparg-ss/src/master/
-# More about the database versions in this thread:
-# https://bench.cs.vt.edu/argminer/#/forum/selected_question;id=1582104387832
-
-# Download HTTPS URL for the deeparg.py script, necessary for the downstream analyses
-HTTPS = https://gist.github.com/5f3b236bd36acf7a5a7fcf3cff99a56d.git 
-# IMPORTANT: after running mirror_deeparg.py, have deeparg.py inside one of the directories listed in the $PATH variable.
-# N.B.: the python script "deeparg.py" requires python 3.6*-3.8*
 
 # *** Internal ***
 
@@ -52,16 +33,11 @@ MAKECALL_DATE     = echo "`date +"%Y-%m-%d %H:%M:%S"`" > $@.makecall
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_DEEPARG = $(MAKECALL_DATE); $(MAKECALL_INFILES)
 
+
 # *** DeepARG targets ***
 
-# Fetch the deeparg.py script
-# Uses git as a prerequisite, if not available you can manually download the file via wget
-mirror_deeparg.py:
-	git clone $(HTTPS)
-
-
 # parses DIAMOND m8 matrix to get unique tab-separated hits
-# N.B.: need to set OUTFMT=6 
+# N.B.: need to use DIAMOND with the -f 6 flag
 sort_best_m8: $(subst .argdb.m8,.argdb.sort.best.m8, $(wildcard *.argdb.m8))
 
 #filters out DIAMOND m8 matrix to select hits based on alignment length cutoff (input)
