@@ -37,6 +37,9 @@ DIAMOND_DB =
 # this file.
 # Set number of threads with --threads; supposedly works with both aligning and
 # makedb.
+# Set the output format of the DIAMOND results with --outfmt.
+# The default value is 6 and refers to a tabular file (.m8 extension).
+# For more format options see https://github.com/bbuchfink/diamond.
 DIAMOND_ALIGN_OPTS  = 
 DIAMOND_MAKEDB_OPTS = 
 
@@ -49,8 +52,13 @@ DIAMOND_MAKEDB_OPTS =
 MAKECALL_VERSION     = echo "`date +"%Y-%m-%d %H:%M:%S"`: $@ was made with `diamond --version`" > $@.makecall
 MAKECALL_PARAMS      = echo "	Called with parameters: $(DIAMOND_ALIGN_OPTS)" >> $@.makecall
 MAKECALL_DB_RFP      = echo "	Database: $(DIAMOND_DB_PATH)/refseq_protein (`ls -lL $(DIAMOND_DB_PATH)/refseq_protein.dmnd`)" >> $@.makecall
+MAKECALL_DB_BACMET      = echo "	Database: $(DIAMOND_DB_PATH)/bacmet (`ls -lL $(DIAMOND_DB_PATH)/bacmet.dmnd`)" >> $@.makecall
+MAKECALL_DB_DEEPARG      = echo "	Database: $(DIAMOND_DB_PATH)/deeparg (`ls -lL $(DIAMOND_DB_PATH)/deeparg.dmnd`)" >> $@.makecall
+
 MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_DIAMOND_RFP = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_RFP); $(MAKECALL_INFILES)
+MAKECALL_DIAMOND_BACMET = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_BACMET); $(MAKECALL_INFILES)
+MAKECALL_DIAMOND_DEEPARG = $(MAKECALL_VERSION); $(MAKECALL_PARAMS); $(MAKECALL_DB_DEEPARG); $(MAKECALL_INFILES)
 MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 
 # *** Targets ***
@@ -63,6 +71,9 @@ MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 
 # RefSeq targets
 
+# Run diamond against the NCBI RefSeq protein database for all fna.gz, fna or fastq.gz files in the directory.
+fastq.gz2daas: $(subst .fastq.gz,.daa,$(wildcard *.fastq.gz))
+
 %.daa: %.fna.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
@@ -72,9 +83,6 @@ MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
-
-# Run diamond against the database in DIAMOND_DB for all fastq.gz files in the directory.
-fastq.gz2daas: $(subst .fastq.gz,.daa,$(wildcard *.fastq.gz))
 
 %.daa: %.fastq.gz
 	$(MAKECALL_DIAMOND_RFP)
@@ -115,6 +123,53 @@ fna2refseq_protein.daas: $(subst .fna.gz,.refseq_protein.daa,$(wildcard *.fna.gz
 	diamond blastx -f 100 -d $(DIAMOND_DB_PATH)/refseq_protein --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# BacMet targets
+
+# Nucleotides or proteins in fastq/fna/faa files against the BacMet protein database
+f2bacmetdb.m8s: $(subst .fastq.gz,.bacmet.m8,$(wildcard *.fastq.gz)) $(subst .fna,.bacmet.m8,$(wildcard *.fna)) $(subst .faa,.bacmet.m8,$(wildcard *.faa))
+
+# Pattern for a BLASTx against a compressed nucleotide target (.fastq.gz)
+%.bacmet.m8: %.fastq.gz
+	$(MAKECALL_DIAMOND_BACMET)
+	diamond blastx -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+#same pattern for a different target (.fna files)
+%.bacmet.m8: %.fna
+	$(MAKECALL_DIAMOND_BACMET)
+	diamond blastx -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+#same pattern for a different target (.faa files)
+%.bacmet.m8: %.faa
+	$(MAKECALL_DIAMOND_BACMET)
+	diamond blastp -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# DeepARG targets
+
+# Nucleotides or proteins in fastq/fna/faa files against the DeepARG protein database
+f2deepargdb.m8s: $(subst .fastq.gz,.argdb.m8,$(wildcard *.fastq.gz)) $(subst .fna,.argdb.m8,$(wildcard *.fna)) $(subst .faa,.argdb.m8,$(wildcard *.faa))
+
+# Pattern for a BLASTx against a compressed nucleotide target (.fastq.gz)
+%.argdb.m8: %.fastq.gz
+	$(MAKECALL_DIAMOND_DEEPARG)
+	diamond blastx -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+#same pattern for a different target (.fna files)
+%.argdb.m8: %.fna
+	$(MAKECALL_DIAMOND_DEEPARG)
+	diamond blastx -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Pattern for a BLASTp against a protein target (.faa files)
+%.argdb.m8: %.faa
+	$(MAKECALL_DIAMOND_DEEPARG)
+	diamond blastp -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+ 
+
 # Reformating the daa output
 all_blasttab.tsv.gzs: $(subst .daa,.blasttab.tsv.gz,$(wildcard *.daa))
 
@@ -135,9 +190,19 @@ all_blasttab.tsv.gzs: $(subst .daa,.blasttab.tsv.gz,$(wildcard *.daa))
 	diamond makedb --in $< -d $(basename $@) $(DIAMOND_MAKEDB_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
+# Creates md5sum unique hashes for DIAMOND .daa file extension
 all_daa.md5sums: $(subst .daa,.daa.md5,$(wildcard *.daa))
 
 %.daa.md5: %.daa
+	md5sum $< > $@
+
+# Creates md5sum unique hashes for blast tabular files
+all_m8s.md5sums: $(subst .m8.gz,.m8.gz.md5,$(wildcard *.m8.gz)) $(subst .m8,.m8.md5,$(wildcard *.m8))
+
+%.m8.gz.md5: %.m8.gz
+	md5sum $< > $@
+
+%.m8.md5: %.m8
 	md5sum $< > $@
 
 all_blasttab.md5sums: $(subst .blasttab.tsv.gz,.blasttab.tsv.gz.md5,$(wildcard *.blasttab.tsv.gz))
