@@ -39,7 +39,7 @@ MAKECALL_BACMET = $(MAKECALL_DATE); $(MAKECALL_INFILES)
 # parses DIAMOND m8 matrix to get unique tab-separated hits
 sort_best_m8: $(subst .bacmet.m8,.bacmet.sort.best.m8, $(wildcard *.bacmet.m8))
 
-#filters out DIAMOND m8 matrix to select hits based on alignment length cutoff (input)
+# filters out DIAMOND m8 matrix to select hits based on alignment length cutoff (input)
 
 bacmet_alength_filter: $(subst .bacmet.m8,.bacmet.filter.sort.best.m8, $(wildcard *.bacmet.m8))
 
