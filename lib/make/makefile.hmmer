@@ -74,13 +74,25 @@ all_env_nr_hmmout: $(subst .hmm,.ncbi_env_nr.hmmout,$(wildcard *.hmm))
 all.ranked.tsv: $(wildcard *.tblout)
 	hmmrank.r --verbose --outfile=$@ $(HMMRANK_OPTS) $^
 
+all.ranked.tsv.gz: $(wildcard *.tblout)
+	hmmrank.r --verbose --outfile=$@ $(HMMRANK_OPTS) $^
+
 best.ranked.tsv: $(wildcard *.tblout)
+	hmmrank.r --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
+
+best.ranked.tsv.gz: $(wildcard *.tblout)
 	hmmrank.r --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
 
 all.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
 	hmmrank.r --verbose --outfile=$@ $(HMMRANK_OPTS) $^
 
+all.ranked.ncbi_nr.tsv.gz: $(wildcard *.ncbi_nr.tblout)
+	hmmrank.r --verbose --outfile=$@ $(HMMRANK_OPTS) $^
+
 best.ranked.ncbi_nr.tsv: $(wildcard *.ncbi_nr.tblout)
+	hmmrank.r --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
+
+best.ranked.ncbi_nr.tsv.gz: $(wildcard *.ncbi_nr.tblout)
 	hmmrank.r --verbose --only_best_scoring --outfile=$@ $(HMMRANK_OPTS) $^
 
 # This loops over all hmm files, greps for each in the best.ranked.tsv and
