@@ -39,6 +39,18 @@ bac120_metadata.tsv: bac120_metadata.tar.gz
 bac120_metadata.tar.gz:
 	wget $(GTDB_LATEST_URL)/$@
 
+ar122.tree: ar122.tree.tar.gz
+	tar xfz $<
+
+ar122.tree.tar.gz:
+	wget https://data.gtdb.ecogenomic.org/releases/latest/$@
+
+bac120.tree: bac120.tree.tar.gz
+	tar xfz $<
+
+bac120.tree.tar.gz:
+	wget https://data.gtdb.ecogenomic.org/releases/latest/$@
+
 assembly_summary_genbank.txt: 
 	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
 
