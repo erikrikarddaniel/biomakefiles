@@ -18,7 +18,8 @@ N_SEQ_LINES = 200000
 CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
 
 # Put fasta sequences on one line
-CLEAN_FASTA = awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' | sed '/^>/s/[ \t]\+/_/g' | sed '/^>/s/[(),:;+|]//g' | sed '/^>/!s/ //g'
+UNWANTED_IN_FASTA_NAMES = | sed '/^>/s/[ \t]\+/_/g' | sed 's/[(),:;+|]//' | sed '/^>/!s/ //g'
+CLEAN_FASTA = awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' $(UNWANTED_IN_FASTA_NAMES)
 
 SEQLENS = sed 's/> */>/' $< | sed '/^>/s/ .*//' | tr '\n' '\t' | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
 
