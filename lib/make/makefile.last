@@ -212,7 +212,7 @@ all_fnas_xwise: all_fna_lastdbs $(wildcard *.fna)
 
 %.lastdb: %.faa.gz
 	$(MAKECALL_LASTAL_MAKEDB)
-	lastdb -p -c $@ <(gunzip -c $<) $(LASTDB_OPTS)
+	gunzip -c $< | lastdb -p -c $@ $(LASTDB_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 	touch $@
 
