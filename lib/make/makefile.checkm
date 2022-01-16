@@ -14,6 +14,7 @@ SHELL := /bin/bash
 # includes this file, see documentation in doc/makefile.md.
 #
 CHECKM_LINEAGE_WF_OPTS =
+CHECKM_QA_OPTS =
 
 # *** Internal ***
 
@@ -45,6 +46,7 @@ checkm.lineage_wf.fna.out: $(wildcard *.fna)
 checkm.lineage_wf.genome_bins.fna.out: $(wildcard genome_bins/*.fna)
 	@$(MAKECALL_CHECKM)
 	checkm lineage_wf $(CHECKM_LINEAGE_WF_OPTS) genome_bins/ $(basename $@).d | tee $@
+	ln -s $(basename $@).d checkm
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 # This runs checkm lineage_wf on all bins in .faa files in
@@ -63,6 +65,10 @@ checkm.lineage_wf.fna.tsv: checkm.lineage_wf.fna.out
 
 checkm.lineage_wf.genome_bins.fna.tsv: checkm.lineage_wf.genome_bins.fna.out
 	$(CHECKM_OUT_TO_TSV)
+
+# Run this instead of the above
+checkm.lineage_wf.qa_2.tsv: checkm/lineage.ms
+	checkm qa -o 2 --tab_table -f $@ $(CHECKM_QA_OPTS) $< $(dir $<)
 
 checkm.tree_qa.out: $(wildcard checkm.lineage_wf*out)
 	@$(MAKECALL_CHECKM)
