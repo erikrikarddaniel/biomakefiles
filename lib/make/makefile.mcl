@@ -103,3 +103,35 @@ all_R.tsv.gz: $(subst mcxdump.tsv,R.tsv.gz,$(wildcard *.mcxdump.tsv))
 
 %.bitscore.abc.tsv.gz: %.megantab.gz
 	gunzip -c $< | cut -f 1,2,12 | gzip -c > $@
+
+# Create files for use in Cytoscape
+R2ABC = echo "q	t	bitscore" > $@; \
+	for c in $$(cut -f 1 $< | sort -u); do \
+	    for a in $$(zgrep $${c} $< | cut -f 2); do \
+	        for b in $$(zgrep $${c} $< | cut -f 2 | grep -v $${a}); do \
+		    echo "$${a}	$${b}" >> $@.patterns; \
+		done; \
+	    done; \
+	done; \
+	zgrep -f $@.patterns $(word 2,$^) >> $@
+
+%.mcl1_1.abc.tsv: %.mcl1_1.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
+
+%.mcl1_2.abc.tsv: %.mcl1_2.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
+
+%.mcl1_4.abc.tsv: %.mcl1_4.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
+
+%.mcl2.abc.tsv: %.mcl2.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
+
+%.mcl2_5.abc.tsv: %.mcl2_5.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
+
+%.mcl4.abc.tsv: %.mcl4.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
+
+%.mcl6.abc.tsv: %.mcl6.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
