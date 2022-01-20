@@ -45,7 +45,7 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 .SECONDARY:
 
 # This doesn't work...
-%.mcls: %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl4.mclout %.mcl6.mclout
+%.mcls: %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl2_5.mclout %.mcl4.mclout %.mcl6.mclout
 
 %.mcl1_1.mclout: %.mci
 	mcl $< -I 1.1 -o $@
@@ -58,6 +58,9 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 
 %.mcl2.mclout: %.mci
 	mcl $< -I 2 -o $@
+
+%.mcl2_5.mclout: %.mci
+	mcl $< -I 2.5 -o $@
 
 %.mcl4.mclout: %.mci
 	mcl $< -I 4 -o $@
