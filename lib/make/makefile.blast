@@ -20,6 +20,9 @@ NCBI_BLAST_DB_PATH  = YOU NEED TO SET THE NCBI_BLAST_DB_PATH VARIABLE (see makef
 BLAST_PROTEIN_DB    = YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefile.blast)
 BLAST_NUCLEOTIDE_DB = YOU NEED TO SET THE BLAST_NUCLEOTIDE_DB VARIABLE (see makefile.blast)
 
+# Set if you want to run with non-default options, e.g. -num_threads 8
+BLAST_OPTS =
+
 # *** Internal ***
 
 # MAKECALL_BLAST_BLAST is a macro that defines what will be output to the .makecall

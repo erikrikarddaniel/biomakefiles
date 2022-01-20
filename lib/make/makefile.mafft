@@ -1,0 +1,50 @@
+# makefile.mafft
+#
+# Library makefile to make running MAFFT simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+MAFFT_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_MAFFT is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_MAFFT_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `mafft --version`" > $@.makecall
+MAKECALL_MAFFT_PARAMS      = echo "	Called with parameters: $(MAFFT_OPTS)" >> $@.makecall
+MAKECALL_MAFFT_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_MAFFT             = $(MAKECALL_MAFFT_VERSION); $(MAKECALL_MAFFT_PARAMS); $(MAKECALL_MAFFT_INFILES)
+
+# *** Targets ***
+
+%.mf.alnfna: %.fna
+	@$(MAKECALL_MAFFT)
+	mafft $(MAFFT_OPTS) $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.mf.alnfaa: %.faa
+	@$(MAKECALL_MAFFT)
+	mafft $(MAFFT_OPTS) $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# The more accurate, but slower, "L-INS-i" mode
+%.mfl.alnfna: %.fna
+	@$(MAKECALL_MAFFT)
+	mafft-linsi $(MAFFT_OPTS) $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.mfl.alnfaa: %.faa
+	@$(MAKECALL_MAFFT)
+	mafft-linsi $(MAFFT_OPTS) $< > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

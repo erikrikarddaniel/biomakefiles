@@ -31,6 +31,9 @@ MAKECALL_PROKKA             = $(MAKECALL_PROKKA_VERSION); $(MAKECALL_PROKKA_PARA
 
 all_prokkas: $(subst .fna,.prokka.out,$(wildcard *.fna))
 
+%.fna: %.fna.gz
+	gunzip -c $< > $@
+
 %.prokka.out: %.fna
 	@$(MAKECALL_PROKKA)
 	prokka \

@@ -12,10 +12,6 @@ SHELL := /bin/bash
 
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
-#
-# Don't use too many threads; the authors recommend 200-1000 alignment 
-# patterns per thread!
-RAXML_NG_OPTS = --threads 1 
 
 RAXML_NG_SEED = SET SEED TO SOMETHING
 RAXML_NG_N_STARTING_TREES = 10
