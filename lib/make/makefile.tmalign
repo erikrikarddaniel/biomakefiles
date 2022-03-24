@@ -79,8 +79,3 @@ combinations: $(wildcard *.pdb)
 
 makefile.combinations: combinations
 	sed 's/\(.*\)-\(.*\)/&.tmalign: \1.pdb \2.pdb/' $< | sed 's:$$:\n\t@if [ ! -e $$(basename $$@).d ]; then mkdir $$(basename $$@).d; else rm -f $$(basename $$@).d/*; fi\n\tTMalign $$^ -o $$(basename $$@).d/$$(basename $$@).sup > $$@\n:' > $@
-
-%.suffix0: %.suffix1 %.suffix1 %.suffixn
-	@$(MAKECALL_TMALIGN)
-	__PGM_CALL__
-	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
