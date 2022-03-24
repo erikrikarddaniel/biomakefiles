@@ -200,6 +200,9 @@ accno_files: best.ranked.tsv
 %.hmmer.alnfna.gz: %.hmmer.sth
 	esl-reformat afa $< | gzip -c > $@
 
+%.clustal: %.alnfaa
+	esl-reformat clustal $< > $@
+
 # This one gets sequence names from a tblout file and searches the file in HMMER_DB_FAA.
 # To work well, it requires sequence names to be nice in a regexp way (i.e. not contain
 # regexp meta characters that interfere with results) and the file in HMMER_DB_FAA to
