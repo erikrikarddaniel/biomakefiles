@@ -25,7 +25,7 @@ silva.mothur.nr.*
 *.qza
 *_report_cache*
 *.feather
-_cache
+*_cache
 .*.sw?
 .~*#
 *.html
