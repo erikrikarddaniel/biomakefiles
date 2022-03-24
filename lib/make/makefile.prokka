@@ -29,7 +29,7 @@ MAKECALL_PROKKA             = $(MAKECALL_PROKKA_VERSION); $(MAKECALL_PROKKA_PARA
 
 # *** Targets ***
 
-all_prokkas: $(subst .fna,.prokka.out,$(wildcard *.fna))
+all_prokkas: $(subst .fna,.prokka.out,$(wildcard *.fna)) $(subst .fna.gz,.prokka.out,$(wildcard *.fna.gz))
 
 %.fna: %.fna.gz
 	gunzip -c $< > $@

@@ -1,0 +1,42 @@
+# makefile.fastme
+#
+# Library makefile to make running fastme simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# Typical opts:
+#   --spr
+#   --nni=[NNI]
+#   --gamma=[alpha] (0.1 is the default)
+#   -T number of threads
+FASTME_OPTS =
+
+# Define if you don't want the default LG
+FASTME_PROTEIN_MODEL =
+
+# *** Internal ***
+
+# MAKECALL_FASTME is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_FASTME_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `fastme --version`" > $@.makecall
+MAKECALL_FASTME_PARAMS      = echo "	Called with parameters: $(FASTME_OPTS)" >> $@.makecall
+MAKECALL_FASTME_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_FASTME             = $(MAKECALL_FASTME_VERSION); $(MAKECALL_FASTME_PARAMS); $(MAKECALL_FASTME_INFILES)
+
+# *** Targets ***
+
+%.fastme.newick: %.phylip
+	@$(MAKECALL_FASTME)
+	fastme -p$(FASTME_PROTEIN_MODEL) -i $< -o $@ $(FASTME_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

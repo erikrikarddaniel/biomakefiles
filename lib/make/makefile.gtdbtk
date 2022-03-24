@@ -15,7 +15,7 @@ SHELL := /bin/bash
 #
 GTDBTK_RELEASE = SET GTDBTK_RELEASE TO THE CURRENT RELEASE (JUST THE NUMBER, E.G. 86)
 
-# Use --cpus N to set number of cores
+# Use --cpus N and --pplacer_cpus N to set number of cores
 GTDBTK_OPTIONS = 
 
 # *** Targets ***
@@ -32,6 +32,10 @@ gtdbtk_current_data.tar.gz:
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
 	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
+
+# All fna files in a directory ending with .bins.d
+%.gtdbtk_classify_wf.d: %.bins.d
+	gtdbtk classify_wf --genome_dir $< --out_dir $@ $(GTDBTK_OPTIONS)
 
 # Splits the ; separated hierarchy in the original files to a tab separated
 %.split.tsv: %.tsv

@@ -45,7 +45,9 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 .SECONDARY:
 
 # This doesn't work...
-%.mcls: %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl4.mclout %.mcl6.mclout
+%.mcls: %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl2_5.mclout %.mcl4.mclout %.mcl6.mclout
+
+all_mcxdumps: $(subst .mclout,.mcxdump.tsv,$(wildcard *.mclout))
 
 %.mcl1_1.mclout: %.mci
 	mcl $< -I 1.1 -o $@
@@ -56,8 +58,17 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 %.mcl1_4.mclout: %.mci
 	mcl $< -I 1.4 -o $@
 
+%.mcl1_6.mclout: %.mci
+	mcl $< -I 1.4 -o $@
+
+%.mcl1_8.mclout: %.mci
+	mcl $< -I 1.4 -o $@
+
 %.mcl2.mclout: %.mci
 	mcl $< -I 2 -o $@
+
+%.mcl2_5.mclout: %.mci
+	mcl $< -I 2.5 -o $@
 
 %.mcl4.mclout: %.mci
 	mcl $< -I 4 -o $@
@@ -103,14 +114,21 @@ all_R.tsv.gz: $(subst mcxdump.tsv,R.tsv.gz,$(wildcard *.mcxdump.tsv))
 
 # Create files for use in Cytoscape
 R2ABC = echo "q	t	bitscore" > $@; \
-	for c in $$(cut -f 1 $< | sort -u); do \
+	echo /dev/null > $@.patterns; \
+	for c in $$(gunzip -c $< | cut -f 1 | sort -u); do \
 	    for a in $$(zgrep $${c} $< | cut -f 2); do \
 	        for b in $$(zgrep $${c} $< | cut -f 2 | grep -v $${a}); do \
 		    echo "$${a}	$${b}" >> $@.patterns; \
 		done; \
 	    done; \
 	done; \
-	zgrep -f $@.patterns $(word 2,$^) >> $@
+	split -a 4 -l 10000 $@.patterns /tmp/$@.patterns.; \
+	for f in /tmp/$@.patterns.*; do \
+	    zgrep -f $$f $(word 2,$^) >> $@; \
+	done; \
+	rm $@.patterns
+
+all_abc_tsvs: $(subst .R.tsv.gz,.abc.tsv,$(wildcard *.R.tsv.gz))
 
 %.mcl1_1.abc.tsv: %.mcl1_1.R.tsv.gz %.abc.tsv.gz
 	$(R2ABC)
@@ -119,6 +137,12 @@ R2ABC = echo "q	t	bitscore" > $@; \
 	$(R2ABC)
 
 %.mcl1_4.abc.tsv: %.mcl1_4.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
+
+%.mcl1_6.abc.tsv: %.mcl1_6.R.tsv.gz %.abc.tsv.gz
+	$(R2ABC)
+
+%.mcl1_8.abc.tsv: %.mcl1_8.R.tsv.gz %.abc.tsv.gz
 	$(R2ABC)
 
 %.mcl2.abc.tsv: %.mcl2.R.tsv.gz %.abc.tsv.gz
@@ -132,3 +156,34 @@ R2ABC = echo "q	t	bitscore" > $@; \
 
 %.mcl6.abc.tsv: %.mcl6.R.tsv.gz %.abc.tsv.gz
 	$(R2ABC)
+
+# Subset input files
+%.minbit025.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 25 )  { print $$0 } }' | gzip -c > $@
+
+%.minbit050.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 50 )  { print $$0 } }' | gzip -c > $@
+
+%.minbit075.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 75 )  { print $$0 } }' | gzip -c > $@
+
+%.minbit100.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 100 ) { print $$0 } }' | gzip -c > $@
+
+%.minbit125.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 125 ) { print $$0 } }' | gzip -c > $@
+
+%.minbit150.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 150 ) { print $$0 } }' | gzip -c > $@
+
+%.minbit160.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 160 ) { print $$0 } }' | gzip -c > $@
+
+%.minbit170.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 170 ) { print $$0 } }' | gzip -c > $@
+
+%.minbit180.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 180 ) { print $$0 } }' | gzip -c > $@
+
+%.minbit200.bitscore.abc.tsv.gz: %.bitscore.abc.tsv.gz
+	gunzip -c $< | awk '{ if ( $$3 >= 200 ) { print $$0 } }' | gzip -c > $@

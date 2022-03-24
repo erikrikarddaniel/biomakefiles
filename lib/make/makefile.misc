@@ -18,8 +18,8 @@ N_SEQ_LINES = 200000
 CONCAT_GZIPPED = gunzip -c $^ | gzip -c > $@
 
 # Put fasta sequences on one line
-UNWANTED_IN_FASTA_NAMES = | sed '/^>/s/[ \t]\+/_/g' | sed 's/[(),:;+|]//' | sed '/^>/!s/ //g'
-CLEAN_FASTA = awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' $(UNWANTED_IN_FASTA_NAMES)
+UNWANTED_IN_FASTA_NAMES = sed '/^>/s/[ \t]\+/_/g' | sed 's/[(),:;+|]//' | sed '/^>/!s/ //g'
+CLEAN_FASTA 		= awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' | $(UNWANTED_IN_FASTA_NAMES)
 
 SEQLENS = sed 's/> */>/' $< | sed '/^>/s/ .*//' | tr '\n' '\t' | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
 
@@ -73,7 +73,7 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 	cat $< | $(CLEAN_FASTA) > $@
 
 # Transform fasta files to tab separated tables (keeping the ">")
-SEQTSV = cat $< | paste - - > $@
+SEQTSV = cat $< | $(CLEAN_FASTA) | paste - - > $@
 
 %.na.tsv: %.fna
 	$(SEQTSV)
@@ -207,3 +207,8 @@ MASKALN_OPTS =
 
 %.masked.alnfaa: %.alnfaa
 	maskaln.r $(MASKALN_OPTS) $< $@
+
+# Convert aligned fasta to phylip. Requires the msaconverter package (in Conda).
+#
+%.phylip: %.alnfaa
+	msaconverter -i $< -o $@ -p fasta -q phylip-relaxed

@@ -176,6 +176,9 @@ accno_files: best.ranked.tsv
 %.hmmer.sthaa: profile.hmm %.faa
 	hmmalign $^ > $@
 
+%.hmmer.sthaa: %.hmm %.faa
+	hmmalign $^ > $@
+
 %.hmmer.sthna: profile.hmm %.fna
 	hmmalign $^ > $@
 
@@ -192,7 +195,7 @@ accno_files: best.ranked.tsv
 	esl-alimask --rf-is-mask $< > $@
 
 %.hmmer.alnfaa: %.hmmer.sthaa
-	esl-reformat -n afa $< > $@
+	esl-reformat afa $< > $@
 
 %.hmmer.alnfna: %.hmmer.sthna
 	esl-reformat -n afa $< > $@
