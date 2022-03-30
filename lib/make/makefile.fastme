@@ -36,7 +36,8 @@ MAKECALL_FASTME             = $(MAKECALL_FASTME_VERSION); $(MAKECALL_FASTME_PARA
 
 # *** Targets ***
 
+# The matrices are very large, so gzip (or delete)
 %.fastme.newick: %.phylip
 	@$(MAKECALL_FASTME)
-	fastme -p$(FASTME_PROTEIN_MODEL) -i $< -o $@ $(FASTME_OPTS)
+	fastme -p$(FASTME_PROTEIN_MODEL) -i $< -o $@ -O $(basename $@).matrix $(FASTME_OPTS)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
