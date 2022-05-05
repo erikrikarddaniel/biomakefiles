@@ -15,29 +15,32 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-GTDB_RELEASE = r202
-GTDB_LATEST_URL = https://data.ace.uq.edu.au/public/gtdb/data/releases/latest
+GTDB_RELEASE     = r207
+GTDB_URL_RELEASE = release207
+GTDB_SUBRELEASE  = 207.0
+GTDB_RELEASE_URL = https://data.ace.uq.edu.au/public/gtdb/data/releases/
+GTDB_LATEST_URL  = $(GTDB_RELEASE_URL)/latest
 
 # *** Internal ***
 
 # *** Targets ***
 #
 # NEW START:
-metadata: ar122_metadata.tsv bac120_metadata.tsv
+#metadata: ar122_metadata.tsv bac120_metadata.tsv
+metadata: ar53_metadata.tsv bac120_metadata.tsv
 
-ar122_metadata.tsv: ar122_metadata.tar.gz
-	tar xfz $< ar122_metadata_$(GTDB_RELEASE).tsv
-	ln -s ar122_metadata_$(GTDB_RELEASE).tsv $@
+#ar122_metadata.tsv: ar122_metadata.tar.gz
+#	tar xfz $< ar122_metadata_$(GTDB_RELEASE).tsv
+#	ln -s ar122_metadata_$(GTDB_RELEASE).tsv $@
+ar53_metadata.tsv:
+	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/ar53_metadata_$(GTDB_RELEASE).tar.gz
+	tar xfz ar53_metadata_$(GTDB_RELEASE).tar.gz ar53_metadata_$(GTDB_RELEASE).tsv
+	ln -s ar53_metadata_$(GTDB_RELEASE).tsv $@
 
-ar122_metadata.tar.gz:
-	wget $(GTDB_LATEST_URL)/$@
-
-bac120_metadata.tsv: bac120_metadata.tar.gz
-	tar xfz $< bac120_metadata_$(GTDB_RELEASE).tsv
+bac120_metadata.tsv: 
+	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/bac120_metadata_$(GTDB_RELEASE).tar.gz
+	tar xfz bac120_metadata_$(GTDB_RELEASE).tar.gz bac120_metadata_$(GTDB_RELEASE).tsv
 	ln -s bac120_metadata_$(GTDB_RELEASE).tsv $@
-
-bac120_metadata.tar.gz:
-	wget $(GTDB_LATEST_URL)/$@
 
 ar122.tree: ar122.tree.tar.gz
 	tar xfz $<
@@ -63,38 +66,51 @@ assembly_summary_genbank_historical.txt:
 assembly_summary_refseq_historical.txt: 
 	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
 
-RED_PATTERNS = Rscript --default-packages=data.table -e "fwrite(fread('/tmp/gtdb_genbank_genomes.tsv.patterns', col.names = 'acc')[!fread('/tmp/gtdb_genbank_genomes.tsv.accno', col.names = 'acc'), on = .(acc)], '/tmp/gtdb_genbank_genomes.tsv.patterns', quote = F, col.names = F)"; echo "--> $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') - $$(wc -l $@ | sed 's/[^0-9]*//g') <--"
+# This macro uses R to find accessions present in /tmp/gtdb_genbank_genomes.tsv.patterns but not in /tmp/gtdb_genbank_genomes.tsv.accno,
+# and writes them to a new /tmp/gtdb_genbank_genomes.tsv.patterns, thereby reducing the number of patterns for the next iteration.
+REDUCE_PATTERNS = Rscript --default-packages=data.table -e "fwrite(fread('/tmp/gtdb_genbank_genomes.tsv.patterns', col.names = 'acc')[!fread('/tmp/gtdb_genbank_genomes.tsv.accno', col.names = 'acc'), on = .(acc)], '/tmp/gtdb_genbank_genomes.tsv.patterns', quote = F, col.names = F)"; echo "--> searching for $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') accessions - found $$(wc -l $@ | sed 's/[^0-9]*//g') accessions <--"
 
-gtdb_genbank_genomes.tsv: ar122_metadata.tsv bac120_metadata.tsv assembly_summary_refseq.txt assembly_summary_genbank.txt assembly_summary_refseq_historical.txt assembly_summary_genbank_historical.txt 
-	# Get a list of accessions
-	cut -f 1 $(wordlist 1,2,$^) | grep -v '^accession' | sed 's/^[A-Z][A-Z]_//' > /tmp/$@.patterns
-	echo -n > $@
-	echo "--> $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') - $$(wc -l $@ | sed 's/[^0-9]*//g') <--"
+# This creates a file with genome information from GTDB combined with paths from various NCBI sources.
+# It deals with the fact that many accessions can be collected from different places at NCBI by
+# prioritizing the most current databases rather than those marked historical. Moreover, it deals
+# with accessions that have moved from NR to RefSeq, which is reflected in the prefix to accessions,
+# by searching for accessions missing with patterns that are more general in the third  positoin of
+# the prefix.
+gtdb_genbank_genomes.tsv: ar53_metadata.tsv bac120_metadata.tsv assembly_summary_refseq.txt assembly_summary_genbank.txt assembly_summary_refseq_historical.txt assembly_summary_genbank_historical.txt 
+	@rm -f $@.tmp /tmp/gtdb_genbank_genomes.tsv.split* /tmp/gtdb_genbank_genomes.tsv.patterns /tmp/gtdb_genbank_genomes.tsv.accno
+	# Get a list of accessions, write to /tmp/gtdb_genbank_genomes.tsv.patterns
+	@cut -f 1 $(wordlist 1,2,$^) | grep -v '^accession' | sed 's/^[A-Z][A-Z]_//' > /tmp/$@.patterns
+	@echo -n > $@
+	@echo "--> searching for $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') accessions - found $$(wc -l $@ | sed 's/[^0-9]*//g') accessions <--"
 	# Find them in the main assembly summaries, first refseq, then genbank
-	split -l 1000 -d /tmp/$@.patterns /tmp/$@.split
-	for f in /tmp/$@.split*; do \
-	  grep -h -f $$f $(word 3,$^) >> $@; \
+	# RefSeq are so many, so we split the patterns
+	@split -l 1000 -d /tmp/$@.patterns /tmp/$@.split
+	@for f in /tmp/$@.split*; do \
+	  grep -h -f $$f $(word 3,$^) >> $@.tmp; \
 	done
-	cut -f 1 $@ > /tmp/$@.accno
-	$(RED_PATTERNS)
-	grep -h -f /tmp/$@.patterns $(word 4,$^) >> $@
+	@cut -f 1 $@.tmp > /tmp/$@.accno
+	@$(REDUCE_PATTERNS)
+	# GenBank
+	@grep -h -f /tmp/$@.patterns $(word 4,$^) >> $@.tmp
 	# Remove patterns that were found and make them more general in the third (A or F) position
-	cut -f 1 $@ > /tmp/$@.accno
-	$(RED_PATTERNS)
-	sed -i 's/GC./GC./' /tmp/$@.patterns
-	grep -h -f /tmp/$@.patterns $(word 3,$^) >> $@; \
-	cut -f 1 $@ | sed 's/GC./GC./' > /tmp/$@.accno
-	$(RED_PATTERNS)
-	grep -h -f /tmp/$@.patterns $(word 4,$^) >> $@
+	@cut -f 1 $@.tmp > /tmp/$@.accno
+	@$(REDUCE_PATTERNS)
+	@sed -i 's/GC./GC./' /tmp/$@.patterns
+	# RefSeq, generalized pattern
+	@grep -h -f /tmp/$@.patterns $(word 3,$^) >> $@.tmp
+	@cut -f 1 $@.tmp | sed 's/GC./GC./' > /tmp/$@.accno
+	@$(REDUCE_PATTERNS)
+	# GenBank, generalized pattern
+	@grep -h -f /tmp/$@.patterns $(word 4,$^) >> $@.tmp
 	# Search the historical assembly summaries
-	cut -f 1 $@ | sed 's/GC./GC./' > /tmp/$@.accno
-	$(RED_PATTERNS)
-	grep -h -f /tmp/$@.patterns $(word 5,$^) >> $@
-	cut -f 1 $@ | sed 's/GC./GC./' > /tmp/$@.accno
-	$(RED_PATTERNS)
-	grep -h -f /tmp/$@.patterns $(word 6,$^) >> $@
-	cut -f 1 $@ | sed 's/GC./GC./' > /tmp/$@.accno
-	$(RED_PATTERNS)
+	@cut -f 1 $@.tmp | sed 's/GC./GC./' > /tmp/$@.accno
+	@$(REDUCE_PATTERNS)
+	@grep -h -f /tmp/$@.patterns $(word 5,$^) >> $@.tmp
+	@cut -f 1 $@.tmp | sed 's/GC./GC./' > /tmp/$@.accno
+	@$(REDUCE_PATTERNS)
+	@grep -h -f /tmp/$@.patterns $(word 6,$^) >> $@.tmp
+	@cut -f 1 $@.tmp | sed 's/GC./GC./' > /tmp/$@.accno
+	@sort -u $@.tmp > $@
 
 ssu_all.tar.gz:
 	wget https://data.gtdb.ecogenomic.org/releases/latest/genomic_files_all/$@
@@ -111,11 +127,11 @@ archaea_ssu_all.fna.gz: ssu_all.tar.gz
 ADD_DONE = sed 's:^[a-z]\+tp\://::' | sed 's:$$:/done:'
 makefile.fetch: gtdb_genbank_genomes.tsv 
 	@echo "--> all <--"
-	@echo "all: $$(grep -v '^#' $< | cut -f 20 | $(ADD_DONE) | tr '\n' ' ')" > $@
+	@echo "all: $$(grep -v '^#' $< | cut -f 20 | sed 's:https.//::' | sort -u | $(ADD_DONE) | tr '\n' ' ')" > $@
 	@echo >> $@
 	@echo "--> Individual targets <--"
-	@for f in $$(grep -v '^#' $< |cut -f 20); do \
-	echo "$$(echo $$f | $(ADD_DONE) | tr '\n' ' '):"; \
+	@for f in $$(grep -v '^#' $< | cut -f 20 | sort -u); do \
+	echo "$$(echo $$f | sed 's:https.//::' | $(ADD_DONE) | tr '\n' ' '):"; \
 	echo "	if [ \$$\$$(wget -S --spider $$f  2>&1 | grep -c '\(File.*exists\)\|\(HTTP/1.1 200 OK\)') -gt 0 ]; then \\"; \
 	echo "	wget --mirror -A *genom*fna.gz -R *cds_from_genomic* -R *assembly_structure* $$f; \\"; \
 	echo "	touch \$$@; \\"; \
