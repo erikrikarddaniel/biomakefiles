@@ -13,12 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-TRIMGALORE_OPTS = 
-
-# <INT> is the Phred score used for quality trimming
-# (Subtract <INT> from all qualities; compute partial sums from all indices to the end of the sequence;
-# cut sequence at the index at which the sum is minimal)
-QUALITY_OPTS = 20
+TRIMGALORE_OPTS = --quality 20
 
 # *** Internal ***
 
@@ -39,8 +34,7 @@ trimgalore_fastq.gz: $(subst .r1.fastq.gz,.trimgalore,$(filter-out $(wildcard *t
 
 # Target for a single pair of files. To mark that the target is done, an empty
 # file with .trimgalore suffix is created.
-%.trimgalore: %.r1.fastq.gz %.r2.fastq.gz
+%.trimgalore.out: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_TRIMGALORE)
-	trim_galore --paired --fastqc --gzip --quality $(QUALITY_OPTS) \
-		$(TRIMGALORE_OPTS) $(word 1,$^) $(word 2,$^) 2>&1 > $@.report
+	trim_galore --paired --fastqc --gzip $(TRIMGALORE_OPTS) $(word 1,$^) $(word 2,$^) 2>&1 > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
