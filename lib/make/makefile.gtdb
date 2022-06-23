@@ -99,7 +99,7 @@ gtdb_genbank_genomes.tsv: ar122_metadata.tsv bac120_metadata.tsv assembly_summar
 ssu_all.tar.gz:
 	wget https://data.gtdb.ecogenomic.org/releases/latest/genomic_files_all/$@
 
-# Try to get rid of version number som day
+# Try to get rid of version number some day
 bacteria_ssu_all.fna.gz: ssu_all.tar.gz
 	tar xzfO $< | grep -A 1 Bacteria | grep -v '^--' | gzip -c > $@
 
