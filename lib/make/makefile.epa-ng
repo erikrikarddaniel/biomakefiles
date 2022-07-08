@@ -1,0 +1,34 @@
+# __TITLE__
+#
+# Library makefile to make running __PROGRAM__ simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+__PGM___OPTS =
+
+# *** Internal ***
+
+# MAKECALL___PGM__ is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL___PGM___VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `__PROGRAM__ --version`" > $@.makecall
+MAKECALL___PGM___PARAMS      = echo "	Called with parameters: $(__PGM___OPTS)" >> $@.makecall
+MAKECALL___PGM___INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL___PGM__             = $(MAKECALL___PGM___VERSION); $(MAKECALL___PGM___PARAMS); $(MAKECALL___PGM___INFILES)
+
+# *** Targets ***
+
+%.suffix0: %.suffix1 %.suffix1 %.suffixn
+	@$(MAKECALL___PGM__)
+	__PGM_CALL__
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
