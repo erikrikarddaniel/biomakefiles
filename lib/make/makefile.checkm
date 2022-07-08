@@ -13,6 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+# For CHECKM_LINEAGE_WF_OPTS use e.g. --threads 8 --pplacer_threads 8
 CHECKM_LINEAGE_WF_OPTS =
 CHECKM_QA_OPTS =
 
