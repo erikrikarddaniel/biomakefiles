@@ -26,7 +26,7 @@ BMGE = bmge
 
 # Lots of targets for various BMGE calls followed by output of a NEXUS character
 # sets clause for inclusion in e.g. seaview files.
-%.bmge.charsets: %.BLOSUM30.bmge.charset %.BLOSUM35.bmge.charset %.BLOSUM40.bmge.charset %.BLOSUM45.bmge.charset %.BLOSUM50.bmge.charset %.BLOSUM55.bmge.charset %.BLOSUM60.bmge.charset %.BLOSUM62.bmge.charset %.BLOSUM65.bmge.charset %.BLOSUM70.bmge.charset %.BLOSUM75.bmge.charset %.BLOSUM80.bmge.charset %.BLOSUM85.bmge.charset %.BLOSUM90.bmge.charset %.BLOSUM95.bmge.charset
+%.bmge.charsets: %.BLOSUM30.bmge.charset %.BLOSUM40.bmge.charset %.BLOSUM50.bmge.charset %.BLOSUM62.bmge.charset
 	cat $^ > $@
 
 %.bmge.charset: %.bmge.html %.bmge.alnfaa
