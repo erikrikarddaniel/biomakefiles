@@ -1,0 +1,39 @@
+# makefile.iqtree
+#
+# Library makefile to make running iqtree simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# -B 1000 specifies 1000 iterations of the ultrafast bootstrap method.
+#
+# -nt N sets the number of cores (AUTO auto-detect a good number).
+#
+# -bnni to reduce the risk of overestimating branch supports
+IQTREE_OPTS = -B 1000 -nt AUTO
+
+# *** Internal ***
+
+# MAKECALL_IQTREE is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_IQTREE_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `iqtree --version | grep 'IQ-TREE'`" > $@.makecall
+MAKECALL_IQTREE_PARAMS      = echo "	Called with parameters: $(IQTREE_OPTS)" >> $@.makecall
+MAKECALL_IQTREE_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_IQTREE             = $(MAKECALL_IQTREE_VERSION); $(MAKECALL_IQTREE_PARAMS); $(MAKECALL_IQTREE_INFILES)
+
+# *** Targets ***
+
+%.iqtree.MFP.treefile: %.alnfaa
+	@$(MAKECALL_IQTREE)
+	iqtree -s $< $(IQTREE_OPTS) -m MFP --prefix $(basename $@)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
