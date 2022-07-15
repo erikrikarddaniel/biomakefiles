@@ -28,21 +28,19 @@ MAKECALL_EPA_NG             = $(MAKECALL_EPA_NG_VERSION); $(MAKECALL_EPA_NG_PARA
 
 # *** Targets ***
 
-# Target to rename the Reference Alignment, if it has been reduced by RAxML to match the epa_result target
-%.raxml.alnfaa: %.raxml.reduced.alnfaa
-        mv $(basename $(basename $@)).raxml.reduced.alnfaa $@
-
 # Here epa-ng takes as input: 
-# - ReferenceTree (rooted and safed as newick file)
-# - ReferenceAlignment (with the same id as the RAxML RT, raxml .phy file has been converted back to .alnfaa)
-# - QueryAlignment (created with hmmer)
+# - ReferenceTree (rooted and safed as newick file) %.rfmask.hmmer.LGG4F.raxml.bestTree.rooted.newick
+# - ReferenceAlignment (with the same id as the RAxML RT, raxml .phy file has been converted back to .alnfaa) %.rfmask.hmmer.LGG4F.raxml.alnfaa
+# - QueryAlignment (created with hmmer) %.qs.rfmask.hmmer.alnfaa
 # 
 # epa-ng creates pre-named output files in the current directory:
 # - epa_info.log
 # - epa_results.jplace
-# so RT, RA and QS have to be in the same directory with no other RT, RA or QS files!
 
-epa_result.jplace: $(wildcard *.rooted.newick) $(wildcard *.raxml.alnfaa) $(wildcard *.hmmer.alnfaa)
-        @$(MAKECALL_EPA_NG)
-        epa-ng --tree $< --ref-msa $(word 2,$^) --query $(word 3,$^) --outdir . --model LG+G4+F
-        @echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+%.epa_result.jplace: %.rfmask.hmmer.LGG4F.raxml.bestTree.rooted.newick %.rfmask.hmmer.LGG4F.raxml.alnfaa %.qs.rfmask.hmmer.alnfaa
+	@$(MAKECALL_EPA_NG)
+	epa-ng --tree $< --ref-msa $(word 2,$^) --query $(word 3,$^) --outdir . --model LG+G4+F
+	mv epa_result.jplace $@
+	mv epa_info.log $(basename $(basename $@)).epa_info.log
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+	
