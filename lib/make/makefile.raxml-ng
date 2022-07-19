@@ -26,8 +26,8 @@ RAXML_NG_OPTS =
 #
 # *Don't redefine!*
 MAKECALL_RAXML_NG_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `raxml-ng --version | grep RAxML-NG`" > $@.makecall
-MAKECALL_RAXML_NG_PARAMS      = echo "	Called with parameters: $(RAXML_NG_OPTS)" >> $@.makecall
-MAKECALL_RAXML_NG_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_RAXML_NG_PARAMS      = echo "  Called with parameters: $(RAXML_NG_OPTS)" >> $@.makecall
+MAKECALL_RAXML_NG_INFILES     = echo "  Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_NG_PARAMS); $(MAKECALL_RAXML_NG_INFILES)
 
 # *** Targets ***
@@ -41,6 +41,9 @@ MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_N
 # Amino acid targets
 %.LGG8F.raxml.rba: %.alnfaa
 	raxml-ng --parse --msa $< --model LG+G8+F --prefix $(basename $(basename $@))
+
+%.LGG4F.raxml.rba: %.alnfaa
+	raxml-ng --parse --msa $< --model LG+G4+F --prefix $(basename $(basename $@))
 
 %.raxml.bestTree: %.raxml.rba
 	raxml-ng --all --msa $< --prefix $(basename $(basename $@)) $(RAXML_NG_OPTS) --seed $(RAXML_NG_SEED) --tree pars{$(RAXML_NG_N_STARTING_TREES)},rand{$(RAXML_NG_N_STARTING_TREES)}
@@ -60,13 +63,13 @@ MAKECALL_RAXML_NG             = $(MAKECALL_RAXML_NG_VERSION); $(MAKECALL_RAXML_N
 
 # Run on the log from tree estimation
 %.likelihoods.tsv: %.log
-	echo "tree	log_likelihood" > $@
+	echo "tree      log_likelihood" > $@
 	grep 'ML tree search #' $< | sed 's/.*#//'|sed 's/, logLikelihood: /\t/' >> $@
 
 # Run on the log from tree estimation
 %.runstats.tsv: %.log %.rf.raxml.log
-	echo "raxml_version	run_mode	start_trees	model	n_sites	n_patterns	perc_gaps	perc_invariant	n_bootstraps	n_uniq_topos	mean_absolute_rf	mean_relative_rf	command" > $@
-	echo "$$(grep '^RAxML-NG v.' $<)	$$(grep 'run mode:' $< | sed 's/.*run mode: //')	$$(grep 'start tree' $< | sed 's/.*start tree(s): //')	$$(grep 'Model:' $< | sed 's/.*Model: //')	$$(grep 'Alignment sites' $< | sed 's/.*: //' | sed 's:/:\t:')	$$(grep 'Gaps:' $< | sed 's/.*Gaps: \([0-9.]\+\).*/\1/')	$$(grep 'Invariant sites:' $< | sed 's/.*Invariant sites: \([0-9.]\+\).*/\1/')	$$(grep 'Bootstrapping converged after' $< | sed 's/.*Bootstrapping converged after \([0-9]\+\).*/\1/')	$$(grep 'Number of unique topologies in this tree set' $(word 2, $^) | sed 's/Number of unique topologies in this tree set: //')	$$(grep 'Average absolute RF distance in this tree set: ' $(word 2,$^) | sed 's/Average absolute RF distance in this tree set: //')	$$(grep 'Average relative RF distance in this tree set: ' $(word 2,$^) | sed 's/Average relative RF distance in this tree set: //')	$$(grep '^raxml-ng' $<)" >> $@
+	echo "raxml_version     run_mode        start_trees     model   n_sites n_patterns      perc_gaps       perc_invariant  n_bootstraps    n_uniq_topos    mean_absolute_rf        mean_relative_rf        command" > $@
+	echo "$$(grep '^RAxML-NG v.' $<)        $$(grep 'run mode:' $< | sed 's/.*run mode: //')        $$(grep 'start tree' $< | sed 's/.*start tree(s): //')  $$(grep 'Model:' $< | sed 's/.*Model: //')      $$(grep 'Alignment sites' $< | sed 's/.*: //' | sed 's:/:\t:')  $$(grep 'Gaps:' $< | sed 's/.*Gaps: \([0-9.]\+\).*/\1/')        $$(grep 'Invariant sites:' $< | sed 's/.*Invariant sites: \([0-9.]\+\).*/\1/')  $$(grep 'Bootstrapping converged after' $< | sed 's/.*Bootstrapping converged after \([0-9]\+\).*/\1/') $$(grep 'Number of unique topologies in this tree set' $(word 2, $^) | sed 's/Number of unique topologies in this tree set: //')        $$(grep 'Average absolute RF distance in this tree set: ' $(word 2,$^) | sed 's/Average absolute RF distance in this tree set: //')     $$(grep 'Average relative RF distance in this tree set: ' $(word 2,$^) | sed 's/Average relative RF distance in this tree set: //')     $$(grep '^raxml-ng' $<)" >> $@
 
 # Decorate a tree with bootstraps
 %.support: %.bestTree %.bootstraps.gz

@@ -1,10 +1,10 @@
-# __TITLE__
+# makefile.epa-ng
 #
-# Library makefile to make running __PROGRAM__ simpler.
+# Library makefile to make running epa-ng simpler.
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: __AUTHOR_EMAIL__
+# Author: michelle.hagen98@web.de
 
 SHELL := /bin/bash
 
@@ -13,22 +13,34 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-__PGM___OPTS =
+EPA_NG_OPTS =
 
 # *** Internal ***
 
-# MAKECALL___PGM__ is a macro that defines what will be output to the .makecall
+# MAKECALL_EPA_NG is a macro that defines what will be output to the .makecall
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL___PGM___VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `__PROGRAM__ --version`" > $@.makecall
-MAKECALL___PGM___PARAMS      = echo "	Called with parameters: $(__PGM___OPTS)" >> $@.makecall
-MAKECALL___PGM___INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
-MAKECALL___PGM__             = $(MAKECALL___PGM___VERSION); $(MAKECALL___PGM___PARAMS); $(MAKECALL___PGM___INFILES)
+MAKECALL_EPA_NG_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `epa-ng --version | grep EPA-ng`" > $@.makecall
+MAKECALL_EPA_NG_PARAMS      = echo "    Called with parameters: $(__PGM___OPTS)" >> $@.makecall
+MAKECALL_EPA_NG_INFILES     = echo "    Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_EPA_NG             = $(MAKECALL_EPA_NG_VERSION); $(MAKECALL_EPA_NG_PARAMS); $(MAKECALL_EPA_NG_INFILES)
 
 # *** Targets ***
 
-%.suffix0: %.suffix1 %.suffix1 %.suffixn
-	@$(MAKECALL___PGM__)
-	__PGM_CALL__
+# Here epa-ng takes as input: 
+# - ReferenceTree (rooted and safed as newick file) %.rfmask.hmmer.LGG4F.raxml.bestTree.rooted.newick
+# - ReferenceAlignment (with the same id as the RAxML RT, raxml .phy file has been converted back to .alnfaa) %.rfmask.hmmer.LGG4F.raxml.alnfaa
+# - QueryAlignment (created with hmmer) %.qs.rfmask.hmmer.alnfaa
+# 
+# epa-ng creates pre-named output files in the current directory:
+# - epa_info.log
+# - epa_results.jplace
+
+%.epa_result.jplace: %.rfmask.hmmer.LGG4F.raxml.bestTree.rooted.newick %.rfmask.hmmer.LGG4F.raxml.alnfaa %.qs.rfmask.hmmer.alnfaa
+	@$(MAKECALL_EPA_NG)
+	epa-ng --tree $< --ref-msa $(word 2,$^) --query $(word 3,$^) --outdir . --model LG+G4+F
+	mv epa_result.jplace $@
+	mv epa_info.log $(basename $(basename $@)).epa_info.log
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+	
