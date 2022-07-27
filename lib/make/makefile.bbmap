@@ -1,0 +1,37 @@
+# makefile.bbmap
+#
+# Library makefile to make running BBMap simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+BBMAP_OPTS =
+
+# You need to set this macro to the name of the fasta file, gzipped or not, that you want to map to
+BBMAP_INDEX_FASTA =
+
+# *** Internal ***
+
+# MAKECALL_BBMAP is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_BBMAP_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with bbmap.sh `bbmap.sh|grep 'Last modified'`" > $@.makecall
+MAKECALL_BBMAP_PARAMS      = echo "	Called with parameters: $(BBMAP_OPTS)" >> $@.makecall
+MAKECALL_BBMAP_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`) and reference: $(BBMAP_INDEX_FASTA) (`ls -lL $(BBMAP_INDEX_FASTA)`)" >> $@.makecall
+MAKECALL_BBMAP             = $(MAKECALL_BBMAP_VERSION); $(MAKECALL_BBMAP_PARAMS); $(MAKECALL_BBMAP_INFILES)
+
+# *** Targets ***
+
+%.bam: %.r1.fastq.gz %.r2.fastq.gz
+	@$(MAKECALL_BBMAP)
+	bbmap.sh in=$< in2=$(word 2,$^) ref=$(BBMAP_INDEX_FASTA) out=$@ $(BBMAP_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
