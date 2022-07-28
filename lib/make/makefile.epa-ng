@@ -22,7 +22,7 @@ EPA_NG_OPTS =
 #
 # *Don't redefine!*
 MAKECALL_EPA_NG_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `epa-ng --version | grep EPA-ng`" > $@.makecall
-MAKECALL_EPA_NG_PARAMS      = echo "    Called with parameters: $(__PGM___OPTS)" >> $@.makecall
+MAKECALL_EPA_NG_PARAMS      = echo "    Called with parameters: $(EPA_NG_OPTS)" >> $@.makecall
 MAKECALL_EPA_NG_INFILES     = echo "    Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_EPA_NG             = $(MAKECALL_EPA_NG_VERSION); $(MAKECALL_EPA_NG_PARAMS); $(MAKECALL_EPA_NG_INFILES)
 
