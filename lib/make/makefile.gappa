@@ -1,0 +1,38 @@
+# makefile.gappa
+#
+# Library makefile to make running gappa simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: michelle.hagen98@web.de
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+GAPPA_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_GAPPA is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_GAPPA_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `gappa --version`" > $@.makecall
+MAKECALL_GAPPA_PARAMS      = echo "    Called with parameters: $(GAPPA_OPTS)" >> $@.makecall
+MAKECALL_GAPPA_INFILES     = echo "    Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_GAPPA             = $(MAKECALL_GAPPA_VERSION); $(MAKECALL_GAPPA_PARAMS); $(MAKECALL_GAPPA_INFILES)
+
+# *** Targets ***
+
+%.profile.tsv: %.epa_result.jplace %.taxonfile
+	@$(MAKECALL_GAPPA)
+	gappa examine assign \
+		--jplace-path ./$< \
+		--taxon-file $(word 2,$^) \
+		--file-prefix $(basename $(basename $@)). \
+		--log-file $(basename $(basename $@)).gappa.log
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
