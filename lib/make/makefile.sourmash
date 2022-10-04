@@ -1,0 +1,106 @@
+# makefile.sourmash
+#
+# Library makefile to make running sourmash simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+SOURMASH_SCALED        = 1000
+SOURMASH_SKETCH_KMERS  = k=21,k=31,k=51
+SOURMASH_THRESHOLD_BP  = 1000
+SOURMASH_K21_SBT_FILES = NEEDS TO BE SET TO AN .sbt.zip FILE FOR 21MERS
+SOURMASH_K31_SBT_FILES = NEEDS TO BE SET TO AN .sbt.zip FILE FOR 31MERS
+SOURMASH_NAME_PREFIX   =
+
+# *** Internal ***
+
+# MAKECALL_SOURMASH is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_SOURMASH_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `sourmash --version`" > $@.makecall
+MAKECALL_SOURMASH_PARAMS      = echo "	Called with scaled=$(SOURMASH_SCALED), sketch kmers: $(SOURMASH_SKETCH_KMERS), threshold_bp: $(SOURMASH_THRESHOLD_BP), k21 .sbt.zip files: $(SOURMASH_K21_SBT_FILES)" >> $@.makecall
+MAKECALL_SOURMASH_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_SOURMASH             = $(MAKECALL_SOURMASH_VERSION); $(MAKECALL_SOURMASH_PARAMS); $(MAKECALL_SOURMASH_INFILES)
+
+# *** Targets ***
+
+# Make .sig files from all .fna.gz and .fastq.gz files in the directory
+signatures: $(subst .fna.gz,.sig,$(wildcard *.fna.gz)) $(subst .fastq.gz,.sig,$(wildcard *.fastq.gz))
+
+# Make index files (.sbt.zip); assumes that sig files contain kmer sizes 21, 31 and 51.
+all_indices: sourmash_k21.index.sbt.zip sourmash_k31.index.sbt.zip sourmash_k51.index.sbt.zip
+
+# Ready made indices for GTDB genomes
+gtdb_indices: gtdb-rs207.genomic-reps.dna.k21.sbt.zip gtdb-rs207.genomic-reps.dna.k31.sbt.zip gtdb-rs207.genomic-reps.dna.k51.sbt.zip gtdb-rs207.all.dna.k21.sbt.zip gtdb-rs207.all.dna.k31.sbt.zip gtdb-rs207.all.dna.k51.sbt.zip 
+
+gather_all.k21.csv: $(wildcard *.sig)
+	@$(MAKECALL_SOURMASH)
+	sourmash gather -o $@ -k 21 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $^ $(SOURMASH_K21_SBT_FILES) | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+gather_all.k31.csv: $(wildcard *.sig)
+	@$(MAKECALL_SOURMASH)
+	sourmash gather -o $@ -k 31 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $^ $(SOURMASH_K31_SBT_FILES) | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.k21.gather.csv: %.sig 
+	@$(MAKECALL_SOURMASH)
+	sourmash gather -o $@ -k 21 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $< $(SOURMASH_K21_SBT_FILES) | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.k31.gather.csv: %.sig 
+	@$(MAKECALL_SOURMASH)
+	sourmash gather -o $@ -k 31 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $< $(SOURMASH_K31_SBT_FILES) | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.sig: %.fna.gz
+	@$(MAKECALL_SOURMASH)
+	sourmash sketch dna -o $@ -p $(SOURMASH_SKETCH_KMERS),scaled=$(SOURMASH_SCALED) $(SOURMASH_OPTS) --name $(SOURMASH_NAME_PREFIX)$$(basename $< .fna.gz) $< 2>&1 | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.sig: %.fastq.gz
+	@$(MAKECALL_SOURMASH)
+	sourmash sketch dna -o $@ -p $(SOURMASH_SKETCH_KMERS),scaled=$(SOURMASH_SCALED) $(SOURMASH_OPTS) --name $(SOURMASH_NAME_PREFIX)$$(basename $< .fna.gz) $< 2>&1 | tee $@.out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+sourmash_k21.index.sbt.zip: $(wildcard *.sig)
+	@$(MAKECALL_SOURMASH)
+	sourmash index -k 21 $(basename $(basename $@)) $^ 2>&1 | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+sourmash_k31.index.sbt.zip: $(wildcard *.sig)
+	@$(MAKECALL_SOURMASH)
+	sourmash index -k 31 $(basename $(basename $@)) $^ 2>&1 | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+sourmash_k51.index.sbt.zip: $(wildcard *.sig)
+	@$(MAKECALL_SOURMASH)
+	sourmash index -k 51 $(basename $(basename $@)) $^ 2>&1 | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+gtdb-rs207.genomic-reps.dna.k21.sbt.zip:
+	wget -O $@ https://osf.io/zsypg/download
+
+gtdb-rs207.genomic-reps.dna.k31.sbt.zip:
+	wget -O $@ https://osf.io/ernct/download
+
+gtdb-rs207.genomic-reps.dna.k51.sbt.zip:
+	wget -O $@ https://osf.io/yq7dc/download
+
+gtdb-rs207.all.dna.k21.sbt.zip:
+	wget -O $@ https://osf.io/wr8pk/download
+
+gtdb-rs207.all.dna.k31.sbt.zip:
+	wget -O $@ https://osf.io/748ew/download
+
+gtdb-rs207.all.dna.k51.sbt.zip:
+	wget -O $@ https://osf.io/78hdr/download
