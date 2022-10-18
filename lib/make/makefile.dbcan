@@ -1,6 +1,6 @@
 # makefile.dbcan
 #
-# Library makefile to make running run_dbcan.py simpler.
+# Library makefile to make running run_dbcan simpler.
 #
 # Include the full path of this file in your Makefile ...
 #
@@ -24,7 +24,7 @@ DBCAN_OPTS =
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_DBCAN_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `run_dbcan.py --version`" > $@.makecall
+MAKECALL_DBCAN_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with run_dbcan *unknown version*" > $@.makecall
 MAKECALL_DBCAN_PARAMS      = echo "	Called with parameters: $(DBCAN_OPTS)" >> $@.makecall
 MAKECALL_DBCAN_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_DBCAN             = $(MAKECALL_DBCAN_VERSION); $(MAKECALL_DBCAN_PARAMS); $(MAKECALL_DBCAN_INFILES)
@@ -40,5 +40,5 @@ all_dbcans.tsv: $(subst .faa,.dbcan.out,$(wildcard *.faa))
 # Quite slow, don't run on more than N sequences
 %.dbcan.out: %.faa
 	@$(MAKECALL_DBCAN)
-	run_dbcan.py --db_dir $(DBCAN_DB_DIR) --dia_cpu 1 --hmm_cpu 1 --hotpep_cpu 1 --tf_cpu 1 --stp_cpu 1 --out_dir $@.d/ $(DBCAN_OPTS) $< protein > $@
+	run_dbcan --db_dir $(DBCAN_DB_DIR) --dia_cpu 1 --hmm_cpu 1 --tf_cpu 1 --stp_cpu 1 --out_dir $@.d/ $(DBCAN_OPTS) $< protein > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
