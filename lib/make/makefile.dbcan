@@ -14,6 +14,7 @@ SHELL := /bin/bash
 # includes this file, see documentation in doc/makefile.md.
 #
 DBCAN_DB_DIR = YOU MUST SET TO DIRECTORY WHERE YOU DOWNLOADED DBCAN'S DATA FILES
+DBCAN_CPUS   = 1
 
 # Use for any other options, i.e. except database directory and any cpu option
 DBCAN_OPTS = 
@@ -40,5 +41,5 @@ all_dbcans.tsv: $(subst .faa,.dbcan.out,$(wildcard *.faa))
 # Quite slow, don't run on more than N sequences
 %.dbcan.out: %.faa
 	@$(MAKECALL_DBCAN)
-	run_dbcan --db_dir $(DBCAN_DB_DIR) --dia_cpu 1 --hmm_cpu 1 --tf_cpu 1 --stp_cpu 1 --out_dir $@.d/ $(DBCAN_OPTS) $< protein > $@
+	run_dbcan --db_dir $(DBCAN_DB_DIR) --dia_cpu $(DBCAN_CPUS) --hmm_cpu $(DBCAN_CPUS) --tf_cpu $(DBCAN_CPUS) --stp_cpu $(DBCAN_CPUS) --out_dir $@.d/ $(DBCAN_OPTS) $< protein > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
