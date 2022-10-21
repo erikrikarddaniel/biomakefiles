@@ -10,8 +10,13 @@ SHELL := /bin/bash
 
 # *** Targets ***
 
-%.hmm: 
-	wget -O $@ -c "http://pfam.xfam.org/family/$(basename $@)/hmm"
+# Old site, superseded by InterPro
+#%.hmm: 
+#	wget -O $@ -c "http://pfam.xfam.org/family/$(basename $@)/hmm"
+
+%.hmm:
+	wget -O $@.gz "https://www.ebi.ac.uk/interpro/wwwapi//entry/pfam/$(basename $@)?annotation=hmm"
+	gunzip $@.gz
 
 Pfam-A.hmm.gz:
 	wget -O $@ -c "ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz"
