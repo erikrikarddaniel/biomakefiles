@@ -280,3 +280,8 @@ pfile_descs.tsv: $(wildcard *.hmm)
 profile_accept_scores.tsv: pfile_profiles.tsv pfile_accept_scores.tsv pfile_descs.tsv
 	Rscript --default-packages=readr,dplyr -e "read_tsv('$<',col_types=cols(.default=col_character()))%>%inner_join(read_tsv('$(word 2,$^)',col_types=cols(.default=col_character())),by='pfile')%>%inner_join(read_tsv('$(word 3,$^)',col_types=cols(.default=col_character())),by='pfile')%>%write_tsv('$@')"
 
+# Make an faa file from all hits in best_ranked.tsv. Requires the definition of the CLEAN_FASTA macro, see makefile.misc.
+best.ranked.faa: best.ranked.tsv
+	cut -f 1-4 $< | sed "s:^\(.*\)\t\(.*\)\t\(.*\)\t\(.*\):/\1/s/$$/ HMMER\: \2 evalue\: \3 score\: \4/:" > tmp.sed
+	cat $(HMMER_DB_FAA) | $(CLEAN_FASTA) | grep -A 1 -f <(cut -f 1 $<) | grep -v '^--' | sed -f tmp.sed > $@
+	rm tmp.sed
