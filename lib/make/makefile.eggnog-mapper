@@ -29,7 +29,7 @@ MAKECALL_EGGNOG_MAPPER             = $(MAKECALL_EGGNOG_MAPPER_VERSION); $(MAKECA
 # *** Targets ***
 
 all.emapper.annotations.tsv: $(subst .faa,.emapper.annotations,$(wildcard *.faa))
-	grep '#query_name' $< | sed 's/#//' > $@
+	grep '#query' $< | sed 's/#//' > $@
 	grep -v '^#' $^ >> $@
 
 %.emapper.annotations: %.faa
