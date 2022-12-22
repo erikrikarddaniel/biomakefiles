@@ -63,6 +63,12 @@ all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
 %.mega.blastout.gz: %.fna
 	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
 
+%.blastn.blastout.gz: %.fna
+	blastn -task blastn -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
+
+%.blastn.blast6.gz: %.fna
+	blastn -outfmt 6 -task blastn -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
+
 %.mega.blastout: %.fna
 	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) > $@
 

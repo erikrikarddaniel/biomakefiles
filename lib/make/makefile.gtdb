@@ -42,10 +42,12 @@ bac120_metadata.tsv:
 	tar xfz bac120_metadata_$(GTDB_RELEASE).tar.gz bac120_metadata_$(GTDB_RELEASE).tsv
 	ln -s bac120_metadata_$(GTDB_RELEASE).tsv $@
 
-ar122.tree: ar122.tree.tar.gz
+trees: ar53.tree bac120.tree
+
+ar53.tree: ar53.tree.tar.gz
 	tar xfz $<
 
-ar122.tree.tar.gz:
+ar53.tree.tar.gz:
 	wget https://data.gtdb.ecogenomic.org/releases/latest/$@
 
 bac120.tree: bac120.tree.tar.gz
@@ -53,6 +55,8 @@ bac120.tree: bac120.tree.tar.gz
 
 bac120.tree.tar.gz:
 	wget https://data.gtdb.ecogenomic.org/releases/latest/$@
+
+assembly_summaries: assembly_summary_genbank.txt assembly_summary_refseq.txt assembly_summary_genbank_historical.txt assembly_summary_refseq_historical.txt
 
 assembly_summary_genbank.txt: 
 	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@

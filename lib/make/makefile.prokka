@@ -41,5 +41,5 @@ all_prokkas: $(subst .fna,.prokka.out,$(wildcard *.fna)) $(subst .fna.gz,.prokka
 	  --prefix=$(PROKKA_PREFIX)$(basename $(basename $@)) \
 	  $(PROKKA_OPTS) \
 	  $< 2>&1 | tee $@
-	gzip $(basename $@).d/*
+	gzip --force $(basename $@).d/*
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
