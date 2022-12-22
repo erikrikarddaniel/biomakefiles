@@ -1,0 +1,43 @@
+# makefile.pseudofinder
+#
+# Library makefile to make running pseudofinder simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# --threads N
+PSEUDOFINDER_OPTS       = 
+PSEUDOFINDER_DIAMOND_DB = 
+
+# *** Internal ***
+
+# MAKECALL_PSEUDOFINDER is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_PSEUDOFINDER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `pseudofinder.py version`" > $@.makecall
+MAKECALL_PSEUDOFINDER_PARAMS      = echo "	Called with parameters: $(PSEUDOFINDER_OPTS)" >> $@.makecall
+MAKECALL_PSEUDOFINDER_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_PSEUDOFINDER             = $(MAKECALL_PSEUDOFINDER_VERSION); $(MAKECALL_PSEUDOFINDER_PARAMS); $(MAKECALL_PSEUDOFINDER_INFILES)
+
+# *** Targets ***
+
+all_pseudofinders: $(subst .gbk.gz,.pseudofinder.out,$(wildcard *.gbk.gz))
+
+%.gbk: %.gbk.gz
+	gunzip -c $< > $@
+
+%.pseudofinder.out: %.gbk
+	@$(MAKECALL_PSEUDOFINDER)
+	if [ ! -e $(basename $@).d/ ]; then mkdir $(basename $@).d/; fi
+	pseudofinder.py annotate --diamond --genome $< --outprefix $(basename $@).d/$(basename $@) --database $(PSEUDOFINDER_DIAMOND_DB) $(PSEUDOFINDER_OPTS) | tee $@
+	gzip -f $(basename $@).d/*
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
