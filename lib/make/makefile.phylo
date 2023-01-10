@@ -22,15 +22,16 @@ SHELL := /bin/bash
 deleted_sequences: $(wildcard problem_sequences.*)
 	        sort -u $^ > $@
 
+# Remove deleted sequences from .faa file
+%.correct_sequences: %.faa deleted_sequences 
+	grep '>' $< | grep -v -f $(word 2,$^) | sed 's/.*@//' > $@
+
 %.correct.faa: %.correct_sequences %.faa %.interesting.faa
 	cat $(word 3,$^) > $@
-	grep -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
+	grep -F -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
 
 %.interesting.faa:
 	touch $@
-
-%.correct_sequences: %.faa deleted_sequences 
-	grep '>' $< | grep -v -f $(word 2,$^) | sed 's/.*@//' > $@
 
 # Remove deleted_sequences from .fna file 
 %.correct_sequences: %.fna deleted_sequences 
@@ -38,7 +39,7 @@ deleted_sequences: $(wildcard problem_sequences.*)
 
 %.correct.fna: %.correct_sequences %.fna %.interesting.fna
 	cat $(word 3,$^) > $@
-	grep -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
+	grep -F -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
 
 %.interesting.fna:
 	touch $@
