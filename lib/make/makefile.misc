@@ -152,7 +152,10 @@ r1.seqcounts.tsv: $(subst .fastq.gz,.seqcount,$(wildcard *.r1.fastq.gz))
 %.seqcount: %.fastq.gz
 	echo $$(expr $$(gunzip -c $< | wc -l) / 4) > $@
 
-# Gunzip an fna.gz file
+# Gunzip a fasta files
+%.faa: %.faa.gz
+	gunzip -c $< > $@
+
 %.fna: %.fna.gz
 	gunzip -c $< > $@
 
