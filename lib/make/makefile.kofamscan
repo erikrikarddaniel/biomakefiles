@@ -1,0 +1,41 @@
+# makefile.kofamscan
+#
+# Library makefile to make running kofamscan simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# Set --cpu n to use more than one core
+KOFAMSCAN_OPTS        =
+KOFAMSCAN_PROFILE_DIR = NEEDS TO BE SET TO A DIRECTORY CONTAINING KO HMM FILES
+KOFAMSCAN_KO_LIST     = NEEDS TO BE SET TO A FILE CONTAINING THE KO LIST (ko_list)
+
+
+# *** Internal ***
+
+# MAKECALL_KOFAMSCAN is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_KOFAMSCAN_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `exec_annotation --version`" > $@.makecall
+MAKECALL_KOFAMSCAN_PARAMS      = echo "	Called with parameters: $(KOFAMSCAN_OPTS)" >> $@.makecall
+MAKECALL_KOFAMSCAN_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_KOFAMSCAN             = $(MAKECALL_KOFAMSCAN_VERSION); $(MAKECALL_KOFAMSCAN_PARAMS); $(MAKECALL_KOFAMSCAN_INFILES)
+
+# *** Targets ***
+
+# If you have gzipped faa files in the directory, include makefile.misc so they're automatically unzipped and deleted after scanning
+all_kofamscans: $(subst .faa,.kofamscan.tsv.gz,*.faa) $(subst .faa.gz,.kofamscan.tsv.gz,*.faa.gz)
+
+%.kofamscan.tsv.gz: %.faa
+	@$(MAKECALL_KOFAMSCAN)
+	exec_annotation $< --profile $(KOFAMSCAN_PROFILE_DIR) --ko-list $(KOFAMSCAN_KO_LIST) $(KOFAMSCAN_OPTS) --format detail-tsv --tmp-dir $(basename $<).tmp | gzip -c > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
