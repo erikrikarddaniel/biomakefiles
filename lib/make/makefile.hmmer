@@ -15,7 +15,7 @@ SHELL := /bin/bash
 #
 # Set HMMER_OPTS = --cpu 4 to use four cores.
 #
-HMMER_OPTS =
+HMMER_OPTS     =
 HMMBUILD_OPTS  =
 HMMSEARCH_OPTS =
 HMMRANK_OPTS   =
