@@ -21,7 +21,9 @@ BLAST_PROTEIN_DB    = YOU NEED TO SET THE BLAST_PROTEIN_DB VARIABLE (see makefil
 BLAST_NUCLEOTIDE_DB = YOU NEED TO SET THE BLAST_NUCLEOTIDE_DB VARIABLE (see makefile.blast)
 
 # Set if you want to run with non-default options, e.g. -num_threads 8
-BLAST_OPTS =
+BLAST_OPTS       =
+# -parse_seqids
+MAKEBLASTDB_OPTS =
 
 # *** Internal ***
 
@@ -63,12 +65,6 @@ all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
 %.mega.blastout.gz: %.fna
 	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
 
-%.blastn.blastout.gz: %.fna
-	blastn -task blastn -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
-
-%.blastn.blast6.gz: %.fna
-	blastn -outfmt 6 -task blastn -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
-
 %.mega.blastout: %.fna
 	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) > $@
 
@@ -78,6 +74,21 @@ all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
 %.mega.blastn6.tsv: %.fna
 	blastn -task megablast -db $(BLAST_NUCLEOTIDE_DB) -query $< -outfmt 6 $(BLAST_OPTS) > $@
 
+%.blastn.blastout.gz: %.fna
+	blastn -task blastn -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
+
+%.blastn.blastn6.tsv.gz: %.fna
+	blastn -outfmt 6 -task blastn -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
+
+%.blastn-short.blastout.gz: %.fna
+	blastn -task blastn-short -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
+
+%.blastn-short.blastn6.tsv.gz: %.fna
+	blastn -outfmt 6 -task blastn-short -db $(BLAST_NUCLEOTIDE_DB) -query $< $(BLAST_OPTS) | gzip -c > $@
+
+%.fna.gz: %.blastn6.tsv.gz
+	gunzip -c $< | cut -f 2,9,10 | awk '{ if ( $$2 < $$3 ) { printf "%s %d-%d %s\n", $$1, $$2, $$3, "plus" } else { printf "%s %d-%d %s\n", $$1, $$3, $$2, "minus" } }' | blastdbcmd -db $(BLAST_NUCLEOTIDE_DB) -entry_batch - | gzip -c > $@
+
 %.accnos: %.blastp6.tsv.gz
 	gunzip -c $< | cut -f 2 | sort -u > $@
 
@@ -86,13 +97,13 @@ all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
 	touch $@
 
 %.blastdb: %.faa.gz
-	gunzip -c $< | makeblastdb -out $(basename $@) -title $(basename $@) -dbtype prot
+	gunzip -c $< | makeblastdb $(MAKEBLASTDB_OPTS) -out $(basename $@) -title $(basename $@) -dbtype prot
 	touch $@
 
 %.blastdb: %.fna
-	makeblastdb -in $< -out $(basename $@) -dbtype nucl
+	makeblastdb $(MAKEBLASTDB_OPTS) -in $< -out $(basename $@) -dbtype nucl
 	touch $@
 
 %.blastdb: %.fna.gz
-	gunzip -c $< | makeblastdb -out $(basename $@) -title $(basename $@) -dbtype nucl
+	gunzip -c $< | makeblastdb $(MAKEBLASTDB_OPTS) -out $(basename $@) -title $(basename $@) -dbtype nucl
 	touch $@
