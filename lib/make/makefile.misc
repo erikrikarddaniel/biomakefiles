@@ -22,6 +22,9 @@ UNWANTED_IN_FASTA_NAMES = sed '/^>/s/[ \t]\+/_/g' | sed 's/[(),:;+|]//' | sed '/
 FASTA_ONE_LINE          = awk '/^>/ { printf("\n%s\n",$$0); next; } { printf("%s",$$0);} END { printf("\n");}' | sed '/^$$/d' 
 CLEAN_FASTA 		= $(FASTA_ONE_LINE) | $(UNWANTED_IN_FASTA_NAMES)
 
+# Transform fasta files to tab separated tables (keeping the ">")
+SEQTSV = $(FASTA_ONE_LINE) | paste - -
+
 SEQLENS = sed 's/> */>/' $< | sed '/^>/s/ .*//' | tr '\n' '\t' | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
 
 # *** Targets ***
@@ -73,20 +76,29 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 %.c.alnfaa: %.alnfaa
 	cat $< | $(CLEAN_FASTA) > $@
 
-# Transform fasta files to tab separated tables (keeping the ">")
-SEQTSV = cat $< | $(CLEAN_FASTA) | paste - - > $@
-
 %.na.tsv: %.fna
-	$(SEQTSV)
+	cat $< | $(SEQTSV) > $@
 
 %.aa.tsv: %.faa
-	$(SEQTSV)
+	cat $< | $(SEQTSV) > $@
 
 %.alnna.tsv: %.alnfna
-	$(SEQTSV)
+	cat $< | $(SEQTSV) > $@
 
 %.alnaa.tsv: %.alnfaa
-	$(SEQTSV)
+	cat $< | $(SEQTSV) > $@
+
+%.na.tsv.gz: %.fna.gz
+	gunzip -c $< | $(SEQTSV) | gzip -c > $@
+
+%.aa.tsv.gz: %.faa.gz
+	gunzip -c $< | $(SEQTSV) | gzip -c > $@
+
+%.alnna.tsv.gz: %.alnfna.gz
+	gunzip -c $< | $(SEQTSV) | gzip -c > $@
+
+%.alnaa.tsv.gz: %.alnfaa.gz
+	gunzip -c $< | $(SEQTSV) | gzip -c > $@
 
 # Convert stockholm alignment format (hmmer) to alnfaa. Requires the any2fasta
 # program (https://github.com/tseemann/any2fasta; hopefully my PR is accepted
