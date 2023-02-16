@@ -33,7 +33,7 @@ MAKECALL_KOFAMSCAN             = $(MAKECALL_KOFAMSCAN_VERSION); $(MAKECALL_KOFAM
 # *** Targets ***
 
 # If you have gzipped faa files in the directory, include makefile.misc so they're automatically unzipped and deleted after scanning
-all_kofamscans: $(subst .faa,.kofamscan.tsv.gz,*.faa) $(subst .faa.gz,.kofamscan.tsv.gz,*.faa.gz)
+all_kofamscans: $(subst .faa,.kofamscan.tsv.gz,$(wildcard *.faa)) $(subst .faa.gz,.kofamscan.tsv.gz,$(wildcard *.faa.gz))
 
 %.kofamscan.tsv.gz: %.faa
 	@$(MAKECALL_KOFAMSCAN)
