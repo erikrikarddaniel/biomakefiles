@@ -23,9 +23,11 @@ deleted_sequences: $(wildcard problem_sequences.*)
 	        sort -u $^ > $@
 
 # Remove deleted sequences from .faa file
-%.correct_sequences: %.faa %.rare deleted_sequences 
-	sort -u $(wordlist 2,3,$^) > /tmp/$(basename $@).delete; \
+REMOVE_RARE = sort -u $(wordlist 2,3,$^) > /tmp/$(basename $@).delete; \
 	grep '>' $< | grep -v -F -f /tmp/$(basename $@).delete | sed 's/.*@//' > $@
+
+%.correct_sequences: %.faa %.rare deleted_sequences 
+	$(REMOVE_RARE)
 
 %.rare:
 	touch $@
