@@ -26,15 +26,61 @@ deleted_sequences: $(wildcard problem_sequences.*)
 REMOVE_RARE = sort -u $(wordlist 2,3,$^) > /tmp/$(basename $@).delete; \
 	grep '>' $< | grep -v -F -f /tmp/$(basename $@).delete | sed 's/.*@//' > $@
 
+CORRECT_FAA = cat $(word 3,$^) > $@; grep -F -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
+
 %.correct_sequences: %.faa %.rare deleted_sequences 
+	$(REMOVE_RARE)
+
+%.cl01.correct_sequences: %.faa %.cl01 deleted_sequences 
+	$(REMOVE_RARE)
+
+%.cl02.correct_sequences: %.faa %.cl02 deleted_sequences 
+	$(REMOVE_RARE)
+
+%.cl03.correct_sequences: %.faa %.cl03 deleted_sequences 
+	$(REMOVE_RARE)
+
+%.cl05.correct_sequences: %.faa %.cl05 deleted_sequences 
+	$(REMOVE_RARE)
+
+%.cl10.correct_sequences: %.faa %.cl10 deleted_sequences 
 	$(REMOVE_RARE)
 
 %.rare:
 	touch $@
 
 %.correct.faa: %.correct_sequences %.faa %.interesting.faa
-	cat $(word 3,$^) > $@
-	grep -F -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
+	$(CORRECT_FAA)
+
+%.cl01.correct.faa: %.cl01.correct_sequences %.faa %.cl01.interesting.faa
+	$(CORRECT_FAA)
+
+%.cl02.correct.faa: %.cl02.correct_sequences %.faa %.cl02.interesting.faa
+	$(CORRECT_FAA)
+
+%.cl03.correct.faa: %.cl03.correct_sequences %.faa %.cl03.interesting.faa
+	$(CORRECT_FAA)
+
+%.cl05.correct.faa: %.cl05.correct_sequences %.faa %.cl05.interesting.faa
+	$(CORRECT_FAA)
+
+%.cl10.correct.faa: %.cl10.correct_sequences %.faa %.cl10.interesting.faa
+	$(CORRECT_FAA)
+
+%.cl01.interesting.faa: %.interesting.faa
+	cp $< $@
+
+%.cl02.interesting.faa: %.interesting.faa
+	cp $< $@
+
+%.cl03.interesting.faa: %.interesting.faa
+	cp $< $@
+
+%.cl05.interesting.faa: %.interesting.faa
+	cp $< $@
+
+%.cl10.interesting.faa: %.interesting.faa
+	cp $< $@
 
 %.interesting.faa:
 	touch $@
