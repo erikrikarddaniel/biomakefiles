@@ -37,6 +37,8 @@ all_uclusters: $(subst .faa,.uclusters,$(filter-out $(wildcard *.uc[01].*.faa),$
 	awk '{ if ( $$1 == "C" && $$3 == 1 ) { print $$9 } }' $< | sed "s:.*:'&':" | tr '\n' ' ' >> $@; \
 	echo ";" >> $@
 
+all_small_clusters: $(subst .clusters,.small_clusters,$(wildcard *.clusters))
+
 %.small_clusters: %.clusters
 	for i in $(CLUSTER_RARE); do awk "{ if ( \$$1 == \"C\" && \$$3 <= $$i ) { print \$$9 } }" $< > $(basename $@).cl$$(printf "%02d" $$i); done
 	touch $@
