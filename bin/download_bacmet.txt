@@ -1,0 +1,13 @@
+How to download HTTP URL for the BacMet protein database.
+
+$ wget http://bacmet.biomedicine.gu.se/download/BacMet2_EXP_database.fasta
+
+IMPORTANT: databases are updated recurrently, so always check the availability of the http
+
+Download HTTPS URL for the bacmet.py script, necessary for using DIAMOND against the BacMet database with makefile.diamond and, eventually, parsing such output with makefile.bacmet.
+
+$ wget https://gist.github.com/08ab264f0ea127cc242d99bc3844c743.git 
+
+IMPORTANT: have bacmet.py inside one of the directories listed in the $PATH variable.
+
+N.B.: the python script "bacmet.py" requires python 3.6*-3.8*

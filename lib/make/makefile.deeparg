@@ -1,0 +1,66 @@
+# makefile.deeparg
+#
+# Library makefile to make running DIAMOND simpler against the deeparg database.
+#
+# Include the full path of this file in your Makefile and making databases and
+# running the aligner can be done via make. See documentation in in
+# the biomakefile Git repository: doc/makefile.md and documentation for
+# individual targets below.
+#
+# Author: diego.brambilla@tim.it
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+
+#deeparg.py specific macro
+# DIAMOND output associate some scores to each match, 
+# including the aminoacidic (a.a.) alignement length.
+# Defines the desired minimum a.a. alignemnt length threshold that deeparg.py will use, default is 37.5
+ALENGTH = 37.5
+
+
+# *** Internal ***
+
+# MAKECALL_DEEPARG is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_DATE     = echo "`date +"%Y-%m-%d %H:%M:%S"`" > $@.makecall
+MAKECALL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_DEEPARG = $(MAKECALL_DATE); $(MAKECALL_INFILES)
+
+
+# *** DeepARG targets ***
+
+# parses DIAMOND m8 matrix to get unique tab-separated hits
+# N.B.: need to use DIAMOND with the -f 6 flag
+sort_best_m8: $(subst .argdb.m8,.argdb.sort.best.m8, $(wildcard *.argdb.m8))
+
+#filters out DIAMOND m8 matrix to select hits based on alignment length cutoff (input)
+deeparg_alength_filter: $(subst .argdb.m8,.argdb.filter.sort.best.m8, $(wildcard *.argdb.m8))
+
+# parses DIMAOND m8 matrixto get an annotated gene list
+# N.B.: need to set OUTFMT=6 
+sort_argdb_genelist_tsv: $(subst .argdb.m8,.genelist.tsv, $(wildcard *.argdb.m8))
+
+
+# *** Make rules ***
+
+%.argdb.sort.best.m8: %.argdb.m8
+	$(MAKECALL_DEEPARG)
+	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->sorting $><--"
+	sort -u -k1,1 $< | sed 's/|/\t/g' > $@
+
+%.argdb.filter.sort.best.m8: %.argdb.sort.best.m8
+	$(MAKECALL_DEEPARG)
+	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->filtering $><--"
+	python deeparg.py $< $(ALENGTH) $@
+
+%.genelist.tsv: %.m8
+	$(MAKECALL_DEEPARG)
+	echo -E "`date +"%Y-%m-%d %H:%M:%S"`: --->sorting $><--"
+	cut -f 1,2 $< | sed 's/|/\t/g' | sort -u -k6,6 - > $@

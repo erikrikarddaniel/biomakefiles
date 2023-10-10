@@ -50,6 +50,7 @@ all_pe_sams: $(subst .r1.fastq.gz,.pe.bowtie2.sam,$(wildcard *.r1.fastq.gz))
 
 all_pe_sorted_bams: $(subst .r1.fastq.gz,.pe.bowtie2.sorted.bam,$(wildcard *.r1.fastq.gz))
 
+
 all_pe_sams.gz: $(subst .r1.fastq.gz,.pe.bowtie2.sam.gz,$(wildcard *.r1.fastq.gz))
 
 all_se_sams: $(subst .r1.fastq.gz,.se.bowtie2.sam,$(wildcard *.r1.fastq.gz))
@@ -58,7 +59,8 @@ all_se_sorted_bams: $(subst .r1.fastq.gz,.se.bowtie2.sorted.bam,$(wildcard *.r1.
 
 all_se_sams.gz: $(subst .fastq.gz,.se.bowtie2.sam.gz,$(wildcard *.fastq.gz))
 
-all_interleaved_sorted_bams: $(subst .int.fastq.gz,.int.bowtie2.sorted.bam,$(wildcard *.int.fastq.gz))
+all_interleaved_sorted_bams: $(subst .int.fastq.gz,.int.bowtie2.sorted.bam,$(wildcard *.int.fastq.gz)) $(subst .int.fna.gz,.int.bowtie2.sorted.bam,$(wildcard *.int.fna.gz))
+
 
 %.pe.bowtie2.sam: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_BOWTIE2_ALIGN)
@@ -91,6 +93,11 @@ all_interleaved_sorted_bams: $(subst .int.fastq.gz,.int.bowtie2.sorted.bam,$(wil
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 	
 %.int.bowtie2.sorted.bam: %.int.fastq.gz
+	@$(MAKECALL_BOWTIE2_ALIGN)
+	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) --interleaved $(word 1,$^) 2> $@.err | samtools view -Sb | samtools sort > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.int.bowtie2.sorted.bam: %.int.fna.gz
 	@$(MAKECALL_BOWTIE2_ALIGN)
 	bowtie2 $(BOWTIE_ALIGN_OPTS) -x $(BOWTIE_INDEX) --interleaved $(word 1,$^) 2> $@.err | samtools view -Sb | samtools sort > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
