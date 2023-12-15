@@ -62,6 +62,9 @@ all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
 %.blastp6.tsv.gz: %.faa
 	blastp -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
 
+%.blastp6.tsv.gz: %.faa.gz
+	blastp -db $(BLAST_PROTEIN_DB) -query <(gunzip -c $<) -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
+
 %.blastx.blastp6.tsv.gz: %.fna
 	blastx -db $(BLAST_PROTEIN_DB) -query $< -outfmt 6 $(BLAST_OPTS) | gzip -c > $@
 
@@ -101,7 +104,7 @@ all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
 	gunzip -c $< | cut -f 2 | sort -u > $@
 
 %.blastdb: %.faa
-	makeblastdb -in $< -out $(basename $@) -dbtype prot
+	makeblastdb $(MAKEBLASTDB_OPTS) -in $< -out $(basename $@) -dbtype prot
 	touch $@
 
 %.blastdb: %.faa.gz
