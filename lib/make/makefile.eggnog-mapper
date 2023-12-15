@@ -32,7 +32,8 @@ all.emapper.annotations.tsv: $(subst .faa,.emapper.annotations,$(wildcard *.faa)
 	grep '#query' $< | sed 's/#//' > $@
 	grep -v '^#' $^ >> $@
 
-%.emapper.annotations: %.faa
+%.emapper.annotations.gz: %.faa
 	@$(MAKECALL_EGGNOG_MAPPER)
-	emapper.py $(EGGNOG_MAPPER_OPTS) -i $< --output $(basename $(basename $@)) > $@.out
+	emapper.py $(EGGNOG_MAPPER_OPTS) -i $< --output $(basename $(basename $(basename $@))) > $@.out
+	gzip $(basename $(basename $(basename $@)))
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
