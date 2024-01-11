@@ -46,6 +46,12 @@ all_fc.repeat_regions: $(subst .gff,.fc.repeat_region.tsv,$(wildcard *.gff))
 	featureCounts $(FEATURE_COUNTS_OPTS) -t CDS -o $@ -a $^ 2>&1 | tee $@.out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.fc.CDS.tsv.gz: %.gff $(wildcard *.bam)
+	@$(MAKECALL_FEATURE_COUNTS)
+	featureCounts $(FEATURE_COUNTS_OPTS) -t CDS -o $(basename $@) -a $^ 2>&1 | tee $@.out
+	gzip $(basename $@)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.fc.rRNA.tsv: %.gff $(wildcard *.bam)
 	@$(MAKECALL_FEATURE_COUNTS)
 	featureCounts $(FEATURE_COUNTS_OPTS) -t rRNA -o $@ -a $^ 2>&1 | tee $@.out
