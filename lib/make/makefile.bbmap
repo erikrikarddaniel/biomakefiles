@@ -16,6 +16,8 @@ SHELL := /bin/bash
 BBMAP_OPTS =
 
 # You need to set this macro to the name of the fasta file, gzipped or not, that you want to map to
+# There are a couple of options: ref=nn.fna.gz will create an index for that (unless it already exists in ref/),
+# path=dir/ will use an index in dir/ (e.g. ref/).
 BBMAP_INDEX_FASTA =
 
 # *** Internal ***
@@ -31,7 +33,15 @@ MAKECALL_BBMAP             = $(MAKECALL_BBMAP_VERSION); $(MAKECALL_BBMAP_PARAMS)
 
 # *** Targets ***
 
+all_bams: $(subst .r1.fastq.gz,.bam,$(wildcard *.r1.fastq.gz))
+
 %.bam: %.r1.fastq.gz %.r2.fastq.gz
 	@$(MAKECALL_BBMAP)
-	bbmap.sh in=$< in2=$(word 2,$^) ref=$(BBMAP_INDEX_FASTA) out=$@ $(BBMAP_OPTS)
+	bbmap.sh in=$< in2=$(word 2,$^) $(BBMAP_INDEX_FASTA) out=$@ $(BBMAP_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.bbmapidx: %.fna.gz
+	@$(MAKECALL_BBMAP)
+	bbmap.sh ref=$< $(BBMAP_OPTS)
+	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
