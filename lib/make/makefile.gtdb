@@ -15,9 +15,9 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-GTDB_RELEASE     = r207
-GTDB_URL_RELEASE = release207
-GTDB_SUBRELEASE  = 207.0
+GTDB_RELEASE     = r214
+GTDB_URL_RELEASE = release214
+GTDB_SUBRELEASE  = 214.0
 GTDB_RELEASE_URL = https://data.ace.uq.edu.au/public/gtdb/data/releases/
 GTDB_LATEST_URL  = $(GTDB_RELEASE_URL)/latest
 
@@ -25,13 +25,8 @@ GTDB_LATEST_URL  = $(GTDB_RELEASE_URL)/latest
 
 # *** Targets ***
 #
-# NEW START:
-#metadata: ar122_metadata.tsv bac120_metadata.tsv
 metadata: ar53_metadata.tsv bac120_metadata.tsv
 
-#ar122_metadata.tsv: ar122_metadata.tar.gz
-#	tar xfz $< ar122_metadata_$(GTDB_RELEASE).tsv
-#	ln -s ar122_metadata_$(GTDB_RELEASE).tsv $@
 ar53_metadata.tsv:
 	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/ar53_metadata_$(GTDB_RELEASE).tar.gz
 	tar xfz ar53_metadata_$(GTDB_RELEASE).tar.gz ar53_metadata_$(GTDB_RELEASE).tsv
@@ -137,7 +132,7 @@ makefile.fetch: gtdb_genbank_genomes.tsv
 	@for f in $$(grep -v '^#' $< | cut -f 20 | sort -u); do \
 	echo "$$(echo $$f | sed 's:https.//::' | $(ADD_DONE) | tr '\n' ' '):"; \
 	echo "	if [ \$$\$$(wget -S --spider $$(echo $$f | sed 's/https/ftp/')  2>&1 | grep -c '\(File.*exists\)\|\(HTTP/1.1 200 OK\)') -gt 0 ]; then \\"; \
-	echo "	wget --mirror -A *genom*fna.gz -R *cds_from_genomic* -R *assembly_structure* $$(echo $$f | sed 's/https/ftp/'); \\"; \
+	echo "	wget --mirror -A *genom*fna.gz -R *cds_from_genomic* -R *rna_from_genom* -R *assembly_structure* $$(echo $$f | sed 's/https/ftp/'); \\"; \
 	echo "	touch \$$@; \\"; \
 	echo "	fi"; \
 	echo ; \

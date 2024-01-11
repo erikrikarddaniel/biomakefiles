@@ -22,7 +22,7 @@ PROKKA_OPTS = --cpus=0
 # file, the file that records versions, file stamps, parameters etc.
 #
 # *Don't redefine!*
-MAKECALL_PROKKA_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `prokka --version`" > $@.makecall
+MAKECALL_PROKKA_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with Prokka $$(prokka --version)" > $@.makecall
 MAKECALL_PROKKA_PARAMS      = echo "	Called with parameters: $(PROKKA_OPTS)" >> $@.makecall
 MAKECALL_PROKKA_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_PROKKA             = $(MAKECALL_PROKKA_VERSION); $(MAKECALL_PROKKA_PARAMS); $(MAKECALL_PROKKA_INFILES)

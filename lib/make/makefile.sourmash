@@ -18,6 +18,7 @@ SOURMASH_SKETCH_KMERS  = k=21,k=31,k=51
 SOURMASH_THRESHOLD_BP  = 1000
 SOURMASH_K21_SBT_FILES = NEEDS TO BE SET TO AN .sbt.zip FILE FOR 21MERS
 SOURMASH_K31_SBT_FILES = NEEDS TO BE SET TO AN .sbt.zip FILE FOR 31MERS
+SOURMASH_K51_SBT_FILES = NEEDS TO BE SET TO AN .sbt.zip FILE FOR 51MERS
 SOURMASH_NAME_PREFIX   =
 
 # *** Internal ***
@@ -40,7 +41,7 @@ signatures: $(subst .fna.gz,.sig,$(wildcard *.fna.gz)) $(subst .fastq.gz,.sig,$(
 all_indices: sourmash_k21.index.sbt.zip sourmash_k31.index.sbt.zip sourmash_k51.index.sbt.zip
 
 # Ready made indices for GTDB genomes
-gtdb_indices: gtdb-rs207.genomic-reps.dna.k21.sbt.zip gtdb-rs207.genomic-reps.dna.k31.sbt.zip gtdb-rs207.genomic-reps.dna.k51.sbt.zip gtdb-rs207.all.dna.k21.sbt.zip gtdb-rs207.all.dna.k31.sbt.zip gtdb-rs207.all.dna.k51.sbt.zip 
+gtdb_indices: gtdb-rs214-reps.k21.sbt.zip gtdb-rs214-reps.k31.sbt.zip gtdb-rs214-reps.k51.sbt.zip gtdb-rs214-k21.sbt.zip gtdb-rs214-k31.sbt.zip gtdb-rs214-k51.sbt.zip 
 
 gather_all.k21.csv: $(wildcard *.sig)
 	@$(MAKECALL_SOURMASH)
@@ -52,6 +53,11 @@ gather_all.k31.csv: $(wildcard *.sig)
 	sourmash gather -o $@ -k 31 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $^ $(SOURMASH_K31_SBT_FILES) | tee $(basename $@).out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+gather_all.k51.csv: $(wildcard *.sig)
+	@$(MAKECALL_SOURMASH)
+	sourmash gather -o $@ -k 51 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $^ $(SOURMASH_K51_SBT_FILES) | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.k21.gather.csv: %.sig 
 	@$(MAKECALL_SOURMASH)
 	sourmash gather -o $@ -k 21 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $< $(SOURMASH_K21_SBT_FILES) | tee $(basename $@).out
@@ -60,6 +66,11 @@ gather_all.k31.csv: $(wildcard *.sig)
 %.k31.gather.csv: %.sig 
 	@$(MAKECALL_SOURMASH)
 	sourmash gather -o $@ -k 31 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $< $(SOURMASH_K31_SBT_FILES) | tee $(basename $@).out
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.k51.gather.csv: %.sig 
+	@$(MAKECALL_SOURMASH)
+	sourmash gather -o $@ -k 51 --save-matches $(basename $@).matches.json --save-prefetch $(basename $@).prefetch.json --save-prefetch-csv $(basename $@).prefetch.csv --threshold-bp $(SOURMASH_THRESHOLD_BP) $< $(SOURMASH_K51_SBT_FILES) | tee $(basename $@).out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
 %.sig: %.fna.gz
@@ -87,20 +98,20 @@ sourmash_k51.index.sbt.zip: $(wildcard *.sig)
 	sourmash index -k 51 $(basename $(basename $@)) $^ 2>&1 | tee $(basename $@).out
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-gtdb-rs207.genomic-reps.dna.k21.sbt.zip:
-	wget -O $@ https://osf.io/zsypg/download
+gtdb-rs214-reps.k21.sbt.zip:
+	wget -O $@ https://farm.cse.ucdavis.edu/~ctbrown/sourmash-db/gtdb-rs214/gtdb-rs214-reps.k21.sbt.zip
 
-gtdb-rs207.genomic-reps.dna.k31.sbt.zip:
-	wget -O $@ https://osf.io/ernct/download
+gtdb-rs214-reps.k31.sbt.zip:
+	wget -O $@ https://farm.cse.ucdavis.edu/~ctbrown/sourmash-db/gtdb-rs214/gtdb-rs214-reps.k31.sbt.zip
 
-gtdb-rs207.genomic-reps.dna.k51.sbt.zip:
-	wget -O $@ https://osf.io/yq7dc/download
+gtdb-rs214-reps.k51.sbt.zip:
+	wget -O $@ https://farm.cse.ucdavis.edu/~ctbrown/sourmash-db/gtdb-rs214/gtdb-rs214-reps.k51.sbt.zip
 
-gtdb-rs207.all.dna.k21.sbt.zip:
-	wget -O $@ https://osf.io/wr8pk/download
+gtdb-rs214-k21.sbt.zip:
+	wget -O $@ https://farm.cse.ucdavis.edu/~ctbrown/sourmash-db/gtdb-rs214/gtdb-rs214-k21.sbt.zip
 
-gtdb-rs207.all.dna.k31.sbt.zip:
-	wget -O $@ https://osf.io/748ew/download
+gtdb-rs214-k31.sbt.zip:
+	wget -O $@ https://farm.cse.ucdavis.edu/~ctbrown/sourmash-db/gtdb-rs214/gtdb-rs214-k31.sbt.zip
 
-gtdb-rs207.all.dna.k51.sbt.zip:
-	wget -O $@ https://osf.io/78hdr/download
+gtdb-rs214-k51.sbt.zip:
+	wget -O $@ https://farm.cse.ucdavis.edu/~ctbrown/sourmash-db/gtdb-rs214/gtdb-rs214-k51.sbt.zip

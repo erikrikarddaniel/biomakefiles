@@ -33,7 +33,19 @@ MAKECALL_EMBOSS             = $(MAKECALL_EMBOSS_VERSION); $(MAKECALL_EMBOSS_PARA
 	transeq $< $@ -frame=1
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.f1.faa: %.fna.gz
+%.f1.faa.gz: %.fna.gz
 	@$(MAKECALL_EMBOSS)
-	transeq <( gunzip -c $< ) $@ -frame=1
+	transeq <( gunzip -c $< ) $(basename $@) -frame=1
+	gzip $(basename $@)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.rev.fna: %.fna
+	@$(MAKECALL_EMBOSS)
+	revseq $< $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.rev.fna.gz: %.fna.gz
+	@$(MAKECALL_EMBOSS)
+	revseq <( gunzip -c $< ) $(basename $@)
+	gzip $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

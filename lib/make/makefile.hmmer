@@ -24,6 +24,7 @@ HMMRANK_OPTS   =
 # running against an NCBI faa database (see below for those).
 # To work with gzipped .faa files, set to something like: "<(gunzip -c file.faa.gz)"
 HMMER_DB_FAA = NEEDS TO BE SET TO A FASTA FILE WITH AMINO ACIDS!
+HMMER_DB_FNA = NEEDS TO BE SET TO A FASTA FILE WITH NUCLEOTIDES!
 HMMSCAN_DB   = NEEDS TO BE SET TO AN hmmscan LIBRARY!
 
 # If you're using any of the NCBI targets (ncbi_env_nr, ncbi_nr or ncbi_refseq), set one of the 
@@ -122,6 +123,15 @@ accno_files: best.ranked.tsv
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.nhmmout: %.hmm
+	@$(MAKECALL_HMMSEARCH)
+	nhmmer \
+	  --tblout=$(basename $@).tblout \
+	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
+	  $< $(HMMER_DB_FNA) \
+	  > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.hmmscanout: %.faa
 	@$(MAKECALL_HMMSCAN)
 	hmmscan \
@@ -152,13 +162,13 @@ accno_files: best.ranked.tsv
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.ncbi_nr.hmmout: %.hmm
+%.ncbi_nr.hmmout: %.hmm $(NCBI_NR_FAA)
 	@$(MAKECALL_HMMSEARCH)
 	hmmsearch \
 	  --tblout=$(basename $@).tblout \
 	  --domtblout=$(basename $@).domtblout \
 	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
-	  $< $(NCBI_NR_FAA) \
+	  $^ \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 

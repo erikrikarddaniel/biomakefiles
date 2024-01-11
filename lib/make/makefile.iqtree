@@ -37,3 +37,8 @@ MAKECALL_IQTREE             = $(MAKECALL_IQTREE_VERSION); $(MAKECALL_IQTREE_PARA
 	@$(MAKECALL_IQTREE)
 	iqtree -s $< $(IQTREE_OPTS) -m MFP --prefix $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.iqtree.MFP.treefile: %.alnfna
+	@$(MAKECALL_IQTREE)
+	iqtree -s $< $(IQTREE_OPTS) -m MFP --prefix $(basename $@)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
