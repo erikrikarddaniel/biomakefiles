@@ -162,13 +162,13 @@ accno_files: best.ranked.tsv
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.ncbi_nr.hmmout: %.hmm
+%.ncbi_nr.hmmout: %.hmm $(NCBI_NR_FAA)
 	@$(MAKECALL_HMMSEARCH)
 	hmmsearch \
 	  --tblout=$(basename $@).tblout \
 	  --domtblout=$(basename $@).domtblout \
 	  $(HMMER_OPTS) $(HMMSEARCH_OPTS) \
-	  $< $(NCBI_NR_FAA) \
+	  $^ \
 	  > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
