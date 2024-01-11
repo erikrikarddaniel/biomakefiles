@@ -34,6 +34,8 @@ all.emapper.annotations.tsv: $(subst .faa,.emapper.annotations,$(wildcard *.faa)
 
 %.emapper.annotations.gz: %.faa
 	@$(MAKECALL_EGGNOG_MAPPER)
-	emapper.py $(EGGNOG_MAPPER_OPTS) -i $< --output $(basename $(basename $(basename $@))) > $@.out
-	gzip $(basename $(basename $(basename $@)))
+	emapper.py $(EGGNOG_MAPPER_OPTS) -i $< --output $(basename $(basename $(basename $@))) > $(basename $@).out
+	gzip -f $(basename $@)
+	gzip -f $(basename $(basename $@)).hits
+	gzip -f $(basename $(basename $@)).seed_orthologs
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
