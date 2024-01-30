@@ -31,20 +31,15 @@ MAKECALL_FEATURE_COUNTS             = $(MAKECALL_FEATURE_COUNTS_VERSION); $(MAKE
 # *** Targets ***
 all_fc: all_fc.CDSs all_fc.rRNAs all_fc.tRNAs all_fc.tmRNAs all_fc.repeat_regions
 
-all_fc.CDSs: $(subst .gff,.fc.CDS.tsv,$(wildcard *.gff))
+all_fc.CDSs: $(subst .gff.gz,.fc.CDS.tsv.gz,$(wildcard *.gff.gz))
 
-all_fc.rRNAs: $(subst .gff,.fc.rRNA.tsv,$(wildcard *.gff))
+all_fc.rRNAs: $(subst .gff.gz,.fc.rRNA.tsv.gz,$(wildcard *.gff.gz))
 
-all_fc.tRNAs: $(subst .gff,.fc.tRNA.tsv,$(wildcard *.gff))
+all_fc.tRNAs: $(subst .gff.gz,.fc.tRNA.tsv.gz,$(wildcard *.gff.gz))
 
-all_fc.tmRNAs: $(subst .gff,.fc.tmRNA.tsv,$(wildcard *.gff))
+all_fc.tmRNAs: $(subst .gff.gz,.fc.tmRNA.tsv.gz,$(wildcard *.gff.gz))
 
-all_fc.repeat_regions: $(subst .gff,.fc.repeat_region.tsv,$(wildcard *.gff))
-
-%.fc.CDS.tsv: %.gff $(wildcard *.bam)
-	@$(MAKECALL_FEATURE_COUNTS)
-	featureCounts $(FEATURE_COUNTS_OPTS) -t CDS -o $@ -a $^ 2>&1 | tee $@.out
-	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+all_fc.repeat_regions: $(subst .gff,.fc.repeat_region.tsv.gz,$(wildcard *.gff))
 
 %.fc.CDS.tsv.gz: %.gff $(wildcard *.bam)
 	@$(MAKECALL_FEATURE_COUNTS)
@@ -52,22 +47,29 @@ all_fc.repeat_regions: $(subst .gff,.fc.repeat_region.tsv,$(wildcard *.gff))
 	gzip $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.fc.rRNA.tsv: %.gff $(wildcard *.bam)
+%.fc.rRNA.tsv.gz: %.gff $(wildcard *.bam)
 	@$(MAKECALL_FEATURE_COUNTS)
-	featureCounts $(FEATURE_COUNTS_OPTS) -t rRNA -o $@ -a $^ 2>&1 | tee $@.out
+	featureCounts $(FEATURE_COUNTS_OPTS) -t rRNA -o $(basename $@) -a $^ 2>&1 | tee $@.out
+	gzip $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.fc.tRNA.tsv: %.gff $(wildcard *.bam)
+%.fc.tRNA.tsv.gz: %.gff $(wildcard *.bam)
 	@$(MAKECALL_FEATURE_COUNTS)
-	featureCounts $(FEATURE_COUNTS_OPTS) -t tRNA -o $@ -a $^ 2>&1 | tee $@.out
+	featureCounts $(FEATURE_COUNTS_OPTS) -t tRNA -o $(basename $@) -a $^ 2>&1 | tee $@.out
+	gzip $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.fc.tmRNA.tsv: %.gff $(wildcard *.bam)
+%.fc.tmRNA.tsv.gz: %.gff $(wildcard *.bam)
 	@$(MAKECALL_FEATURE_COUNTS)
-	featureCounts $(FEATURE_COUNTS_OPTS) -t tmRNA -o $@ -a $^ 2>&1 | tee $@.out
+	featureCounts $(FEATURE_COUNTS_OPTS) -t tmRNA -o $(basename $@) -a $^ 2>&1 | tee $@.out
+	gzip $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
-%.fc.repeat_region.tsv: %.gff $(wildcard *.bam)
+%.fc.repeat_region.tsv.gz: %.gff $(wildcard *.bam)
 	@$(MAKECALL_FEATURE_COUNTS)
-	featureCounts $(FEATURE_COUNTS_OPTS) -t repeat_region -o $@ -a $^ 2>&1 | tee $@.out
+	featureCounts $(FEATURE_COUNTS_OPTS) -t repeat_region -o $(basename $@) -a $^ 2>&1 | tee $@.out
+	gzip $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.gff: %.gff.gz
+	gunzip -c $< > $@
