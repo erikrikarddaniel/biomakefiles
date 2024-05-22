@@ -33,7 +33,7 @@ MAKECALL_DBCAN             = $(MAKECALL_DBCAN_VERSION); $(MAKECALL_DBCAN_PARAMS)
 # *** Targets ***
 
 all_dbcans.tsv: $(subst .faa,.dbcan.out,$(wildcard *.faa))
-	echo "gene	HMMER	Hotpep	DIAMOND	n_tools" > $@
+	echo "gene	ec_number	HMMER	dbCAN_sub	DIAMOND	n_tools" > $@
 	for f in *.dbcan.out.d/overview.txt; do \
 	  grep -v '^Gene' $$f >> $@; \
 	done

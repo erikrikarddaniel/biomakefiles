@@ -15,9 +15,9 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
-GTDB_RELEASE     = r214
-GTDB_URL_RELEASE = release214
-GTDB_SUBRELEASE  = 214.0
+GTDB_RELEASE     = r220
+GTDB_URL_RELEASE = release220
+GTDB_SUBRELEASE  = 220.0
 GTDB_RELEASE_URL = https://data.ace.uq.edu.au/public/gtdb/data/releases/
 GTDB_LATEST_URL  = $(GTDB_RELEASE_URL)/latest
 
@@ -28,13 +28,13 @@ GTDB_LATEST_URL  = $(GTDB_RELEASE_URL)/latest
 metadata: ar53_metadata.tsv bac120_metadata.tsv
 
 ar53_metadata.tsv:
-	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/ar53_metadata_$(GTDB_RELEASE).tar.gz
-	tar xfz ar53_metadata_$(GTDB_RELEASE).tar.gz ar53_metadata_$(GTDB_RELEASE).tsv
+	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/ar53_metadata_$(GTDB_RELEASE).tsv.gz
+	gunzip ar53_metadata_$(GTDB_RELEASE).tsv.gz
 	ln -s ar53_metadata_$(GTDB_RELEASE).tsv $@
 
 bac120_metadata.tsv: 
-	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/bac120_metadata_$(GTDB_RELEASE).tar.gz
-	tar xfz bac120_metadata_$(GTDB_RELEASE).tar.gz bac120_metadata_$(GTDB_RELEASE).tsv
+	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/bac120_metadata_$(GTDB_RELEASE).tsv.gz
+	gunzip bac120_metadata_$(GTDB_RELEASE).tsv.gz
 	ln -s bac120_metadata_$(GTDB_RELEASE).tsv $@
 
 trees: ar53.tree bac120.tree
@@ -83,14 +83,18 @@ gtdb_genbank_genomes.tsv: ar53_metadata.tsv bac120_metadata.tsv assembly_summary
 	@echo "--> searching for $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') accessions - found $$(wc -l $@ | sed 's/[^0-9]*//g') accessions <--"
 	# Find them in the main assembly summaries, first refseq, then genbank
 	# RefSeq are so many, so we split the patterns
-	@split -l 1000 -d /tmp/$@.patterns /tmp/$@.split
-	@for f in /tmp/$@.split*; do \
+	@split -l 1000 -d /tmp/$@.patterns /tmp/$@.rs_split
+	@for f in /tmp/$@.rs_split*; do \
 	  grep -h -f $$f $(word 3,$^) >> $@.tmp; \
 	done
 	@cut -f 1 $@.tmp > /tmp/$@.accno
 	@$(REDUCE_PATTERNS)
-	# GenBank
-	@grep -h -f /tmp/$@.patterns $(word 4,$^) >> $@.tmp
+	# GenBank are also many, so we split the patterns
+	@split -l 1000 -d /tmp/$@.patterns /tmp/$@.gb_split
+	@for f in /tmp/$@.gb_split*; do \
+	  grep -h -f $$f $(word 4,$^) >> $@.tmp; \
+	done
+	@cut -f 1 $@.tmp > /tmp/$@.accno
 	# Remove patterns that were found and make them more general in the third (A or F) position
 	@cut -f 1 $@.tmp > /tmp/$@.accno
 	@$(REDUCE_PATTERNS)

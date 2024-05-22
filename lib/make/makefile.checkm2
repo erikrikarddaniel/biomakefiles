@@ -1,0 +1,35 @@
+# makefile.checkm2
+#
+# Library makefile to make running CheckM2 simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# Use --threads N to specify the number of cores
+CHECKM2_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_CHECKM2 is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_CHECKM2_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `checkm2 --version`" > $@.makecall
+MAKECALL_CHECKM2_PARAMS      = echo "	Called with parameters: $(CHECKM2_OPTS)" >> $@.makecall
+MAKECALL_CHECKM2_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_CHECKM2             = $(MAKECALL_CHECKM2_VERSION); $(MAKECALL_CHECKM2_PARAMS); $(MAKECALL_CHECKM2_INFILES)
+
+# *** Targets ***
+
+checkm2.d: $(wildcard genome_bins/*.fna)
+	@$(MAKECALL_CHECKM2)
+	checkm2 predict $(CHECKM2_OPTS) --input $(dir $<) --output-directory $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
