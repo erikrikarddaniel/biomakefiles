@@ -61,12 +61,16 @@ interleave_all_fastqs: $(subst .r1.fastq,.intlv.fastq,$(wildcard *.r1.fastq))
 # The following two can be a bit dangerous, as they overwrites the original files
 all_faa_one_line: $(wildcard *.faa)
 	for f in $^; do \
-		make $$(basename $$f .faa).c.faa && mv $$(basename $$f .faa).c.faa $$f; \
+		if [ ! -L $$f ]; then \
+			make $$(basename $$f .faa).c.faa && mv $$(basename $$f .faa).c.faa $$f; \
+		fi; \
 	done
 
 all_fna_one_line: $(wildcard *.fna)
 	for f in $^; do \
-		make $$(basename $$f .fna).c.fna && mv $$(basename $$f .fna).c.fna $$f; \
+		if [ ! -L $$f ]; then \
+			make $$(basename $$f .fna).c.fna && mv $$(basename $$f .fna).c.fna $$f; \
+		fi; \
 	done
 
 %.c.fna: %.fna
