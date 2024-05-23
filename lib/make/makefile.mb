@@ -31,7 +31,10 @@ MAKECALL_MRBAYES             = $(MAKECALL_MRBAYES_VERSION); $(MAKECALL_MRBAYES_P
 # Make an alnfaa file with MrBayes formatted names, ready to turn into Nexus with Seaview.
 # In addition to this, you have to make sure names are no longer than 99 characters.
 %.mb.alnfaa: %.alnfaa
-	sed 's/@/_accno_/' | sed "s/'//g" | sed 's:["/]::g' $< > $@
+	sed 's/@/_accno_/' $< | sed "s/'//g" | sed 's:["/]::g' $< > $@
+
+%.mb.alnfna: %.alnfna
+	sed 's/@/_accno_/' $< | sed "s/'//g" | sed 's:["/]::g' | sed 's/ //g' | sed '/^>/s/[-()]\+//g' $< > $@
 
 %.mb.out: %.mb
 	@$(MAKECALL_MRBAYES)
