@@ -1,0 +1,44 @@
+# makefile.eukulele
+#
+# Library makefile to make running Eukulele simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@lnu.se
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# --CPUs N
+EUKULELE_OPTS   =
+EUKULELE_DB_DIR = REMEMBER_TO_SET_EUKULELE_DB_TO_A_DIRECTORY_CONTAINING_EUKULELE_FILES
+EUKULELE_DB     = REMEMBER_TO_SET_TO_DATABASENAME
+
+# *** Internal ***
+
+# MAKECALL_EUKULELE is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_EUKULELE_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `EUKulele --version`" > $@.makecall
+MAKECALL_EUKULELE_PARAMS      = echo "	Called with parameters: $(EUKULELE_OPTS)" >> $@.makecall
+MAKECALL_EUKULELE_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_EUKULELE             = $(MAKECALL_EUKULELE_VERSION); $(MAKECALL_EUKULELE_PARAMS); $(MAKECALL_EUKULELE_INFILES)
+
+# *** Targets ***
+
+%.eukulele.out: contigs/%.faa
+	@$(MAKECALL_EUKULELE)
+	EUKulele \
+	  $(EUKULELE_OPTS) \
+	  --protein_extension .faa \
+	  --reference_dir $(EUKULELE_DB_DIR) \
+	  -o $(basename $@) \
+	  --database $(EUKULELE_DB) \
+	  -m mets \
+	  -s contigs 2>&1 | tee $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
