@@ -20,6 +20,9 @@ SHELL := /bin/bash
 # -bnni to reduce the risk of overestimating branch supports
 IQTREE_OPTS = -B 1000 -nt AUTO
 
+IQTREE_ASR_OPTS  = -nt AUTO
+IQTREE_ASR_MODEL = SPECIFY THE MODEL YOU WISH TO USE BY DEFINING IQTREE_ASR_MODEL
+
 # *** Internal ***
 
 # MAKECALL_IQTREE is a macro that defines what will be output to the .makecall
@@ -42,3 +45,15 @@ MAKECALL_IQTREE             = $(MAKECALL_IQTREE_VERSION); $(MAKECALL_IQTREE_PARA
 	@$(MAKECALL_IQTREE)
 	iqtree -s $< $(IQTREE_OPTS) -m MFP --prefix $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.iqtree.asr.state.gz: %.alnfaa %.rooted.newick
+	@$(MAKECALL_IQTREE)
+	iqtree -s $< $(IQTREE_ASR_OPTS) -m $(IQTREE_ASR_MODEL) -te $(word 2,$^) -asr --prefix $(basename $(basename $@))
+	gzip $(basename $@)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.most_likely.faa: %.state.gz
+	for n in $$(zgrep Node[0-9] $< | cut -f 1 | sort -u); do \
+	    echo ">$$n" >> $@; \
+	    echo "$$(zgrep -P "^$$n\t" $< | cut -f 3 | tr -d '\n')" >> $@; \
+	done
