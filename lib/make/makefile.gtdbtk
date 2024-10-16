@@ -21,6 +21,8 @@ GTDBTK_OPTIONS =
 # Use --pplacer_cpus N to set number of cores and likely --skip_ani_screen
 GTDBTK_IDENTIFY_OPTIONS =
 
+GTDBTK_DE_NOVO_OPTIONS =
+
 # GTDB-Tk's documentation gives p__Patescibacteria and p__Altiarchaeota as examples
 GTDBTK_DE_NOVO_OUTGROUP = SET GTDBTK_DE_NOVO_OUTGROUP TO SOMETHING SUITABLE
 GTDBTK_DE_NOVO_DOMAIN = SET to --archaea OR --bacteria
@@ -42,7 +44,7 @@ gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
 
 # Run the de_novo workflow on all genomes in "genome_bins"
 gtdbtk_de_novo_wf.d: $(wildcard genome_bins/*.fna)
-	gtdbtk de_novo_wf --genome_dir $(dir $<) --out_dir $@ --outgroup_taxon $(GTDBTK_DE_NOVO_OUTGROUP) $(GTDBTK_DE_NOVO_DOMAIN) $(GTDBTK_OPTIONS)
+	gtdbtk de_novo_wf --genome_dir $(dir $<) --out_dir $@ --outgroup_taxon $(GTDBTK_DE_NOVO_OUTGROUP) $(GTDBTK_DE_NOVO_DOMAIN) $(GTDBTK_OPTIONS) $(GTDBTK_DE_NOVO_OPTIONS)
 
 # All fna files in a directory ending with .bins.d
 %.gtdbtk_classify_wf.d: %.bins.d
