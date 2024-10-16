@@ -15,8 +15,11 @@ SHELL := /bin/bash
 #
 GTDBTK_RELEASE = SET GTDBTK_RELEASE TO THE CURRENT RELEASE (JUST THE NUMBER, E.G. 86)
 
-# Use --cpus N and --pplacer_cpus N to set number of cores
+# Use --cpus N 
 GTDBTK_OPTIONS = 
+
+# Use --pplacer_cpus N to set number of cores and likely --skip_ani_screen
+GTDBTK_IDENTIFY_OPTIONS =
 
 # GTDB-Tk's documentation gives p__Patescibacteria and p__Altiarchaeota as examples
 GTDBTK_DE_NOVO_OUTGROUP = SET GTDBTK_DE_NOVO_OUTGROUP TO SOMETHING SUITABLE
@@ -31,19 +34,19 @@ gtdbtk_current_data.tar.gz:
 
 # Run the standard workflow on a single fna file in the current directory
 %.gtdbtk_classify_wf.d: %.fna
-	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
+	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS) $(GTDBTK_IDENTIFY_OPTIONS)
 
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
-	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
+	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS) $(GTDBTK_IDENTIFY_OPTIONS)
 
 # Run the de_novo workflow on all genomes in "genome_bins"
 gtdbtk_de_novo_wf.d: $(wildcard genome_bins/*.fna)
-	gtdbtk de_novo_wf --genome_dir $(dir $<) --out_dir $@ --outgroup_taxon $(GTDBTK_DE_NOVO_OUTGROUP) $(GTDBTK_DE_NOVO_DOMAIN)
+	gtdbtk de_novo_wf --genome_dir $(dir $<) --out_dir $@ --outgroup_taxon $(GTDBTK_DE_NOVO_OUTGROUP) $(GTDBTK_DE_NOVO_DOMAIN) $(GTDBTK_OPTIONS)
 
 # All fna files in a directory ending with .bins.d
 %.gtdbtk_classify_wf.d: %.bins.d
-	gtdbtk classify_wf --genome_dir $< --out_dir $@ $(GTDBTK_OPTIONS)
+	gtdbtk classify_wf --genome_dir $< --out_dir $@ $(GTDBTK_OPTIONS) $(GTDBTK_IDENTIFY_OPTIONS)
 
 # Splits the ; separated hierarchy in the original files to a tab separated
 %.split.tsv: %.tsv
