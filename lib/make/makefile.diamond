@@ -21,7 +21,6 @@ SHELL := /bin/bash
 DIAMOND_DB_PATH = .
 
 # Specify this when you want to point to a specific, non-generic, database.
-# Full path, without ".dmnd".
 DIAMOND_DB =
 
 # DIAMOND_ALIGN_OPTS sets non-essential parameters for diamond alignment
