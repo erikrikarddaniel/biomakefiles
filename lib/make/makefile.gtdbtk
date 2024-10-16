@@ -18,6 +18,10 @@ GTDBTK_RELEASE = SET GTDBTK_RELEASE TO THE CURRENT RELEASE (JUST THE NUMBER, E.G
 # Use --cpus N and --pplacer_cpus N to set number of cores
 GTDBTK_OPTIONS = 
 
+# GTDB-Tk's documentation gives p__Patescibacteria and p__Altiarchaeota as examples
+GTDBTK_DE_NOVO_OUTGROUP = SET GTDBTK_DE_NOVO_OUTGROUP TO SOMETHING SUITABLE
+GTDBTK_DE_NOVO_DOMAIN = SET to --archaea OR --bacteria
+
 # *** Targets ***
 
 # Fetch data
@@ -32,6 +36,10 @@ gtdbtk_current_data.tar.gz:
 # Run the standard workflow on all genomes in "genome_bins"
 gtdbtk_classify_wf.d: $(wildcard genome_bins/*.fna)
 	gtdbtk classify_wf --genome_dir $(dir $<) --out_dir $@ $(GTDBTK_OPTIONS)
+
+# Run the de_novo workflow on all genomes in "genome_bins"
+gtdbtk_de_novo_wf.d: $(wildcard genome_bins/*.fna)
+	gtdbtk de_novo_wf --genome_dir $(dir $<) --out_dir $@ --outgroup_taxon $(GTDBTK_DE_NOVO_OUTGROUP) $(GTDBTK_DE_NOVO_DOMAIN)
 
 # All fna files in a directory ending with .bins.d
 %.gtdbtk_classify_wf.d: %.bins.d
