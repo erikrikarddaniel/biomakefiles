@@ -28,7 +28,7 @@ REMOVE_RARE = sort -u $(wordlist 2,4,$^) > /tmp/$(basename $@).delete; \
 
 CORRECT_FAA = cat $(word 3,$^) > $@; grep -F -A 1 -f $(wordlist 1,2,$^) | grep -v '^--' >> $@
 
-%.correct_sequences: %.faa %.rare %.problem_sequences deleted_sequences 
+%.correct_sequences: %.faa deleted_sequences 
 	$(REMOVE_RARE)
 
 %.cl01.correct_sequences: %.faa %.cl01 deleted_sequences 
