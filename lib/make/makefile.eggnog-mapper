@@ -28,9 +28,9 @@ MAKECALL_EGGNOG_MAPPER             = $(MAKECALL_EGGNOG_MAPPER_VERSION); $(MAKECA
 
 # *** Targets ***
 
-all.emapper.annotations.tsv: $(subst .faa,.emapper.annotations,$(wildcard *.faa))
-	grep '#query' $< | sed 's/#//' > $@
-	grep -v '^#' $^ >> $@
+all.emapper.annotations.tsv: $(subst .faa,.emapper.annotations.gz,$(wildcard *.faa))
+	zgrep '#query' $< | sed 's/#//' > $@
+	zgrep -v '^#' $^ >> $@
 
 %.emapper.annotations.gz: %.faa
 	@$(MAKECALL_EGGNOG_MAPPER)
