@@ -224,9 +224,9 @@ accno_files: best.ranked.tsv
 	grep -A 1 -f <(grep -v '^#' $< | sed 's/ .*//' | sort -u) $(HMMER_DB_FAA) | grep -v '^--' | gzip -c > $@
 
 # Runs hmmsearch for all combinations of .faa and .hmm files in the directory
-hmmsearch_loop: $(wildcard *.hmm) $(wildcard *.faa)
-	for faa in *.faa; do \
-	  bsfaa=$$(basename $$faa .faa); \
+hmmsearch_loop: $(wildcard *.hmm) $(wildcard *.faa) $(wildcard *.faa.gz)
+	for faa in *.faa *.faa.gz; do \
+	  bsfaa=$$(echo $$faa | sed 's/\.faa\(.gz\)\?$$//'); \
 	  for hmm in *.hmm; do \
 	    bshmm=$$(basename $$hmm .hmm); \
 	    bs="$$bsfaa.$$bshmm"; \
