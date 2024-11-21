@@ -25,7 +25,7 @@ CLEAN_FASTA 		= $(FASTA_ONE_LINE) | $(UNWANTED_IN_FASTA_NAMES)
 # Transform fasta files to tab separated tables (keeping the ">")
 SEQTSV = $(FASTA_ONE_LINE) | paste - -
 
-SEQLENS = sed 's/> */>/' $< | sed '/^>/s/ .*//' | tr '\n' '\t' | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
+SEQLENS = sed 's/> */>/' | sed '/^>/s/ .*//' | tr '\n' '\t' | sed 's/\t>/\n/g' | sed 's/\t$$/\n/g' | sed 's/^>//' | awk '{ print $$1 "\t" length($$2) }'
 
 # *** Targets ***
 
@@ -127,16 +127,19 @@ all_fna_one_line: $(wildcard *.fna)
 # Note: There are targets for %.seqlens.tsv below; they are for statistics and
 # does not give a table of sequence name + sequence length.
 %.seqlen.tsv: %.fna
-	$(SEQLENS) > $@
+	cat $< | $(SEQLENS) > $@
 
 %.seqlen.tsv: %.faa
-	$(SEQLENS) > $@
+	cat $< | $(SEQLENS) > $@
+
+%.seqlen.tsv: %.faa.gz
+	gunzip -c $< | $(SEQLENS) > $@
 
 %.seqlen.tsv: %.alnfna
-	$(SEQLENS) > $@
+	cat $< | $(SEQLENS) > $@
 
 %.seqlen.tsv: %.alnfaa
-	$(SEQLENS) > $@
+	cat $< | $(SEQLENS) > $@
 
 ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 
