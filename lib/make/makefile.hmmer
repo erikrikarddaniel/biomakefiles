@@ -293,7 +293,7 @@ profile_accept_scores.tsv: pfile_profiles.tsv pfile_accept_scores.tsv pfile_desc
 # Make an faa file from all hits in best_ranked.tsv. Requires the definition of the CLEAN_FASTA macro, see makefile.misc.
 best.ranked.faa: best.ranked.tsv
 	cut -f 1-4 $< | sed "s:^\(.*\)\t\(.*\)\t\(.*\)\t\(.*\):/\1/s/$$/ HMMER\: \2 evalue\: \3 score\: \4/:" > tmp.sed
-	$(if $(findstring .gz,$(HMMER_DB_FAA)),zcat,cat) $(HMMER_DB_FAA) | $(CLEAN_FASTA) | grep -A 1 -f <(cut -f 1 $<) | grep -v '^--' | sed -f tmp.sed > $@
+	seqtk subseq $(HMMER_DB_FAA) <(grep -v '^accno' $< | cut -f 1) | sed -f tmp.sed > $@
 	rm tmp.sed
 
 test:
