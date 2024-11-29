@@ -4,7 +4,7 @@
 #
 # Include the full path of this file in your Makefile ...
 #
-# Author: __AUTHOR_EMAIL__
+# Author: matricaria.suaveolens@gmail.com
 
 SHELL := /bin/bash
 
