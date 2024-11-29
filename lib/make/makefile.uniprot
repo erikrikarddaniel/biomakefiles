@@ -1,0 +1,29 @@
+# makefile.uniprot
+#
+# Library makefile to make downloading data from Uniprot simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: daniel.lundin@dbb.su.se
+
+SHELL := /bin/bash
+
+FETCH = wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/$@
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+
+# *** Internal ***
+
+# *** Targets ***
+uniprot.faa.gz: uniprot_sprot.fasta.gz uniprot_trembl.fasta.gz
+	cat $^ > $@
+
+uniprot_sprot.fasta.gz:
+	$(FETCH)
+
+uniprot_trembl.fasta.gz:
+	$(FETCH)
