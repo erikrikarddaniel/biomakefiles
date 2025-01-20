@@ -296,4 +296,9 @@ best.ranked.faa: best.ranked.tsv
 	seqtk subseq $(HMMER_DB_FAA) <(grep -v '^accno' $< | cut -f 1) | sed -f tmp.sed > $@
 	rm tmp.sed
 
+best.ranked.faa.gz: best.ranked.tsv
+	cut -f 1-4 $< | sed "s:^\(.*\)\t\(.*\)\t\(.*\)\t\(.*\):/\1/s/$$/ HMMER\: \2 evalue\: \3 score\: \4/:" > tmp.sed
+	seqtk subseq $(HMMER_DB_FAA) <(grep -v '^accno' $< | cut -f 1) | sed -f tmp.sed | gzip -c > $@
+	rm tmp.sed
+
 test:
