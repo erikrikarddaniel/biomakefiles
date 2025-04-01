@@ -60,6 +60,8 @@ MAKECALL_MAKEDB      = $(MAKECALL_VERSION); $(MAKECALL_INFILES)
 # Non-generic databases (requires the DIAMOND_DB to be set to the full path,
 # except the .dmnd suffix, of the database file).
 
+all_daas: $(subst .faa.gz,.daa,$(wildcard *.faa.gz)) $(subst .faa,.daa,$(wildcard *.faa)) $(subst .fna.gz,.daa,$(wildcard *.fna.gz)) $(subst .fna,.daa,$(wildcard *.fna))
+
 %.daa: %.fna.gz
 	$(MAKECALL_DIAMOND_RFP)
 	diamond blastx -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)

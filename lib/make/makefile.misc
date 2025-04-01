@@ -127,19 +127,19 @@ all_fna_one_line: $(wildcard *.fna)
 # Note: There are targets for %.seqlens.tsv below; they are for statistics and
 # does not give a table of sequence name + sequence length.
 %.seqlen.tsv: %.fna
-	cat $< | $(SEQLENS) > $@
+	cat $< | $(FASTA_ONE_LINE) | $(SEQLENS) > $@
 
 %.seqlen.tsv: %.faa
-	cat $< | $(SEQLENS) > $@
+	cat $< | $(FASTA_ONE_LINE) | $(SEQLENS) > $@
 
 %.seqlen.tsv: %.faa.gz
-	gunzip -c $< | $(SEQLENS) > $@
+	gunzip -c $< | $(FASTA_ONE_LINE) | $(SEQLENS) > $@
 
 %.seqlen.tsv: %.alnfna
-	cat $< | $(SEQLENS) > $@
+	cat $< | $(FASTA_ONE_LINE) | $(SEQLENS) > $@
 
 %.seqlen.tsv: %.alnfaa
-	cat $< | $(SEQLENS) > $@
+	cat $< | $(FASTA_ONE_LINE) | $(SEQLENS) > $@
 
 ONLY_ACCNO = sed '/^>/s/>.*\(_accno_\)\|\(@\)\(.*\)/>\3/' $< > $@
 

@@ -125,6 +125,10 @@ nodes.dmp: taxdump.tar.gz
 names.dmp: taxdump.tar.gz
 	tar xfz $< $@
 
+prot.accession2taxid.FULL.gz:
+	wget -A "$(basename $@)*.gz" --mirror ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/
+	cat ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/*.gz > $@
+
 # The below target requires that the taxdata2taxflat program is installed
 # somewhere in your PATH. It's available from GitHub:
 #
