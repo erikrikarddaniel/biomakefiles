@@ -135,6 +135,9 @@ all_fna_one_line: $(wildcard *.fna)
 %.seqlen.tsv: %.faa.gz
 	gunzip -c $< | $(FASTA_ONE_LINE) | $(SEQLENS) > $@
 
+%.seqlen.tsv.gz: %.faa.gz
+	gunzip -c $< | $(FASTA_ONE_LINE) | $(SEQLENS) | gzip -c > $@
+
 %.seqlen.tsv: %.alnfna
 	cat $< | $(FASTA_ONE_LINE) | $(SEQLENS) > $@
 
