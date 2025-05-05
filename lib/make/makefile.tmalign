@@ -48,7 +48,7 @@ all_combinations.splitstree: $(wildcard *.tmalign)
 	tmalign2matrix --transform minus $^ > $@
 
 all_combinations.max.splitstree: $(wildcard *.tmalign)
-	tmalign2matrix --score=max --transform maxus $^ > $@
+	tmalign2matrix --score=max --transform minus $^ > $@
 
 all_combinations.mean.splitstree: $(wildcard *.tmalign)
 	tmalign2matrix --score=mean --transform minus $^ > $@
