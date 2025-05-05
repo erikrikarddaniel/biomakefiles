@@ -108,6 +108,19 @@ mirror_refseq_protein.blast:
 refseq_protein.faa: $(wildcard ftp.ncbi.nih.gov/blast/db/refseq_protein*)
 	blastdbcmd -db ftp.ncbi.nih.gov/blast/db/refseq_protein -entry all -dbtype prot -out $@
 
+
+# There is, but only in pieces: ftp.ncbi.nlm.nih.gov/refseq/release/complete/
+refseq_protein.faa.gz: $(wildcard ftp.ncbi.nlm.nih.gov/refseq/release/complete/*.faa.gz)
+	cat $^ > $@
+
+# Make a Diamond database with taxonomy. Recipe not tested, recovered from memory.
+# Before running, make sure all files are updated
+refseq_protein.taxonomy.dmnd: refseq_protein.faa.gz prot.accession2taxid.FULL.gz names.dmp nodes.dmp
+	gunzip -c $< | sed '/^>/s/ .*//' | diamond makedb --taxonmap $(word 2,$^) --taxonnames $(word 3,$^) --taxonnodes $(word 4,$^) --db $@
+
+ncbi-nr_protein.taxonomy.dmnd: nr.gz prot.accession2taxid.FULL.gz taxonomy/names.dmp taxonomy/nodes.dmp
+	gunzip -c $< | sed '/^>/s/ .*//' | diamond makedb --taxonmap $(word 2,$^) --taxonnames $(word 3,$^) --taxonnodes $(word 4,$^) --db $@
+
 mirror_refseq_rna.blast:
 	wget -A "refseq_rna.*.tar.gz" --mirror ftp://ftp.ncbi.nih.gov/blast/db
 	( cd ftp.ncbi.nih.gov/blast/db; for f in refseq_rna.*.tar.gz; do echo "--> untarring $$f <--"; tar xzf $$f; done )
