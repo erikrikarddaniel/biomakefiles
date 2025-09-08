@@ -32,10 +32,15 @@ MAKECALL_KOFAMSCAN             = $(MAKECALL_KOFAMSCAN_VERSION); $(MAKECALL_KOFAM
 
 # *** Targets ***
 
+.SECONDARY:
+
 # If you have gzipped faa files in the directory, include makefile.misc so they're automatically unzipped and deleted after scanning
-all_kofamscans: $(subst .faa,.kofamscan.tsv.gz,$(wildcard *.faa)) $(subst .faa.gz,.kofamscan.tsv.gz,$(wildcard *.faa.gz))
+all_kofamscans: $(subst .faa,.kofamscan.besthit.tsv.gz,$(wildcard *.faa)) $(subst .faa.gz,.kofamscan.tsv.gz,$(wildcard *.faa.gz))
 
 %.kofamscan.tsv.gz: %.faa
 	@$(MAKECALL_KOFAMSCAN)
 	exec_annotation $< --profile $(KOFAMSCAN_PROFILE_DIR) --ko-list $(KOFAMSCAN_KO_LIST) $(KOFAMSCAN_OPTS) --format detail-tsv --tmp-dir $(basename $<).tmp | gzip -c > $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.kofamscan.besthit.tsv.gz: %.kofamscan.tsv.gz
+	Rscript --default-packages=tidyverse -e "read_tsv('$<', comment = '#', col_names = c('sign', 'accno', 'ko', 'thrshld', 'score', 'evalue', 'ko_def'), col_types = 'cccdddc') %>% group_by(accno) %>% filter(score == max(score)) %>% ungroup() %>% group_by(accno) %>% filter(evalue == min(evalue)) %>% ungroup() %>% group_by(accno) %>% filter(row_number() == 1) %>% ungroup() %>% write_tsv('$@')"
