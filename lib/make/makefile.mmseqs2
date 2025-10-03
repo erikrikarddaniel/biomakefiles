@@ -1,0 +1,100 @@
+# makefile.mmseqs2
+#
+# Library makefile to make running mmseqs2 simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: matricaria.suaveolens@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+MMSEQS2_EASY_CLUSTER_OPTS =
+
+MMSEQS2_EASY_CLUSTER_LEVELS = 0.95 0.90 0.85 0.80 0.75 0.70 0.65 0.60 0.55 0.50
+
+# *** Internal ***
+
+# MAKECALL_MMSEQS2_EASY_CLUSTER is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_MMSEQS2_EASY_CLUSTER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `mmseqs2 --version`" > $@.makecall
+MAKECALL_MMSEQS2_EASY_CLUSTER_PARAMS      = echo "	Called with parameters: $(MMSEQS2_OPTS)" >> $@.makecall
+MAKECALL_MMSEQS2_EASY_CLUSTER_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_MMSEQS2_EASY_CLUSTER             = $(MAKECALL_MMSEQS2_EASY_CLUSTER_VERSION); $(MAKECALL_MMSEQS2_EASY_CLUSTER_PARAMS); $(MAKECALL_MMSEQS2_EASY_CLUSTER_INFILES)
+
+MMSEQS2_EASY_CLUSTER = mmseqs easy-cluster $(MMSEQS2_EASY_CLUSTER_OPTS) --min-seq-id $$(echo $@ | sed 's/.*\.ec\.\(.*\)\.clusters/\1/') $< $(basename $@) tmp
+RENAME_EASY_CLUSTER_OUTPUT = mv $(basename $@)_all_seqs.fasta $(basename $@)_all_seqs.faa; gzip -f $(basename $@)_all_seqs.faa; mv $(basename $@)_rep_seq.fasta $(basename $@)_rep_seq.faa; gzip -f $(basename $@)_rep_seq.faa; ln -fs $(basename $@)_cluster.tsv $@
+
+# *** Targets ***
+#
+%.all_ecs: %.faa.gz
+	for c in $(MMSEQS2_EASY_CLUSTER_LEVELS); do \
+		make $(basename $(basename $@)).ec.$$c.clusters; \
+	done
+	touch $@
+
+%.ec.0.95.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.90.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.85.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.80.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.75.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.70.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.65.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.60.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.55.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.ec.0.50.clusters: %.faa.gz
+	@$(MAKECALL_MMSEQS2_EASY_CLUSTER)
+	$(MMSEQS2_EASY_CLUSTER)
+	$(RENAME_EASY_CLUSTER_OUTPUT)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
