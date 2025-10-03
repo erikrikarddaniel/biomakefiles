@@ -18,7 +18,7 @@ SHELL := /bin/bash
 GTDB_RELEASE     = r220
 GTDB_URL_RELEASE = release220
 GTDB_SUBRELEASE  = 220.0
-GTDB_RELEASE_URL = https://data.ace.uq.edu.au/public/gtdb/data/releases/
+GTDB_RELEASE_URL = https://data.gtdb.ecogenomic.org/releases
 GTDB_LATEST_URL  = $(GTDB_RELEASE_URL)/latest
 
 # *** Internal ***
@@ -27,15 +27,13 @@ GTDB_LATEST_URL  = $(GTDB_RELEASE_URL)/latest
 #
 metadata: ar53_metadata.tsv bac120_metadata.tsv
 
-ar53_metadata.tsv:
+ar53_metadata.tsv.gz:
 	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/ar53_metadata_$(GTDB_RELEASE).tsv.gz
-	gunzip ar53_metadata_$(GTDB_RELEASE).tsv.gz
-	ln -s ar53_metadata_$(GTDB_RELEASE).tsv $@
+	ln -s ar53_metadata_$(GTDB_RELEASE).tsv.gz $@
 
-bac120_metadata.tsv: 
+bac120_metadata.tsv.gz: 
 	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/bac120_metadata_$(GTDB_RELEASE).tsv.gz
-	gunzip bac120_metadata_$(GTDB_RELEASE).tsv.gz
-	ln -s bac120_metadata_$(GTDB_RELEASE).tsv $@
+	ln -s bac120_metadata_$(GTDB_RELEASE).tsv.gz $@
 
 trees: ar53.tree bac120.tree
 
@@ -67,7 +65,7 @@ assembly_summary_refseq_historical.txt:
 
 # This macro uses R to find accessions present in /tmp/gtdb_genbank_genomes.tsv.patterns but not in /tmp/gtdb_genbank_genomes.tsv.accno,
 # and writes them to a new /tmp/gtdb_genbank_genomes.tsv.patterns, thereby reducing the number of patterns for the next iteration.
-REDUCE_PATTERNS = Rscript --default-packages=data.table -e "fwrite(fread('/tmp/gtdb_genbank_genomes.tsv.patterns', col.names = 'acc')[!fread('/tmp/gtdb_genbank_genomes.tsv.accno', col.names = 'acc'), on = .(acc)], '/tmp/gtdb_genbank_genomes.tsv.patterns', quote = F, col.names = F)"; echo "--> searching for $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') accessions - found $$(wc -l $@ | sed 's/[^0-9]*//g') accessions <--"
+REDUCE_PATTERNS = Rscript --default-packages=data.table -e "fwrite(fread('/tmp/gtdb_genbank_genomes.tsv.patterns', col.names = 'acc')[!fread('/tmp/gtdb_genbank_genomes.tsv.accno', col.names = 'acc'), on = .(acc)], '/tmp/gtdb_genbank_genomes.tsv.patterns', quote = F, col.names = F)"; echo "--> searching for $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') accessions - found $$(wc -l $@.tmp | sed 's/[^0-9]*//g') accessions <--"
 
 # This creates a file with genome information from GTDB combined with paths from various NCBI sources.
 # It deals with the fact that many accessions can be collected from different places at NCBI by
@@ -75,12 +73,12 @@ REDUCE_PATTERNS = Rscript --default-packages=data.table -e "fwrite(fread('/tmp/g
 # with accessions that have moved from NR to RefSeq, which is reflected in the prefix to accessions,
 # by searching for accessions missing with patterns that are more general in the third  positoin of
 # the prefix.
-gtdb_genbank_genomes.tsv: ar53_metadata.tsv bac120_metadata.tsv assembly_summary_refseq.txt assembly_summary_genbank.txt assembly_summary_refseq_historical.txt assembly_summary_genbank_historical.txt 
+gtdb_genbank_genomes.tsv: ar53_metadata.tsv.gz bac120_metadata.tsv.gz assembly_summary_refseq.txt assembly_summary_genbank.txt assembly_summary_refseq_historical.txt assembly_summary_genbank_historical.txt 
 	@rm -f $@.tmp /tmp/gtdb_genbank_genomes.tsv.split* /tmp/gtdb_genbank_genomes.tsv.patterns /tmp/gtdb_genbank_genomes.tsv.accno
 	# Get a list of accessions, write to /tmp/gtdb_genbank_genomes.tsv.patterns
-	@cut -f 1 $(wordlist 1,2,$^) | grep -v '^accession' | sed 's/^[A-Z][A-Z]_//' > /tmp/$@.patterns
+	@gunzip -c $(wordlist 1,2,$^) | cut -f 1,19 | grep -v '^accession' | grep -P '\tt$$' | cut -f 1 | sed 's/^[A-Z][A-Z]_//' > /tmp/$@.patterns
 	@echo -n > $@
-	@echo "--> searching for $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') accessions - found $$(wc -l $@ | sed 's/[^0-9]*//g') accessions <--"
+	@echo "--> searching for $$(wc -l /tmp/$@.patterns | sed 's/[^0-9]*//g') accessions <--"
 	# Find them in the main assembly summaries, first refseq, then genbank
 	# RefSeq are so many, so we split the patterns
 	@split -l 1000 -d /tmp/$@.patterns /tmp/$@.rs_split
@@ -145,79 +143,9 @@ makefile.fetch: gtdb_genbank_genomes.tsv
 # Do some tests to check presence of accessions in the metadata files.
 # You need to create a file called accession_list.tsv that contains all accessions you want to
 # check for. This could e.g. be taken from files names of downloaded and annotated genomes.
-accession_tests.tsv: accession_list.tsv	ar122_metadata.tsv bac120_metadata.tsv
-	cat $(wordlist 2,3,$^) > /tmp/metadata.tsv
+accession_tests.tsv: accession_list.tsv	ar122_metadata.tsv.gz bac120_metadata.tsv.gz
+	cat $(wordlist 2,3,$^) > /tmp/metadata.tsv.gz
 	echo "accno	n_accno0_field01	n_accno1_field55	n_rows" > $@
 	for a in $$(cat $<); do \
-	  echo "$$a	$$(cut -f 1 /tmp/metadata.tsv | grep -c $$a)	$$(cut -f 55 /tmp/metadata.tsv | grep -c $$a)	$$(grep -hc $$a /tmp/metadata.tsv)"; \
+	  echo "$$a	$$(gunzip -c /tmp/metadata.tsv.gz | cut -f 1 | grep -c $$a)	$$(gunzip -c /tmp/metadata.tsv.gz | cut -f 55 | grep -c $$a)	$$(zgrep -hc $$a /tmp/metadata.tsv.gz)"; \
 	done > $@
-
-### # I'm not sure which of the ncbi_data, refseq_data and uba_mags_data targets are needed
-### # in light of the makefile.fetch target further down.
-### 
-### # Fetch NCBI data
-### # Modified from rsync_genbank.sh script in https://github.com/Ecogenomics/GTDBNCBI/
-### ncbi_data:
-### 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/archaea/ gtdb_ncbi_genomes/.
-### 	rsync -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/genbank/bacteria/ gtdb_ncbi_genomes/.
-### 
-### # Fetch Refseq dat
-### # Modified from rsync_refseq.sh script from https://github.com/Ecogenomics/GTDBNCBI/
-### refseq_data:
-### 	rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/archaea/ gtdb_refseq_genomes/.
-### 	rsync  -rtlvL --chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r  --exclude=*/all_assembly_versions --exclude=*/representative --exclude=README.txt ftp.ncbi.nlm.nih.gov::genomes/refseq/bacteria/ gtdb_refseq_genomes/.
-### 
-### # Fetch archeaeal mags from gtdb website
-### uba_mags_data:
-### 	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/gtdb_uba_mags_arc.tar.gz
-### 	mkdir gtdb_uba_mags && tar -C ./gtdb_uba_mags/ -xvf gtdb_uba_mags_arc.tar.gz && rm gtdb_uba_mags_arc.tar.gz 
-### 
-### # Download data (easier to do with the script included in the distribution)
-### # N.B. The name and the html path of the file can change and may have to be updated
-### arc_taxonomy.genomes.tsv:
-### 	wget https://data.ace.uq.edu.au/public/gtdb/release$(GTDB_RELEASE)/arc_taxonomy_r$(GTDB_RELEASE).tsv
-### 	ln -s arc_taxonomy_r$(GTDB_RELEASE).tsv $@
-### 	
-### arc_metadata.tsv:
-### 	wget https://data.ace.uq.edu.au/public/gtdb/data/releases/$(GTDB_RELEASE)/arc122_metadata.tsv
-### 	ln -s arc122_metadata.tsv $@
-### 
-### taxonomies: ar122_taxonomy.tsv bac120_taxonomy.tsv
-### 
-### metadata: ar122_metadata.tsv bac120_metadata.tsv
-### 
-### trees: ar122.tree bac120.tree ar122.sp_labels.tree bac120.sp_labels.tree
-### 
-### # Download data (easier to do with the script included in the distribution)
-### ar122_taxonomy.tsv:
-### 	wget $(GTDB_LATEST_URL)/$@
-### 
-### ar122_metadata.tsv:
-### 	wget $(GTDB_LATEST_URL)/$@
-### 
-### ar122.tree:
-### 	wget $(GTDB_LATEST_URL)/$@
-### 
-### ar122.sp_labels.tree:
-### 	wget $(GTDB_LATEST_URL)/$@
-### 
-### bac120_taxonomy.tsv:
-### 	wget $(GTDB_LATEST_URL)/$@
-### 
-### bac120_metadata.tsv:
-### 	wget $(GTDB_LATEST_URL)/$@
-### 
-### bac120.tree:
-### 	wget $(GTDB_LATEST_URL)/$@
-### 
-### bac120.sp_labels.tree:
-### 	wget $(GTDB_LATEST_URL)/$@
-### 
-### ncbi_genome_accnos.tsv: ar122_metadata.tsv bac120_metadata.tsv
-### 	cut -f 1 $^ | grep -v 'accession' | sed 's/^[A-Z][A-Z]_//' > $@
-### 
-### assembly_summary_genbank.txt: 
-### 	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/$@
-### 
-### gtdb_genbank_genomes_prokka_index.tsv.gz: gtdb_genbank_genomes.tsv
-### 	for a in $$(grep -v '#' $<|cut -f 1); do ls genomes/$${a}*.prokka.d/ | sed "s/^/$${a}\t/"; done | gzip -c > $@
