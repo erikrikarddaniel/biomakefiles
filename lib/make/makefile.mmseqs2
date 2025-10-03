@@ -29,7 +29,7 @@ MAKECALL_MMSEQS2_EASY_CLUSTER_INFILES     = echo "	Input files: $^ (`ls -lL $^|t
 MAKECALL_MMSEQS2_EASY_CLUSTER             = $(MAKECALL_MMSEQS2_EASY_CLUSTER_VERSION); $(MAKECALL_MMSEQS2_EASY_CLUSTER_PARAMS); $(MAKECALL_MMSEQS2_EASY_CLUSTER_INFILES)
 
 MMSEQS2_EASY_CLUSTER = mmseqs easy-cluster $(MMSEQS2_EASY_CLUSTER_OPTS) --min-seq-id $$(echo $@ | sed 's/.*\.ec\.\(.*\)\.clusters/\1/') $< $(basename $@) tmp
-RENAME_EASY_CLUSTER_OUTPUT = mv $(basename $@)_all_seqs.fasta $(basename $@)_all_seqs.faa; gzip -f $(basename $@)_all_seqs.faa; mv $(basename $@)_rep_seq.fasta $(basename $@)_rep_seq.faa; gzip -f $(basename $@)_rep_seq.faa; ln -fs $(basename $@)_cluster.tsv $@
+RENAME_EASY_CLUSTER_OUTPUT = mv $(basename $@)_all_seqs.fasta $(basename $@).all_seqs.faa; gzip -f $(basename $@).all_seqs.faa; mv $(basename $@)_rep_seq.fasta $(basename $@).rep_seq.faa; gzip -f $(basename $@).rep_seq.faa; ln -fs $(basename $@)_cluster.tsv $@
 
 # *** Targets ***
 #
@@ -98,3 +98,9 @@ RENAME_EASY_CLUSTER_OUTPUT = mv $(basename $@)_all_seqs.fasta $(basename $@)_all
 	$(MMSEQS2_EASY_CLUSTER)
 	$(RENAME_EASY_CLUSTER_OUTPUT)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.singletons: %.clusters
+	cut -f 1 $< | sort | uniq -c | grep ' 1 ' | sed 's/^ \+1 //' > $@
+
+%.rep_seq.wosingletons.faa.gz: %.rep_seq.faa.gz %.singletons
+	seqtk subseq $^ > tmpfile

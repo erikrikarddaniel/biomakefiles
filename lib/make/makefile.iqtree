@@ -46,6 +46,11 @@ MAKECALL_IQTREE             = $(MAKECALL_IQTREE_VERSION); $(MAKECALL_IQTREE_PARA
 	iqtree -s $< $(IQTREE_OPTS) -m MFP --prefix $(basename $@)
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.iqtree.MFP.reopt.treefile: %.alnfna %.newick
+	@$(MAKECALL_IQTREE)
+	iqtree -s $< -te $(word 2,$^) $(IQTREE_OPTS) -m MFP -pre $(basename $@)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
 %.iqtree.asr.state.gz: %.alnfaa %.rooted.newick
 	@$(MAKECALL_IQTREE)
 	iqtree -s $< $(IQTREE_ASR_OPTS) -m $(IQTREE_ASR_MODEL) -te $(word 2,$^) -asr --prefix $(basename $(basename $@))
