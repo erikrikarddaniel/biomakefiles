@@ -18,6 +18,7 @@ SHELL := /bin/bash
 HMMER_OPTS     =
 HMMBUILD_OPTS  =
 HMMSEARCH_OPTS =
+JACKHMMER_OPTS =
 HMMRANK_OPTS   =
 
 # This one *must* be set to point to a fasta file with amino acid sequences, unless you're 
@@ -43,9 +44,12 @@ MAKECALL_HMMSEARCH_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made wi
 MAKECALL_HMMSEARCH_PARAMS      = echo "	Called with parameters: $(HMMER_OPTS) $(HMMSEARCH_OPTS)" >> $@.makecall
 MAKECALL_HMMSCAN_VERSION       = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(hmmscan -h|grep HMMER)" > $@.makecall
 MAKECALL_HMMSCAN_PARAMS        = echo "	Called with parameters: $(HMMER_OPTS) $(HMMSCAN_OPTS)" >> $@.makecall
+MAKECALL_JACKHMMER_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with $(jackhmmer -h|grep HMMER)" > $@.makecall
+MAKECALL_JACKHMMER_PARAMS      = echo "	Called with parameters: $(HMMER_OPTS) $(JACKHMMER_OPTS)" >> $@.makecall
 MAKECALL_HMMER_INFILES         = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
 MAKECALL_HMMSEARCH             = $(MAKECALL_HMMSEARCH_VERSION); $(MAKECALL_HMMSEARCH_PARAMS); $(MAKECALL_HMMER_INFILES)
 MAKECALL_HMMSCAN               = $(MAKECALL_HMMSCAN_VERSION); $(MAKECALL_HMMSCAN_PARAMS); $(MAKECALL_HMMER_INFILES)
+MAKECALL_JACKHMMER             = $(MAKECALL_JACKHMMER_VERSION); $(MAKECALL_JACKHMMER_PARAMS); $(MAKECALL_HMMER_INFILES)
 
 # *** Targets ***
 
@@ -301,4 +305,7 @@ best.ranked.faa.gz: best.ranked.tsv
 	seqtk subseq $(HMMER_DB_FAA) <(grep -v '^accno' $< | cut -f 1) | sed -f tmp.sed | gzip -c > $@
 	rm tmp.sed
 
-test:
+%.jackhmmer: %.faa
+	@$(MAKECALL_JACKHMMER)
+	jackhmmer $(HMMER_OPTS) $(JACKHMMER_OPTS) --chkhmm $@ --chkali $@ $< $(HMMER_DB_FAA) > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall

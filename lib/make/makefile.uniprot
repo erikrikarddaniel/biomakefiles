@@ -27,3 +27,27 @@ uniprot_sprot.fasta.gz:
 
 uniprot_trembl.fasta.gz:
 	$(FETCH)
+
+uniprot_sprot.dat.gz:
+	$(FETCH)
+
+uniprot_trembl.dat.gz:
+	$(FETCH)
+
+uniprot_sprot.xml.gz:
+	$(FETCH)
+
+uniprot_trembl.xml.gz:
+	$(FETCH)
+
+uniref90.fasta.gz:
+	wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/uniref/uniref90/uniref90.fasta.gz
+
+uniref90.xml.gz:
+	wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/uniref/uniref90/uniref90.xml.gz
+
+uniref50.fasta.gz:
+	wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/uniref/uniref50/uniref50.fasta.gz
+
+uniref50.xml.gz:
+	wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/uniref/uniref50/uniref50.xml.gz

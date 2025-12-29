@@ -13,6 +13,7 @@ SHELL := /bin/bash
 # Override in your Makefile by setting a parameter *after* the row that
 # includes this file, see documentation in doc/makefile.md.
 #
+# --threads=4
 CLUSTALO_OPTS =
 
 # *** Internal ***
