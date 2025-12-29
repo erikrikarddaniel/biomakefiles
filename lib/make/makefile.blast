@@ -118,3 +118,7 @@ all_mega.blastn6s: $(subst .fna,.mega.blastn6.tsv.gz,$(wildcard *.fastq.gz))
 %.blastdb: %.fna.gz
 	gunzip -c $< | makeblastdb $(MAKEBLASTDB_OPTS) -out $(basename $@) -title $(basename $@) -dbtype nucl
 	touch $@
+
+%.blastdb: %.ffn.gz
+	gunzip -c $< | makeblastdb $(MAKEBLASTDB_OPTS) -out $(basename $@) -title $(basename $@) -dbtype nucl
+	touch $@
