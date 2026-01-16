@@ -1,0 +1,37 @@
+# makefile.bakta
+#
+# Library makefile to make running bakta simpler.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: matricaria.suaveolens@gmail.com
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# --threads N, --translation_table {11,4,25}
+BAKTA_OPTS =
+BAKTA_DB   = SET BAKTA_DB TO THE db SUBDIRECTORY TO THE DIRECTORY YOU UNPACKED THE DB IN
+
+# *** Internal ***
+
+# MAKECALL_BAKTA is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_BAKTA_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `bakta --version`" > $@.makecall
+MAKECALL_BAKTA_PARAMS      = echo "	Called with parameters: $(BAKTA_OPTS)" >> $@.makecall
+MAKECALL_BAKTA_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_BAKTA             = $(MAKECALL_BAKTA_VERSION); $(MAKECALL_BAKTA_PARAMS); $(MAKECALL_BAKTA_INFILES)
+
+# *** Targets ***
+
+%.bakta.out: %.fna.gz
+	@$(MAKECALL_BAKTA)
+	bakta --db $(BAKTA_DB) --output $(basename $@).d $(BAKTA_OPTS) $< | tee $@
+	pigz $(basename $@).d/*
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
