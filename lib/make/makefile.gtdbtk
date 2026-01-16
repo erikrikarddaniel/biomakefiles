@@ -23,7 +23,7 @@ GTDBTK_IDENTIFY_OPTIONS =
 
 GTDBTK_DE_NOVO_OPTIONS =
 
-# GTDB-Tk's documentation gives p__Patescibacteria and p__Altiarchaeota as examples
+# GTDB-Tk's documentation gives p__Patescibacteriota and p__Altiarchaeota as examples
 GTDBTK_DE_NOVO_OUTGROUP = SET GTDBTK_DE_NOVO_OUTGROUP TO SOMETHING SUITABLE
 GTDBTK_DE_NOVO_DOMAIN = SET to --archaea OR --bacteria
 
