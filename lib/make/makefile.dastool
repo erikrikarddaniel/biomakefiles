@@ -69,7 +69,7 @@ space:= $(empty) $(empty)
 # Note: DAS_Tool's actual output filenames depend on its version -- check
 # your installed version's docs/help if this target name doesn't match what
 # gets written; adjust here if needed.
-dastool_DASTool_summary.txt: $(wildcard *.fna) $(subst .d,.contigs2bin.tsv,$(wildcard *.d))
+dastool_DASTool_summary.tsv: $(wildcard *.fna) $(subst .d,.contigs2bin.tsv,$(wildcard *.d))
 	@$(MAKECALL_DASTOOL)
 	DAS_Tool \
 	  -i $(subst $(space),$(comma),$(filter %.contigs2bin.tsv,$^)) \
