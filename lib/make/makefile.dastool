@@ -1,0 +1,79 @@
+# makefile.dastool
+#
+# Library makefile to make running DAS_Tool simpler.
+#
+# Meant to be run in a directory dedicated to one sample (run DAS_Tool once
+# per sample, in its own directory, per this repo's usual workflow -- see
+# doc/makefile.md).
+#
+# Set up such a directory like this:
+#
+# - Symlink the assembly the bins were made from into the directory, with a
+#   name ending in ".fna", e.g.:
+#     ln -s ../../assemblies/sample1.fna .
+#
+# - For each bin set (i.e. one per binning method), create a subdirectory
+#   with a name ending in ".d" and symlink that set's bin fasta files into
+#   it, with names ending in ".fna", e.g.:
+#     mkdir metabat2.d && ln -s ../../binning/metabat2/sample1.bin.*.fna metabat2.d/
+#     mkdir maxbin2.d  && ln -s ../../binning/maxbin2/sample1.bin.*.fna  maxbin2.d/
+#     mkdir concoct.d  && ln -s ../../binning/concoct/sample1.bin.*.fna  concoct.d/
+#   The ".d" directory names are entirely up to you -- DAS_Tool is given
+#   however many bin sets it finds this way, so this works for any number
+#   of binning methods, under any names.
+#
+# Include the full path of this file in your Makefile ...
+#
+# Author: __AUTHOR_EMAIL__
+
+SHELL := /bin/bash
+
+# *** Parameters ***
+
+# Override in your Makefile by setting a parameter *after* the row that
+# includes this file, see documentation in doc/makefile.md.
+#
+# E.g. --search_engine diamond --write_bins --threads 8
+DASTOOL_OPTS =
+
+# *** Internal ***
+
+# MAKECALL_DASTOOL is a macro that defines what will be output to the .makecall
+# file, the file that records versions, file stamps, parameters etc.
+#
+# *Don't redefine!*
+MAKECALL_DASTOOL_VERSION     = echo "`date +"%Y%m%d %H:%M:%S"`: $@ was made with `DAS_Tool --version`" > $@.makecall
+MAKECALL_DASTOOL_PARAMS      = echo "	Called with parameters: $(DASTOOL_OPTS)" >> $@.makecall
+MAKECALL_DASTOOL_INFILES     = echo "	Input files: $^ (`ls -lL $^|tr '\n' ','`)" >> $@.makecall
+MAKECALL_DASTOOL             = $(MAKECALL_DASTOOL_VERSION); $(MAKECALL_DASTOOL_PARAMS); $(MAKECALL_DASTOOL_INFILES)
+
+# Used to turn the space-separated prerequisite list Make hands us into the
+# comma-separated list DAS_Tool's -i flag wants (same idiom as makefile.megahit).
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+
+# *** Targets ***
+
+# Converts one bin set (a *.d directory of symlinked bin fasta files, named
+# with a ".fna" suffix) into the two-column contig/bin table DAS_Tool needs,
+# one such table per set.
+%.contigs2bin.tsv: %.d
+	@$(MAKECALL_DASTOOL)
+	Fasta_to_Contig2Bin.sh -i $< -e fna > $@
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+# Runs DAS_Tool against every bin set (*.d directory) and the single assembly
+# (*.fna file) found in the current directory.
+#
+# Note: DAS_Tool's actual output filenames depend on its version -- check
+# your installed version's docs/help if this target name doesn't match what
+# gets written; adjust here if needed.
+dastool_DASTool_summary.txt: $(wildcard *.fna) $(subst .d,.contigs2bin.tsv,$(wildcard *.d))
+	@$(MAKECALL_DASTOOL)
+	DAS_Tool \
+	  -i $(subst $(space),$(comma),$(filter %.contigs2bin.tsv,$^)) \
+	  -c $(filter %.fna,$^) \
+	  -o dastool \
+	  $(DASTOOL_OPTS)
+	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
