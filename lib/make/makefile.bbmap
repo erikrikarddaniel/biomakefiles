@@ -14,6 +14,7 @@ SHELL := /bin/bash
 # includes this file, see documentation in doc/makefile.md.
 #
 BBMAP_OPTS =
+BBMAP_RANDOMREADS_OPTS = reads=10000 length=150
 
 # You need to set this macro to the name of the fasta file, gzipped or not, that you want to map to
 # There are a couple of options: ref=nn.fna.gz will create an index for that (unless it already exists in ref/),
@@ -45,3 +46,7 @@ all_bams: $(subst .r1.fastq.gz,.bam,$(wildcard *.r1.fastq.gz))
 	bbmap.sh ref=$< $(BBMAP_OPTS)
 	touch $@
 	@echo "`date +"%Y%m%d %H:%M:%S"`: DONE" >> $@.makecall
+
+%.perandom: %.fna.gz
+	randomreads.sh ref=$< out1=$@.r1.fastq.gz out2=$@.r2.fastq.gz paired=t $(BBMAP_RANDOMREADS_OPTS)
+	touch $@
