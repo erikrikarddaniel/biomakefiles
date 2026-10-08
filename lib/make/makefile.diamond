@@ -82,6 +82,11 @@ all_daas: $(subst .faa.gz,.daa,$(wildcard *.faa.gz)) $(subst .faa,.daa,$(wildcar
 	diamond blastp -f 100 -d $(DIAMOND_DB) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
 	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
 
+%.xwise.daa: %.faa %.dmnd
+	$(MAKECALL_DIAMOND_RFP)
+	diamond blastp -f 100 -d $(word 2,$^) --query $< -o $@ $(DIAMOND_ALIGN_OPTS)
+	echo "`date +"%Y-%m-%d %H:%M:%S"`: DONE" >> $@.makecall
+
 # Run diamond against the database in DIAMOND_DB for all fastq.gz files in the directory.
 fastq.gz2daas: $(subst .fastq.gz,.daa,$(wildcard *.fastq.gz))
 
@@ -130,7 +135,7 @@ fna2refseq_protein.daas: $(subst .fna.gz,.refseq_protein.daa,$(wildcard *.fna.gz
 all_blasttab.tsv.gzs: $(subst .daa,.blasttab.tsv.gz,$(wildcard *.daa))
 
 %.blasttab.tsv.gz: %.daa
-	diamond view --daa $< -f 6 | gzip -c > $@
+	diamond view --daa $< -f 6 --max-target-seqs 1000000| gzip -c > $@
 
 # Creating the database
 
