@@ -130,6 +130,9 @@ all_bam2fastq: $(subst .bam,.fastq.gz,$(wildcard *.bam))
 %.fastq.gz: %.bam
 	samtools bam2fq $< | gzip -c > $@
 
+%.fna.fai: %.fai
+	samtools faidx $<
+
 all_bam.md5s: $(subst .bam,.bam.md5,$(wildcard *.bam))
 
 %.bam.md5: %.bam

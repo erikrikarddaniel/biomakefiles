@@ -25,7 +25,7 @@ GTDB_LATEST_URL  = $(GTDB_RELEASE_URL)/latest
 
 # *** Targets ***
 #
-metadata: ar53_metadata.tsv bac120_metadata.tsv
+metadata: ar53_metadata.tsv.gz bac120_metadata.tsv.gz
 
 ar53_metadata.tsv.gz:
 	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/ar53_metadata_$(GTDB_RELEASE).tsv.gz
@@ -34,6 +34,13 @@ ar53_metadata.tsv.gz:
 bac120_metadata.tsv.gz: 
 	wget $(GTDB_RELEASE_URL)/$(GTDB_URL_RELEASE)/$(GTDB_SUBRELEASE)/bac120_metadata_$(GTDB_RELEASE).tsv.gz
 	ln -s bac120_metadata_$(GTDB_RELEASE).tsv.gz $@
+
+# Make these after downloading the metadata files. Other targets depend on them to make sure onlyu species representatives are made.
+ar53_metadata_repr.tsv.gz: ar53_metadata.tsv.gz
+	$(REPR_SUBSET)
+
+bac120_metadata_repr.tsv.gz: bac120_metadata.tsv.gz
+	$(REPR_SUBSET)
 
 trees: ar53.tree bac120.tree
 
@@ -73,7 +80,7 @@ REDUCE_PATTERNS = Rscript --default-packages=data.table -e "fwrite(fread('/tmp/g
 # with accessions that have moved from NR to RefSeq, which is reflected in the prefix to accessions,
 # by searching for accessions missing with patterns that are more general in the third  positoin of
 # the prefix.
-gtdb_genbank_genomes.tsv: ar53_metadata.tsv.gz bac120_metadata.tsv.gz assembly_summary_refseq.txt assembly_summary_genbank.txt assembly_summary_refseq_historical.txt assembly_summary_genbank_historical.txt 
+gtdb_genbank_genomes.tsv: ar53_metadata_repr.tsv.gz bac120_metadata_repr.tsv.gz assembly_summary_refseq.txt assembly_summary_genbank.txt assembly_summary_refseq_historical.txt assembly_summary_genbank_historical.txt 
 	@rm -f $@.tmp /tmp/gtdb_genbank_genomes.tsv.split* /tmp/gtdb_genbank_genomes.tsv.patterns /tmp/gtdb_genbank_genomes.tsv.accno
 	# Get a list of accessions, write to /tmp/gtdb_genbank_genomes.tsv.patterns
 	@gunzip -c $(wordlist 1,2,$^) | cut -f 1,19 | grep -v '^accession' | grep -P '\tt$$' | cut -f 1 | sed 's/^[A-Z][A-Z]_//' > /tmp/$@.patterns
