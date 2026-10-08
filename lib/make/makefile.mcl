@@ -31,8 +31,14 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 # File conversions
 
 # abc.tsv files can (perhaps) be made with blast2matrix!
-
 %.bitscore.abc.tsv: %.megantab.gz
+	gunzip -c $< | cut -f 1,2,12 > $@
+
+# Diamond's blast6 format
+%.bitscore.abc.tsv.gz: %.blasttab.tsv.gz
+	gunzip -c $< | cut -f 1,2,12 | gzip -c > $@
+
+%.bitscore.abc.tsv: %.blasttab.tsv.gz
 	gunzip -c $< | cut -f 1,2,12 > $@
 
 # MCL clustering
@@ -45,36 +51,38 @@ MAKECALL_MCL         = $(MAKECALL_MCL_VERSION); $(MAKECALL_MCL_PARAMS); $(MAKECA
 .SECONDARY:
 
 # This doesn't work...
-%.mcls: %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl2_5.mclout %.mcl4.mclout %.mcl6.mclout
+%.mcls: %.mcl1_1.mclout %.mcl1_2.mclout %.mcl1_4.mclout %.mcl2.mclout %.mcl2_5.mclout %.mcl4.mclout %.mcl6.mclout
 
 all_mcxdumps: $(subst .mclout,.mcxdump.tsv,$(wildcard *.mclout))
 
 %.mcl1_1.mclout: %.mci
-	mcl $< -I 1.1 -o $@
+	mcl $< -I 1.1 -o $@ $(MCL_OPTS)
 
 %.mcl1_2.mclout: %.mci
-	mcl $< -I 1.2 -o $@
+	mcl $< -I 1.2 -o $@ $(MCL_OPTS)
 
 %.mcl1_4.mclout: %.mci
-	mcl $< -I 1.4 -o $@
+	mcl $< -I 1.4 -o $@ $(MCL_OPTS)
 
 %.mcl1_6.mclout: %.mci
-	mcl $< -I 1.4 -o $@
+	mcl $< -I 1.4 -o $@ $(MCL_OPTS)
 
 %.mcl1_8.mclout: %.mci
-	mcl $< -I 1.4 -o $@
+	mcl $< -I 1.4 -o $@ $(MCL_OPTS)
 
 %.mcl2.mclout: %.mci
-	mcl $< -I 2 -o $@
+	mcl $< -I 2 -o $@ $(MCL_OPTS)
 
 %.mcl2_5.mclout: %.mci
-	mcl $< -I 2.5 -o $@
+	mcl $< -I 2.5 -o $@ $(MCL_OPTS)
 
 %.mcl4.mclout: %.mci
-	mcl $< -I 4 -o $@
+	mcl $< -I 4 -o $@ $(MCL_OPTS)
 
 %.mcl6.mclout: %.mci
-	mcl $< -I 6 -o $@
+	mcl $< -I 6 -o $@ $(MCL_OPTS)
+
+all_mcxdumps: $(subst .mclout,.mcxdump.tsv,$(wildcard *.mclout))
 
 %.mcxdump.tsv: %.mclout
 	mcxdump -icl $< -tabr $(basename $(basename $<)).mcldata -o $@
