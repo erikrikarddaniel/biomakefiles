@@ -150,6 +150,11 @@ prot.accession2taxid.FULL.gz:
 taxflat.tsv: nodes.dmp names.dmp
 	taxdata2taxflat --verbose $^ > $@
 
+# The nucleotide core_nt blast database
+core_nt:
+	wget --mirror "ftp://ftp.ncbi.nlm.nih.gov/blast/db/core_nt.*.tar.gz"
+
+
 # The nucleotide blast database
 ncbi_nt:
 	wget "ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.*.tar.gz"
@@ -157,3 +162,8 @@ ncbi_nt:
 # The Univec database of vector (and e.g. primer) sequences
 univec.fna:
 	wget -O $@ ftp://ftp.ncbi.nlm.nih.gov/pub/UniVec/UniVec
+
+# The 16S ribosomal RNA targeted-loci blast database (RefSeq, bacteria and archaea)
+mirror_16S_ribosomal_RNA.blast:
+	wget --mirror https://ftp.ncbi.nlm.nih.gov/blast/db/16S_ribosomal_RNA.tar.gz
+	( cd ftp.ncbi.nlm.nih.gov/blast/db; tar xzf 16S_ribosomal_RNA.tar.gz )
